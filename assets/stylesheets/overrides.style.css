@@ -29,7 +29,7 @@ dd img {
   background-color: #5FBB58;
 }
 
-#mainCol a, #subCol a, #feature a {
+#mainCol a, #subCol a, #feature a, a, a:link, a:visited {
   color: #0A6008;
 }
 
