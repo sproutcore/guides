@@ -1,0 +1,17 @@
+<dl class="L">
+  <% lgroup.each do |group, guides| %>
+    <dt><%= group %></dt>
+    <% guides.each do |guide| %>
+      <dd><%= link_to guide["title"], "#{guide["url"]}.html" %></dd>
+    <% end %>
+  <% end %>
+</dl>
+<dl class="R">
+  <% rgroup.each do |group, guides| %>
+    <dt><%= group %></dt>
+    <% guides.each do |guide| %>
+      <dd><%= link_to guide["title"], "#{guide["url"]}.html" %></dd>
+    <% end %>
+  <% end %>
+</dl>
+

@@ -1,0 +1,49 @@
+title: SproutCore Guides
+description: These guides are designed to help you get up and running and feeling productive with SproutCore.
+
+authors:
+  Documentation Team:
+    - name: Yehuda Katz
+      nick: wycats
+      description: Yehuda works for Strobe and is a member of the SproutCore core team.
+  Designers:
+    - name: Jason Zimdars
+      nick: jz
+      description: Jason Zimdars is an experienced creative director and web designer who has lead UI and UX design for numerous websites and web applications. You can see more of his design and writing at <a href="http://www.thinkcage.com/">Thinkcage.com</a> or follow him on <a href="http://twitter.com/JZ">Twitter</a>
+
+index:
+  Start Here:
+    - title: Getting Started
+      url: getting_started
+      text: Jump start your SproutCore development by playing along as we build a fully functional Todo List application.
+      construction: true
+    - title: Core Concepts
+      url: core_concepts
+      text: In this guide, we will touch on many of the core concepts of SproutCore like bindings and the run loop. We'll cover just enough to get you going with bogging down in the details. If you want to learn more, take a look at the detailed overviews of these concepts in the "Digging Deeper" section.
+      construction: true
+    - title: Using Amber
+      url: amber
+      text: Learn how to use the lightweight Amber framework to build applications without the full SproutCore stack.
+      construction: true
+  Models:
+    - title: SproutCore Records
+      url: records
+      text: The SproutCore data framework is a full-featured ORM-like framework for working with data in the SproutCore Learn about the SproutCore data framework and how you can use it to interact with your data sources.
+      construction: true
+    - title: Hooking Up to a Backend
+      url: data_source
+      text: This guide covers how to create a SproutCore data source, which will retrieve data from your servers and make them available to the SproutCore Records you designed in the previous guide.
+      construction: true
+    - title: Using Fixtures
+      url: fixtures
+      text: In order to facilitate rapid development, SproutCore provides a facility for using pre-set fixture data as your data source. This guide covers how to set up your fixtures, and how to replace them with your real server once you're ready to get going.
+      construction: true
+  Views:
+    - title: Core View Concepts
+      url: views
+      text: In this guide, we will cover the basics of SproutCore views, and show you how to customize the built-in SproutCore views for your own use.
+      construction: true
+    - title: Building Your Own Views
+      url: custom_views
+      text: Most applications will quickly go beyond the built-in SproutCore views. In this guide, we will cover how to build and style your own views.
+      construction: true
