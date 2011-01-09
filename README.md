@@ -2,23 +2,21 @@ SproutGuides
 ============
 
 Documentation for the SproutCore framework. For more information on SproutCore,
-see the [homepage](http://www.sproutcore.com) or the
-[GitHub repository](https://github.com/sproutcore/sproutcore).
+see the [homepage](http://www.sproutcore.com) or the [GitHub repository](https://github.com/sproutcore/sproutcore).
+These guides are based on the [Rails Guides](http://guides.rubyonrails.org/).
 
 
 ## Getting Started
 
-To generate the files, you'll first need to have
-[Bundler](http://gembundler.com/) installed. Once you have Bundler, you can
+In order to start generating documentation, complete the following steps:
 
-    git clone git://github.com/sproutcore/sproutguides.git
-    cd sproutguides
-    bundle install --binstubs
+- install the [SproutGuides package](http://guides-pkg.strobeapp.com/Guides.pkg)
+- clone SproutGuides from git://github.com/sproutcore/sproutguides.git
+- cd into sproutguides and run `guides generate` to generate the output directory
 
-Once you've completed these steps, whenever you need to generate the
-documentation, you run
+Once you've completed these steps, you're ready to start working with
+SproutGuides. You'll do your work inside the source/ directory. As you make
+changes, run `guides generate` to see them reflected in the output.
 
-    ./bin/guides generate
-
-and this will output the results to the output/ folder. If you have any
-questions, the team can be reached at [@sproutcore](http://twitter.com/#!/sproutcore) or [#sproutcore](irc://irc.freenode.net/sproutcore)
+If you have any questions, the team can be reached at[@sproutcore](http://twitter.com/#!/sproutcore)
+or [#sproutcore](irc://irc.freenode.net/sproutcore)
