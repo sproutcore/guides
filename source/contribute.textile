@@ -2,6 +2,8 @@ h2. Contribute
 
 The SproutCore documentation team welcomes any and all help from the community. If you are interested in contributing to the effort, the information below will let you know how to do so and who to contact in order to get help and guidance.
 
+endprologue.
+
 h3. How to Contribute?
 
 * TBD
