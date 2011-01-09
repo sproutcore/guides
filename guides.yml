@@ -34,6 +34,10 @@ index:
       url: data_source
       text: "This guide covers how to create a SproutCore data source, which will retrieve data from your servers and make them available to the SproutCore Records you designed in the previous guide."
       construction: true
+    - title: Transactions in SproutCore Using Nested Stores
+      url: nested_stores
+      text: "SproutCore provides a powerful facility for allowing your app's users to make changes to local data, then commit or rollback the changes as needed. Learn how to use 'nested stores' to manage the state of your data as it moves through your user's edits."
+      construction: true
     - title: Using Fixtures
       url: fixtures
       text: "In order to facilitate rapid development, SproutCore provides a facility for using pre-set fixture data as your data source. This guide covers how to set up your fixtures, and how to replace them with your real server once you're ready to get going."
@@ -55,6 +59,8 @@ index:
     - title: Writing Themeable Controls
       url: themeable_controls
       text: "In this guide, we'll go over to how to develop a control that can be themed. This can be useful if you want to have different visual displays in your application (like a regular and overlay theme) or when distributing a theme for wider use."
+      construction: true
     - title: "Using Chance, SproutCore's CSS framework"
       url: chance
       text: "Chance is SproutCore's CSS preprocessor. In this guide, you will learn how to use the CSS extensions that come with Chance to streamline your styling workflow."
+      construction: true
