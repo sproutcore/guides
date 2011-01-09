@@ -18,5 +18,5 @@ Once you've completed these steps, you're ready to start working with
 SproutGuides. You'll do your work inside the source/ directory. As you make
 changes, run `guides generate` to see them reflected in the output.
 
-If you have any questions, the team can be reached at[@sproutcore](http://twitter.com/#!/sproutcore)
+If you have any questions, the team can be reached at [@sproutcore](http://twitter.com/#!/sproutcore)
 or [#sproutcore](irc://irc.freenode.net/sproutcore)
