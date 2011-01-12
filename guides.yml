@@ -8,6 +8,7 @@ authors:
       description: Yehuda works for Strobe and is a member of the SproutCore core team.
     - name: Peter Wagenet
       nick: pwagenet
+      image: pwagenet.jpg
       description: Peter works for Strobe and is a member of the SproutCore core team.
   Designers:
     - name: Jason Zimdars
