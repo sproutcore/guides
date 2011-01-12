@@ -62,7 +62,7 @@ MyApp.Article.FIXTURES = [
 ];
 </javascript>
 
-It is also possible to specify attributs that are not explicity defined in your model, though explicit declaration is encouraged.
+It is also possible to specify attributes that are not explicity defined in your model, though explicit declaration is encouraged.
 
 WARNING: You must specify a value for the +primaryKey+ in your fixtures.
 
