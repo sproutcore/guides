@@ -1,0 +1,135 @@
+h2. Using Fixtures
+
+This guide covers the use of fixtures in your app. By referring to this guide, you will be able to:
+
+* Understand the purpose of fixtures
+* Write your own fixtures
+* Set up relationships within fixtures
+* Use the fixtures data source
+
+endprologue.
+
+h3. The Purpose of Fixtures
+
+Fixtures are a quick and easy way to preload your app with sample data without having to write a custom data source. This is especially useful in the early stages of app development as it allows you to focus on the general app structure without having to be concerned with your app's backend.
+
+h4. How Fixtures Work
+
+Fixtures are defined as an array of hashes with each hash containing the attributes and values for each instance you wish to create.
+
+A sample fixture looks something like:
+
+<javascript>
+MyApp.MyModel.FIXTURES = [
+  { guid: 1,
+    firstName: "Michael",
+    lastName: "Scott" },
+
+  { guid: 2,
+    firstName: "Dwight",
+    lastName: "Schrute" }
+];
+</javascript>
+
+h4. Defining Fixtures
+
+SproutCore looks for fixtures assigned to +MyApp.MyModel.FIXTURES+. By convention, fixtures are defined in +my_app/fixtures/my_model.js+. By default fixtures are not included in production builds.
+
+NOTE: If you use +sc-gen+ to create your models then you may have noticed that some placeholder fixtures already exist. You will still need to modify these fixtures to suit your needs. Read on to learn how.
+
+h3. Writing Your Own Fixtures
+
+Writing fixtures is relatively straight forward. As you can see in the above example, each item gets its own hash in the format of +propertyName: value+. If your model looks like
+
+<javascript>
+MyApp.Article = SC.Record.extend({
+  title: SC.Record.attr(String),
+  body:  SC.Record.attr(String)
+});
+</javascript>
+
+then your fixture will look like
+
+<javascript>
+MyApp.Article.FIXTURES = [
+  { guid: 1,
+    title: "Writing a SproutCore app",
+    body: "Writing a SproutCore app is fun and exciting!" },
+
+  { guid: 2,
+    title: "Working with Fixtures",
+    body:  "Using fixtures can make it easier to get your app started." }
+];
+</javascript>
+
+It is also possible to specify attributs that are not explicity defined in your model, though explicit declaration is encouraged.
+
+WARNING: You must specify a value for the +primaryKey+ in your fixtures.
+
+h4. Defining Relationships
+
+Since relationships are only specified with the foreign key it is quite easy to set them up in your fixtures. If you have model declaration like the following
+
+<javascript>
+MyApp.Employee = SC.Record.extend({
+  firstName: SC.Record.attr(String),
+  lastName:  SC.Record.attr(String),
+  company:   SC.Record.toOne("MyApp.Company", {
+     inverse: "contacts", isMaster: NO
+  })
+});
+
+MyApp.Company = SC.Record.extend({
+  name:      SC.Record.attr(String),
+  employees: SC.Record.toMany("MyApp.Employee", {
+    inverse: "group", isMaster: YES
+  })
+});
+</javascript>
+
+then you would set up your fixtures like
+
+<javascript>
+MyApp.Employee.FIXTURES = [
+  { guid: 1,
+    firstName: "Peter",
+    lastName:  "Wagenet",
+    company: 1 }, // Strobe, Inc.
+
+  { guid: 2,
+    firstName: "Charles",
+    lastName:  "Jolley",
+    company: 1 }, // Strobe, Inc.
+
+  { guid: 3,
+    firstName: "Juan",
+    lastName:  "Pinzon",
+    company: 2 } // Apple
+];
+
+MyApp.Company.FIXTURES = [
+  { guid: 1, name: "Strobe, Inc.", employees: [1,2] },
+  { guid: 2, name: "Apple", employees: [3] }
+];
+</javascript>
+
+When the fixtures are loaded into your app the relationships automatically take over and point to the appropriate records.
+
+WARNING: Unlike a traditional relational database it is necessary to specify both sides of the relationship.
+
+h4. Defining Non-String Values
+
+The above examples have referred mostly to string values in the fixture. As most data is either passed into the app via JSON or XML, +SC.Record+ is capable of transforming data from a string into the appropriate object type. See +SC.RecordAttribute.registerTransform+ for more information.
+
+h3. Hooking Up Your Fixtures
+
+SproutCore comes with a built in data source for your fixtures. To use the fixtures data source you merely need to set the following in your app's +core.js+
+
+<javascript>
+store: SC.Store.create().from(SC.Record.fixtures)
+</javascript>
+
+h3. Changelog
+
+* January 11, 2011: initial version by "Peter Wagenet":credits.html#pwagenet
+

@@ -6,6 +6,9 @@ authors:
     - name: Yehuda Katz
       nick: wycats
       description: Yehuda works for Strobe and is a member of the SproutCore core team.
+    - name: Peter Wagenet
+      nick: pwagenet
+      description: Peter works for Strobe and is a member of the SproutCore core team.
   Designers:
     - name: Jason Zimdars
       nick: jz
