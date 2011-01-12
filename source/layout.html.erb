@@ -48,8 +48,12 @@
 
   <div id="feature">
     <div class="wrapper">
+    <% if((header_section = yield(:header_section)) && !header_section.blank?) %>
+      <%= header_section %>
+    <% else %>
       <h2><%= Guides.meta["title"] %></h2>
       <p><%= Guides.meta["description"] %></p>
+    <% end %>
     </div>
   </div>
 
