@@ -58,6 +58,8 @@ index:
     - title: Writing Themeable Controls
       url: themeable_controls
       text: "In this guide, we'll go over to how to develop a control that can be themed. This can be useful if you want to have different visual displays in your application (like a regular and overlay theme) or when distributing a theme for wider use."
+      construction: true
     - title: "Using Chance, SproutCore's CSS framework"
       url: chance
       text: "Chance is SproutCore's CSS preprocessor. In this guide, you will learn how to use the CSS extensions that come with Chance to streamline your styling workflow."
+      construction: true
