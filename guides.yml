@@ -6,6 +6,10 @@ authors:
     - name: Yehuda Katz
       nick: wycats
       description: Yehuda works for Strobe and is a member of the SproutCore core team.
+    - name: Peter Wagenet
+      nick: pwagenet
+      image: pwagenet.jpg
+      description: Peter works for Strobe and is a member of the SproutCore core team.
   Designers:
     - name: Jason Zimdars
       nick: jz
@@ -19,7 +23,7 @@ index:
       construction: true
     - title: Core Concepts
       url: core_concepts
-      text: "In this guide, we will touch on many of the core concepts of SproutCore like bindings and the run loop. We'll cover just enough to get you going with bogging down in the details. If you want to learn more, take a look at the detailed overviews of these concepts in the \"Digging Deeper\" section."
+      text: "In this guide, we will touch on many of the core concepts of SproutCore like bindings and the run loop. We'll cover just enough to get you going with out getting bogged down in the details. If you want to learn more, take a look at the detailed overviews of these concepts in the \"Digging Deeper\" section."
       construction: true
     - title: Using Amber
       url: amber
@@ -41,7 +45,6 @@ index:
     - title: Using Fixtures
       url: fixtures
       text: "In order to facilitate rapid development, SproutCore provides a facility for using pre-set fixture data as your data source. This guide covers how to set up your fixtures, and how to replace them with your real server once you're ready to get going."
-      construction: true
   Views:
     - title: Core View Concepts
       url: views
