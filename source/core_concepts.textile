@@ -1,0 +1,266 @@
+h2. Core Concepts
+
+The guide covers some of the core concepts of SproutCore. By referring
+to this guide, you will be able to:
+
+* Understand how classes work, including +SC.Object+
+* Be familiar with Properties, Observers, Bindings and the Run Loop
+* Write your own classes based on +SC.Object+ with full use of Observers and Bindings
+* Known when worry about the Run Loop (HINT: Almost never)
+
+endprologue.
+
+h3. +SC.Object+ and Classes
+
+SproutCore maintains a traditional "object-oriented structure":http://en.wikipedia.org/wiki/Object-oriented_programming
+at the root of which lies +SC.Object+. +SC.Object+ defines all the basic
+features needed by a class in SproutCore. These include Properties,
+Observers and Bindings, which I will go into detail on below.
+
+h4. Creating an +SC.Object+ Instance
+
+Creation of an +SC.Object+ instance is straight-forward.
+
+<javascript>
+var obj = SC.Object.create()
+</javascript>
+
+By itself that is relatively uninsteresting. In most cases you will want
+to create your SC.Object with some pre-set properties.
+
+<javascript>
+var person = SC.Object.create({
+  firstName: 'Peter',
+  lastName:  'Wagenet'
+});
+person.get('firstName'); // Peter
+person.get('lastName');  // Wagenet
+</javascript>
+
+NOTE: We will explain the +get+ and +set+ functions in more detail later. For now I'll just say that it's worth getting in the habit of using them.
+
+h4. Creating an +SC.Object+ Subclass
+
+In many cases you will want to create subclasses of +SC.Object+ to
+handle similar objects. In the above example, we created a person.
+Normally it would make sense to have a +Person+ object.
+
+<javascript>
+MyApp.Person = SC.Object.extend({
+  firstName: null,
+  lastName:  null,
+
+  full]ame: function(){
+    return this.get('firstName')+' '+this.get('lastName');
+  }
+});
+</javascript>
+
+You could then create an instance of the +Person+ class and get the
+special properties.
+
+<javascript>
+var person = MyApp.Person.create({
+  firstName: 'Peter',
+  lastName:  'Wagenet'
+});'
+person.fullName(); // Peter Wagenet
+</javascript>
+
+h5. Calling super methods with +sc_super+
+
+In some cases when you subclass an object you will want to augment a
+method of the parent class without completely overriding it. In this
+case, SproutCore provides the +sc_super+ method which calls the original
+function.
+
+<javascript>
+MyApp.FormalPerson = MyApp.Person.extend({
+  title: null,
+  fullName: function(){
+    return this.get('title')+' '+sc_super();
+  }
+});
+var person = MyApp.FormalPerson.create({
+  title:     'Mr.',
+  firstName: 'Peter',
+  lastName:  'Wagenet'
+});
+person.fullName(); // Mr. Peter Wagenet
+</javascript>
+
+NOTE: +sc_super+ is one of the rare exceptions in SproutCore in that it
+is not actually a real JavaScript function. It's just a pre-processor
+directive that gets replaced with +arguments.callee.base.apply(this,
+arguments)+.
+
+h5. The +init+ method
+
++SC.Object+ also comes with built-in support for an initialization
+method that gets called as the object is being created. This is useful
+when there is some necessary setup for your object.
+
+<javascript>
+MyApp.Calculation = SC.Object.extend({
+  input: null,
+  result: null,
+
+  _calculate: function(){
+    // Do expensive calculation
+    this.set('result, this.get('input') * 2);
+  },
+
+  init: function(){
+    sc_super();
+    this._calculate();
+  }
+});
+var calc = MyApp.Calculation.create({ input: 5 });
+calc.result; // 10
+</javascript>
+
+NOTE: By convention private properties are prefaced with an underscore.
+
+WARNING: You will generally want to call +sc_super()+ in your +init+ method to make sure any initialization in the superclass takes place.
+
+h5. Using Mixins
+
+Mixins are an easy way to extend multiple classes that don't share an
+inheritance tree with similar functionality. Mixins are just a hash with
+a series of properties that will be added to the class you create.
+
+<javascript>
+MyApp.Friendly = {
+  sayHello: function(){
+    return 'Hello, my name is '+this.name;
+  }
+};
+MyApp.Person = SC.Object.extend(MyApp.Friendly, {
+  name: null;
+});
+var person = MyApp.Person.create({ name: 'Bob' });
+person.sayHello(); // Hello, my name is Bob
+</javascript>
+
+As you may have guessed, +SC.Object.extend+ just takes a series of
+hashes and mixes them all in to a newly created class.
+
+h5. Class methods
+
+If you want, you can also define class methods on your custom classes.
+Using our Person class from above, you can do
+
+<javascript>
+MyApp.Person.quickCreate = function(firstName, lastName){
+  return MyApp.Person.create({
+    firstName: firstName,
+    lastName: lastName
+  });
+};
+var person = MyApp.Person.quickCreate('Peter', 'Wagenet');
+person.fullName(); // Peter Wagenet
+</javascript>
+
+However, sometimes you may want to add a series of class methods or
+properties. In this case you can use the mixin method.
+
+<javascript>
+MyApp.Person.mixin({
+  quickCreate: function(firstName, lastName){
+    return MyApp.Person.create({
+      firstName: firstName,
+      lastName: lastName
+    });
+  }),
+
+  // Additional properties
+});
+</javascript>
+
+h3. Properties, Bindings and Observers
+
+Properties, Bindings and Observers all make up what is known as the
+Key-Value Observing (KVO) system of SproutCore.
+
+h4. Getters and Setters
+
+For KVO to work properly, SproutCore implements getters and setters to
+track changes to objects. This is why it's important to use +get+ and
++set+ for any properties that might use observers, bindings, or computed
+properties. Failure to do so will quickly cause your app to get out of
+sync. I know this may sound like a bit of a pain, but don't worry,
+you'll quickly get used to using +get+ and +set+ and you'll forget you
+ever had to worry about it.
+
+<javascript>
+var obj = SC.Object.create({ name: 'Jim' });
+obj.get('name'); // Jim
+obj.set('name', 'Bob');
+obj.get('name'); // Bob
+</javascript>
+
+h4. Computed Properties
+
+Sometimes you may have properties that depend on other properties. These
+are known as computed properties. Computed properties are defined as
+functions with a call to +property+ and a list of the dependent
+properties.
+
+<javascript>
+MyApp.Person = SC.Object.extend({
+  firstName: null,
+  lastName:  null,
+
+  fullName: function(){
+    return this.get('firstName')+' '+this.get('lastName');
+  }.property('firstName', 'lastName')
+});
+var person = MyApp.Person.create({
+  firstName: 'Peter',
+  lastName:  'Wagenet'
+});
+person.get('fullName'); // Peter Wagenet
+person.set('lastName', 'Smith');
+person.get('fullName'); // Peter Smith
+</javascript>
+
+As you can see, you are able to use +get+ with computed properties in
+the same way you would use it with normal ones.
+
+Setting computed properties is slightly more complicated, but still easy
+to grasp. The +keyName+ and +value+ are passed in as the first two
+arguments to the property function.
+
+<javascript>
+MyApp.Capitalizer = SC.Object.extend({
+  capitalizedValue: function(keyName, value){
+    if (value !== undefined) {
+      this._capitalizedValue = value.toUpperCase();
+    }
+    return this._capitalizedValue;
+  }.property()
+});
+var cap = MyApp.Capitalizer.create();
+cap.set('capitalizedValue', 'abc');
+cap.get('capitalizedValue'); // ABC
+</javascript>
+
+In most cases you will find you can just ignore the value for +keyName+.
+Also, when the function is called via +get+, +value+ will be
++undefined+.
+
+h3. Observers
+
+Coming Soon
+
+h3. Bindings
+
+Coming Soon
+
+h3. The Run Loop
+
+Coming Soon
+
+h3. Changelog
+
+* January 12, 2011: initial partial version by "Peter Wagenet":credits.html#pwagenet
