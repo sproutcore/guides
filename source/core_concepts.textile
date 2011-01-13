@@ -6,7 +6,7 @@ to this guide, you will be able to:
 * Understand how classes work, including +SC.Object+
 * Be familiar with Properties, Observers, Bindings and the Run Loop
 * Write your own classes based on +SC.Object+ with full use of Observers and Bindings
-* Known when worry about the Run Loop (HINT: Almost never)
+* Know when to worry about the Run Loop (HINT: Almost never)
 
 endprologue.
 
@@ -50,7 +50,7 @@ MyApp.Person = SC.Object.extend({
   firstName: null,
   lastName:  null,
 
-  full]ame: function(){
+  fullName: function(){
     return this.get('firstName')+' '+this.get('lastName');
   }
 });
@@ -63,7 +63,7 @@ special properties.
 var person = MyApp.Person.create({
   firstName: 'Peter',
   lastName:  'Wagenet'
-});'
+});
 person.fullName(); // Peter Wagenet
 </javascript>
 
@@ -89,10 +89,7 @@ var person = MyApp.FormalPerson.create({
 person.fullName(); // Mr. Peter Wagenet
 </javascript>
 
-NOTE: +sc_super+ is one of the rare exceptions in SproutCore in that it
-is not actually a real JavaScript function. It's just a pre-processor
-directive that gets replaced with +arguments.callee.base.apply(this,
-arguments)+.
+NOTE: +sc_super+ is one of the rare exceptions in SproutCore in that it is not actually a real JavaScript function. It's just a pre-processor directive that gets replaced with +arguments.callee.base.apply(this, arguments)+.
 
 h5. The +init+ method
 
@@ -107,7 +104,7 @@ MyApp.Calculation = SC.Object.extend({
 
   _calculate: function(){
     // Do expensive calculation
-    this.set('result, this.get('input') * 2);
+    this.set('result', this.get('input') * 2);
   },
 
   init: function(){
