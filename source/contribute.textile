@@ -6,8 +6,98 @@ endprologue.
 
 h3. How to Contribute?
 
-* "Guides are hosted on GitHub":http://github.com/sproutcore/sproutguides
-* Guides are written in Textile, and reside at railties/guides/source in the docrails project.
+First, you will need to fork the SproutCore guides repository from Github. Go to https://github.com/sproutcore/sproutguides and click the Fork button. Then, check your forked copy out onto your local machine.
+
+<plain>
+$ git clone git://github.com/<yourname>/sproutguides.git
+</plain>
+
+You will want to add the main SproutCore repository as a remote:
+
+<plain>
+$ git remote add upstream git://github.com/sproutcore/sproutguides.git
+</plain>
+
+For each guide you write, you will want to create a new branch:
+
+<plain>
+$ git fetch upstream
+$ git checkout -b <yourtopic> upstream/master
+</plain>
+
+This will create a new branch for you to work on your new guide or to edit an existing guide. Next, you will need to get the +guides+ executable.
+
+h4. If You Use OSX and Aren't a Ruby Developer
+
+The easiest way to get started with the guides on OSX is to download and install the "guides pkg":http://guides-pkg.strobeapp.com/Guides-0.6.1.pkg. This will give you the +guides+ executable on your machine, and does not require you to have a C compiler on your computer.
+
+h4. If You're a Ruby Developer
+
+You can use the normal bundler workflow to develop the guides:
+
+<plain>
+$ gem install bundler
+$ bundle install --binstubs
+</plain>
+
+For the rest of this guide, when the +guides+ command is references, prefix it with +bin+. For instance, if you are instructed to run <tt>guides preview</tt>, instead run <tt>bin/guides preview</tt>.
+
+h3. Create Your Guide
+
+Create a new guide +<name>.textile+ from the following template:
+
+<plain>
+h2. Guide Topic
+
+This guide covers ... After reading this guide, you will be able to:
+
+* Make a list of the things you will cover
+* This should be a relatively high level list
+* It should cover what the reader will know how to do once done
+
+endprologue.
+
+h3. Topics Should Use h3
+
+Each topic should use an h3.
+</plain>
+
+To preview your guide as you write it, run the +preview+ command.
+
+<plain>
+$ guides preview
+>> Thin web server (v1.2.7 codename No Hup)
+>> Maximum connections set to 1024
+>> Listening on 0.0.0.0:9292, CTRL+C to stop
+</plain>
+
+Go to +http://localhost:9292/<guide-name>.html+ in a browser. After making a change, refresh to see it update live.
+
+h3. Updating +guides.yml+
+
+You will also want to update the main +guides.yml+ in the root of the repository with your new guide. First, decide which section your guide will go under. In general, new guides will go under the <tt>Digging Deeper</tt> section.
+
+Next, create a new entry for your guide. You will need to decide on a title and description. For the URL, enter the filename you used for your guide, without the +.textile+ ending. An entry will look something like this:
+
+<plain>
+index:
+  Digging Deeper:
+    - title: Using SproutCore Weebles
+      url: weebles
+      text: "Learn how to use the SproutCore Weebles framework to build magical and revolutionary Sproutcore applications"
+</plain>
+
+Once you are done, push your guide to your fork:
+
+<plain>
+$ git push origin <branch>
+</plain>
+
+Next, submit a pull request from your repository. Make sure to make the pull request using the branch you used for the guide.
+
+h3. Some Guidelines
+
+* Guides are written in a modified Textile. Fro example,s take a look at existing guides, or some of the "Rails Guides":https://github.com/rails/rails/tree/master/railties/guides/source for some examples
 * For now, follow the "Rails Guides Conventions":https://github.com/lifo/docrails/wiki/rails-guides-conventions.
 * Assets are stored in the +assets+ directory.
 * Sample format: "Fixtures":http://github.com/sproutcore/sproutguides/blob/master/source/fixtures.textile.
@@ -25,10 +115,9 @@ h3. What to Contribute?
 * We're also open to suggestions for entire new guides:
 ** Contact the documentation team to get your idea approved. See the Contact section below.
 
-h3. How is the process?
+h3. What is the process?
 
-* Fork the "repo from Github":http://github.com/sproutcore/sproutguides
-* Send a pull request and we will review your changes.
+* Follow the instructions above to fork the repository and submit a pull request.
 * If you are a regular committer we will give you direct commit access.
 
 h3. Rules
