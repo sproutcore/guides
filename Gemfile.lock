@@ -1,12 +1,12 @@
-GIT
-  remote: git://github.com/wycats/guides.git
-  revision: 5ad7ae9bc10786501d16fb2fd06b727627c93703
+PATH
+  remote: /Users/wycats/Code/strobe/guides
   specs:
-    guides (0.5.0)
+    guides (0.6.2)
       RedCloth (~> 4.1.1)
       actionpack (~> 3.0.0)
       activesupport (~> 3.0.0)
       rack (~> 1.2.1)
+      thin (~> 1.2.7)
       thor (~> 0.14.6)
 
 GEM
@@ -30,14 +30,20 @@ GEM
       i18n (~> 0.4)
     activesupport (3.0.3)
     builder (2.1.2)
+    daemons (1.1.0)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    eventmachine (0.12.10)
     i18n (0.5.0)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.7)
       rack (>= 1.0)
+    thin (1.2.7)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
     thor (0.14.6)
     tzinfo (0.3.23)
 
