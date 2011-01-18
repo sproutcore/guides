@@ -105,6 +105,28 @@ Here are the images for the normal and active states:
 
 Save them both in your +resources/+ folder to get started.
 
+Now, create a new CSS file in your +resources/+ folder. To keep things
+organized, call it +button.css+. In +button.css+, put:
+
+<css>
+$theme.button {
+  @include slices("button.png", $left: 3, $right: 3);
+
+  color: white;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 1);
+
+  /* & is SCSS's way of continuing the parent selector;
+     this translates to: $theme.button.active */
+  &.active {
+    @include slices("button-active.png", $left: 3, $right: 4);
+  }
+}
+</css>
+
+Save and reload your app: all your buttons should now be red.
+
+Now, let's go over what that block of CSS is doing.
+
 h4. Chance: SproutCore's CSS Preprocessor
 
 SproutCore has its own CSS preprocessor: Chance. It does many things:
