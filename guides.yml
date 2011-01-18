@@ -38,7 +38,7 @@ index:
       url: data_source
       text: "This guide covers how to create a SproutCore data source, which will retrieve data from your servers and make them available to the SproutCore Records you designed in the previous guide."
       construction: true
-    - title: Transactions in SproutCore Using Nested Stores
+    - title: Transactions Using Nested Stores
       url: nested_stores
       text: "SproutCore provides a powerful facility for allowing your app's users to make changes to local data, then commit or rollback the changes as needed. Learn how to use 'nested stores' to manage the state of your data as it moves through your user's edits."
       construction: true
