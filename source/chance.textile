@@ -1,0 +1,368 @@
+h2. Using Chance
+
+This guide covers using Chance, SproutCore's CSS framework. You'll
+learn to:
+
+* Use SCSS syntax to reduce code and keep it clean.
+* Use +$theme+ to keep rules simple.
+* Use the +@include slice+ directive to include images.
+* Use the +@include slices+ directive for multi-slice scaling.
+
+endprologue.
+
+h3. What Is Chance?
+
+Chance is SproutCore's CSS framework. All of the CSS you put in your apps gets
+processed by Chance.
+Chance includes not only SproutCore-specific extensions, but also *_SCSS_*, an
+awesome CSS preprocessor.
+
+Chance is a superset of CSS. This means that all normal CSS will still "just work."
+
+WARNING: Chance expects to work with a SproutCore theme. Recent releases of the SproutCore build tools will set everything up for you, but if your app doesn't have a +theme.js+ file, you need to follow the directions in "Theming Your App: Giving Your App a Theme":theming_app.html#giving-your-app-a-theme
+
+h3. SCSS
+
+As much as we'd like to take credit for SCSS, we cannot: it does not stand
+for "SproutCore Stylesheets." It actually stands for "Sassy CSS" because it
+is part of "Sass:" "Syntactically Awesome Stylesheets":http://sass-lang.com/.
+
+NOTE: Although Sass's own build tool only sends files with the extension +.scss+ through the SCSS processor, SproutCore sends _all_ CSS, including +.css+ files, through SCSS. Name your files +.css+.
+
+SCSS has many features. We'll cover the ones most useful for writing SproutCore themes.
+For full reference, refer to the official SCSS documentation.
+
+h4. Nesting
+
+You know those dolls that fit one inside the other? Nesting looks a little like that:
+
+<css>
+.yo-dawg {
+  color: blue;
+
+  .i-put-a-rule-in-your-rule {
+    color: red;
+
+    .so-you-can-style-while-you-style {
+      color: green;
+    }
+  }
+}
+</css>
+
+But what does it mean? Well, CSS should roughly map to HTML. So, what might some "nested" HTML look like?
+
+<html>
+<div class = 'yo-dawg'>
+  <div class = 'i-put-a-rule-in-your-rule'>
+    <span class = 'im-not-typing-that-long-class----ohwait'></span>
+  </div>
+</div>
+</html>
+
+Aside from the +class-that-shall-not-be-typed+, the above HTML is what our example
+CSS is meant to match. The nesting gets converted:
+
+<css>
+.you-dawg {
+  color: blue;
+}
+
+.yo-dawg .i-put-a-rule-in-your-rule {
+  color: red;
+}
+
+.yo-dawg .i-put-a-rule-in-your-rule .you-know-what {
+  color: green;
+}
+</css>
+
+Nesting helps you reduce repetition of class names. The nesting in your CSS matches
+your nesting of HTML elements: if rule B is inside rule A, it will match elements
+whose parents are descendants of elements matching rule A.
+
+h4. &amp;.another-rule
+
+Nesting looks nice, but what about when you just want to use nesting to match one
+element?
+
+For instance, a SproutCore button has its normal state, plus active, selected,
+and active selected states. These have class names +active+, +sel+, and +active sel+.
+
+Without nesting, this looks like:
+
+<css>
+$theme.button {
+  ...
+}
+
+$theme.button.active { 
+  ...
+}
+
+$theme.button.sel {
+  ...
+}
+
+$theme.button.active.sel {
+  ...
+}
+</css>
+
+But nesting won't work: We can't nest +active+ inside +button+ because it needs to
+match the same element!
+
+&amp;. SCSS provides &amp;. And it basically does exactly what we want, continuing
+the parent selector:
+
+<css>
+$theme.button{
+  ...
+
+  &.active {
+    ...
+  }
+
+  &.sel {
+    ...
+
+    &.active {
+      ...
+    }
+  }
+}
+</css>
+
+h4. Variables
+
+You can define variables:
+
+<css>
+$width: 5px;
+
+.my-thingy {
+  width: $width;
+}
+</css>
+
+If you want to share your variable between files, you have to make sure they are loaded
+in the right order. The +sc_require()+ function does this:
+
+<css>
+// file1.css
+$width: 5px;
+
+// file2.css
+// call sc_require to make sure file1 loads first:
+sc_require("file1.css");
+
+.my-thingy {
+  width: $width;
+}
+</css>
+
+
+
+h3. +$theme+ Variable
+
+Chance has a special "variable":#variables: +$theme+. It contains your theme's
+class names. Using +$theme+, you can write just +$theme.button { ... }+ to style
+a button.
+
++$theme+ gets its initial value from the +:css_theme+ property in your app's '+Buildfile+:
+
+<ruby>
+config :my_app, ... :css_theme => "ace.my-app"
+</ruby>
+
+h4. +@theme+ Directive
+
+Let's say you created MyAwesomeTheme. But you need a red variation for all of your
+app's error windows, error toolbars, etc. Creating a brand new  theme
+doesn't make sense: it will still be MyAwesomeTheme, just a version for errors.
+
+As described in "Theming Your App":theming_app.html, you'll make a _child theme_:
+
+<javascript>
+MyAwesomeTheme.Error = MyAwesomeTheme.subtheme('error');
+</javascript>
+
+Now, any time one of your windows, toolbars, or controls sets +themeName+ to +error+:
+<javascript>
+MyErrorWindow = SC.Pane.design({
+  themeName: 'error',
+  ...
+})
+</javascript>
+
+It and all of its children will automatically be in +MyAwesomeTheme.Error+.
+
++MyAwesomeTheme.Error+ is *_nested inside_* +MyAwesomeTheme+. Just like how
+SCSS's nesting matches DOM structure, Chance has a tool to match this SproutCore
+theme structure:
+
+<javascript>
+$theme.button { /* normal styles here */ }
+
+@theme(error) {
+  $theme.button { /* error styles here */ }
+}
+</javascript>
+
+The +@theme(theme name)+ directive adds the theme name provided to the current
+theme names stored in +$theme+, so all rules inside it are part of that theme.
+
+h3. +@include slice()+
+
+The +@include slice()+ directive lets you include an image in your CSS. You can
+include the whole image, or select a portion to extract.
+Chance will handle details like spriting or embedding as data: urls.
+
+To include an image, just pass the image name:
+
+<css>
+.my-image {
+  @include slice("my-image.png");
+}
+</css>
+
+That puts the image as the background. It doesn't do any "slicing," however.
+Where does the name come from?
+
+h4. Slicing
+
+Because slicing in Photoshop can be annoying and difficult, Chance allows you
+to do it right in your CSS. To include a section of the image rather than the
+whole thing, pass arguments identifying a rectangle:
+
+<css>
+.my-image {
+  @include slice("my-image.png", $left: 3, $width: 3);
+}
+</css>
+
+You don't have to specify all parameters. For instance, if you only specify
+a left, the rectangle will go from there to the right edge. If you only
+specify a right, it will go from there to the left edge.
+
+The possible rectangle arguments are: +$left, $top, $right, $bottom, $width, $height+.
+
+h4. Repeating
+
+Chance may choose to put your image in a sprite. For each repeat setting
+(+no-repeat, repeat-x, repeat-y+) a different image is needed. So, instead
+of using CSS's +background-repeat+ property, you should use the +$repeat+
+argument:
+
+<css>
+.my-image {
+  @include slice("my-image.png", $left: 3, $width: 1, $repeat: repeat-x);
+}
+</css>
+
+h4. Offsetting
+
++@include slice+ and the +background-position+ property are incompatible. If you need
+to offset the position of a background image, you must use the +$offset+ argument.
+
++$offset+ takes two numbers: an x offset and a y offset. For example:
+
+<css>
+.my-image {
+  @include slice("my-image.png", $width: 3, $offset: -1 0);
+}
+</css>
+
+This will move the background to the left by 1px.
+
+h3. +@include slices()+
+
+The plural of +slice+ is +slices+; as such, where +@include slice+ includes a
+slice as a background image, you might expect +@include slices+ to include
+_multiple_ slices as background images. 
+
+You would be correct. +@include slices+ automatically generates CSS for
+multi-slice scalable backgrounds.
+
+Controls that support multi-sliced backgrounds all generate some HTML to support it.
+The HTML they generate follows a standard form that +@include slices+ matches.
+
+For instance, the controls may write:
+
+<html>
+<div class = 'left'></div>
+<div class = 'middle'></div>
+<div class = 'right'></div>
+</html>
+
+If you use +@include slices+ like this:
+
+<css>
+$theme.button {
+  @include slices("button.png", $left: 3, $right: 3);
+}
+</css>
+
+The generated CSS may look like this:
+
+<css>
+.ace.my-app.button .left {
+  background: ...
+}
+
+.ace.my-app.button .middle {
+  background: ...;
+  background-repeat: repeat-x;
+}
+
+.ace.my-app.button .right {
+  background: ...;
+}
+</css>
+
+h4. Slicing
+
+You pass the "middle rectangle" to +@include slices+. It will make slices at
+each side, generating up to nine slices: +top-left, top, top-right,
+left, middle, right, bottom-left, bottom, bottom-right+. Only slices that
+actually have content will be generated.
+
+For instance, the above example defines the following rectangle:
+
+!images/theming/button_slice.jpg!
+
+There are only four arguments you may use to specify the rectangle:
++$left, $top, $right, and $bottom+.
+
+h4. $fill
+
+In a button, the +repeat-x+ segment usually only needs to be 1px wide. But
+if you specify the middle rectangle as in the graph above, it would repeat
+a much wider section! This would be very inefficient.
+
+Because the +repeat-x+ slices usually just need to repeat one pixel horizontally,
+Chance only takes a 1px wide slice by default. The setting for this is called
++$fill+.
+
+The default $fill is +1 0+, which tells chance to grab only 1px horizontally,
+but all the vertical pixels. If you wanted all the horizontal pixels, you
+could add +$fill: 0 0+. If you wanted to reoeat, say, a 15-pixel segment
+horizontally, you would specify +$fill: 15 0+.
+
+h4. $skip
+
+Sometimes you don't want to include all slices. For instance, let's say you
+want to theme a "capsule" button. You only need to override the images for
+the left and right sides: the middle from the original button is still good.
+
+In this case, you want to skip the middle slice:
+
+<css>
+@theme(capsule) {
+  $theme.button {
+    @include slices("button-capsule", $left: 3, $right: 3, $skip: middle);
+  }
+}
+</css>
+
+You can supply a space-separated list of slices to skip.
