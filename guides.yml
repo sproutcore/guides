@@ -24,7 +24,6 @@ index:
     - title: Core Concepts
       url: core_concepts
       text: "In this guide, we will touch on many of the core concepts of SproutCore like bindings and the run loop. We'll cover just enough to get you going with out getting bogged down in the details. If you want to learn more, take a look at the detailed overviews of these concepts in the \"Digging Deeper\" section."
-      construction: true
     - title: Using Amber
       url: amber
       text: "Learn how to use the lightweight Amber framework to build applications without the full SproutCore stack."
