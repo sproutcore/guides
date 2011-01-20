@@ -196,6 +196,8 @@ obj.set('name', 'Bob');
 obj.get('name'); // Bob
 </javascript>
 
+NOTE: Those of you who have worked in languages like Java may be familiar with having to write property accessors. Instead of having to define accessors for every property, +get+ and +set+ function as universal accessors.
+
 h4. Computed Properties
 
 Sometimes you may have properties that depend on other properties. These
@@ -246,18 +248,180 @@ In most cases you will find you can just ignore the value for +keyName+.
 Also, when the function is called via +get+, +value+ will be
 +undefined+.
 
+h4. Property Paths
+
+SproutCore also introduces the concept of property paths. A property path
+is a string that points to a nested property. For instance
++MyApp.userController.firstName+ refers to the +firstName+ property on the
++MyApp.userController+ object. You can also have relative paths which refer
+paths relative to the current object. For instance, within the context of
++MyApp+, you could use +.userController.firstName+ to point to the same
+location. As you can see, the relative property begins with a '.'. This will
+always be true of relative properties.
+
+To work with relative property path, you can use the +getPath+ and +setPath+
+functions. These work identically to +get+ and +set+ except they expect a
+path for the first argument.
+
+In addition to +getPath+ and +setPath+ you will also see property paths used
+for observers and bindings, which we will explain below.
+
 h3. Observers
 
-Coming Soon
+Closely related to the concept of properties is that of observers. Observers
+do exactly what their name suggests, they observe properties, watching for
+changes. The most basic observer looks like this:
+
+<javascript>
+var obj = SC.Object.create({
+  value: null,
+  valueDidUpdate: function(){
+    alert('New Value: '+this.get('value'));
+  }.observes('value')
+});
+obj.set('value', 'Test');
+// alert('New Value: Test');
+</javascript>
+
+As you can see +observes+ is called on a function and when the property is
+updated the function is called. You can also pass multiple properties as
+well as property paths to observes.
+
+h4. Observer Notification
+
+It is important to realize that observers have to be notified of property
+changes. The +set+ method handles this for us automatically which is why
+I have strongly encouraged its use. However, there are cases where using
++set+ doesn't work. In these cases you can use +notifyPropertyChange+ to
+tell observers that the property has been updated,
+i.e. +this.notifyPropertyChange('value')+.
+
+In some cases you may find that you are updating a number of properties at
+once. If you have a lot of observers that depend on these properties, you
+may find them getting called more often than necessary. In this case, you
+can use +beingPropertyChanges+ and +endPropertyChanges+ to wrap the your
+property change calls. This will cause all change notifications to happen
+once +endPropertyChanges+ is called and will prevent unnecssary duplicate
+notifications.
+
+h4. Chained Property Paths
+
+Observers and bindings also use a special type of property path called a
+chained property path. When using an observer or binding, usually the
+actual observer is only added to the the second to last object in the
+property path. So, if your path is +MyApp.usersController.mainUser.name+
+then SproutCore finds the object at +MyApp.usersController.mainUser+ and
+then adds an observer for its +name+ property. However, nothing is
+observing +MyApp.usersController+ to see if +mainUser+ changes to a
+different user. For example:
+
+<javascript>
+MyApp.usersController = SC.ArrayController.create({
+  mainUser: SC.Object.create({
+    name: 'Joe'
+  })
+});
+
+MyApp.observerObject = SC.View.create({
+  userNameDidChange: function(){
+    alert(this.getPath('MyApp.usersController.mainUser.name'));
+  }.observes('MyApp.usersController.mainUser.name')
+});
+
+MyApp.usersController.setPath('mainUser.name', 'Jim'); // alert('Jim')
+MyApp.usersController.set('mainUser', SC.Object.create({ name: 'Bob' })); // No alert
+</javascript>
+
+As you can see, when we replace +mainUser+ the observer does not fire.
+This is because we only have an observer on the the original user object.
+We are not watching for changes to +usersController+.
+
+What we want to do is watch for changes to +usersController.mainUser+ and
+for changes to +mainUser.name+. This is where chained property paths come
+in. To let SproutCore know that we want to observe for both changes, we
+use +MyApp.usersController*mainUser.name+. The '*' in the property path
+indicates that we want SproutCore to observe changes to all properties
+following the '*'. In this case, that is both +mainUser+ and +name+.
+This is known as a chained observer.
+
+If we replace the previous property path with our update one, we can then
+try again:
+
+<javascript>
+MyApp.usersController.setPath('mainUser.name', 'Jim'); // alert('Jim')
+MyApp.usersController.set('mainUser', SC.Object.create({ name: 'Bob' })); // alert('Bob')
+</javascript>
+
+Now we get the results we want.
+
+So why don't we always use chained observers? Observers are expensive and
+often times we don't care about changes in all levels. In the previous
+example, we don't care about changes to +MyApp.usersController+. The controller
+is set once and won't ever change through the lifetime of the application.
+Had we defaulted to chained observers we would also be observing this,
+which isn't necessary.
 
 h3. Bindings
 
-Coming Soon
+When you put together Properties and Observers, you end up with Bindings.
+Bindings serve to link two properties together. For example:
+
+<javascript>
+MyApp.userController = SC.Object.create({
+  name: null
+});
+
+MyApp.mainView = SC.View.create({
+  currentUserName: SC.Binding.from('MyApp.userController.name')
+});
+
+MyApp.userController.set('name', 'Joe');
+MyApp.mainView.get('name'); // Joe
+MyApp.mainView.set('name', 'Jim');
+MyApp.userController.get('name'); // Jim
+</javascript>
+
+In this example, we used the absolute path to the property. Bindings
+also support relative properties and star properties as well.
+
+As you can also see, when you update the value in one location, it is
+updated in the other. By defaults bindings are bi-directional but you can
+also set them to only go in one direction by using +SC.Binding.oneWay+
+instead. In this case the local property (where the binding is defined) will
+be updated when the remote property changes, but changes to the local
+property will not propagate to the remote property.
+
+Since bindings are used so often, there's also a shortcut to creating
+bindings. All you need to do is append +Binding+ to the property name.
+In the above example, you could instead do:
+
+<javascript>
+currentUserNameBinding: 'MyApp.userController.name'
+</javascript>
 
 h3. The Run Loop
 
-Coming Soon
+Let me begin by saying that you will rarely have to deal with the Run Loop.
+However, it is worth gaining an understanding of it to understand more about
+how your app works.
+
+The run loop coordinates all the events within your application. This includes
+primarily observers and timers. This helps make sure that events stay
+synchronized and run at the proper times. One of the main ways this will
+affect your app is that bindings do not fire until the Run Loop has fired.
+
+SproutCore manages the run loop for you automatically triggering when it
+receives any browser events or user input. The only case in which you will
+have to manage the run loop yourself is if you have a callback from an external
+library that is not managed by SproutCore. In this circumstance, you will
+want to trigger a new run loop by wrapping the code in +SC.RunLoop.begin()+
+and +SC.RunLoop.end()+. This will create a new run loop for that bit of code
+and will make sure all events are fired upon completion.
+
+WARNING: Remember, you rarely need to manage the run loop manually. If you aren't certain of why you are using it, then you are probably doing something wrong.
+
 
 h3. Changelog
 
 * January 12, 2011: initial partial version by "Peter Wagenet":credits.html#pwagenet
+* January 19, 2011: further updates by "Peter Wagenet":credits.html#pwagenet
