@@ -6,7 +6,7 @@ to this guide, you will be able to:
 * Understand how classes work, including +SC.Object+
 * Be familiar with Properties, Observers, Bindings and the Run Loop
 * Write your own classes based on +SC.Object+ with full use of Observers and Bindings
-* Know when to worry about the Run Loop (HINT: Almost never)
+* Know when to worry about the Run Loop
 
 endprologue.
 
@@ -118,7 +118,7 @@ calc.result; // 10
 
 NOTE: By convention private properties are prefaced with an underscore.
 
-WARNING: You will generally want to call +sc_super()+ in your +init+ method to make sure any initialization in the superclass takes place.
+WARNING: When overriding +init+ it is important that you call +sc_super+ at the start of your custom +init+ method. This will make sure that all internal object initialization takes place as expected.
 
 h5. Using Mixins
 
@@ -401,9 +401,10 @@ currentUserNameBinding: 'MyApp.userController.name'
 
 h3. The Run Loop
 
-Let me begin by saying that you will rarely have to deal with the Run Loop.
-However, it is worth gaining an understanding of it to understand more about
-how your app works.
+Let me begin by saying thatyou will rarely have to reference the Run Loop
+in your app itself. However, you may find it useful in debugging and will
+likely have to use it in your unit tests. It's also worth gaining an
+understanding of it to understand more about how your app works.
 
 The run loop coordinates all the events within your application. This includes
 primarily observers and timers. This helps make sure that events stay
@@ -412,16 +413,31 @@ affect your app is that bindings do not fire until the Run Loop has fired.
 
 SproutCore manages the run loop for you automatically triggering when it
 receives any browser events or user input. The only case in which you will
-have to manage the run loop yourself is if you have a callback from an external
-library that is not managed by SproutCore. In this circumstance, you will
-want to trigger a new run loop by wrapping the code in +SC.RunLoop.begin()+
+have to manage the run loop from within your app is if you have a callback
+from an external library that is not managed by SproutCore. In this circumstance,
+you will want to trigger a new run loop by wrapping the code in +SC.RunLoop.begin()+
 and +SC.RunLoop.end()+. This will create a new run loop for that bit of code
 and will make sure all events are fired upon completion.
 
-WARNING: Remember, you rarely need to manage the run loop manually. If you aren't certain of why you are using it, then you are probably doing something wrong.
+When working with unit tests, you will also have situations where you need
+to force bindings and observers to update so you can check for the correct
+results. In these cases, it is completely legitimate to manually invoke the run
+loop. Normally user events would trigger the run loop, but since your tests
+are automated, there are no user events taking place.
+
+You may also find that when you are working in your browser's JavaScript console
+that, when you set a variable, your app doesn't as you expect. This may be
+caused by the run loop not firing (since you aren't interacting directly with
+the app no events are being triggered). In this case you should try invoking
+the run loop manually, or just move your mouse over the app to trigger a new
+event.
+
+
+WARNING: Remember, you rarely need to manage the run loop manually from within your app. If you aren't certain of why you are using it, then you are probably doing something wrong.
 
 
 h3. Changelog
 
 * January 12, 2011: initial partial version by "Peter Wagenet":credits.html#pwagenet
 * January 19, 2011: further updates by "Peter Wagenet":credits.html#pwagenet
+* January 20, 2011: corrections to "The +init+ Method" and "The Run Loop" by "Peter Wagenet":credits.html#pwagenet
