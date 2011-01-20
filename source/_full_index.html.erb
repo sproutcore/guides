@@ -3,7 +3,7 @@
 
   <dl>
     <% list.each do |guide| %>
-      <dt><%= link_to guide["title"], "#{guide["url"]}.html" %></dt>
+      <dt><%= guide_link(guide) %></dt>
       <dd>
         <% if guide["construction"] %>
           <img src="images/construction.png" />
