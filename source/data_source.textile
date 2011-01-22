@@ -1,0 +1,101 @@
+h2. Hooking Up to a Backend
+
+This guide covers how to write a datasource using the API's in sproutcore 1.0 - 1.5. 
+After reading this guide, you will be able to:
+
+* Understand what a DataSource is, and where it fits into the SproutCore Data Stream
+* Determine when and how to use a datasource
+* Create your own DataSource and link it to your App
+
+endprologue.
+
+h3. What is a DataSource?
+
+A datasource is the layer that connects your SproutCore application to your server. It knows how to talk to both your server and your store [do i cover the store here? or link to an other guide?]. The default datasource is the "fixtures store"[fixtures.html], but you can make your own to talk to your server. 
+
+h3. When should I make my own DataSource?
+
+If you want to be able to persist the data that your users enter over sessions, then your going to need to save your data, either to a server or to localStorage[footnote: link to digging deeper]. The beauty of SproutCore's data layers is that you can write your app and seamlessly move from one data source to an other and nothing but your datasource need be changed.
+
+h3. A look at the api
+
+Here we will look at an example API from the server, creating the server side is a digging deeper topic, for now you can have a look at the numerous examples for the todo app tutorial [link]. 
+
+For the purpose of this guide, we are going to assume that we have a server that will provide us with a basic "RESTful API":http://en.wikipedia.org/wiki/Representational_State_Transfer#RESTful_web_services. If we wanted to get a list of all Todo items, we would send a GET request to:
+<plain>
+GET: /todos/
+</plain>
+Which will return a "JSON":http://en.wikipedia.org/wiki/Json array like:
+<javascript>
+[
+  {
+    "id": 1,
+    "title": "Learn to use Sproutcore",
+    "done": false
+  },
+  {
+    "id": 2,
+    "title": "Something",
+    "done": false
+  }
+]
+</javascript>
+We can also POST to this URL with JSON in the body, to create a new object.
+
+<plain>
+POST: /todos/
+{
+  "title": "Profit!",
+  "done": false
+}
+</plain>
+The server will create an ID for us.
+<javascript>
+{
+  "id": 3,
+  "title": "Profit!",
+  "done": false
+}
+</javascript>
+
+If we specify an ID in the url:
+<plain>
+GET: /todos/3
+</plain>
+You'll see just one object returned:
+<javascript>
+{
+  "id": 3,
+  "title": "Profit!",
+  "done": false
+}
+</javascript>
+The API also allows us to send a PUT to update an object or DELETE to remove it.
+
+With this basic understanding of how the server works, we can get started writing our dataSource.
+
+h3. Our First Fetch
+
+the first thing that our app will need todo is to fetch data. most apps aren't any good without data. this is usually done via a query[link] (make sure you are familiar with how to write a query first).
+
+Note. Our dataSource will be written assuming that local queries are being used, as this is almost always what you want, remote queries will be covered in a separate guide.
+
+When you call App.store.find(myQuery), the store will first find any records in our app store, and return a recordArray containing those (or an empty one if nothing matches). this RecordArray is linked to the query so that it will automatically update any time the query matches a new record. After it has returned it will call 'fetch' on its attached dataSource. 
+
+h3. Other things to note
+
+h3. Advanced topics
+
+h4. cascading datasource
+
+h4. datasource for remote query
+
+h4. datasource for sparseArray
+
+h4. A Records PrimaryKey.
+
+By default, 
+
+h3. Changelog
+
+* January 11, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd

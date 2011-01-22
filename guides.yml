@@ -10,6 +10,10 @@ authors:
       nick: pwagenet
       image: pwagenet.jpg
       description: Peter works for Strobe and is a member of the SproutCore core team.
+    - name: Geoffrey Donaldson
+      nick: geoffreyd
+      image: geoffreyd.jpg
+      description: Geoffrey is a freelance SproutCore Developer. Working with SproutCore since 2009.
   Designers:
     - name: Jason Zimdars
       nick: jz
