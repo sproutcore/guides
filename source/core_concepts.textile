@@ -348,6 +348,12 @@ If we replace the previous property path with our update one, we can then
 try again:
 
 <javascript>
+MyApp.observerObject = SC.View.create({
+  userNameDidChange: function(){
+    alert(this.getPath('MyApp.usersController.mainUser.name'));
+  }.observes('MyApp.usersController*mainUser.name') // We've added an asterisk to this line
+});
+
 MyApp.usersController.setPath('mainUser.name', 'Jim'); // alert('Jim')
 MyApp.usersController.set('mainUser', SC.Object.create({ name: 'Bob' })); // alert('Bob')
 </javascript>
