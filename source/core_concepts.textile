@@ -407,7 +407,7 @@ currentUserNameBinding: 'MyApp.userController.name'
 
 h3. The Run Loop
 
-Let me begin by saying thatyou will rarely have to reference the Run Loop
+Let me begin by saying that you will rarely have to reference the Run Loop
 in your app itself. However, you may find it useful in debugging and will
 likely have to use it in your unit tests. It's also worth gaining an
 understanding of it to understand more about how your app works.
