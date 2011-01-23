@@ -1,0 +1,45 @@
+h2. Unit Test Framework
+
+This guide covers the SproutCore unit test API.   After reading this guide, you will:
+ 
+* Know how to create your unit tests and where to locate them.
+* How to run your tests and see and interpret the results.
+* The different assertions you can call.
+ 
+endprologue.
+
+WARNING: This guide is under construction.
+ 
+h3. Creating a Unit Test
+
+h4. Where to Place your Unit Test Files
+
+h4. module
+
+h5. setup
+
+h5. teardown
+
+h5. runloop
+
+NOTE: runloop doesn't exist yet.
+
+What +runloop+ will do is provide a test function that will
+wrap code needing to be within a +SC.RunLoop+.  This will mitigate problems when
+an exception is inadvertently thrown within the code between +SC.RunLoop.begin+ and
++SC.RunLoop.end+ by guaranteeing that the +SC.RunLoop.end+ is called regardless.  This will
+help find the cause easier as well as help the developer not forget to include the +SC.RunLoop.end+ call.
+
+h4. test
+
+h3. How to Run Your Unit Tests
+
+h3. Assertions
+
+h4. ok
+
+h4. equals
+
+h4. throws
+
+NOTE: throws doesn't exist yet.

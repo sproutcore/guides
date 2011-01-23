@@ -66,3 +66,13 @@ index:
       url: chance
       text: "Chance is SproutCore's CSS preprocessor. In this guide, you will learn how to use the CSS extensions that come with Chance to streamline your styling workflow."
       construction: true
+  Testing:
+    - title: SproutCore Test Facility
+      url: unit_test_framework
+      text: "SproutCore has an easy-to-learn unit test facility that can be used to drive SproutCore test-driven development.  This guide describes the basic SproutCore test commands."
+      construction: true
+    - title: Test-Driven Development in SproutCore
+      url: test_driven_development
+      text: "We'll go over how to develop a SproutCore application using test-driven development (TDD)."
+      construction: true
+
