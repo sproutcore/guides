@@ -1,0 +1,204 @@
+h2. UnitTesting - Writing Unit Tests
+
+This guide covers ... After reading this guide, you will be able to:
+
+* Use modules to group your unit tests together to share setup and teardown code.
+* Use assertions to test values and report results.
+* Use +start+ and +stop+ to synchronize wtih an asynchronous event such as a timer or callback.
+* Specify HTML in the case where you need to test against HTML.
+
+endprologue.
+
+h3. Overview
+
+Once you've "added a unit test file":/adding_unit_test.html, creating the contents of
+your unit test is easy.  A unit test is made up of modules
+and tests.  A module is simply a collection of unit tests
+that run together.  They can optionally contain shared
+setup and teardown code that is run before and after each
+test.  An individual test actually performs some
+verification on your code.
+
+h3. Defining a Module
+
+The first line of actual code in your unit test will usually
+define a module.  A module is simply a group of unit tests
+that share the same setup and teardown code.  You define a
+module with the module method like so:
+
+<javascript>
+module("String Defining the Module", {
+ setup: function() {
+   // ... perform setup code here
+ },
+  teardown: function() {
+    // ... perform teardown code here
+  }
+});
+// .. unit tests go here
+</javascript>
+
+Any tests you define after this call will automatically be grouped into this
+module until you either call this method again to start a new module or until
+the end of your file is reached.
+
+Before each test is run in your module, the +setup()+ method you defined above
+will be called first.  After each test is run, the +teardown()+ method will be
+run.  You can use these methods to setup and teardown any common testing
+infrastructure.  For example, if you are writing a group of tests to work on a
+Contact record, you might define your module like so:
+
+<javascript>
+var contact ;
+module("Test Contact record", {
+  setup: function() {
+    contact = MyApp.Contact.create({  firstName: "John", lastName: "Doe" });
+  },
+  teardown: function() {
+    contact = null; // reset
+ }
+});
+// .. unit tests go here
+</javascript>
+
+Note that any common setup you define should be placed into global variables
+(such as the +contact+ variable above).  Since unit tests are _terminal code_ –
+they are the last thing loaded in the page and nothing else depends on them –
+it is OK to create global variables like the above instead of isolating everything
+into namespaces like you should with all other code.
+
+Both the +setup()+ and +teardown()+ methods are optional.  If you choose to omit
+both methods, you can omit the final hash for this method as well.  For
+example, the following will work just fine:
+
+<javascript>
+module("Test View") ;
+// .. unit tests go here
+</javascript>
+
+h3. Defining a Unit Test
+
+Once you've defined a module, you can add individual tests to your file.  A test
+is defined using the +test()+ method.  A test should have a description followed
+by the function you want to execute to perform the test.  For example, if you
+were writing tests for a +Contact+ model object, you might add a test like this:
+
+<javascript>
+test("fullName property returns combined firstName and lastName", function() {
+  // set preconditions
+  contact.set('firstName', 'John');
+  contact.set('lastName', 'Doe');
+
+  // verify
+  equals(contact.get('fullName'), 'John Doe');
+});
+</javascript>
+
+Note that the description for the unit test is written as a full sentence
+describing what the test is trying to evaluate.  You should always strive to
+make your unit tests descriptive like this instead of writing shorter titles.
+
+h3. Assertions
+
+Unit test functions themselves may contain any valid JavaScript.  To actually
+record the results of your test, however, you can use one of the built-in *assertions*.
+Assertions are methods that test a value and then report the result.
+If the assertion fails, the test runner will report a failure.  If the assertion passes,
+then your test is allowed to continue.
+
+h4. ok()
+
+The most basic assertion you can make is +ok()+.  This method accepts a boolean
+value and an optional description string.  The assertion passes if the value is
+truthy and fails otherwise.  For example, here is how you would assert that a
+test value is greater than 10:
+
+<javascript>
+ok(contacts.get('length') > 10, "contact length should be greater than 10");
+</javascript>
+
+To make your tests more understandable, you should always include a description
+when you use +ok()+ assertions.  Otherwise they will simply print the value that
+was returned and the value that was expected.
+
+h4. equals()
+
+The other assertion you will commonly use is +equals()+.  This method accepts two
+values and an optional description.  It passes if the two values are equal and
+fails otherwise.  This is a better way to test equality than using +ok(a == b,
+"a equals b")+.  For example, here is how you would test the fullName property
+of a contact:
+
+<javascript>
+equals(contact.get('fullName'), 'John Doe', 'fullName should combine first and last name');
+</javascript>
+
+h4. Other assertions
+
+There are several other assertion types that you can learn about from the
+"QUnit pages":http://docs.jquery.com/QUnit#API_documentation, such as
++same()+ or +expects()+.  Most of these assertions are not
+as generally useful as +ok()+ and +equals()+. However, you can use them if you wish.
+
+h3. Starting and Stopping Tests
+
+Sometimes when you are writing a unit test, you need to stop running to wait for
+some task to complete.  This is particularly true when testing code that
+involves loading data from the server or using timers.  In these scenarios, you
+can use the +stop()+ and +start()+ methods to control your test execution.
+
+The +stop()+ method temporarily pauses your unit tests from running.  This means
+that when your test function returns, instead of calling the module's
++teardown()+ method and then running the next unit test, the test runner will
+just exit.
+
+When a test runner has been stopped, you can cause it to resume by calling
++start()+ again.  This will cause the test runner to immediately run the teardown
+method from the last unit test and then begin additional unit tests.
+
+Usually when you +stop()+ the test runner, you will also setup a callback or timer
+of some type that will fire at a later time and call +start()+ again.  For
+example, the test below will verify that a particular file loads from the
+server.  It also passes a timeout to the stop method.  If start is not called
+before that 1 second timeout the test will fail.
+
+<javascript>
+test("load file from server", function() {
+  // setup a timeout in case of failure
+  stop(1000);
+
+  var req = SC.Request.getUrl("/foo.json").notify(function() {
+     // verify request loaded OK
+     ok(SC.typeOf(req.get('response')) !== SC.T_ERROR, "response should not be an error");
+    // resume executing tests
+    start();
+  });
+});
+</javascript>
+
+h3. Writing HTML
+
+Normally you will not need to add HTML to your page when you write tests since
+you will be testing functionality provided by your application and all the HTML
+you need will already exist.
+
+If you do need to write out some sample HTML on the page to work against when
+testing, however, you can add this HTML using the method +htmlbody()+.  This
+method should be the first thing called in your page, even before you start a
+new module.
+
+To use this method, just pass a string containing the HTML you want to add.  The
+HTML will be appended to the main body tag.
+
+<javascript>
+// adds the h1 tag to the end of the body.
+htmlbody("<h1 id='testheader'></h1>") ;
+</javascript>
+
+h3. Moving On
+
+Now that you have written a unit test or two, it's time to run them.  The next
+section will tell you everything you need to know about how unit tests are
+loaded and executed by the test runner.
+
+On to "Running Unit Tests »":/running_unit_tests.html

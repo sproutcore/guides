@@ -1,0 +1,94 @@
+h2. UnitTesting - Adding a Unit Test
+
+This guide covers test generation and organization. After reading this guide, you will be able to:
+
+* Automatically generate a unit test that will be placed in the correct location.
+* Manually generate a test using a template.
+* Manually generate a unit test.
+* Arrange Your Unit Tests
+
+endprologue.
+
+h3. Overview
+
+All unit tests for your application or framework live inside of a tests directly
+along side your models, controllers, views and other source folders.
+Unlike like most folders, SproutCore assumes that each file in the tests
+directory that ends in '.js' or '.rhtml' is a unit test.  You can load each
+of these unit tests individually or as a group from the built-in test runner.
+
+The contents of the test directory will also be omitted from your project when you
+do a production build, so you can add any files you want here without worrying
+about them being included in production code.
+
+h3. Generated Unit Tests
+
+Usually if you use +sc_gen+ to add a new source file to your application or
+framework (e.g. +sc_gen+ model +MyApp.SomeRecord+), then an initial unit test
+will be setup for you.  You can find this file at the same path inside your
+tests file as the original file in your master app.  For example, if you add
+a new model that appears at:
+
+<plain>
+contacts/models/contact.js
+</plain>
+
+You can find the companion unit test file at:
+
++contacts/tests/models/contact.js+
+
+Note that this style of adding paired unit test files is a
+convention followed by +sc_gen+ only.  It is not required by the test runner.
+You can design your tests directory to have any structure that makes sense to you.
+
+h3. Adding Unit Tests with sc-gen
+
+If you need to add a unit test yourself, the easiest way to do this is with the +sc-gen+
+command.  To use the +sc-gen+ command, just type the following from anywhere in your project:
+
+<plain>
+$ sc-gen test TARGET_NAME PATH/TO/TEST[.js]
+</plain>
+
+For example, if you wanted to add a unit test file named +views/contact_card/render.js+
+to your Contacts application, you would do:
+
+<plain>
+$ sc-gen  test contact views/contact_card/render.js
+</plain>
+
+Now you can open your test file and get to work!
+
+h3. Adding Unit Tests Manually
+
+If you cannot or would prefer not to use +sc-gen+, you can always add a unit test manually.
+Just create a new file in your +tests+ directory.  This file will automatically treated
+as a unit test.
+
+h3. How to Arrange Your Unit Tests
+
+The SproutCore Test Runner can run all of the tests in an individual test file,
+all of the tests in a directory or all of the unit tests for a particular target
+(i.e. application or framework).  Unit tests work best if you arrange them into
+files and directories based on how you might want to run them together.
+Often times a good practice is to create a directory for each class you add
+to your app and one unit test file per method you want to test inside that directory.
+For example, the unit tests for SC.Object might look something like:
+
+<plain>
+tests/system/object/create.js
+tests/system/object/extend.js
+tests/system/object/kindOf.js
+...
+</plain>
+
+This way you can easily run all of the unit tests for a particular method,
+all of the unit tests for the SC.Object class itself or all of the unit tests
+for classes defined in the "system" directory of the target.
+
+h3. Moving On
+
+Once you've added a unit test file, now you need to add some unit test code.
+Learn more by writing your first unit test.
+
+On to "Writing Your First Unit Test »":/writing_unit_tests.html
