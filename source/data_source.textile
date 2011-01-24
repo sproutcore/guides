@@ -13,6 +13,8 @@ h3. What is a DataSource?
 
 A datasource is the layer that connects your SproutCore application to your server. It knows how to talk to both your server and your store [do i cover the store here? or link to an other guide?]. The default datasource is the "fixtures store"[fixtures.html], but you can make your own to talk to your server. 
 
+NOTE: A DataSource is different from the Store. The Store is the in memory storage for your records, while the DataSource is the communication layer to between the server and your store.
+
 h3. When should I make my own DataSource?
 
 If you want to be able to persist the data that your users enter over sessions, then your going to need to save your data, either to a server or to localStorage[footnote: link to digging deeper]. The beauty of SproutCore's data layers is that you can write your app and seamlessly move from one data source to an other and nothing but your datasource need be changed.
@@ -74,28 +76,75 @@ The API also allows us to send a PUT to update an object or DELETE to remove it.
 
 With this basic understanding of how the server works, we can get started writing our dataSource.
 
+h3. Setup
+
+Now we'll walk through the steps of setting up a default dataSource.
+
+h4. Creating a dataSource
+
+To generate a dataSource template use the command:
+
+<plain>
+sc-gen data-source MyApp.SimpleDataSource
+</plain>
+
+NOTE: Anywhere you see MyApp, replace this with the name of the application that your building.
+
+This will make a file in +apps/my_app/data_sources/simple.js+. This file will be stubbed with the default functions that will get called by the store.
+
+h4. Linking to the Store
+
+The next step is linking the new dataSource to our apps store. By default the store will be "using Fixtures":fixtures.html, in +core.js+ you'll see:
+
+<javascript>
+  store: SC.Store.create().from(SC.Record.fixtures)
+</javascript>
+
+Replace this with our dataSource
+
+<javascript>
+  store: SC.Store.create().from('MyApp.SimpleDataSource')
+</javascript>
+
+This will tell the store to use our dataSource when trying to find data.
+
+NOTE: As you can see we are replacing a JavaScript Object: +SC.Record.fixtures+ with a string +'MyApp.SimpleDataSource'+. This is because our dataSource won't have been initialised yet. The first time the store tries to access the dataSource it will convert the string to an object, and save it for future reference. See "Core Concepts":core_concepts.html#property-paths for more info.
+
 h3. Our First Fetch
 
-the first thing that our app will need todo is to fetch data. most apps aren't any good without data. this is usually done via a query[link] (make sure you are familiar with how to write a query first).
+The first thing that our app will likely do is to fetch a bunch of data. most apps aren't any good without data. this is usually done via a query[link] (make sure you are familiar with how to write a query first).
 
 Note. Our dataSource will be written assuming that local queries are being used, as this is almost always what you want, remote queries will be covered in a separate guide.
 
-When you call App.store.find(myQuery), the store will first find any records in our app store, and return a recordArray containing those (or an empty one if nothing matches). this RecordArray is linked to the query so that it will automatically update any time the query matches a new record. After it has returned it will call 'fetch' on its attached dataSource. 
+When you call App.store.find(myQuery), the store will first find any matching records in our app store, and return a recordArray containing those (or an empty recordArray, if nothing matches). This RecordArray is linked to the query so that it will automatically update any time the query matches a new record. After it has returned, the store will call 'fetch' on its attached dataSource. 
+
+This is when we get to take action.
+
+[insert fetch code]
 
 h3. Other things to note
+
+h4. A Records PrimaryKey.
+
+By default, SproutCore sets the primaryKey property of records to 'guid'. A common convention of many server side APIs is to use just 'id'.
+To make your records work with this, you can override the default in your Model files.
+<javascript>
+App.Todo = SC.Record.extend({
+  primaryKey:'id'
+})
+</javascript>
+You may set this to anything that you want, if your server uses +TID+ for your todo's id, just set +primaryKey:'TID'+.
 
 h3. Advanced topics
 
 h4. cascading datasource
 
+h4. fetching a query with multiple dataTypes.
+
 h4. datasource for remote query
 
 h4. datasource for sparseArray
 
-h4. A Records PrimaryKey.
-
-By default, 
-
 h3. Changelog
 
-* January 11, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd
+* Month DD, YYYY: initial version by "Geoffrey Donaldson":credits.html#geoffreyd
