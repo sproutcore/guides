@@ -299,7 +299,7 @@ i.e. +this.notifyPropertyChange('value')+.
 In some cases you may find that you are updating a number of properties at
 once. If you have a lot of observers that depend on these properties, you
 may find them getting called more often than necessary. In this case, you
-can use +beingPropertyChanges+ and +endPropertyChanges+ to wrap the your
+can use +beginPropertyChanges+ and +endPropertyChanges+ to wrap the your
 property change calls. This will cause all change notifications to happen
 once +endPropertyChanges+ is called and will prevent unnecssary duplicate
 notifications.
