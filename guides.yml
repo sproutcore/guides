@@ -48,7 +48,7 @@ index:
     - title: Core View Concepts
       url: views
       text: "In this guide, we will cover the basics of SproutCore views, and show you how to customize the built-in SproutCore views for your own use."
-      construction: true
+      construction: false
     - title: Building Your Own Views
       url: custom_views
       text: "Most applications will quickly go beyond the built-in SproutCore views. In this guide, we will cover how to build and style your own views."
