@@ -23,7 +23,7 @@ GEM
     erubis (2.6.6)
       abstract (>= 1.0.0)
     eventmachine (0.12.10)
-    guides (0.6.4)
+    guides (0.6.5)
       RedCloth (~> 4.1.1)
       actionpack (~> 3.0.0)
       activesupport (~> 3.0.0)
@@ -47,4 +47,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  guides
+  guides (~> 0.6.5)

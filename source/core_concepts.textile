@@ -252,11 +252,11 @@ h4. Property Paths
 
 SproutCore also introduces the concept of property paths. A property path
 is a string that points to a nested property. For instance
-+MyApp.userController.firstName+ refers to the +firstName+ property on the
++"MyApp.userController.firstName"+ refers to the +firstName+ property on the
 +MyApp.userController+ object. You can also have relative paths which refer
 paths relative to the current object. For instance, within the context of
-+MyApp+, you could use +.userController.firstName+ to point to the same
-location. As you can see, the relative property begins with a '.'. This will
++MyApp+, you could use +".userController.firstName"+ to point to the same
+location. As you can see, the relative property begins with a period. This will
 always be true of relative properties.
 
 To work with relative property path, you can use the +getPath+ and +setPath+
@@ -309,8 +309,8 @@ h4. Chained Property Paths
 Observers and bindings also use a special type of property path called a
 chained property path. When using an observer or binding, usually the
 actual observer is only added to the the second to last object in the
-property path. So, if your path is +MyApp.usersController.mainUser.name+
-then SproutCore finds the object at +MyApp.usersController.mainUser+ and
+property path. So, if your path is +"MyApp.usersController.mainUser.name"+
+then SproutCore finds the object at +"MyApp.usersController.mainUser"+ and
 then adds an observer for its +name+ property. However, nothing is
 observing +MyApp.usersController+ to see if +mainUser+ changes to a
 different user. For example:
@@ -339,15 +339,25 @@ We are not watching for changes to +usersController+.
 What we want to do is watch for changes to +usersController.mainUser+ and
 for changes to +mainUser.name+. This is where chained property paths come
 in. To let SproutCore know that we want to observe for both changes, we
-use +MyApp.usersController*mainUser.name+. The '*' in the property path
+use
+
+<javascript>MyApp.usersController*mainUser.name</javascript>
+
+The asterisk (+*+) in the property path
 indicates that we want SproutCore to observe changes to all properties
-following the '*'. In this case, that is both +mainUser+ and +name+.
+following the asterisk. In this case, that is both +mainUser+ and +name+.
 This is known as a chained observer.
 
 If we replace the previous property path with our update one, we can then
 try again:
 
 <javascript>
+MyApp.observerObject = SC.View.create({
+  userNameDidChange: function(){
+    alert(this.getPath('MyApp.usersController.mainUser.name'));
+  }.observes('MyApp.usersController*mainUser.name') // We've added an asterisk to this line
+});
+
 MyApp.usersController.setPath('mainUser.name', 'Jim'); // alert('Jim')
 MyApp.usersController.set('mainUser', SC.Object.create({ name: 'Bob' })); // alert('Bob')
 </javascript>
@@ -401,7 +411,7 @@ currentUserNameBinding: 'MyApp.userController.name'
 
 h3. The Run Loop
 
-Let me begin by saying thatyou will rarely have to reference the Run Loop
+Let me begin by saying that you will rarely have to reference the Run Loop
 in your app itself. However, you may find it useful in debugging and will
 likely have to use it in your unit tests. It's also worth gaining an
 understanding of it to understand more about how your app works.
