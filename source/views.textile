@@ -1,0 +1,246 @@
+h2. Core Concepts
+
+The guide covers some of the core concepts of views in SproutCore. By
+referring to this guide, you will be able to:
+
+* Layout your view positions relative to their parent
+* Make your views dynamic based on bindings
+* Change how your views render and update themselves
+* Handle events that occur over your view, e.g. a mouse click
+* Animate your views in a performant way
+
+endprologue.
+
+h3. Introduction
+
+After you've created your first SproutCore project, you'll notice the file
++main_page.js+ in your resources folder. This is the main page that your app
+appends to the DOM in your +main+ function. Let's start by looking at what
+every SproutCore project starts with as it's main page:
+
+<javascript>
+MyApp.mainPage = SC.Page.design({
+  mainPane: SC.MainPane.design({
+    childViews: 'labelView'.w(),
+    labelView: SC.LabelView.design({
+      layout: { centerX: 0, centerY: 0, width: 200, height: 18 },
+      textAlign: SC.ALIGN_CENTER,
+      tagName: "h1", 
+      value: "Welcome to SproutCore!"
+    })
+  })
+});
+</javascript>
+
+To understand what all of this means, we'll have to look at and understand
+what this boilerplate code does. +MyApp.mainPage+ is our main application
+page. Your application may end up having several "pages" or you may choose to
+swap content into and out of a single page. +MyApp.mainPage+ is an +SC.Page+
+which works by lazily configuring itself. The views within a page are only
+awakened when you +get+ the page in the +main.js+ file:
+
+<javascript>
+MyApp.getPath('mainPage.mainPane').append();
+</javascript>
+
++MyApp.mainPage.mainPane+ is an +SC.MainPane+ which is itself an +SC.Pane+.
+There will probably be many panes in your app because a pane is just like a
+regular view except that it doesn't need to live within a parent view. These
+can be anything from a pallette to a popup to a menu. In this case, our pane
+is an +SC.MainPane+ which automatically makes itself main as soon as it's
+appended to the doument.
+
+Our main pane is configured with only one +childView+, an +SC.LabelView+.
+SproutCore uses absolute positioning to layout it's views, and this label view
+is no different. Giving it a width and height allows us to center the label
+directly into the center of the page using +centerX+ and +centerY+ which
+specify how many pixels offset from the center we'd like the view.
+
+NOTE: The +w+ function splits a string by spaces and turns it into an array.
+We could have accomplished the same thing by using
++childViews:['labelView']+.
+
+h3. Laying Out Views on the Page
+
+Let's say we wanted to make an address book. This address book would have a
+list of all your contacts that you could scroll through and see contact
+details such as phone numbers and addresses. Let's start the address book
+by starting an +SC.WorkspaceView+ which allows us to have a toolbar on the top
+and bottom and a view between those two toolbars:
+
+<javascript>
+MyApp.mainPage = SC.Page.design({
+  mainPane: SC.MainPane.design({
+    childViews: 'workspaceView'.w(),
+    workspaceView: SC.WorkspaceView.design({
+      contentView: SC.View
+    })
+  })
+});
+</javascript>
+
+NOTE: +design+ performs like +extend+ and may register with SproutCore's
++designer+ framework, which is the basis of the interface builder, Greenhouse.
+You should never use +design+ outside of a page definition.
+
+We now have a nice toolbar on the top of the page, but we still don't have a
+list of any contacts. If we want a list on the right and details on the left,
+it sounds like +SC.SplitView+ is the perfect view to do that, so let's make
+that our +contentView+:
+
+<javascript>
+SC.WorkspaceView.design({
+  contentView: SC.SplitView.design({
+    dividerThickness: 1,
+    defaultThickness: 300,
+    topLeftView: SC.View,
+    bottomRightView: SC.View
+  })
+})
+</javascript>
+
+Our UI is starting to come together. We can see where we're going to have our
+contacts listed and where their details will be displayed. The
++dividerThickness+ is just a aesthetic property since the default really fat/
++defaultThickness+ will make our fixed view--in this case the
++topLeftView+--300 pixels wide.
+
+NOTE: When you use values less than 1 for dimensions in SproutCore they're
+interpreted as percentages. E.g. +width: 0.5+ tells SproutCore that you want
+it to be 50% wide.
+
+We're going to need to list our contacts, so let's do that to the left, with
+our details view to the right. For this, we could use +SC.ListView+ which is
+used for generic lists of stacked information where you know each list item's
+height. Fortunately, SproutCore includes +SC.SourceListView+ which not only
+looks great out of the box, but also provides the default behaviors of a
+source list:
+
+<javascript>
+topLeftView: SC.SourceListView.design({
+  content: ["Devin Torres", "Charles Jolley", "Peter Wagenet"]
+})
+</javascript>
+
+We can then move on to the details of a contact, such as his name, phone
+phone number, and address. We can use +SC.LabelView+ for all three in our
++bottomRightView+:
+
+<javascript>
+bottomRightView: SC.View.design({
+  childViews: 'contactDetails'.w(),
+  contactDetails: SC.View.design({
+    layout: { top: 50, left: 50, bottom: 50, right: 50 },
+    childViews: 'nameLabel phoneLabel addressLabel'.w(),
+    nameLabel: SC.LabelView.design({
+      layout: { width: 500, height: 18 },
+      value: "Contact name"
+    }),
+    phoneLabel: SC.LabelView.design({
+      layout: { top: 40, width: 500, height: 18 },
+      value: "Contact phone number"
+    }),
+    addressLabel: SC.LabelView.design({
+      layout: { top: 80, width: 500, height: 500 },
+      value: "Contact address"
+    })
+  })
+})
+</javascript>
+
+The labels are wrapped in +contactDetails+ so they can be cushioned from the
+edges of the parent view to see them better. +phoneLabel+ and +addressLabel+
+are given a +top+ to clear each other so they don't overlap, and
++addressLabel+ is given a large +height+ so a long address can wrap within the
+label. Right now these labels are only placeholders until we hook their values
+to a binding.
+
+h3. Binding View Properties to Values
+
+Instead of having our source list content and our label values in our
+views, let's bind them to some controllers. We'll start by creating an
+SC.ArrayController for our contacts and an SC.ObjectController that
+proxies individual contact objects:
+
+<javascript>
+MyApp.contactsController = SC.ArrayController.create({
+  content: [
+    SC.Object.create({
+      name: "Devin Torres",
+      phone: "(555) 391-1419",
+      address: "214 12th St. Austin, TX 78701"
+    }),
+    SC.Object.create({
+      name: "Charles Jolley",
+      phone: "(555) 749-1585",
+      address: "378 16th St. Austin, TX 78701"
+    }),
+    SC.Object.create({
+      name: "Peter Wagenet",
+      phone: "(555) 856-3750",
+      address: "935 2nd St. Austin, TX 78701"
+    })
+  ]
+});
+
+MyApp.contactController = SC.ObjectController.create({
+  contentBinding: SC.Binding.from('MyApp.contactsController.selection').single()
+});
+</javascript>
+
+Now we can bind our source list to the +SC.ArrayController+ to get a dynamic
+list of contacts and individual contact selection support:
+
+<javascript>
+SC.SourceListView.design({
+  contentValueKey: 'name',
+  contentBinding: 'MyApp.contactsController.content',
+  selectionBinding: 'MyApp.contactsController.selection'
+})
+</javascript>
+
+With the contacts selectable, the only thing missing is dynamic label values
+for the contact's name, phone, and address:
+
+<javascript>
+SC.View.design({
+  layout: { top: 50, left: 50, bottom: 50, right: 20 },
+  childViews: 'nameLabel phoneLabel addressLabel'.w(),
+  nameLabel: SC.LabelView.design({
+    layout: { width: 500, height: 18 },
+    valueBinding: SC.Binding.oneWay('MyApp.contactController.name')
+  }),
+  phoneLabel: SC.LabelView.design({
+    layout: { top: 40, width: 500, height: 18 },
+    valueBinding: SC.Binding.oneWay(''MyApp.contactController.phone')
+  }),
+  addressLabel: SC.LabelView.design({
+    layout: { top: 80, width: 500, height: 500 },
+    valueBinding: SC.Binding.oneWay(''MyApp.contactController.address')
+  })
+})
+</javascript>
+
+NOTE: Using +SC.Binding.oneWay+ is not necessary here, but using one way
+bindings when you don't need changes from the view reflected back to the
+controller--which is the case for these label views--is more performant.
+
+The contact information will now change automatically whenever a new contact
+is selected.
+
+h3. Custom View Rendering
+
+SproutCore provides three ways to customize how your view looks. You can
+simply give it a class name and add it to the view's +classNames+ array
+property to style it using CSS, override it's +render+ and +update+ methods to
+use it's own custom HTML, or use an +SC.RenderDelegate+ to render and update
+all views of the view type.
+
+h4. +render+ and +update+
+
+Let's make the interface a bit more visually appealing and user friendly by
+giving a usage hint when no contact has been selected yet.
+
+h3. Changelog
+
+* January 12, 2011: initial version by "Devin Torres":credits.html#dtorres
