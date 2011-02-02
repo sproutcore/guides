@@ -1,0 +1,7 @@
+h2. Getting Started
+
+Here we'll step you through writing your first SproutCore app.
+
+TODO: fill this in
+
+endprologue.
