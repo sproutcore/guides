@@ -12,7 +12,7 @@ In order to start generating documentation, complete the following steps:
 
 - install the [SproutGuides package](http://guides-pkg.strobeapp.com/Guides.pkg)
 - clone SproutGuides from git://github.com/sproutcore/sproutguides.git
-- cd into sproutguides and run `guides generate` to generate the output directory
+- cd into sproutguides and run `guides build` to generate the output directory
 
 Once you've completed these steps, you're ready to start working with
 SproutGuides. You'll do your work inside the source/ directory. As you make
