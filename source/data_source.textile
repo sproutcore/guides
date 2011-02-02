@@ -1,31 +1,35 @@
-h2. Hooking Up to a Backend
+h2. Connecting with a DataSource
 
-This guide covers how to write a datasource using the API's in sproutcore 1.0 - 1.5. 
+This guide covers how to write a DataSource using the API's in sproutcore 1.0 - 1.5. 
 After reading this guide, you will be able to:
 
 * Understand what a DataSource is, and where it fits into the SproutCore Data Stream
-* Determine when and how to use a datasource
 * Create your own DataSource and link it to your App
+
+If you are looking for other methods of talking to the server, "look here":connect_server.html
 
 endprologue.
 
 h3. What is a DataSource?
 
-A datasource is the layer that connects your SproutCore application to your server. It knows how to talk to both your server and your "store":/model_overview.html#store. To start out you'll probably be using "fixtures":fixtures.html, but when your ready, you can make your own dataSource to talk to your server instead.
+A DataSource is the layer that sits between your SproutCore application's "store":/model_overview.html#store and your backend. To start out, you'll probably be using the "fixtures":fixtures.html DataSource to populate your app with data without having to hit your server in development.  When you are ready to interact with your backend, you can create your own DataSource that will send and receive data to and from your backend.
 
-NOTE: A DataSource is different from the Store. The Store is the in memory storage for your records, while the DataSource is the communication layer to between the server and your store.
+NOTE: A DataSource is different from the Store. The Store is the in memory storage for your records, while the DataSource is the communication layer linking the store to your backend.
+
+
+TODO: A diagram will be nice, showing the layers of a sproutcore application, with the datasource highlighted to show where it fits in.
+
 
 h3. When should I make my own DataSource?
 
-If you want to be able to persist the data that your users enter, over sessions, then you'll want to save it, either to a server or to localStorage. The beauty of SproutCore's data layers is that you can write your app and seamlessly move from one data source to an other and nothing but your datasource need be changed.
-
-NOTE: Using a DataSource is not the only way to get data into your store, but it is the recommended method todo so. If you already have code that talks to your server, you can use that instead, and manually insert your JSON objects into the store, this is a more advanced topic.
+If you want to be able to persist the data that your users enter, over sessions, then you'll want to save it, either to a server or to local storage. The beauty of SproutCore's data layers is that you can write your app and seamlessly move from one data source to an other and nothing but your DataSource will need to be changed.
 
 h3. A look at the API
 
-Here we will look at an example API from the server, creating the server side is a digging deeper topic, for now you can have a look at the numerous examples for the todo app tutorial [link]. 
+Here we will look at an example API from the server.  Creating the server side code is a "digging deeper topic".  For now you can have a look at the numerous examples in the "todo app tutorial":http://wiki.sproutcore.com/w/page/12413020/Todos%2006-Building%20the%20Backend. 
 
-For the purpose of this guide, we are going to assume that we have a server that will provide us with a basic "RESTful API":http://en.wikipedia.org/wiki/Representational_State_Transfer#RESTful_web_services. If we wanted to get a list of all Todo items, we would send a GET request to:
+
+For the purpose of this guide, we are going to assume that we have a server that will provide us with a basic "RESTful API":http://en.wikipedia.org/wiki/Representational_State_Transfer#RESTful_web_services. If we wanted to get a list of all ToDo items, we would send a GET request to:
 <plain>
 GET: /todos/
 </plain>
@@ -44,7 +48,7 @@ Which will return a "JSON":http://en.wikipedia.org/wiki/Json array like:
   }
 ]
 </javascript>
-We can also POST to this URL with JSON in the body, to create a new object.
+To create a new ToDo item, we can POST to this URL with JSON in the body.
 
 <plain>
 POST: /todos/
@@ -74,17 +78,15 @@ You'll see just one object returned:
   "done": false
 }
 </javascript>
-The API also allows us to send a PUT to update an object or DELETE to remove it.
+The API also allows us to send a PUT to update an existing ToDo item and DELETE to remove it.
 
-With this basic understanding of how the server works, we can get started writing our dataSource.
+With this basic understanding of how the server works, we can get started writing our DataSource.
 
 h3. Setup
 
-Now we'll walk through the steps of setting up a default dataSource.
+h4. Creating a DataSource
 
-h4. Creating a dataSource
-
-To generate a dataSource template use the command:
+To generate a DataSource, use the command:
 
 <plain>
 sc-gen data-source MyApp.RESTDataSource
@@ -96,37 +98,37 @@ This will make a file in +apps/my_app/data_sources/simple.js+. This file will be
 
 h4. Linking to the Store
 
-The next step is linking the new dataSource to our apps store. By default the store will be "using Fixtures":fixtures.html, in +core.js+ you'll see:
+The next step is linking the new DataSource to the store. By default, the store will be using "Fixtures":fixtures.html. In +core.js+ you'll see:
 
 <javascript>
   store: SC.Store.create().from(SC.Record.fixtures)
 </javascript>
 
-Replace this with our dataSource
+Replace this with the newly created DataSource:
 
 <javascript>
   store: SC.Store.create().from('MyApp.RESTDataSource')
 </javascript>
 
-This will tell the store to use our dataSource when trying to find data.
+This will tell the store to use the new DataSource when trying to find data.
 
-NOTE: As you can see we are replacing a JavaScript Object: +SC.Record.fixtures+ with a string +'MyApp.RESTDataSource'+. This is because our dataSource won't have been initialised yet. The first time the store tries to access the dataSource it will convert the string to an object, and save it for future reference. See "Core Concepts":core_concepts.html#property-paths for more info.
+NOTE: As you can see we are replacing a JavaScript Object: +SC.Record.fixtures+ with a string +'MyApp.RESTDataSource'+. This is because our DataSource won't have been initialised. The first time the store tries to access the DataSource it will convert the string to an object and save it for future reference. See "Core Concepts":core_concepts.html#property-paths for more information.
 
 h3. Writing The DataSource
 
 h4. Our First Fetch
 
-The first thing that our app will likely do is to fetch a bunch of data. most apps aren't any good without data. this is usually done via a "query":/queries.html. The query for finding all todos will look like:
+The first thing that your app will likely do is to fetch a bunch of data. This is usually done via a "query":/queries.html. The query for finding all ToDo's will look like:
 
 <javascript>
   MyApp.QUERY_ALL_TODOS = SC.Query.local(MyApp.Todo)
 </javascript>
 
-NOTE: Our dataSource will be written assuming that "local queries":/queries.html#local_queries are being used, as this is almost always what you want, remote queries will be covered in a separate guide.
+NOTE: Our DataSource will be written assuming that "local queries":/queries.html#local_queries are being used. Local queries are what you will be using most of the time. Remote queries will be covered in a separate guide.
 
-When you call +App.store.find(MyApp.QUERY_ALL_TODOS)+, the store will first find any matching records in our app store, and return a recordArray containing those (or an empty recordArray, if nothing matches). This RecordArray is linked to the query so that it will automatically update any time the query matches a new record. After it has returned, the store will call 'fetch' on its attached dataSource. 
+When you call +App.store.find(MyApp.QUERY_ALL_TODOS)+, the store will return a "RecordArray":http://docs.sproutcore.com/symbols/SC.RecordArray.html containing matching records (or an empty recordArray, if nothing matches). This RecordArray is linked to the query so that it will automatically update any time the query conditions match a new record. After it has returned, the store will call 'fetch' on its attached DataSource. 
 
-This is when we get to take action. The generated dataSource will have made this for us:
+This is when we get to take action. The generated DataSource will already contain the following code:
 
 <javascript>
   fetch: function(store, query) {
@@ -138,9 +140,9 @@ This is when we get to take action. The generated dataSource will have made this
   },
 </javascript>
 
-Currently this dataSource will not do anything, except return NO. This tells the store that we are not going to handle this query.
+Currently, this DataSource will not do anything except return NO. This tells the store that we are not going to handle this query.
 
-We also get given a hint of what we need todo next. When the server responds, we will call +store.dataSourceDidFetchQuery(query)+ to let the store know that this query has been updated.
+We also get given a hint of what we need to do next. When the server responds, we will call +store.dataSourceDidFetchQuery(query)+ to let the store know that this query has been updated.
 
 Now we want to fetch all the Todo's
 
@@ -168,7 +170,7 @@ fetchDidComplete: function(response, store, query) {
 }
 </javascript>
 
-Our Fetch function is pretty simple. For now we are constructing an Request to send to the server.
+Our +Fetch+ function is pretty simple. For now, we are constructing an +Request+ to send to the server.
 "SC.Request":http://docs.sproutcore.com/symbols/SC.Request.html is SproutCore's simple wrapper around an Ajax call.
 
 NOTE: You are not restricted to using an SC.Request inside of a DataSource, but it is advised that you don't go making calls to your server from just anywhere in your app.
@@ -178,7 +180,7 @@ NOTE: You are not restricted to using an SC.Request inside of a DataSource, but 
 "postUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.postUrl or
 "deleteUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.deleteUrl.
 
-".json":http://docs.sproutcore.com/symbols/SC.Request.html#json lets the request know that we are expecting the server to send back JSON, so it will automatically parse it for us. Without this the return value would be a string. We could also have called +.xml()+ if your server talks XML.
+".json":http://docs.sproutcore.com/symbols/SC.Request.html#json lets the request know that we are expecting the server to send back JSON, so it will automatically parse it for us. Without this, the return value would be a string. We could also have called +.xml()+ if your server talks XML.
 
 ".notify":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request#notify sets the callback method. By default SC.Requests are asynchronous, so the app can keep running while waiting for the server. The parameters used here are:
   # +this+ {Object} The target object that the action will run on
@@ -189,15 +191,15 @@ NOTE: You are not restricted to using an SC.Request inside of a DataSource, but 
 
 NOTE: +.send()+ also takes a +String+ parameter for the +POST+ and +PUT+ methods to send as the body of the request.
 
-When the server does finally get back to use, our callback method +fetchDidComplete+ will get called. The first parameter is the SC.Response related to the Request we just sent. Any following parameters are the ones we passed into +.notify()+: +store+ and +query+.
+When the server responds to the request, our callback method +fetchDidComplete+ will get called. The first parameter is the SC.Response related to the Request we just sent. Any following parameters are the ones we passed into +.notify()+: +store+ and +query+.
 
 First thing we do when the response comes back is check to see if there was an error or not.
 "SC.ok":http://docs.sproutcore.com/symbols/SC.html#SC.ok will do this for us.
 
-If all is good then we can load the records into the store. First we get the recordType that is stored in the query, so we can tell the store. For us it will be +MyApp.Todo+.
+If all is good, we can now load the records into the store. First we need to get the RecordType that is stored in the query so we can inform the store. For us, it will be +MyApp.Todo+.
 
-Then we get our records with +response.get('body')+, this is where the JSON string is converted into JS objects for us. If we did not call +.json()+ on the Request, then it would return a string.
-This works because our server response with an array at the top level of the JSON. If your server returned something like:
+Next, we get our records with +response.get('body')+.  This is where the JSON string is converted into JS objects for us. If we did not call +.json()+ on the +Request+, it would return a string.
+This works because our server responds with an array at the top level of the JSON. If your server returned something like:
 <javascript>
 {
   length: 1,
@@ -217,23 +219,54 @@ Then we would use this instead:
 var body = response.get('body')
     records = body.records;
 </javascript>
-NOTE: Note how we didn't use .get('records'), this is because the JSON is converted into plain JS, not  SC.Object's
+NOTE: Note how we didn't use .get('records'), this is because the JSON is converted into plain JS, not SC.Object's.
 
 Now we call "loadRecords":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#loadRecords on the store to actually put our data into the store. The first parameter is the Record Type of the objects you are going to load. The second is an array of plain JS object hashes containing your records data.
 
-WARNING: You need to make sure that your data hashes have their primaryKey properties, in this case '+id+', see "this note":#a-records-primarykey for more details.
+WARNING: You need to make sure that your data hashes have their "primary key":#a-records-primarykey properties, in this case '+id+'.
 
-NOTE: This is the usual way of calling loadRecords, but it can be called with a few different signatures. This allows for quite complex behaviour, such as loading multiple record types at once. These will be covered by other guides.
 
-This is followed by ".dataSourceDidErrorQuery":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#dataSourceDidErrorQuery to let the store know that we have finished loading records, and it is now time to update the passed in query. The query that we passed in is the one that was given to us by +fetch+, and we passed through to the callback.
+NOTE: This is the usual way of calling +loadRecords+, but it can be called with a few different signatures. This allows for quite complex behaviour, such as loading multiple record types at once. These will be covered by other guides.
 
-If the server returned an error, such as +404+ Not Found, or +500+ series of server errors, then we'll let the store know. with ".dataSourceDidErrorQuery":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#dataSourceDidErrorQuery. This sets the query into an error state, which you can later check for and deal with.
+Finally, we call ".dataSourceDidErrorQuery":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#dataSourceDidErrorQuery to let the store know that we have finished loading records, and it is now time to update the passed in query. The query that we passed in is the one that was given to us by +fetch+.  It was passed in through to the callback.
+
+If the server returned an error, such as +404+ Not Found, or the +500+ series of server errors, then we'll let the store know with ".dataSourceDidErrorQuery":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#dataSourceDidErrorQuery. This sets the query into an error state, for which you can later check and deal with.
 
 h4. Gaining Flexibility
 
-This design is simple, but as you can see, not very flexible, it only allows for one url. That wont get us very far. But given that all of our records are going to have a very similar URL, it should be simple to get this url to be dynamically generated.
+This design is simple, but as you can see, not very flexible, it only allows for one url. That wont get us very far. But given that all of our records are going to have a very similar URL, it should be simple to dynamically generated this URL.
 
-...
+We can have each of our models know what their URL will be.
+
+<javascript>
+MyApp.Todo = SC.Record.extend(
+/** @scope MyApp.Todo.prototype */ {
+
+  // TODO: Add your own code here.
+
+}) ;
+
+MyApp.Todo.mixin({
+  resourcePath: 'todo',
+  pluralResourcePath: 'todos'
+}) ;
+</javascript>
+
+We use a mixin here to set these as class properties. it allows us to get the path without an instance. For example: +MyApp.Todo.resourcePath+.
+
+This will allow our DataSource to find the path needed. We'll change the fetch method to:
+
+<javascript>
+fetch: function(store, query) {
+  SC.Request.getURL('/%@/'.fmt(query.recordType.resourcePath)).json()
+    .notify(this, 'fetchDidComplete', store, query)
+    .send()
+
+  return YES;
+},
+</javascript>
+
+The fetch method will now work for all record types.
 
 h4. Going for Creation
 
@@ -286,4 +319,4 @@ h4. Datasource for Remote Query
 
 h3. Changelog
 
-* Month DD, YYYY: initial version by "Geoffrey Donaldson":credits.html#geoffreyd
+* Feb 02, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd
