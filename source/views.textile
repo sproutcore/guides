@@ -3,11 +3,10 @@ h2. Core Concepts
 The guide covers some of the core concepts of views in SproutCore. By
 referring to this guide, you will be able to:
 
-* Layout your view positions relative to their parent
-* Make your views dynamic based on bindings
+* Layout your views relative to their parent
+* Make your views dynamic with bindings
 * Change how your views render and update themselves
-* Handle events that occur over your view, e.g. a mouse click
-* Animate your views in a performant way
+* Handle events that occur over your view like a mouse click
 
 endprologue.
 
@@ -47,8 +46,8 @@ MyApp.getPath('mainPage.mainPane').append();
 There will probably be many panes in your app because a pane is just like a
 regular view except that it doesn't need to live within a parent view. These
 can be anything from a pallette to a popup to a menu. In this case, our pane
-is an +SC.MainPane+ which automatically makes itself main as soon as it's
-appended to the doument.
+is an +SC.MainPane+ which automatically makes itself the main pane as soon as
+it's appended to the doument.
 
 Our main pane is configured with only one +childView+, an +SC.LabelView+.
 SproutCore uses absolute positioning to layout it's views, and this label view
@@ -155,7 +154,7 @@ are given a +top+ to clear each other so they don't overlap, and
 label. Right now these labels are only placeholders until we hook their values
 to a binding.
 
-h3. Binding View Properties to Values
+h3. Binding Views to Controllers
 
 Instead of having our source list content and our label values in our
 views, let's bind them to some controllers. We'll start by creating an
@@ -168,17 +167,20 @@ MyApp.contactsController = SC.ArrayController.create({
     SC.Object.create({
       name: "Devin Torres",
       phone: "(555) 391-1419",
-      address: "214 12th St. Austin, TX 78701"
+      address: "214 12th St. Austin, TX 78701",
+      website: 'http://www.linkedin.com/in/devintorres'
     }),
     SC.Object.create({
       name: "Charles Jolley",
       phone: "(555) 749-1585",
-      address: "378 16th St. Austin, TX 78701"
+      address: "378 16th St. Austin, TX 78701",
+      website: 'http://www.linkedin.com/in/charlesjolley'
     }),
     SC.Object.create({
       name: "Peter Wagenet",
       phone: "(555) 856-3750",
-      address: "935 2nd St. Austin, TX 78701"
+      address: "935 2nd St. Austin, TX 78701",
+      website: 'http://www.linkedin.com/in/wagenet'
     })
   ]
 });
@@ -212,11 +214,11 @@ SC.View.design({
   }),
   phoneLabel: SC.LabelView.design({
     layout: { top: 40, width: 500, height: 18 },
-    valueBinding: SC.Binding.oneWay(''MyApp.contactController.phone')
+    valueBinding: SC.Binding.oneWay('MyApp.contactController.phone')
   }),
   addressLabel: SC.LabelView.design({
     layout: { top: 80, width: 500, height: 500 },
-    valueBinding: SC.Binding.oneWay(''MyApp.contactController.address')
+    valueBinding: SC.Binding.oneWay('MyApp.contactController.address')
   })
 })
 </javascript>
@@ -226,20 +228,249 @@ bindings when you don't need changes from the view reflected back to the
 controller--which is the case for these label views--is more performant.
 
 The contact information will now change automatically whenever a new contact
-is selected.
+is selected. Our +bottomRightView+ should now look like this:
 
-h3. Custom View Rendering
+<javascript>
+SC.View.design({
+  childViews: 'usageHint contactDetails'.w(),
+  usageHint: SC.View.design({
+    classNames: 'myapp-usage-hint',
+    isVisibleBinding: SC.Binding.from('MyApp.contactsController.hasSelection').not(),
+    childViews: [SC.LabelView.design({
+      layout: { width: 300, height: 22, centerX: 0, centerY: 0 },
+      tagName: 'h1',
+      textAlign: SC.ALIGN_CENTER,
+      value: "Select a contact"
+    })]
+  }),
+  contactDetails: SC.View.design({
+    layout: { top: 50, left: 50, bottom: 50, right: 20 },
+    childViews: 'nameLabel phoneLabel addressLabel'.w(),
+    nameLabel: SC.LabelView.design({
+      layout: { width: 500, height: 18 },
+      valueBinding: 'MyApp.contactController.name'
+    }),
+    phoneLabel: SC.LabelView.design({
+      layout: { top: 40, width: 500, height: 18 },
+      valueBinding: 'MyApp.contactController.phone'
+    }),
+    addressLabel: SC.LabelView.design({
+      layout: { top: 80, width: 500, height: 500 },
+      valueBinding: 'MyApp.contactController.address'
+    })
+  })
+})
+</javascript>
+
+h3. Custom View Styling and Rendering
 
 SproutCore provides three ways to customize how your view looks. You can
 simply give it a class name and add it to the view's +classNames+ array
-property to style it using CSS, override it's +render+ and +update+ methods to
-use it's own custom HTML, or use an +SC.RenderDelegate+ to render and update
-all views of the view type.
+property to style it using CSS, override it's +render+ method to use it's own
+custom HTML, or use an +SC.RenderDelegate+ to render and update all views of
+the view type.
 
-h4. +render+ and +update+
+h4. Using CSS to Style a View
 
 Let's make the interface a bit more visually appealing and user friendly by
-giving a usage hint when no contact has been selected yet.
+giving a usage hint when no contact has been selected yet. We ca create a
+generic view and add the class name +myapp-usage-hint+ to the +classNames+
+array, and then a label view as a child to display the hint:
+
+<javascript>
+SC.View.design({
+  classNames: 'myapp-usage-hint',
+  isVisibleBinding: SC.Binding.from('MyApp.contactsController.hasSelection').not(),
+  childViews: [SC.LabelView.design({
+    layout: { width: 300, height: 22, centerX: 0, centerY: 0 },
+    tagName: 'h1',
+    textAlign: SC.ALIGN_CENTER,
+    value: "Select a contact"
+  })]
+})
+</javascript>
+
+Right now it looks rather small, so let's add some style to it. Create a file
+in the +resources+ directory and name it +theme.css+:
+
+<css>
+.myapp-usage-hint {
+  background-color: #eee;
+}
+
+.myapp-usage-hint h1 {
+  font-family: "Helvetica Neue Light", "HelveticaNeue-Light", inherit;
+  font-size: 28px !important;
+  line-height: 20px !important;
+  color: #999;
+}
+</css>
+
+Now we have nice looking instructions for when a user first starts using the
+app. You can add as many class names to +classNames+ as you want for any view.
+
+h4. The +render+ and +update+ Methods
+
+The +render+ method is used to generate the view's HTML and is called whenever
+the view first renders itself and any subsequent updates to the view can be
+handled by an +update+ method after that.
+
+NOTE: As soon as you start overriding methods such as +render+ and +update+,
+your views really need to be in their own files under the +views+ directory.
+A good rule of thumb is that +main_page.js+ should never have anything longer
+than a one line function.
+
+The +update+ method is called whenever a property that is defined on the view's
++displayProperties+ array is changed on the view. The +render+ method is
+passed a +context+ variable which is an +SC.RenderContext+. +SC.RenderContext+
+is used to queue up and build HTML for a view. You build HTML by calling
++context.push()+ and passing it HTML:
+
+<javascript>
+CreepyApp.CharlesJolleyView = SC.View.extend({
+  render: function (context) {
+    context.push("<h1>Charles Jolley is 31 years young...</h1>");
+  }
+});
+</javascript>
+
+You can also use +context.begin()+ and +context.end()+ to begin building a tag
+and push arguments that are "stringable" (have a toString) into it:
+
+<javascript>
+CreepyApp.CharlesJolleyView = SC.View.extend({
+  displayProperties: ['name', 'age'],
+  name: 'Charles Jolley',
+  age: 31,
+  render: function (context) {
+    var name = this.get('name'), age = this.get('age');
+    var context = context.begin('h1');
+    context.push(name, ' is going to be ', age+1, ' years young soon...');
+    context.end();
+  }
+});
+</javascript>
+
+The +update+ method is passed a jQuery handle of the view's layer, the DOM
+element that belongs to the view. You can use it and all of jQuery's API to
+manipulate the DOM and update your view:
+
+<javascript>
+CreepyApp.CharlesJolleyView = SC.View.extend({
+  displayProperties: ['name', 'age'],
+  name: 'Charles Jolley',
+  age: 31,
+  render: function (context) {
+    var name = this.get('name'), age = this.get('age');
+    var context = context.begin('h1');
+    context.push('<span class="name">', name, '</span>');
+    context.push(' is going to be ');
+    context.push('<span class="age">', age+1, '</span>');
+    context.push(' years young soon...');
+    context.end();
+  },
+  update: function (jquery) {
+    var h1 = jquery.find('h1');
+    h1.find('.name').text(this.get('name'));
+    h1.find('.age').text(this.get('age'));
+  }
+})
+</javascript>
+
+Say we wanted to make the name of the contact bigger in the details. To do
+this, let's create a custom view called +MyApp.ContactNameView+ that will put
+the contact name in an h1 tag:
+
+<javascript>
+MyApp.ContactNameView = SC.View.extend({
+  displayProperties: ['value'],
+  render: function (context) {
+    context.push('<h1>', this.get('value'), '</h1>');
+  },
+  update: function (jquery) {
+    jquery.find('h1').text(value);
+  }
+});
+</javascript>
+
+h4. Render Delegates
+
+Render delegates are an easy way to manage theming your apps. You can create
+a render delegate to manage the rendering of your views for you and add it to
+the theme you're using. Render delegates also have a +render+ and +update+
+method, but their first argument is the +dataSource+, or the view delegating
+to them. Let's recreate the last scenario using an +SC.RenderDelegate+ that
+we're going to create in +render_delegates/contact_name.js+:
+
+<javascript>
+SC.AceTheme.contactNameRenderDelegate = SC.RenderDelegate.create({
+  render: function (dataSource, context) {
+    context.push('<h1>', dataSource.get('value'), '</h1>');
+  },
+  update: function (dataSource, jquery) {
+    jquery.find('h1').text(dataSource.get('value'));
+  }
+});
+</javascript>
+
+Now we have to tell our view to use our new render delegate to draw itself:
+
+<javascript>
+MyApp.ContactNameView = SC.View.extend({
+  displayProperties: ['value'],
+  renderDelegateName: 'contactNameRenderDelegate'
+});
+</javascript>
+
+h3. View Events
+
+A SproutCore view hierarchy can be viewed like a pond, if the water is touched
+it ripples outwards affecting all the water around it, or in our case, all the
+parent views. +SC.View+ extends from +SC.Responder+, inheriting the ability to
+react to DOM events such as +mouseDown+ and +mouseEntered+. Let's highlight the
+contact name when it's being hovered over and take the user to the contact's
+website if it's clicked:
+
+<javascript>
+MyApp.ContactNameView = SC.View.extend({
+  displayProperties: ['value'],
+  renderDelegateName: 'contactNameRenderDelegate',
+  mouseEntered: function () {
+    var jquery = this.$();
+    jquery.css('cursor', 'pointer');
+    jquery.css('color', '#356aa0');
+    return YES;
+  },
+  mouseExited: function () {
+    var jquery = this.$();
+    jquery.css('cursor', 'normal');
+    jquery.css('color', '#000');
+    return YES;
+  },
+  mouseDown: function (evt) {
+    MyApp.openWebsite();
+    return YES;
+  }
+});
+</javascript>
+
+And in +core.js+:
+
+<javascript>
+openWebsite: function () {
+  var website = MyApp.contactController.get('website');
+  window.open(website);
+}
+</javascript>
+
+You should return +YES+ when you've handled the event, otherwise it would
+propagate to all of it's parent views.
+
+WARNING: Actions such as these would usually be handled by a statechart and
+are handled here for the purposes of demonstration.
+
+SproutCore views are powerful, and when coupled with bindings, controllers, a
+few models, and a data source make developing applications fast and easy.
 
 h3. Changelog
 
