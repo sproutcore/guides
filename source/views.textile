@@ -228,7 +228,39 @@ bindings when you don't need changes from the view reflected back to the
 controller--which is the case for these label views--is more performant.
 
 The contact information will now change automatically whenever a new contact
-is selected.
+is selected. Our +bottomRightView+ should now look like this:
+
+<javascript>
+SC.View.design({
+  childViews: 'usageHint contactDetails'.w(),
+  usageHint: SC.View.design({
+    classNames: 'myapp-usage-hint',
+    isVisibleBinding: SC.Binding.from('MyApp.contactsController.hasSelection').not(),
+    childViews: [SC.LabelView.design({
+      layout: { width: 300, height: 22, centerX: 0, centerY: 0 },
+      tagName: 'h1',
+      textAlign: SC.ALIGN_CENTER,
+      value: "Select a contact"
+    })]
+  }),
+  contactDetails: SC.View.design({
+    layout: { top: 50, left: 50, bottom: 50, right: 20 },
+    childViews: 'nameLabel phoneLabel addressLabel'.w(),
+    nameLabel: SC.LabelView.design({
+      layout: { width: 500, height: 18 },
+      valueBinding: 'MyApp.contactController.name'
+    }),
+    phoneLabel: SC.LabelView.design({
+      layout: { top: 40, width: 500, height: 18 },
+      valueBinding: 'MyApp.contactController.phone'
+    }),
+    addressLabel: SC.LabelView.design({
+      layout: { top: 80, width: 500, height: 500 },
+      valueBinding: 'MyApp.contactController.address'
+    })
+  })
+})
+</javascript>
 
 h3. Custom View Styling and Rendering
 
@@ -306,7 +338,7 @@ You can also use +context.begin()+ and +context.end()+ to begin building a tag
 and push arguments that are "stringable" (have a toString) into it:
 
 <javascript>
-ReallyCreepyApp.CharlesJolleyView = SC.View.extend({
+CreepyApp.CharlesJolleyView = SC.View.extend({
   displayProperties: ['name', 'age'],
   name: 'Charles Jolley',
   age: 31,
@@ -324,7 +356,7 @@ element that belongs to the view. You can use it and all of jQuery's API to
 manipulate the DOM and update your view:
 
 <javascript>
-ReallyCreepyApp.CharlesJolleyView = SC.View.extend({
+CreepyApp.CharlesJolleyView = SC.View.extend({
   displayProperties: ['name', 'age'],
   name: 'Charles Jolley',
   age: 31,
