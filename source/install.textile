@@ -1,0 +1,43 @@
+h2. Install
+
+This guide covers installing SproutCore. By referring to this guide you will be able to:
+
+* Install a bundled version of SproutCore to build your desktop-class web app.
+
+endprologue.
+
+
+h3. Prerequisites
+
+You should already have Ruby 1.9 or later running on your system. If you need help installing Ruby please refer to the "RVM setup instructions":http://rvm.beginrescueend.com/
+
+h3. Installing
+
+The easiest way to install the pre-released version of SproutCore 1.5 is as a Ruby Gem:
+
+<shell>
+$ gem install --pre sproutcore
+</shell>
+
+Alternatively, if you want to use the latest stable release simply install the Gem as follows:
+
+<shell>
+$ gem install sproutcore
+</shell>
+
+The rest of these guides refer to SproutCore 1.5
+
+h3. Testing your Install
+
+To make sure that your system is configured correctly enter the following command:
+<shell>
+$ sproutcore help
+</shell>
+
+h3. Next Steps
+
+Great, you're good to go. You'll probably want to continue with the "Getting Started":getting_started.html guide.
+
+h3. Changelog
+
+* February 1, 2011: first pass at the user install docs by "Shawn Morel":credits.html#shawnmorel
