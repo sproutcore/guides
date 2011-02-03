@@ -31,7 +31,7 @@ index:
   Models:
     - title: SproutCore Records
       url: records
-      text: "The SproutCore data framework is a full-featured ORM-like framework for working with data in the SproutCore Learn about the SproutCore data framework and how you can use it to interact with your data sources."
+      text: "The SproutCore data framework is a full-featured ORM-like framework for working with data in SproutCore. Learn about the SproutCore data framework and how you can use it to interact with your data sources."
       construction: true
     - title: Hooking Up to a Backend
       url: data_source
