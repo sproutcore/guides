@@ -14,7 +14,7 @@ endprologue.
 
 h3. Models, Records and the Store
 
-In a SproutCore application the model layer is the lowest layer and holds all your data as well as the business logic of your application. The controller layer calls into the model layer to modify data and retrieves data from the model layer mostly using bindings. 
+In SproutCore the model layer is the lowest application layer and holds all your data as well as the business logic of your application. The controller layer calls into the model layer to modify data and retrieves data from the model layer mostly using bindings. 
 
 The model layer is also responsible for talking to your server, fetching and commiting data when necessary. The server communication aspect of the model layer is not covered in this guide, but in the guide about using data sources.
 
@@ -33,13 +33,13 @@ A SproutCore record consists of four main components:
 # Status
 # Data hash
 
-Each record has a unique store key which is assigned when the record is created. The store key is a unique record identifier in the whole store and is mainly used internally to relate ids, statuses and data hashes to each other in a unambigious way. The store key is the only one of the four components which is actually a property of +SC.Record+. The other three components are stored centrally in the storea and mapped to the individual records using the store key.
+Each record has a unique store key which is assigned when the record is created. The store key is a unique record identifier in the whole store and is mainly used internally to relate ids, statuses and data hashes to each other in an unambiguous way. The store key is the only one of the four components which is actually a property of +SC.Record+. The other three components are stored centrally in the store and mapped to the individual records using the store key.
 
 <div style='text-align: center;'>
 !images/records/record_anatomy.png!
 </div>
 
-All records of a certain type have a unique id as usual in relational database systems. In fact the ids of SproutCore records usually are the same as the primary keys of your data in the backend. Therefore, unlike the store key, the id is not automatically created but it is your responsibility to assign a record unique id on creation.
+All records of a certain type have a unique id as usual in relational database systems. In fact the ids of SproutCore records usually are the same as the primary keys of your data in the backend. Therefore, unlike the store key, the id is not automatically created but it is your responsibility to assign a unique id when creating or loading records.
 
 The status of a record represents its current state with respect to the corresponding record on the server. The store uses the status property to determine if a record can be edited safely and which records need to be commited back to the server. 
 
@@ -47,16 +47,16 @@ Last but not least, the actual data of a record is stored in a plain JSON data h
 
 h4. Primary Record States
 
-There are five basic record status codes in SproutCore:
+There are five primary record status codes in SproutCore:
 * +SC.Record.EMPTY+
 * +SC.Record.READY+
 * +SC.Record.BUSY+
 * +SC.Record.DESTROYED+
 * +SC.Record.ERROR+
 
-The names of these states are pretty self explanatory: EMPTY indicates that the record is not yet created. READY indicates that the record can be safely edited. BUSY indicates that the record is currently locked for write operations, mostly because of an ongoing commmunication with the server. Finally DESTROYED is the state of destroyed records and ERROR indicates that something went wrong while processing this record.
+The names of these states are pretty self explanatory: EMPTY indicates a non existing record. READY indicates that the record can be safely edited. BUSY indicates that the record is currently locked for write operations, mostly because of an ongoing commmunication with the server. Finally DESTROYED is the state of destroyed records and ERROR indicates that something went wrong while processing this record.
 
-The three main states READY, BUSY and DESTROYED have several substates. You will learn more about these substates below when you actually start working with records. You can also refer to the complete overview of states in the last section of this guide.
+The three main states READY, BUSY and DESTROYED have several substates. You will learn more about these substates below when you actually start working with records. You can also refer to the complete overview of record states in the last section of this guide.
 
 
 
@@ -72,7 +72,7 @@ MyApp.Contact = SC.Record.extend({
 });
 </javascript>
 
-You just have created your custom +MyApp.Custom+ model class. However, this empty model is only of limited use, so let's add some record attributes.
+You just have created your custom +MyApp.Contact+ model class. However, this empty model is only of limited use, so let's add some record attributes.
 
 <javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
@@ -82,9 +82,9 @@ MyApp.Contact = SC.Record.extend({
 });
 </javascript>
 
-WARNING: Please refer to the "documentation of SC.Record":http://docs.sproutcore.com/symbols/SC.Record.html to see a list of all its property and method names which you cannot use for your own attributes!
+WARNING: Property names defined on +SC.Record+ itself cannot be used for custom record attribtutes. Please refer to the "documentation of SC.Record":http://docs.sproutcore.com/symbols/SC.Record.html for a list of all reserved names!
 
-We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+ and +age+ attributes with the type of the attribtue as first argument. The optional second argument of the +SC.Record.attr+ helper is an option hash. E.g. we can add some default values to our attribtues:
+We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+ and +age+ attributes with the type of each attribute as first argument. The optional second argument of +SC.Record.attr+ is an option hash. E.g. we can add some default values to our attribtues:
 
 <javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
@@ -98,7 +98,7 @@ Whenever you specify a +defaultValue+ option on an attribute it will return this
 
 NOTE: The +defaultValue+ will not be written to the underlying data hash and therefore not committed back to the server. 
 
-If the name of the model's attribute property differs from the name used in the data hash, you can specify a custom key for each attribute which will be used to access the data hash:
+If the name of the model's attribute property differs from the name you want to use in the data hash, you can specify a custom key for each attribute which will be used to access the data hash:
 
 <javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
@@ -109,7 +109,7 @@ MyApp.Contact = SC.Record.extend({
 </javascript>
 
 
-h4. Attrbibute Types
+h4. Attribute Types
 
 All basic JavaScript data types can be used as attribute types: 
 * String
@@ -128,13 +128,13 @@ MyApp.Contact = SC.Record.extend({
 });
 </javascript>
 
-For a reference of how to specify your custom date format check the documentation of the "SC.DateTime#toFormatedString":http://docs.sproutcore.com/symbols/SC.DateTime.html#SC.DateTime%23toFormattedString method.
+For a reference of how to specify your custom date format check the documentation of  "SC.DateTime#toFormatedString":http://docs.sproutcore.com/symbols/SC.DateTime.html#SC.DateTime%23toFormattedString.
 
 
 
 h4. Record Ids
 
-In SproutCore you don't define the primary key of your models explicitly like you defined your custom attributes above. The records' primary keys are managed by the store, so every record inherently has an id property. However, you can specify the identifier of this id property. This is where it can become a bit confusing at first... but let's clear it up step by step.
+In SproutCore you don't define the primary key property of your models explicitly like you defined your custom attributes above. The records' primary keys are managed by the store, so every record inherently has an id property. However, you can specify the identifier of this id property. This is where it can become a bit confusing at first... but let's clear it up step by step.
 
 First of all, by default SproutCore uses the identifier "guid" for the primary key. You can change this identifier by defining a +primaryKey+ property in your model:
 
@@ -148,21 +148,21 @@ MyApp.Contact = SC.Record.extend({
 
 NOTE: If you want to use your custom id identifier in all your models, you can make your life a bit easier and your code more maintainable by defining a custom record base class, where you define the primaryKey property. Then you can subclass this custom base class to create your models.
 
-However, this primary key identifier is only used to identify the id property in the underlying data hash, but not to get or set the id on a record. For example if you create a record and pass a hash with initial values, then SproutCore will check for a property called "uid" in the hash when you don't explicitly specify an id on creation. If you want to get or set the id of a record though, you still would do
+However, this primary key identifier is only used to identify the id property in the underlying data hash, but not to get or set the id on a record. For example if you create a record and pass a hash with initial values, then SproutCore will now look for a property called "uid" in the hash when you don't explicitly specify an id. If you want to get or set the id of a record though, you always use +'id'+ independent of the +primaryKey+'s value:
 
 <javascript>
 myRecord.get('id'); // note: NOT 'uid'
 myRecord.set('id', 1);
 </javascript>
 
-WARNING: You should never change the id of an existing record using +set()+. And if you do so, you should know what you are doing and probably not need this guide...
+WARNING: You should never change the id of an existing record using +set()+ like above. And if you do so, you should know what you are doing and probably not need this guide...
 
 It is a best practice to never include the id in the data hash, because then you end up with two ids: the id property in the data hash and the id managed by the store. If you receive a JSON data hash from the server (where the id is necessarily included) then you should extract and delete the id from this hash before using it to load the record into the store.
 
 
 h4. Relations
 
-Often models don't exist completely independent but are related to other models. For example one or more addresses could belong to the +Contact+ model we created above. So let's define the +Address+ model first:
+Often models don't exist completely independent of each other but are related to other models. For example one or more addresses could belong to the +Contact+ model we created above. So let's define the +Address+ model first:
 
 <javascript filename="apps/my_app/models/address.js">
 MyApp.Address = SC.Record.extend({
@@ -198,11 +198,13 @@ MyApp.Address = SC.Record.extend({
 });
 </javascript>
 
-Notice the +isMaster+ and +inverse+ options used with the +toOne+ helper. The "+isMaster: YES+" option on the +address+ attribute makes sure, that the +Contact+ record actually gets marked as changed when you assign a different +Address+ record to it. You should always set the +isMaster+ option to +YES+ on one side of the relation and to +NO+ on the other to control which record is committed back to the server when the relation changes. 
+Notice the +isMaster+ and +inverse+ options used with the +toOne+ helper. The "+isMaster: YES+" option on the +address+ attribute makes sure, that the +Contact+ record actually gets marked as changed when you assign a different +Address+ record to it. You should always set the +isMaster+ option to +YES+ on one side of the relation and to +NO+ on the other to control which record is committed back to the server when you alter the relation. 
 
 The +inverse+ option specifies the property name of the inverse relation on the associated model and should be set on the side of the relation where +isMaster+ is set to +YES+.
 
 In the underlying data hash a +toOne+ relation is simply represented as the id of the associated record.
+
+NOTE: It is not obligatory to define both directions of the relation if you don't need it.
 
 h5. One-to-Many Relations
 
@@ -262,7 +264,7 @@ MyApp.Address = SC.Record.extend({
 
 Again the only thing that changed compared to the one-to-many example from above is the use of the +toMany+ helper in the +Address+ model.
 
-Since a many-to-many relation effectively is constructed by using +toMany+ on both sides, it is represented in the underlying data hash as an array of record ids.
+Since a many-to-many relation effectively is constructed by using +toMany+ on both sides, it is represented in the underlying data hashes of both sides of the relation as an array of record ids.
 
 
 h4. Other Properties on Model Classes
@@ -300,7 +302,7 @@ MyApp = SC.Application.create({
 });
 </javascript>
 
-In the example above we are using fixtures as the data source. You can read more about fixtures and using other data sources in the respective guides.
+The example above shows creating the store with fixtures as data source. You can read more about fixtures and using other data sources in the respective guides.
 
 
 h4. Creating Records
@@ -355,13 +357,13 @@ In this case we're adding the +Address+ record to the +Contact+ record, because 
 
 h4. Updating Records
 
-Updating a record's attributes is as easy as calling +set()+:
+Updating record attributes is as easy as calling +set()+:
 
 <javascript>
 myContact.set('firstName', 'Jack');
 </javascript>
 
-In order to be able to update record attributes the record has to be in a +READY+ state. If you are updating an attribute of a newly created record, the status will still be +READY_NEW+. If you update an attribute of a record that was previously loaded from the server or committed to the server, then the status will transition from +READY_CLEAN+ to +READY_DIRTY+. This indicates that the record needs to be committed back to the server.
+In order to be able to update record attributes the record has to be in a +READY+ state. If you update an attribute of a newly created record (which starts out as +READY_NEW+), the status will still be +READY_NEW+. If you update an attribute of a record that was previously loaded from the server or committed to the server, then the status will transition from +READY_CLEAN+ to +READY_DIRTY+. Dirty states always indicate that the record needs to be committed back to the server.
 
 
 h4. Destroying Records
@@ -372,7 +374,7 @@ To delete a certain record, just call +destroy()+ on it:
 myContact.destroy();
 </javascript>
 
-Equally to updating a record, the record has to be in a +READY+ state to be able to destroy it. If you destroy a newly created record (which was not yet committed to the server) the status will transition from +READY_NEW+ to +DESTROYED_CLEAN+, indicating that there is no need to tell the server about the destroy, since it never knew about this record in the first place. If you destroy a record loaded from the server, then the state will transition from +READY_CLEAN+ to +DESTROYED_DIRTY+, indicating that the server needs to notified about this destroy action.
+Equally to updating a record, the record has to be in a +READY+ state to be able to destroy it. If you destroy a newly created record (which was not yet committed to the server) the status will transition from +READY_NEW+ to +DESTROYED_CLEAN+, indicating that there is no need to tell the server about the destroy, since it never knew about this record in the first place. If you destroy a record loaded from the server, then the state will transition from +READY_CLEAN+  (or +READY_DIRTY+ if you changed it before) to +DESTROYED_DIRTY+, indicating that the server needs to be notified about this destroy action.
 
 
 
@@ -402,7 +404,7 @@ if (status & SC.Record.READY_NEW) {
 }
 </javascript>
 
-NOTE: For a complete list of record state constants see the documentation of SproutCore's "SC.Record class":http://docs.sproutcore.com/symbols/SC.Record.html.
+NOTE: For a complete list of record state constants see the "documentation of the SC.Record class":http://docs.sproutcore.com/symbols/SC.Record.html.
 
 
 
@@ -421,7 +423,7 @@ myContact = MyApp.store.find(MyApp.Contact, 1);
 
 This statement returns the record of type +MyApp.Contact+ with the id 1. If the record does not exist, then the return value will be +null+. 
 
-WARNING: When +find+ is called with a record type and an id as arguments, it only looks for records of exactly this type. You cannot retrieve records this way which type is a subclass of the specified record type.
+WARNING: When +find+ is called with a record type and an id as arguments, it only looks for records of exactly this type. It will not return records which type is a subclass of the specified record type.
 
 
 h4. Finding All Records of a Certain Type
@@ -478,7 +480,7 @@ myContacts.objectAt(3); // returns fourth result
 myContacts.lastObject(); // returns last result
 </javascript>
 
-Please refer to the "documentation of SC.Array":http://docs.sproutcore.com/symbols/SC.Array.html to learn about the array access methods.
+Please refer to the "documentation of SC.Array":http://docs.sproutcore.com/symbols/SC.Array.html to learn more about the array access methods.
 
 NOTE: If the query was not yet fetched from the server, the store automatically forwards it to the data source to load the data from the server.
 
@@ -496,9 +498,7 @@ query = SC.Query.local(MyApp.Contacts, {
 results = MyApp.store.find(query);
 </javascript>
 
-The above query returns all records of type +MyApp.Contacts+ and subclasses of this type where the +firstName+ attribute matches the value "Florian". 
-
-You can combine several conditions using the logical operators +AND+, +OR+ and +NOT+ as well as the parenthesis +(+ and +)+ for grouping:
+The above query returns all records of type +MyApp.Contacts+ and subclasses of this type where the +firstName+ attribute matches the value "Florian". You can combine several conditions using the logical operators +AND+, +OR+ and +NOT+ as well as parentheses +(+ and +)+ for grouping:
 
 <javascript>
 query = SC.Query.local(MyApp.Contacts, { 
@@ -510,7 +510,7 @@ query = SC.Query.local(MyApp.Contacts, {
 });
 </javascript>
 
-However, you will want to not only hard-code the query conditions, but to make use of variables containing the desired values. For this you can use query parameters. SproutCore handles two different types of query parameters: sequential and names parameters. Lets rephrase the above query using sequential parameters:
+However, you will want to not only hard-code the query conditions, but to make use of variables containing the desired values. For this you can use query parameters. SproutCore handles two different types of query parameters: sequential and named parameters. Lets rephrase the above query using sequential parameters:
 
 <javascript>
 query = SC.Query.local(MyApp.Contacts, { 
@@ -535,7 +535,7 @@ query = SC.Query.local(MyApp.Contacts, {
 
 Which of these methods you use is mainly a matter of personal preference and the complexity of your query.
 
-The parameters inside the query conditions can be of the following types:
+The arguments inside the query conditions can be of the following types:
 * attribute names of the record type queried for
 * +null+ and +undefined+
 * +true+ and +false+
@@ -563,14 +563,14 @@ query = SC.Query.local(MyApp.Contacts, {
 });
 </javascript>
 
-In this case the results are sorted in an ascending order first by last name and second by first name. If you omit the +ASC+ keyword, the results are by default sorted in an ascending order. To sort them in descending order, begin the +orderBy+ string with the keyword +DESC+.
+In this case the results are sorted in an ascending order, first by last name and second by first name. If you omit the +ASC+ keyword, the results are by default sorted in an ascending order. To sort them in descending order, begin the +orderBy+ string with the keyword +DESC+.
 
 NOTE: If you need a custom sorting order, you can register your own comparison operator for a specific model attribute using +SC.Query.registerComparison+. Please refer to the "documentation":http://docs.sproutcore.com/symbols/SC.Query.html#SC.Query%23registerComparison for further details.
 
 
 h5. Scoped Queries
 
-All the queries you used until now will cause the store to match all records in memory with the query's conditions. You can also build one query on top of another to construct more efficient query graphs:
+All the queries you used until now will cause the store to match all records in memory with the query's conditions. You can also build one query on top of another to construct more efficient query trees:
 
 <javascript>
 query1 = SC.Query.local(MyApp.Contacts, { 
@@ -584,12 +584,12 @@ query2 = SC.Query.local(MyApp.Contacts, {
 results = aboveThirty.find(query2);
 </javascript>
 
-The second query is based on the first one by calling find on the +RecordArray+ of the first query insead of on +MyApp.store+. The second query matches the results of the first query against its own conditions. In this case it would return all +Contact+ records where +age+ is greater than 30 and the last name start with the letter "K".
+The second query is based on the first one by calling +find+ on the +RecordArray+ of the first query instead of +MyApp.store+. The second query matches the results of the first query against its own conditions. In this case it would return all +Contact+ records where +age+ is greater than 30 and the last name starts with the letter "K".
 
 
 h5. Local vs. Remote Queries
 
-You will have noticed the keyword +local+ in the +SC.Query.local+ call we used until now to create the queries. Actually the keyword +local+ is somewhat confusing, because local queries do not act exclusively on the in-memory store but also call the data source to fetch records from the server. The main characteristic of local queries is that the store automatically updates their results whenever the contents of the store change.
+You will have noticed the keyword +local+ in the +SC.Query.local+ call we used until now to create the queries. Actually the keyword +local+ is somewhat confusing, because local queries do not act exclusively on the in-memory store but also call the data source to fetch records from the server. The main characteristic of local queries is that the store automatically updates their results whenever the contents of the local in-memory store change.
 
 Remote queries (build with +SC.Query.remote+) on the other hand return a +SC.RecordArray+, which is not updated automatically. However, "remote" doesn't mean necessarily that the results have to be fetched from a remote server. They could also be loaded from a local browser storage. It's admittedly a bad choice of names.
 
@@ -610,12 +610,12 @@ SC.Query.registerQueryExtension('BITAND', {
   evaluate: function (r,w) {
     var left = this.leftSide.evaluate(r,w);
     var right = this.rightSide.evaluate(r,w);
-    return ((left & right) !== 0);
+    return (left & right) !== 0;
   }
 });
 </javascript>
 
-We call +SC.Query.registerQueryExtension+ to register the new operator with the name +BITAND+ as first argument. The key components of the hash passed as second argument are +evalType+ and +evaluate+. +evalType+ is either +BOOLEAN+ (if you return a boolean value in +evaluate+) or +PRIMITIVE+ (if you return e.g. a number or a string). The actual operation is implemented in the +evaluate+ function after the arguments are retrieved by +this.leftSide.evaluate(r,w)+ and +this.rightSide.evaluate(r,w)+. 
+We call +SC.Query.registerQueryExtension+ to register the new operator with the name +BITAND+ as first argument. The key components of the hash passed as second argument are +evalType+ and +evaluate+. +evalType+ is either +BOOLEAN+ (if you return a boolean value in +evaluate+) or +PRIMITIVE+ (if you return e.g. a number or a string). The actual operation is implemented in the +evaluate+ function after the operands are retrieved by +this.leftSide.evaluate(r,w)+ and +this.rightSide.evaluate(r,w)+. 
 
 NOTE: Look at the source of SC.Query ("datastore/system/query.js") for more examples of how to implement query operators.
 
@@ -667,5 +667,5 @@ h3. Changelog
 
 * February 6, 2011: initial version by "Florian Kugler":credits.html#fkugler
 * March    2, 2011: added filenames and small fixes by "Topher Fangio":credits.html#topherfangio
-
+* March 2, 2011: minor corrections by "Florian Kugler":credits.html#fkugler
 
