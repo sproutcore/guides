@@ -36,7 +36,7 @@ NOTE: We will explain the +get+ and +set+ functions in more detail later. For no
 
 h4. Creating an +SC.Object+ Subclass
 
-In many cases you will want to create subclasses of +SC.Object+ to handle similar objects. In the above example, we created a person.
+In many cases you will want to create subclasses of +SC.Object+ to handle similar objects. In the above example, we created a person. Normally it would make sense to have a +Person+ class.
 
 <javascript>
 MyApp.Person = SC.Object.extend({
@@ -369,5 +369,5 @@ h3. Changelog
 * January 19, 2011: further updates by "Peter Wagenet":credits.html#pwagenet
 * January 20, 2011: corrections to "The +init+ Method" and "The Run Loop" by "Peter Wagenet":credits.html#pwagenet
 * January 24, 2011: added section on "Bindings and Chained Property Paths" by "Peter Wagenet":credits.html#pwagenet
-* February 9, 2011: made grammatical and formatting changes by Jason Gignac
 * March    2, 2011: fixed paragraph formmatting by "Topher Fangio":credits.html#topherfangio
+* March 2, 2011: made grammatical and formatting changes by Jason Gignac:credits.html#jgignac
