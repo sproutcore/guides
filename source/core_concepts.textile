@@ -19,7 +19,7 @@ Observers and Bindings, which I will go into detail on below.
 
 h4. Creating an +SC.Object+ Instance
 
-Creation of an +SC.Object+ instance is straight-forward.
+Creation of an +SC.Object+ instance is straightforward.
 
 <javascript>
 var obj = SC.Object.create()
@@ -43,7 +43,7 @@ h4. Creating an +SC.Object+ Subclass
 
 In many cases you will want to create subclasses of +SC.Object+ to
 handle similar objects. In the above example, we created a person.
-Normally it would make sense to have a +Person+ object.
+Normally it would make sense to have a +Person+ class.
 
 <javascript>
 MyApp.Person = SC.Object.extend({
@@ -355,10 +355,10 @@ try again:
 MyApp.observerObject = SC.View.create({
   userNameDidChange: function(){
     alert(this.getPath('MyApp.usersController.mainUser.name'));
-  }.observes('MyApp.usersController*mainUser.name') // We've added an asterisk to this line
+  }.observes('MyApp.usersController*mainUser.name') // We have added an asterisk to this line
 });
 
-MyApp.usersController.setPath('mainUser.name', 'Jim'); // alert('Jim')
+MyApp.usersController.setPath('mainUser.name', 'Jim'); // alert(Jim)
 MyApp.usersController.set('mainUser', SC.Object.create({ name: 'Bob' })); // alert('Bob')
 </javascript>
 
@@ -459,7 +459,7 @@ loop. Normally user events would trigger the run loop, but since your tests
 are automated, there are no user events taking place.
 
 You may also find that when you are working in your browser's JavaScript console
-that, when you set a variable, your app doesn't as you expect. This may be
+that, when you set a variable, your app's interface doesn't update as you expect. This may be
 caused by the run loop not firing (since you aren't interacting directly with
 the app no events are being triggered). In this case you should try invoking
 the run loop manually, or just move your mouse over the app to trigger a new
@@ -475,4 +475,4 @@ h3. Changelog
 * January 19, 2011: further updates by "Peter Wagenet":credits.html#pwagenet
 * January 20, 2011: corrections to "The +init+ Method" and "The Run Loop" by "Peter Wagenet":credits.html#pwagenet
 * January 24, 2011: added section on "Bindings and Chained Property Paths" by "Peter Wagenet":credits.html#pwagenet
-
+* February 9, 2011: made grammatical and formatting changes by Jason Gignac
