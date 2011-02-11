@@ -2,3 +2,4 @@
 .bundle
 bin
 output
+Gemfile.lock
