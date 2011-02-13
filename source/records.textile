@@ -540,11 +540,11 @@ To obtain ordered query results you can simply add the +orderBy+ option to your 
 <javascript>
 query = SC.Query.local(MyApp.Contacts, { 
   conditions: 'age > 30',
-  orderBy: 'ASC lastName, firstName'
+  orderBy: 'lastName, firstName ASC'
 });
 </javascript>
 
-In this case the results are sorted in an ascending order, first by last name and second by first name. If you omit the +ASC+ keyword, the results are by default sorted in an ascending order. To sort them in descending order, begin the +orderBy+ string with the keyword +DESC+.
+In this case the results are sorted in an ascending order, first by last name and second by first name. If you omit the +ASC+ keyword, the results are by default sorted in an ascending order. To sort them in descending order, put the keyword +DESC+ after the name of the property.
 
 NOTE: If you need a custom sorting order, you can register your own comparison operator for a specific model attribute using +SC.Query.registerComparison+. Please refer to the "documentation":http://docs.sproutcore.com/symbols/SC.Query.html#SC.Query%23registerComparison for further details.
 
