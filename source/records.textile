@@ -646,7 +646,8 @@ h4. DESTROYED Substates
 
 h3. Changelog
 
-* February 9, 2011: minor corrections by Florian Kugler
+--* February 13, 2011: corrected error in query sorting
+* February 9, 2011: typos and other minor corrections by Florian Kugler
 * February 6, 2011: initial version by Florian Kugler
 
 
