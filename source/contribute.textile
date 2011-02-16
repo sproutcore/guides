@@ -8,27 +8,27 @@ h3. How to Contribute?
 
 First, you will need to fork the SproutCore guides repository from Github. Go to https://github.com/sproutcore/sproutguides and click the Fork button. Then, check your forked copy out onto your local machine.
 
-<plain>
+<shell>
 $ git clone git@github.com:<yourname>/sproutguides.git
-</plain>
+</shell>
 Switch to your newly cloned repository.
 
-<plain>
+<shell>
 $ cd sproutguides
-</plain>
+</shell>
 
 You will want to add the main SproutCore repository as a remote:
 
-<plain>
+<shell>
 $ git remote add upstream git://github.com/sproutcore/sproutguides.git
-</plain>
+</shell>
 
 For each guide you write, you will want to create a new branch:
 
-<plain>
+<shell>
 $ git fetch upstream
 $ git checkout -b <branchName> upstream/master
-</plain>
+</shell>
 
 TIP:  The -b switch is the branch name you are creating.  When the time comes to push your changes back to the remote server you will need this name.  Everyone will see this name, so choose wisely.
 
@@ -40,27 +40,43 @@ The easiest way to get started with the guides on OSX is to download and install
 
 h4. If You're a Ruby Developer
 
-You can use the normal bundler workflow to develop the guides:
+h5. Normal gem install
 
-<plain>
+To install the guides gem, just use:
+
+<shell>
+$ gem install guides
+</shell>
+
+h5. Installing with bundler
+
+Alternatively you can use the normal bundler workflow to develop the guides.
+This has the benefit of making sure you are using the correct version of the guides gem for development.
+
+To install with bundler:
+
+<shell>
 $ gem install bundler
+$ cd sproutguides
 $ bundle install --binstubs
-</plain>
+</shell>
 
-For the rest of this guide, when the +guides+ command is references, prefix it with +bin+. For instance, if you are instructed to run <tt>guides preview</tt>, instead run <tt>bin/guides preview</tt>.
+The above commands will download the source, compile and install the +guides+ executable in the +bin+ sub-directory.
+
+For the rest of this guide, when the +guides+ command is referenced, prefix it with +bin+. For instance, if you are instructed to run <tt>guides preview</tt>, instead run <tt>bin/guides preview</tt>.
 
 h3. Create Your Guide
 
-Create a new guide +<name>.textile+ from the following template:
+Create a new guide +&lt;your_guide_name&gt;.textile+ in the +source+ directory.  Use the following template:
 
 <plain>
 h2. Guide Topic
 
 This guide covers ... After reading this guide, you will be able to:
 
-* Make a list of the things you will cover
-* This should be a relatively high level list
-* It should cover what the reader will know how to do once done
+* Make a list of the things you will cover.
+* This should be a relatively high level list.
+* It should cover what the reader will know how to do once done.
 
 endprologue.
 
@@ -71,20 +87,22 @@ Each topic should use an h3.
 
 To preview your guide as you write it, run the +preview+ command.
 
-<plain>
+<shell>
 $ guides preview
 >> Thin web server (v1.2.7 codename No Hup)
 >> Maximum connections set to 1024
 >> Listening on 0.0.0.0:9292, CTRL+C to stop
-</plain>
+</shell>
 
-Go to +http://localhost:9292/<guide-name>.html+ in a browser. After making a change, refresh to see it update live.
+Go to +http://localhost:9292/&lt;your_guide_name&gt;.html+ in a browser. After making a change, refresh to see it update live.
+
+If you do not see your changes, check the terminal window where you ran the +preview+ command for error messages.
 
 h3. Updating +guides.yml+
 
 You will also want to update the main +guides.yml+ in the root of the repository with your new guide. First, decide which section your guide will go under. In general, new guides will go under the <tt>Digging Deeper</tt> section.
 
-Next, create a new entry for your guide. You will need to decide on a title and description. For the URL, enter the filename you used for your guide, without the +.textile+ ending. An entry will look something like this:
+Next, create a new entry for your guide. You will need to decide on a title and description. For the URL, enter the filename you used for your guide, without the +.textile+ ending. For example, if +&lt;your_guide_name&gt;+ happens to be +weebles+, then your entry will look something like this:
 
 <plain>
 index:
@@ -97,14 +115,14 @@ index:
 Once you are done, commit your work and then push your guide to your fork:
 
 To commit all your changes:
-<plain>
+<shell>
 $ git commit -a
-</plain>
+</shell>
 
 Pushing your changes back to the remote repository:
-<plain>
+<shell>
 $ git push origin <branchName>
-</plain>
+</shell>
 
 TIP:  branchName above is the name you used at the beginning of the guide in the git checkout step.  If you can't remember the name use 'git branch -a' to list the branches. 
 
