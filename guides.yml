@@ -24,9 +24,10 @@ authors:
     - name: Shawn Morel
       nick: shawnmorel
       description: Shawn Morel is a software generalist with lots of experience building user interfaces in Cocoa, Flex, and bare-bones HTML.
-    - name: Scott Smith
-      nick: ssmith
-      description: ""
+    - name: Scott "oldfartdeveloper" Smith
+      nick: oldfartdeveloper
+      image: oldfartdeveloper.jpg
+      description: Scott is a Senior Developer at Hedgeye Risk Management.
     - name: Devin Torres
       nick: dtorres
       description: ""
