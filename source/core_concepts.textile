@@ -409,7 +409,8 @@ property will not propagate to the remote property.
 h4. Bindings Shorthand
 
 Since simple bindings are used so often, there's also a shortcut to creating
-bindings. All you need to do is append +Binding+ to the property name.
+bindings. By default, if you only specify a string for the binding it is created
+as if you had done +SC.Binding.from(STRING)+.
 In the above example, you could instead do:
 
 <javascript>
