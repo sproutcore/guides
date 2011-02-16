@@ -64,6 +64,9 @@ You run all the tests by simply browsing
 You can also test a subset of unit tests; see "Running Unit Test Cases":/running_unit_test.html
 for more information.
 
+WARNING: The test runner is not currently operational on 1.5. Unit tests have to be run manually.
+This will be fixed prior to release. See the above link for more information.
+
 h3. Getting the Most Out of Unit Testing
 
 To get the best results out of your test running, you should get into

@@ -29,7 +29,7 @@ It also means that if you write code that runs on page load BEFORE the +main()+ 
 
 h3. Using the SproutCore Test Runner
 
-NOTE: The new Abbot tools do not yet support the test runner.  Until they do, you should follow the "Running Tests Manually" section below.
+WARNING: The new Abbot tools do not yet support the test runner.  Until they do, you should follow the "Running Selected Unit Tests":running_unit_tests.html#running-selected-unit-tests section below.
 
 h4. Starting the Test Runner
 
@@ -54,20 +54,21 @@ NOTE: The "+Using Continuous Integration+" checkbox and the "+Run Tests+" button
 
 h3. Running Selected Unit Tests
 
-NOTE: The instructions in this section only apply to SproutCore revision level 1.5 and above.
-
 h4. Running An Individual Unit Test File
 
 Sometimes you may want to run unit tests manually outside of the test runner. For example, perhaps you have a continuous integration environment and would like to use Selenium to evaluate the results of running your unit tests.
 
 All unit tests for an application or framework can be found at an easily computed URL using the following format:
 
-@http://localhost:4020/sproutcore/tests#APP_NAME&test=PARTIAL_PATH_TO_APP@
+All unit tests for an application or framework can be found at an easily computed URL using the following format:
+
+@http://localhost:4020/APP_NAME/LANGUAGE/current/tests/PATH/TO/TEST.html@
 
 where:
 
 * APP_NAME is your application name.
-* PARTIAL_PATH_TO_APP is the subpath from the +PROJECT_FOLDER/apps/APP_NAME/tests+ folder.  It should include the body of the javascript file name but not the +.js+ extension.
+* LANGUAGE is the language you want to run tests for. (Usually 'en')
+* PATH/TO/TEST is the subpath from the +PROJECT_FOLDER/apps/APP_NAME/tests+ folder.  It should include the body of the javascript file name but not the +.js+ extension.
 
 As an example, suppose you have a unit test file located at:
 
@@ -75,19 +76,29 @@ As an example, suppose you have a unit test file located at:
 
 To run this test, browse:
 
-@http://localhost:4020/sproutcore/tests#my_app&test=unit/sample@
+@http://localhost:4020/my_app/en/current/tests/unit/sample.html@
 
 h4. Loading All Unit Tests In a Directory
 
-NOTE: Under Construction
+If you would like to run all of the unit tests in a directory, you can use the same method described as above, but instead name the directory with an .html extension.  For example, to run all of the unit tests in the +tests/unit+ directory, you could visit:
+
+@http://localhost:4020/my_app/en/current/tests/unit.html@
+
+Note that the HTML file loaded at this URL will contain all of your unit tests files concatenated together in a single HTML page.  If your tests are not properly isolated, they may interfere with one another when loaded this way, though this is rare.
 
 h4. Loading All Unit Tests in a Target
 
-NOTE: Under Construction
+Finally, If you would like to load all of the unit tests on your application or framework, you can do that too.  Instead of naming a directory, just visit a URL with the format described above but ending in tests.html.  For example, to load all of the unit tests at once for your contact application you could visit:
+
+@http://localhost:4020/my_app/en/current/tests.html@
+
+Note that, like the combined directory tests above, this global test file will contain all of your unit test files concatenated together in a single HTML page.  If your tests are not properly isolated, they may interfere with one another, causing the unit tests to pass when loaded individually but fail when they are loaded together.  This situation is rare, but you should be careful to write your test files so that they will not clobber one another at load time.
 
 h4. Loading Tests from Nested Targets
 
-NOTE: Under Construction
+If you use nested targets, you can load tests from them as well.  Just name your nested target like you name it in a config file.  For example, the sproutcore framework contains a nested framework called "runtime".  You could load all of the unit tests for the sproutcore/runtime framework by visiting:
+
+@http://localhost:4020/sproutcore/runtime/en/current/tests.html@
 
 h3. Moving On
 
