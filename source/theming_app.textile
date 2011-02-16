@@ -467,3 +467,6 @@ have to add it to your theme's +theme.js+ and remove it from your app's:
 MyTheme.Error = MyTheme.subtheme('error');
 </javascript>
 
+h3. Changelog
+
+* January 17, 2011: initial version by "Alex Iskander":credits.html#ialexi

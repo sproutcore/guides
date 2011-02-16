@@ -107,3 +107,7 @@ Now that you know the basics of how to use unit tests,
 it's time to start adding unit tests to your project.
 
 See "Adding Unit Test Files »":/adding_unit_test.html
+
+h3. Changelog
+
+* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs

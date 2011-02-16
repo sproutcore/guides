@@ -352,3 +352,7 @@ Todos.mainPage = SC.Page.design({
 </javascript>
 
 Generally, since I tend to think of the binding to the description and the value as functionality, I think I would want an integration test which checks both of those values. However for the sake of brevity (this post is already quite long), I'll leave out those tests.
+
+h3. Changelog
+
+* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs

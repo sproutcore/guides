@@ -106,4 +106,7 @@ This concludes the main programming guide for working with Unit Tests in SproutC
 
 On to the "SproutCore Testing Guidelines »":/testing_guidelines.html
 
+h3. Changelog
 
+* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* February 15, 2011: minor revisions by "Peter Wagenet":credits.html#pwagenet

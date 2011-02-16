@@ -382,3 +382,7 @@ To avoid needlessly including the same data twice, skip the middle slice:
 You can supply a space-separated list of slices to skip. The possible slice
 names are +top-left+, +top+, +top-right+, +left+, +middle+, +right+,
 +bottom-left+, +bottom+, and +bottom-right+.
+
+h3. Changelog
+
+* January 20, 2011: initial version by "Alex Iskander":credits.html#ialexi

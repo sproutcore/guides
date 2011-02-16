@@ -164,3 +164,7 @@ Once you've added a unit test file, now you need to write some unit test code.
 Learn more by writing your first unit test.
 
 On to "Writing Unit Test Cases »":/writing_unit_tests.html
+
+h3. Changelog
+
+* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs

@@ -24,3 +24,7 @@ h3. Next
 Let's reinvent the *todos* project using TDD techniques.
 
 On to "SproutCore Development Using TDD »":/todos_tdd.html
+
+h3. Changelog
+
+* February 15, 2011: initial placeholder by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs

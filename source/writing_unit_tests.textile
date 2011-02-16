@@ -228,4 +228,6 @@ Now that you have written a unit test case or two, it's time to run them.  The n
 
 On to "Running Unit Tests »":/running_unit_tests.html
 
+h3. Changelog
 
+* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
