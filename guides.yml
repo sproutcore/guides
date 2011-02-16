@@ -97,7 +97,7 @@ index:
       text: "Adding a unit test automatically or manually."
     - title: "Writing Unit Tests"
       url: writing_unit_tests
-      text: "Describes how to write unit tests using +modules+ and +tests+"
+      text: "Describes how to write unit tests using module and test functions"
     - title: "Running Unit Tests"
       url: running_unit_tests
       text: "How tests are loaded and executed by the test runner."
