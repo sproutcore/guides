@@ -51,6 +51,9 @@ authors:
     - name: Vibul Imtarnasan
       nick: veebs
       description: ""
+    - name: 'Mike Ball'
+      nick: onkis
+      description: 'Mike is a member of the SproutCore core team.'
 
 index:
   Start Here:
@@ -127,4 +130,10 @@ index:
       url: todos_tdd
       text: "Show implementing the TODOs project using TDD."
       construction: true
-
+  Contributing:
+    - title: "Javascript Style Guide"
+      url: "style_guide"
+      text: "This guide covers the style of SproutCore framework code"
+    - title: "Comitter Guidelines"
+      url: "commit_code"
+      text: "A detailed checklist of the do's and don'ts of SC Framework code..."
