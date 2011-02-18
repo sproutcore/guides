@@ -1,10 +1,10 @@
 h2. JavaScript Style Guide
 
-This guide comes from http://wiki.sproutcore.com/w/page/12412942/JavaScript-Style-Guide
+Coding and naming convention style guidelines make your code clearer, easier to read and, they can also actually improve performance.  
 
-Coding and naming convention style guidelines not only make your code clearer and easier to read, but they can also actually improve performance.  Although you can use any convention that makes sense for you, the guidelines described here are based on years of experience from SproutCore developers in writing understandable and maintainable code.
+Although you can use any convention that makes sense for you, the guidelines described here are based on years of experience from SproutCore developers in writing understandable and maintainable code.
  
-The SproutCore coding and naming convention style guidelines are based on the Cocoa style guide from "CocoaDevCentral":http://cocoadevcentral.com/. Being a framework that is based on JavaScript, not everything in the aforementioned style guide applies completely. However, since SproutCore has a lot of conceptual similarities with Objective-C, it is useful to align the coding styles somewhat. It not only allows for the similar concepts to be described in the same way, but also it makes it easier for developers using both Objective-C and SproutCore to go from one to the other. Plus, the Cocoa coding style guidelines are widely followed and therefore there is a pool of developers already familiar with it.
+The SproutCore coding and naming convention style guidelines are based on the Cocoa style guide from "CocoaDevCentral":http://cocoadevcentral.com/. 
 
 endprologue.
 
@@ -314,3 +314,7 @@ h3. Related Material
 "Google Tech Talk regarding Javascript performance":http://www.youtube.com/watch?v=mHtdZgou0qU
 
 "Javascript: The Good Parts":http://www.youtube.com/watch?v=hQVTIJBZook
+
+h3. Credit
+
+This guide came mainly from the old "wiki":http://wiki.sproutcore.com/w/page/12412942/JavaScript-Style-Guide and was written by Peter Bergström
