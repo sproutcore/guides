@@ -318,7 +318,7 @@ MyApp.ContactNameView = SC.View.extend({
     context.push('<h1>', this.get('value'), '</h1>');
   },
   update: function (jquery) {
-    jquery.find('h1').text(value);
+    jquery.find('h1').text(this.get('value'));
   }
 });
 </javascript>
