@@ -388,7 +388,7 @@ MyApp.ContactNameView = SC.View.extend({
     context.push('<h1>', this.get('value'), '</h1>');
   },
   update: function (jquery) {
-    jquery.find('h1').text(value);
+    jquery.find('h1').text(this.get('value'));
   }
 });
 </javascript>
@@ -403,7 +403,7 @@ to them. Let's recreate the last scenario using an +SC.RenderDelegate+ that
 we're going to create in +render_delegates/contact_name.js+:
 
 <javascript>
-SC.AceTheme.contactNameRenderDelegate = SC.RenderDelegate.create({
+SC.Theme.contactNameRenderDelegate = SC.RenderDelegate.create({
   render: function (dataSource, context) {
     context.push('<h1>', dataSource.get('value'), '</h1>');
   },
