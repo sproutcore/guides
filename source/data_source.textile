@@ -10,6 +10,8 @@ If you are looking for other methods of talking to the server, "look here":conne
 
 endprologue.
 
+WARNING: This is a Draft Copy, and although the information in here is correct, it may be incomplete in places.
+
 h3. What is a DataSource?
 
 A DataSource is the layer that sits between your SproutCore application's "store":/model_overview.html#store and your backend. To start out, you'll probably be using the "fixtures":fixtures.html DataSource to populate your app with data without having to hit your server in development.  When you are ready to interact with your backend, you can create your own DataSource that will send and receive data to and from your backend.

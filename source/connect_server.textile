@@ -4,6 +4,8 @@ Here we give an overview of the options that you have for connecting your data t
 
 endprologue.
 
+WARNING: This is a Draft Copy, and although the information in here is correct, it may be incomplete in places.
+
 h3. When you have a light app, with limited server needs
 
 SproutCore includes a powerful model layer, called the datastore. SproutCore has special code in it's controller and view layers to make the datastore the most efficient source of data.

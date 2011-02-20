@@ -4,6 +4,8 @@ SproutCore includes a powerful model layer, called the datastore. SproutCore has
 
 endprologue.
 
+WARNING: This is a Draft Copy, and although the information in here is correct, it may be incomplete in places.
+
 Nevertheless, you don't have to use the datastore in your application. Like most high-quality frameworks, the datastore is an optional framework in SproutCore (though it is "on" by default).
 
 h3. How To Use SproutCore Without a Model Layer
