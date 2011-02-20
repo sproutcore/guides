@@ -14,13 +14,11 @@ WARNING: This is a Draft Copy, and although the information in here is correct, 
 
 h3. What is a DataSource?
 
-A DataSource is the layer that sits between your SproutCore application's "store":/model_overview.html#store and your backend. To start out, you'll probably be using the "fixtures":fixtures.html DataSource to populate your app with data without having to hit your server in development.  When you are ready to interact with your backend, you can create your own DataSource that will send and receive data to and from your backend.
+A DataSource is the layer that sits between your SproutCore application's "store":/model_overview.html#store and your backend. To start out, your app will probably be setup to use "fixtures":fixtures.html. This will populate your app with data without having to hit your server in development.  When you are ready to interact with your backend, you can create your own DataSource that will send and receive data to and from your backend.
 
 NOTE: A DataSource is different from the Store. The Store is the in memory storage for your records, while the DataSource is the communication layer linking the store to your backend.
 
-
-TODO: A diagram will be nice, showing the layers of a sproutcore application, with the datasource highlighted to show where it fits in.
-
+TODO: A diagram will be nice, showing the layers of a SproutCore application, with the datasource highlighted to show where it fits in.
 
 h3. When should I make my own DataSource?
 
@@ -59,12 +57,11 @@ POST: /todos/
   "done": false
 }
 </plain>
-The server will create an ID for us.
+The server will tell us that it's all good, and return the new ID for us.
 <javascript>
 {
-  "id": 3,
-  "title": "Profit!",
-  "done": false
+  "status": "OK",
+  "id": 3
 }
 </javascript>
 
@@ -81,6 +78,13 @@ You'll see just one object returned:
 }
 </javascript>
 The API also allows us to send a PUT to update an existing ToDo item and DELETE to remove it.
+
+A PUT or DELETE response will look like:
+<javascript>
+{
+  "status": "OK"
+}
+</javascript>
 
 With this basic understanding of how the server works, we can get started writing our DataSource.
 
@@ -150,7 +154,7 @@ Now we want to fetch all the Todo's
 
 <javascript>
 fetch: function(store, query) {
-  SC.Request.getURL('/todos/').json()
+  SC.Request.getUrl('/todos/').json()
     .notify(this, 'fetchDidComplete', store, query)
     .send()
 
@@ -163,7 +167,7 @@ fetchDidComplete: function(response, store, query) {
         records = response.get('body');
     
     store.loadRecords(recordType, records);
-    store.store.dataSourceDidFetchQuery(query);
+    store.dataSourceDidFetchQuery(query);
     
   } else {
     // Tell the store that your server returned an error
@@ -177,7 +181,7 @@ Our +Fetch+ function is pretty simple. For now, we are constructing an +Request+
 
 NOTE: You are not restricted to using an SC.Request inside of a DataSource, but it is advised that you don't go making calls to your server from just anywhere in your app.
 
-".getURL":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.getUrl tells our request that we want to use the GET method to contact the given url. You can also use 
+".getUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.getUrl tells our request that we want to use the GET method to contact the given url. You can also use 
 "putUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.putUrl,
 "postUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.postUrl or
 "deleteUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.deleteUrl.
@@ -227,7 +231,6 @@ Now we call "loadRecords":http://docs.sproutcore.com/symbols/SC.Store.html#SC.St
 
 WARNING: You need to make sure that your data hashes have their "primary key":#a-records-primarykey properties, in this case '+id+'.
 
-
 NOTE: This is the usual way of calling +loadRecords+, but it can be called with a few different signatures. This allows for quite complex behaviour, such as loading multiple record types at once. These will be covered by other guides.
 
 Finally, we call ".dataSourceDidErrorQuery":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#dataSourceDidErrorQuery to let the store know that we have finished loading records, and it is now time to update the passed in query. The query that we passed in is the one that was given to us by +fetch+.  It was passed in through to the callback.
@@ -260,35 +263,190 @@ This will allow our DataSource to find the path needed. We'll change the fetch m
 
 <javascript>
 fetch: function(store, query) {
-  SC.Request.getURL('/%@/'.fmt(query.recordType.resourcePath)).json()
+  SC.Request.getUrl('/%@/'.fmt(query.recordType.pluralResourcePath))
     .notify(this, 'fetchDidComplete', store, query)
-    .send()
+    .json().send()
 
   return YES;
 },
 </javascript>
 
-The fetch method will now work for all record types.
-
-h4. Going for Creation
-
-POST
+The fetch method will now use a dynamic URL for each record type.
 
 h4. Change of Mind
 
-PUT 
+Fetching records is fun but it will only get us so far. Eventually we are going to want to make some changes to these records.
 
-Updating data is a similar process to creation, we just need to make sure that anything that comes back from the server remains linked to what we have.
+Each time our store wants to commit changes to the server, the +updateRecord+ method well be called for each of the changed records.
+<javascript>
+updateRecord: function(store, storeKey) {
+  var recordType = store.recordTypeFor(storeKey),
+      id = store.idFor(storeKey),
+      data = store.readDataHash(storeKey);
+  
+  SC.Request.putUrl("/%@/%@".fmt(recordType.resourcePath, id))
+    .notify(this, 'updateRecordDidComplete', store, storeKey, id)
+    .json().send(data);
+  
+  return YES;
+},
 
-h4. Ahh, Refreshing
+updateRecordDidComplete: function(response, store, storeKey, id) {
+  if(SC.ok(response) && response.get('body').status === "OK") {
+    // Tell the store that we have successfully updated
+    store.dataSourceDidComplete(storeKey);
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidError(storeKey, response);
+  }
+}
+</javascript>
 
-GET
+Our API uses the PUT method for making changes, so we use +putUrl()+, the string that we are making for the url, will end up looking something like: +/todo/1+
+
+This code should look familiar with only a few differences. This time we don't have a query, but instead just a reference to a single record, via it's +storeKey+. With this, we get the +recordType+, +id+ and the +data+ (the actual properties of our record).
+
+NOTE: In this instance we call +send()+ with an object. This is possible, because we also called +json()+. Without this, +send()+ would need to be called with a string.
+
+Our API will return the following from our PUT command.
+<javascript>
+{
+  "status": "OK"
+}
+</javascript>
+
+So we test for it +response.get('body').status === "OK"+. If all is good, then we call +dataSourceDidComplete+ to tell the store we are done.
+
+h5. Server Processing
+
+If your server needs to process the data, it might need to send back different data than what you send up. Your server might send back something like:
+
+<javascript>
+{
+  "status": "OK",
+  "record": {
+    "id": 3,
+    "title": "Profit!",
+    "done": false,
+    "updatedAt": "2011-02-20 11:36Z"
+  }
+}
+</javascript>
+
+You'll then need to update your callback to tell the store about it:
+
+<javascript>
+store.dataSourceDidComplete(storeKey, response.get('body').record);
+</javascript>
+
+This will update the properties on your record with any changes that the server makes.
+
+h4. Going for Creation
+
+Creating records is much like updating them, but when you first create a record in the store, it does not have an +id+. So when the server responds, with the +id+:
+<javascript>
+{
+  "status": "OK",
+  "id": 3
+}
+</javascript>
+We tell the store about it:
+<javascript>
+createRecord: function(store, storeKey) {
+  var recordType = store.recordTypeFor(storeKey),
+      data = store.readDataHash(storeKey);
+  
+  SC.Request.postUrl("/%@".fmt(recordType.pluralResourcePath))
+    .notify(this, 'createRecordDidComplete', store, storeKey)
+    .json().send(data);
+  
+  return YES;
+},
+
+createRecordDidComplete: function(response, store, storeKey) {
+  var body = response.get('body');
+  if(SC.ok(response) && body.status === "OK") {
+    // Tell the store that we have successfully updated
+    store.dataSourceDidComplete(storeKey, null, body.id);
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidError(storeKey, response);
+  }
+}
+</javascript>
+
+h5. Server Processing
+
+The same deal with server side processing applies here as with updates.
 
 h4. Feeling Destructive
 
-DELETE
+Things should start feeling pretty familiar now, you can probably guess what's going to come next.
+
+<javascript>
+destroyRecord: function(store, storeKey) {
+  var recordType = store.recordTypeFor(storeKey),
+      id = store.idFor(storeKey),
+      data = store.readDataHash(storeKey);
+  
+  SC.Request.deleteUrl("/%@/%@".fmt(recordType.resourcePath, id))
+    .notify(this, 'destroyRecordDidComplete', store, storeKey)
+    .json().send();
+  
+  return YES;
+},
+
+destroyRecordDidComplete: function(response, store, storeKey) {
+  var body = response.get('body');
+  if(SC.ok(response) && body.status === "OK") {
+    // Tell the store that we have successfully updated
+    store.dataSourceDidDestroy(storeKey);
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidError(storeKey, response);
+  }
+}
+</javascript>
+
+You should have noticed the 2 differences,
+ 1) We're using +deleteUrl+
+ 2) We're calling +dataSourceDidDestroy+ in the callback.
+
+h4. Ahh, Refreshing
+
+One that that is not always used, but some apps find helpful, is being able to refresh a record, to get the latest from the server.
+
+This is similar to a query, but for only a single record.
+
+<javascript>
+retrieveRecord: function(store, storeKey) {
+  var recordType = store.recordTypeFor(storeKey),
+      id = store.idFor(storeKey),
+      data = store.readDataHash(storeKey);
+  
+  SC.Request.getUrl("/%@/%@".fmt(recordType.resourcePath, id))
+    .notify(this, 'retrieveRecordDidComplete', store, storeKey, id)
+    .json().send(data);
+  
+  return YES;
+},
+
+retrieveRecordDidComplete: function(response, store, storeKey, id) {
+  if(SC.ok(response) && response.get('body').status === "OK") {
+    // Tell the store that we have successfully updated
+    store.dataSourceDidComplete(storeKey, response.get('body').record);
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidError(storeKey, response);
+  }
+}
+</javascript>
+
+This time, we'll always be passing the datahash into +dataSourceDidComplete+, to make sure that the local record is the same as the server copy.
 
 h3. Things to Note
+
+Some important things to note will go here.
 
 h4. A Records PrimaryKey
 
