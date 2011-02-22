@@ -35,10 +35,11 @@ h4. Starting the Test Runner
 
 The easiest way to run unit tests is to simply visit the built-in unit test runner by starting your browser and navigating to "http://localhost:4020":http://localhost:4020, then selecting +tests+ from the application list as shown.
 
-!images/testing/unit_test_2.jpg(Test Runner)!
+!images/testing/unit_test_2.png(Test Runner)!
 
-For quicker access, bookmark "http://localhost:4020/sproutcore/tests":http://localhost:4020/sproutcore/tests.
+Your unit tests for your application(s) will be listed under +APPS+.  The unit tests for SproutCore itself are listed under +SPROUTCORE+.
 
+For quicker access to this page, bookmark "http://localhost:4020/sproutcore/tests":http://localhost:4020/sproutcore/tests.
 
 h4. Selecting and Running Tests
 
@@ -48,17 +49,27 @@ Suppose your application is named "my_app". To see a list of your unit tests, in
 
 Run all the unit test cases within a file by clicking on it.
 
-
 NOTE: The "+Using Continuous Integration+" checkbox and the "+Run Tests+" button are under construction.
 
+When the test run is complete, the results are displayed as follows:
 
-h3. Running Selected Unit Tests
+!images/testing/unit_test_4.png(Test Runner Unit Test Results)!
 
-h4. Running An Individual Unit Test File
+
+
+
+h3. Running Selected Unit Tests 
 
 Sometimes you may want to run unit tests manually outside of the test runner. For example, perhaps you have a continuous integration environment and would like to use Selenium to evaluate the results of running your unit tests.
 
-All unit tests for an application or framework can be found at an easily computed URL using the following format:
+All unit tests for an application can be found at an easily computed URL.
+
+The computed URLs can run all tests on all applications or a subset of them as detailed below.
+
+
+h4. Running an Individual Unit Test File
+
+Any unit test file can be run from a browser using a URL in the following format:
 
 @http://localhost:4020/APP_NAME/LANGUAGE/current/tests/PATH/TO/TEST.html@
 
@@ -76,7 +87,7 @@ To run this test, browse:
 
 @http://localhost:4020/my_app/en/current/tests/unit/sample.html@
 
-h4. Loading All Unit Tests In a Directory
+h4. Running All Unit Tests in a Directory
 
 If you would like to run all of the unit tests in a directory, you can use the same method described as above, but instead name the directory with an .html extension.  For example, to run all of the unit tests in the +tests/unit+ directory, you could visit:
 
@@ -84,9 +95,9 @@ If you would like to run all of the unit tests in a directory, you can use the s
 
 Note that the HTML file loaded at this URL will contain all of your unit tests files concatenated together in a single HTML page.  If your tests are not properly isolated, they may interfere with one another when loaded this way, though this is rare.
 
-h4. Loading All Unit Tests in a Target
+h4. Running All Unit Tests in an Application
 
-Finally, If you would like to load all of the unit tests on your application or framework, you can do that too.  Instead of naming a directory, just visit a URL with the format described above but ending in tests.html.  For example, to load all of the unit tests at once for your contact application you could visit:
+If you would like to run all of the unit tests in your application, you can do that too.  Instead of naming a directory, just visit a URL with the format described above but ending in tests.html.  For example, to load all of the unit tests at once for your contact application you could visit:
 
 @http://localhost:4020/my_app/en/current/tests.html@
 
@@ -106,6 +117,9 @@ On to the "SproutCore Testing Guidelines »":/testing_guidelines.html
 
 h3. Changelog
 
-* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul Imtarnasan":credits.html#veebs
 * February 15, 2011: minor revisions by "Peter Wagenet":credits.html#pwagenet
 * March     2, 2011: minor revisions by "Topher Fangio":credits.html#topherfangio
+* March 2, 2011: minor revisions by "Vibul Imtarnasan":credits.html#veebs
+
+

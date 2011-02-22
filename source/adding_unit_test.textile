@@ -132,18 +132,13 @@ If you cannot or would prefer not to use the +sc-gen+ tool, you can always add a
 
 Just create a new +.js+ file in your +tests+ directory.  It will be automatically run by the test runner when appropriate.
 
+
+
+
 h3. How to Arrange Your Unit Tests
 
-The SproutCore Test Runner can run:
+Unit tests work best if you arrange them into files and directories based on how you might want to run them together.  Often, it is a good practice is to create a directory for each class you add to your app and one unit test file per method you want to test inside that directory.
 
-_TODO: needs elaboration. The problem is that we haven't expanded on the concept that the test runner can run all tests on all applications (or a subset of them)._
-
-* an individual unit test file,
-* all unit test files a directory, or
-* all unit test files for a particular target (i.e. application or framework).
-
-Unit tests work best if you arrange them into files and directories based on how you might want to run them together.  Often, it is a good practice is to create a directory for each class you add
-to your app and one unit test file per method you want to test inside that directory.
 For example, the unit tests for SC.Object might look something like:
 
 <shell>
@@ -153,9 +148,8 @@ tests/system/object/kindOf.js
 ...
 </shell>
 
-This way you can easily run all of the unit tests for a particular method,
-all of the unit tests for the SC.Object class itself or all of the unit tests
-for classes defined in the "system" directory of the target.
+This way you can easily run all of the unit tests for a particular method, all of the unit tests for the SC.Object class itself or all of the unit tests for classes defined in the "system" directory of the target.
+
 
 
 h3. Moving On
