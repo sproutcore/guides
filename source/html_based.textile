@@ -231,3 +231,93 @@ SproutCore's binding system is designed with the view system in mind, which make
 to work directly with your data and not need to worry about manually keeping your view
 layer in sync. You will see this concept over and over again in the rest of this tutorial
 and in other guides.
+
+h3. Getting Things Done
+
+We now have the ability to add todos, but no way to mark them as done. Before the frustration
+of a never-ending todo list gets the better of us, let's add the ability to mark todos as
+complete.
+
+The first thing we need to do is add a checkbox to each todo view. Here's the HTML:
+
+<html>
+<input class="check" type="checkbox" />
+</html>
+
+If we want to handle user input, we need to assign a view to the checkbox. In this case,
+we want to be notified whenever the value of the checkbox is changed by the user. Remember
+that we assign views using the +#view+ helper. Here's what the todo list looks like after
+updating it in +app.handlebars+:
+
+<html>
+{{#collection "Todos.todoListView"}}
+  {{#view "Todos.Checkbox"}}
+    <input class="check" type="checkbox" />
+  {{/view}}
+  <div class='todo-content'>{{title}}</div>
+{{/collection}}
+</html>
+
+Let's switch back to +app.js+ and implement +Todos.Checkbox+, which we just assigned. Because
+our view wraps an +input+ tag of type +checkbox+, we mix in +SC.CheckboxSupport+. This gives
+the view a +value+ property that reflects the value in the DOM, and, because it is a SproutCore
+property, we can observe any changes to it.
+
+INFO: Under the hood, SproutCore binds an event handler to the +change+ event and
+updates +value+ when the event occurs. This may change as needed for browser
+compatibility, and working with a SproutCore property insulates you from those
+concerns.
+
+For every item in its underlying +Array+, +SC.TemplateCollectionView+ will create
+a new child view whose +content+ property contains the object the view should represent. In
+our case, there will be a child view for each todo, and each will have a +content+ property
+set to a corresponding +Todo+ object.
+
+This makes it easy to update the +isDone+ property of the right +Todo+ item whenever the user
+clicks the checkbox. Let's tie it all together:
+
+<javascript>
+Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
+
+  // Observe the value property
+  valueDidChange: function() {
+    // Get the Todo object and change its isDone property
+    this.setPath('parentView.content.isDone', this.get('value'));
+  }.observes('value')
+});
+</javascript>
+
+Until now, SproutCore has been creating item views for each +Todo+ for us. Often, you will
+want to add custom behavior to these views. In that case, you can provide your
++SC.TemplateCollectionView+ with an +SC.TemplateView+ subclass that it will use instead.
+
+In our todos app, we want to display completed todos in a different visual style than
+uncompleted todos. We'll do that using CSS, but first we'll need to add an HTML +class+
+so the browser can distinguish between the two.
+
+First, we'll tell our collection to use a custom item view. Then, in that view, we will
+observe for changes to the +isDone+ property, and toggle the class based on its value.
+
+Here's what +todoListView+ looks like after we've updated it:
+
+<javascript>
+Todos.todoListView = SC.TemplateCollectionView.create({
+  contentBinding: 'Todos.todoListController',
+
+  itemView: SC.TemplateView.extend({
+    // Add the 'done' class to this view
+    // if the Todo object is marked isDone
+    isDoneDidChange: function() {
+      var isDone = this.getPath('content.isDone');
+
+      this.$().toggleClass('done', isDone);
+    }.observes('.content.isDone')
+  })
+});
+</javascript>
+
+Reload your application in the browser and try it out. As soon as you click a
+todo's checkbox, the text will become crossed out. Keep in mind you didn't need to
+update any views when marking the +Todo+ as done; bindings did it for. If a different part
+of the app changes the +Todo+ item's +isDone+ property, your list item would automatically
+update without any more work on your part.
