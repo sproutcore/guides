@@ -1,0 +1,221 @@
+h2. Getting Started With HTML-Based Apps
+
+After reading this guide, you will be able to:
+
+* Use SproutCore's templating support to build the view layer of
+  your application.
+* Use views to handle events and update your models.
+* Use bindings to ensure that your views stay synchronized with
+  changes to the models, without any glue code.
+
+You will learn all of this by building a real Todo list application
+from the ground up using SproutCore.
+
+endprologue.
+
+h3. Generate Your New Application
+
+First, generate your new HTML-based application.
+
+<plain>
+$ sc-init --template todos
+</plain>
+
+This will create several files needed for your application, inside
+the *+apps/todos+* directory.
+
+* *apps/*
+** *todos/*
+*** *app.js* - The JavaScript file that will define your models, views, and controllers
+*** *resources/*
+**** *templates/* - Place all Handlebars templates here.
+***** *app.handlebars* - The main template for the application
+**** *images/* - Place all image assets here.
+**** *todos.css* - The CSS to style your views
+*** *tests/*
+* *Buildfile* - Tells SproutCore how your application should be built. Usually, you can just use the defaults provided.
+* *README*
+
+Go ahead and open +app.js+ now. You should see the following code:
+
+<javascript>
+var Todos = SC.Application.create();
+
+jQuery(document).ready(function() {
+  Todos.mainPane = SC.TemplatePane.append({
+    layerId: "todo",
+    templateName: "app"
+  });
+});
+</javascript>
+
+This code creates a namespace for your application (called +Todos+), then appends
+a new pane. A pane is responsible for event delegation and placing your templates
+into the DOM, but you'll learn more about that later.
+
+h3. Defining Your Model
+
+In this tutorial, we want to create a list for managing todos. Users should be able
+to create a new todo with a specific task, then check it off once it's done.
+
+Let's define our model as a new subclass of +SC.Object+:
+
+<javascript>
+Todos.Todo = SC.Object.extend({
+  init: function() {
+    // Sets the title to a default value if the title property
+    // is either not set, or is set to an empty string.
+    if (!this.get('title')) { this.set('title', "empty todo..."); }
+
+    return sc_super();
+  },
+
+  // A string containing the name of the todo.
+  title: null,
+
+  // A boolean indicating whether or not the todo is completed.
+  isDone: false
+});
+</javascript>
+
+NOTE: Make sure you insert this code at line 2, after the Todos object is created.
+
+We've now defined a class with two properties: +title+, a string, and +isDone+, a Boolean.
+We also defined a method called +init+, which is run every time you create a new instance
+of the class. In this case, we set a default value for the +title+ property if none
+has been provided.
+
+h3. Managing the Model Using a Controller
+
+Now that we know what our data looks like it, how do we create new todos? Since we want to
+maintain an ordered list of todos, let's use an array controller to manage them.
+
+<javascript>
+Todos.todoListController = SC.ArrayController.create({
+  // Initialize the array controller with an empty array.
+  content: []
+});
+</javascript>
+
+INFO: In MVC frameworks, like SproutCore, the controller layer bridges the model layer,
+which is only concerned with a pure-data representation of objects, and the view layer,
+which is only concerned with representing those objects.
+
+Now we have an array controller with no content. Let's add a method to create a new todo:
+
+<javascript>
+Todos.todoListController = SC.ArrayController.create({
+  // Initialize the array controller with an empty array.
+  content: [],
+
+  // Creates a new todo with the passed title, then adds it
+  // to the array.
+  createTodo: function(title) {
+    var todo = Todos.Todo.create({ title: title });
+    this.pushObject(todo);
+  }
+});
+</javascript>
+
+h3. Creating New Todos with a Text Field
+
+CAUTION: *TODO* Download and apply CSS file
+
+We've got our model and controller set up, so let's move on to the fun part: creating the
+interface for our users. The first step is to create a text field into which the user types
+the name of their todo.
+
+To start building our views, let's open +resources/templates/app.handlebars+ and add
+some markup:
+
+<html>
+<h1>Todos</h1>
+<input id="new-todo" type="text"
+       placeholder="What needs to be done?" />
+</html>
+
+Now that we've got model, view, and controller represented, it's time to open the app in our
+browser and see how it looks.
+
+During the development process, +sc-server+ makes it easy to test your application. Just do
+the following inside of your app directory:
+
+<shell>
+$ sc-server
+Starting server at http://0.0.0.0:4020 in debug mode
+To quit sc-server, press Control-C
+>> Thin web server (v1.2.7 codename No Hup)
+>> Maximum connections set to 1024
+>> Listening on 0.0.0.0:4020, CTRL+C to stop
+</shell>
+
+Open your web browser and navigate to +http://localhost:4020/todos+. You should see your
+application load. Once you have it up and running, it's time to tell SproutCore how to
+handle events for your <code><input></code> tag. When the user presses +return+, we want
+to create a new Todo and have it inserted into the array controller.
+
+NOTE: In SproutCore, whenever you want to display dynamic content or handle events, you will
+need to attach your HTML to a view object.
+
+<javascript>
+Todos.CreateTodoView = SC.TemplateView.create(SC.TextFieldSupport, {
+  insertNewLine: function() {
+    Todos.todoListController.createTodo(this.get('value'));
+  }
+});
+</javascript>
+
+Because +CreateTodoView+ contains a text field, we mix in +SC.TextFieldSupport+, which
+provides several conveniences, including a +value+ property, and higher level events
+such as +insertNewLine+, for when the user presses +return+.
+
+NOTE: When creating a new object, you can include a mixin, which will extend the
+default behavior of the class. In this case, we extend the default +TemplateView+
+behavior with functionality specific to views that wrap input tags. You can include
+as many mixins as you'd like by passing them as parameters to +create()+ and +extend()+.
+
+Now that we have defined our view, we need to attach it to HTML in our Handlebars template.
+
+<html>
+<h1>Todos</h1>
+{{#view "Todos.CreateTodoView"}}
+<input id="new-todo" type="text"
+       placeholder="What needs to be done?" />
+{{/view}}
+</html>
+
++#view+ is a Handlebars block helper that assigns an +SC.TemplateView+ to a section of
+HTML. This means that the behavior described in the specified view, such as event handling,
+will get associated with the HTML inside the block.
+
+We have the UI to create new todos, so now we need to display them.
+
+Use the +#collection+ helper to display a list of items. +#collection+ will create an instance
+of +SC.TemplateCollectionView+ that renders every item in its underlying Array using the
+enclosed HTML.
+
+CAUTION: *TODO* Use bindCollection syntax
+<html>
+{{#collection "Todos.todoListView"}}
+  <div class='todo-content'>{{title}}</div>
+{{/collection}}
+</html>
+
+Back in +app.js+, we need to define the collection class that we passed to the +collection+
+helper. To define the collection's underlying +Array+, we bind its +content+ property to the
++todoListController+. In this case, that means that the +todoListView+ will create a
+<code><div></code> containing the Todo's +title+ for each item in the +todoListController+.
+
+<javascript>
+Todos.todoListView = SC.TemplateCollectionView.create({
+  contentBinding: 'Todos.todoListController'
+});
+</javascript>
+
+NOTE: You set up bindings by creating a property whose name ends in +Binding+. In this case,
+we bind +Todos.todoListController+ to the +Todos.todoListView+'s +content+ property. When one
+end of a binding changes, SproutCore will automatically update the other end.
+
+When the +content+ Array of a +TemplateCollectionView+ changes, it will automatically update
+its HTML representation to reflect the changes. When a new object is added, the
++TemplateCollectionView+ will render the bloc
