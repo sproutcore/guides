@@ -619,7 +619,7 @@ How do the changes introduced in the local store propagate back to the main data
 	var result = myRecord.commitRecord(); 	
 </javascript>
 
-WARN: Why do we assign the result of the method to a variable?  Because we want to check the state of the record.
+WARN: Why do we assign the result of the method to a variable?  Because we want to check the status of the record.  result.status!
 
 h3. In-Depth Information about Record States
 
