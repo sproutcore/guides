@@ -333,7 +333,18 @@ myContact.get('address').pushObject(myAddress);
 
 In this case we're adding the +Address+ record to the +Contact+ record, because +Contact+ is defined as master in this relation (+isMaster: YES+) and has the inverse property set. It is important to add the non-master record to the master record in order to set up the connection between these records properly.
 
+WARN: This works great if you are in control of your primary keys.  What do you do if you are relying on your datasource to set the key for you?  The answer is you must commit the master record first like the following.
 
+<javascript>
+	myContact = MyApp.store.createRecord(MyApp.Contact, {}); 
+	myContact.commitRecord();
+	myAddress = MyApp.store.createRecord(MyApp.Address, {});
+	//now push the child to the parent
+	myContact.get('address').pushObject(myAddress);
+	//should these be committed? probably
+	myContact.commitRecord();
+	myAddress.commitRecord();  // I wonder if there's an auto-commit function?
+</javascript>
 h4. Updating Records
 
 Updating a record's attributes is as easy as calling +set()+:
@@ -600,6 +611,15 @@ We call +SC.Query.registerQueryExtension+ to register the new operator with the 
 
 NOTE: Look at the source of SC.Query ("datastore/system/query.js") for more examples of how to implement query operators.
 
+h3. Committing Records
+
+How do the changes introduced in the local store propagate back to the main data source?  Committing your records calls the underlying datasource's methods.  The details are beyond the scope of this guide.  The general form is:
+
+<javascript>
+	var result = myRecord.commitRecord(); 	
+</javascript>
+
+WARN: Why do we assign the result of the method to a variable?  Because we want to check the state of the record.
 
 h3. In-Depth Information about Record States
 
