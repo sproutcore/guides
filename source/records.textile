@@ -333,17 +333,15 @@ myContact.get('address').pushObject(myAddress);
 
 In this case we're adding the +Address+ record to the +Contact+ record, because +Contact+ is defined as master in this relation (+isMaster: YES+) and has the inverse property set. It is important to add the non-master record to the master record in order to set up the connection between these records properly.
 
-WARN: This works great if you are in control of your primary keys.  What do you do if you are relying on your datasource to set the key for you?  The answer is you must commit the master record first like the following.
+INFO: This works great if you are in control of your primary keys.  What do you do if you are relying on your datasource to set the key for you?  The answer is you must commit the master record first so the underlying datasource can provide a primary key like the following:
 
 <javascript>
-	myContact = MyApp.store.createRecord(MyApp.Contact, {}); 
+	myContact = MyApp.store.createRecord(MyApp.Contact, {/*...*/}); 
 	myContact.commitRecord();
-	myAddress = MyApp.store.createRecord(MyApp.Address, {});
+	myAddress = MyApp.store.createRecord(MyApp.Address, {/*...*/});
 	//now push the child to the parent
 	myContact.get('address').pushObject(myAddress);
-	//should these be committed? probably
-	myContact.commitRecord();
-	myAddress.commitRecord();  // I wonder if there's an auto-commit function?
+	
 </javascript>
 h4. Updating Records
 
