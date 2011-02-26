@@ -130,7 +130,7 @@ some markup:
 <html>
 <h1>Todos</h1>
 <input id="new-todo" type="text"
-       placeholder="What needs to be done?" />
+       placeholder="What needs to be done?" >
 </html>
 
 Now that we've got model, view, and controller represented, it's time to open the app in our
@@ -240,7 +240,7 @@ complete.
 The first thing we need to do is add a checkbox to each todo view. Here's the HTML:
 
 <html>
-<input class="check" type="checkbox" />
+<input class="check" type="checkbox">
 </html>
 
 If we want to handle user input, we need to assign a view to the checkbox. In this case,
@@ -251,7 +251,7 @@ updating it in +app.handlebars+:
 <html>
 {{#collection "Todos.todoListView"}}
   {{#view "Todos.CheckboxView"}}
-    <input class="check" type="checkbox" />
+    <input class="check" type="checkbox">
   {{/view}}
   <div class='todo-content'>{{title}}</div>
 {{/collection}}
@@ -502,3 +502,5 @@ When you use SproutCore, as you scale your UI, you never need to wonder whether 
 will work consistently with parts of the UI you already implemented. Because you build your view
 layer to simply reflect the state of your models, you can make changes however you want and
 see them update automatically.
+
+<input type="checkbox" onclick="document.body.style.textDecoration='line-through'">Mark Tutorial as Done
