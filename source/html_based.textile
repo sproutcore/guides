@@ -346,10 +346,10 @@ Todos.statsView = SC.TemplateView.create({
 });
 </javascript>
 
-The +displayRemaining+ property contains the properly pluralized string, using the
-view's +remaining+ property.  We call this a *computed property*. Computed properties are
-properties whose value is determined by running a function. For example, if +remaining+ equals
-+1+, +displayRemaining+ will contain +"1 item"+.
++displayRemaining+ contains a pluralized string, based on the number of remaining todos.
+We call this a *computed property*. Computed properties are properties whose value is determined
+by running a function. For example, if +remaining+ equals +1+, +displayRemaining+ will contain
+the string +"1 item"+.
 
 We say that +displayRemaining+ *depends on* +remaining+ because it requires another value to
 generate its own value. We list these *dependent keys* inside the +property()+ declaration.
@@ -387,3 +387,118 @@ Here's how it all fits together:
 INFO: As we build up our application, we create *declarative* links between objects.
 These links describe how application state flows from the model layer to the HTML
 in the presentation layer.
+
+h3. Clearing Completed Todos
+
+CAUTION: *TODO* Insert dad joke
+
+As we populate our list with todos, we may want to periodically clear out those
+we've completed. As you have learned, we will want to make that change to the
++todoListController+, and let SproutCore automatically propagate those changes
+to the DOM.
+
+Let's add a new +clearCompletedTodos+ method to the controller.
+
+<javascript>
+clearCompletedTodos: function() {
+  this.filterProperty('isDone', true).forEach(this.removeObject, this);
+}
+</javascript>
+
+Next, we'll add the HTML to our template and connect it up to a view for event
+handling. Open +app.handlebars+ and add a button inside the HTML for +statsView+:
+
+<html>
+{{#view "Todos.statsView"}}
+  <span class='todo-count'>
+    <span class='number'>{{bindProperty "remaining"}}</span>
+    <span class='word'>{{bindProperty "remainingWord"}} left.</span>
+  </span>
+  {{#view "Todos.clearCompletedView"}}
+  <a href="#">Clear {{bindProperty "completed"}} completed {{bindProperty "completedWord"}}</a>
+  {{/view}}
+{{/view}}
+</html>
+
+Now implement +Todos.clearCompletedView+:
+
+<javascript>
+Todos.clearCompletedView = SC.TemplateView.create({
+  mouseUp: function() {
+    Todos.todoListController.clearCompletedTodos();
+  }
+});
+</javascript>
+
+Fire up your browser and try it out. Add some todos, then mark them done and clear them.
+Because we previously bound the visual list to the +todoListController+, making a change
+through new means has the expected effect.
+
+h3. Marking All as Done
+
+Let's say you've decided to lay off the hooch for a day and actually get all of your
+work done. Wouldn't it be nice to have a way to easily mark every todo as complete?
+
+It turns out that, due to our application's declarative nature, all the hard work is
+already done. We just need a way to mark every +Todo+ complete.
+
+Let's first create a new computed property on our controller that describes whether or not
+every todo is done. It might look something like this:
+
+<javascript>
+allAreDone: function() {
+  return this.get('length') && this.everyProperty('isDone', true);
+}.property('@each.isDone')
+</javascript>
+
+INFO: SproutCore has many enumerable helpers. +everyProperty('isDone', true)+ returns true
+if every item in the array has an +isDone+ property that evaluates to +true+. You can find the
+full list of helpers in "SC.Enumerable":http://edgedocs.sproutcore.com/symbols/SC.Enumerable.html.
+
+Next, we'll create a checkbox to mark all items complete and bind it to this property:
+
+<html>
+{{#view "Todos.markAllDoneView"}}
+  <input class="mark-all-done" type="checkbox"> Mark All as Done
+{{/view}}
+</html>
+
+<javascript>
+Todos.markAllDoneView = SC.TemplateView.create(SC.CheckboxSupport, {
+  valueBinding: 'Todos.todoListController.allAreDone'
+});
+</javascript>
+
+If you reload your browser and use the app, you'll notice that clicking all of the checkboxes
+of your todos will cause the "Mark All as Done" checkbox to become checked. However, it doesn't
+work in the other direction: clicking "Mark All as Done" has no effect.
+
+So far, our computed properties have described how to calculate a value from dependent properties.
+In this case, we want to accept a new value, and update dependent properties to reflect it.
+
+<javascript>
+allAreDone: function(key, value) {
+  if (value !== undefined) {
+    this.setEach('isDone', value);
+    return value;
+  } else {
+    return this.get('length') && this.everyProperty('isDone', true);
+  }
+}.property('@each.isDone')
+</javascript>
+
+When you set a computed property, your function is called with the property key as the first
+parameter and the new value as the second. To determine if SproutCore is asking for the value
+or trying to set it, we examine the +value+ parameter. If it is defined, we iterate through each
++Todo+ and set its +isDone+ property to the new value.
+
+Because bindings are bidirectional, SproutCore will set +allAreDone+ to +true+ when the user clicks
+the "Mark All as Done" checkbox. Conversely, unchecking it will make SproutCore set +allAreDone+ to
++false+, unchecking all todos.
+
+Reload the app and add some todos. Click "Mark All as Done". Wow! Each of the individual check
+boxes gets checked off. If you uncheck one of them, the "Mark All as Done" checkbox unchecks itself.
+When you use SproutCore, as you scale your UI, you never need to wonder whether a new feature
+will work consistently with parts of the UI you already implemented. Because you build your view
+layer to simply reflect the state of your models, you can make changes however you want and
+see them update automatically.
