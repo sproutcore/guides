@@ -2,11 +2,10 @@ h2. Getting Started With HTML-Based Apps
 
 After reading this guide, you will be able to:
 
-* Use SproutCore's templating support to build the view layer of
+* Use SproutCore's templating support to describe the appearance of
   your application.
-* Use views to handle events and update your models.
-* Use bindings to ensure that your views stay synchronized with
-  changes to the models, without any glue code.
+* Delegate handling of user events with views.
+* Use bindings to update views when your models change.
 
 You will learn all of this by building a real Todo list application
 from the ground up using SproutCore.
@@ -78,7 +77,7 @@ Todos.Todo = SC.Object.extend({
 });
 </javascript>
 
-NOTE: Make sure you insert this code at line 2, after the Todos object is created.
+NOTE: Make sure you insert this code at line 2 of +app.js+, after the Todos object is created.
 
 We've now defined a class with two properties: +title+, a string, and +isDone+, a Boolean.
 We also defined a method called +init+, which is run every time you create a new instance
@@ -161,6 +160,7 @@ need to attach your HTML to a view object.
 Todos.CreateTodoView = SC.TemplateView.create(SC.TextFieldSupport, {
   insertNewLine: function() {
     Todos.todoListController.createTodo(this.get('value'));
+    this.set('value', '');
   }
 });
 </javascript>
@@ -188,11 +188,10 @@ Now that we have defined our view, we need to attach it to HTML in our Handlebar
 HTML. This means that the behavior described in the specified view, such as event handling,
 will get associated with the HTML inside the block.
 
-We have the UI to create new todos, so now we need to display them.
-
-Use the +#collection+ helper to display a list of items. +#collection+ will create an instance
-of +SC.TemplateCollectionView+ that renders every item in its underlying Array using the
-enclosed HTML.
+Now that we have UI to create new todos, let's create the interface to display them.
+We'll use the +#collection+ helper to display a list of items. +#collection+ will
+create an instance of +SC.TemplateCollectionView+ that renders every item in its underlying
+Array using the enclosed HTML.
 
 CAUTION: *TODO* Use bindCollection syntax
 <html>
@@ -251,14 +250,14 @@ updating it in +app.handlebars+:
 
 <html>
 {{#collection "Todos.todoListView"}}
-  {{#view "Todos.Checkbox"}}
+  {{#view "Todos.CheckboxView"}}
     <input class="check" type="checkbox" />
   {{/view}}
   <div class='todo-content'>{{title}}</div>
 {{/collection}}
 </html>
 
-Let's switch back to +app.js+ and implement +Todos.Checkbox+, which we just assigned. Because
+Let's switch back to +app.js+ and implement +Todos.CheckboxView+, which we just assigned. Because
 our view wraps an +input+ tag of type +checkbox+, we mix in +SC.CheckboxSupport+. This gives
 the view a +value+ property that reflects the value in the DOM, and, because it is a SproutCore
 property, we can observe any changes to it.
@@ -273,17 +272,12 @@ a new child view whose +content+ property contains the object the view should re
 our case, there will be a child view for each todo, and each will have a +content+ property
 set to a corresponding +Todo+ object.
 
-This makes it easy to update the +isDone+ property of the right +Todo+ item whenever the user
-clicks the checkbox. Let's tie it all together:
+This makes it easy to bind the value of the checkbox to the value of +isDone+, so that when
+one changes, the other changes automatically. Let's tie it all together:
 
 <javascript>
 Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
-
-  // Observe the value property
-  valueDidChange: function() {
-    // Get the Todo object and change its isDone property
-    this.setPath('parentView.content.isDone', this.get('value'));
-  }.observes('value')
+  valueBinding: 'parentView.content.isDone'
 });
 </javascript>
 
@@ -321,3 +315,75 @@ todo's checkbox, the text will become crossed out. Keep in mind you didn't need 
 update any views when marking the +Todo+ as done; bindings did it for. If a different part
 of the app changes the +Todo+ item's +isDone+ property, your list item would automatically
 update without any more work on your part.
+
+h3. The More You Know
+
+We can now create todos and mark them as being complete. While 76% of all statistics are
+made up, let's see if we can display more accurate information from the data we have.
+At the bottom of our list, let's display the number of todos remaining. Open
++app.handlebars+ and put this at the bottom:
+
+<html>
+{{#view "Todos.statsView"}}
+  <span class='remaining'>{{bind "displayRemaining"}}</span>
+{{/view}}
+</html>
+
+The +bind+ helper allows us to automatically update the DOM when a property
+on our view changes. In this case, we're saying that we should insert the value
+of the view's +displayRemaining+ property whenever it changes.
+
+Let's go ahead and implement that view in +app.js+ now:
+
+<javascript>
+Todos.statsView = SC.TemplateView.create({
+  remainingBinding: 'Todos.todoListController.remaining',
+
+  displayRemaining: function() {
+    var remaining = this.get('remaining');
+    return remaining + (remaining === 1 ? " item" : " items");
+  }.property('remaining').cacheable()
+});
+</javascript>
+
+The +displayRemaining+ property contains the properly pluralized string, using the
+view's +remaining+ property.  We call this a *computed property*. Computed properties are
+properties whose value is determined by running a function. For example, if +remaining+ equals
++1+, +displayRemaining+ will contain +"1 item"+.
+
+We say that +displayRemaining+ *depends on* +remaining+ because it requires another value to
+generate its own value. We list these *dependent keys* inside the +property()+ declaration.
+
+We've also bound the view's +remaining+ property to the +todoListController+'s +remaining+
+property. This means that, because of the dependency chain we've described, if
++Todos.todoListController.remaining+ changes, +displayRemaining+ will automatically update.
+
+When we have information that views need but is based on aggregate information about our
+models, the array controller is a good place to put it. Let's add a new computed property to
++todoListController+ in +app.js+:
+
+<javascript>
+remaining: function() {
+  return this.filterProperty('isDone', false).get('length');
+}.property('@each.isDone'),
+</javascript>
+
+Here, we specify our dependent key using +@each+. This allows us to depend on properties of
+the array's items. In this case, we want to update the +remaining+ property any time +isDone+
+changes on a +Todo+.
+
+NOTE: The +@each+ property also updates when an item is added or removed.
+
+It's important to declare dependent keys because SproutCore uses this information to
+know when to update bindings. In our case, our +statsView+ updates any time
++todoListController+'s +remaining+ property changes.
+
+Here's how it all fits together:
+
+<div style='text-align: center'>
+  !images/html_based/bindings.png!
+</div>
+
+INFO: As we build up our application, we create *declarative* links between objects.
+These links describe how application state flows from the model layer to the HTML
+in the presentation layer.
