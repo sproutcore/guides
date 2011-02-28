@@ -1,4 +1,4 @@
-h2. Core Concepts
+h2. Core View Concepts
 
 The guide covers some of the core concepts of views in SproutCore. By
 referring to this guide, you will be able to:
@@ -18,6 +18,8 @@ appends to the DOM in your +main+ function. Let's start by looking at what
 every SproutCore project starts with as it's main page:
 
 <javascript>
+// my_app/resources/main_page.js
+
 MyApp.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     childViews: 'labelView'.w(),
@@ -36,9 +38,10 @@ what this boilerplate code does. +MyApp.mainPage+ is our main application
 page. Your application may end up having several "pages" or you may choose to
 swap content into and out of a single page. +MyApp.mainPage+ is an +SC.Page+
 which works by lazily configuring itself. The views within a page are only
-awakened when you +get+ the page in the +main.js+ file:
+awakened when you +get+ the page:
 
 <javascript>
+// my_app/main.js
 MyApp.getPath('mainPage.mainPane').append();
 </javascript>
 
@@ -68,6 +71,8 @@ by starting an +SC.WorkspaceView+ which allows us to have a toolbar on the top
 and bottom and a view between those two toolbars:
 
 <javascript>
+// my_app/resources/main_page.js
+
 MyApp.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     childViews: 'workspaceView'.w(),
@@ -88,6 +93,8 @@ it sounds like +SC.SplitView+ is the perfect view to do that, so let's make
 that our +contentView+:
 
 <javascript>
+// my_app/resources/main_page.js
+
 SC.WorkspaceView.design({
   contentView: SC.SplitView.design({
     dividerThickness: 1,
@@ -116,6 +123,8 @@ looks great out of the box, but also provides the default behaviors of a
 source list:
 
 <javascript>
+// my_app/resources/main_page.js
+
 topLeftView: SC.SourceListView.design({
   content: ["Devin Torres", "Charles Jolley", "Peter Wagenet"]
 })
@@ -126,6 +135,8 @@ phone number, and address. We can use +SC.LabelView+ for all three in our
 +bottomRightView+:
 
 <javascript>
+// my_app/resources/main_page.js
+
 bottomRightView: SC.View.design({
   childViews: 'contactDetails'.w(),
   contactDetails: SC.View.design({
@@ -162,6 +173,8 @@ SC.ArrayController for our contacts and an SC.ObjectController that
 proxies individual contact objects:
 
 <javascript>
+// my_app/controllers/contacts.js
+
 MyApp.contactsController = SC.ArrayController.create({
   content: [
     SC.Object.create({
@@ -185,6 +198,8 @@ MyApp.contactsController = SC.ArrayController.create({
   ]
 });
 
+// my_app/controllers/contact.js
+
 MyApp.contactController = SC.ObjectController.create({
   contentBinding: SC.Binding.from('MyApp.contactsController.selection').single()
 });
@@ -194,6 +209,8 @@ Now we can bind our source list to the +SC.ArrayController+ to get a dynamic
 list of contacts and individual contact selection support:
 
 <javascript>
+// my_app/resources/main_page.js
+
 SC.SourceListView.design({
   contentValueKey: 'name',
   contentBinding: 'MyApp.contactsController.content',
@@ -205,6 +222,8 @@ With the contacts selectable, the only thing missing is dynamic label values
 for the contact's name, phone, and address:
 
 <javascript>
+// my_app/resources/main_page.js
+
 SC.View.design({
   layout: { top: 50, left: 50, bottom: 50, right: 20 },
   childViews: 'nameLabel phoneLabel addressLabel'.w(),
@@ -231,6 +250,8 @@ The contact information will now change automatically whenever a new contact
 is selected. Our +bottomRightView+ should now look like this:
 
 <javascript>
+// my_app/resources/main_page.js
+
 SC.View.design({
   childViews: 'usageHint contactDetails'.w(),
   usageHint: SC.View.design({
@@ -278,6 +299,8 @@ generic view and add the class name +myapp-usage-hint+ to the +classNames+
 array, and then a label view as a child to display the hint:
 
 <javascript>
+// my_app/resources/main_page.js
+
 SC.View.design({
   classNames: 'myapp-usage-hint',
   isVisibleBinding: SC.Binding.from('MyApp.contactsController.hasSelection').not(),
@@ -290,10 +313,11 @@ SC.View.design({
 })
 </javascript>
 
-Right now it looks rather small, so let's add some style to it. Create a file
-in the +resources+ directory and name it +theme.css+:
+Right now it looks rather small, so let's add some style to it.
 
 <css>
+// my_app/resources/theme.css
+
 .myapp-usage-hint {
   background-color: #eee;
 }
@@ -327,6 +351,8 @@ is used to queue up and build HTML for a view. You build HTML by calling
 +context.push()+ and passing it HTML:
 
 <javascript>
+// creepy_app/views/charles_jolley.js
+
 CreepyApp.CharlesJolleyView = SC.View.extend({
   render: function (context) {
     context.push("<h1>Charles Jolley is 31 years young...</h1>");
@@ -338,6 +364,8 @@ You can also use +context.begin()+ and +context.end()+ to begin building a tag
 and push arguments that are "stringable" (have a toString) into it:
 
 <javascript>
+// creepy_app/views/charles_jolley.js
+
 CreepyApp.CharlesJolleyView = SC.View.extend({
   displayProperties: ['name', 'age'],
   name: 'Charles Jolley',
@@ -356,6 +384,8 @@ element that belongs to the view. You can use it and all of jQuery's API to
 manipulate the DOM and update your view:
 
 <javascript>
+// creepy_app/views/charles_jolley.js
+
 CreepyApp.CharlesJolleyView = SC.View.extend({
   displayProperties: ['name', 'age'],
   name: 'Charles Jolley',
@@ -382,6 +412,8 @@ this, let's create a custom view called +MyApp.ContactNameView+ that will put
 the contact name in an h1 tag:
 
 <javascript>
+// my_app/views/contact_name.js
+
 MyApp.ContactNameView = SC.View.extend({
   displayProperties: ['value'],
   render: function (context) {
@@ -399,10 +431,11 @@ Render delegates are an easy way to manage theming your apps. You can create
 a render delegate to manage the rendering of your views for you and add it to
 the theme you're using. Render delegates also have a +render+ and +update+
 method, but their first argument is the +dataSource+, or the view delegating
-to them. Let's recreate the last scenario using an +SC.RenderDelegate+ that
-we're going to create in +render_delegates/contact_name.js+:
+to them. Let's recreate the last scenario using an +SC.RenderDelegate+:
 
 <javascript>
+// my_app/render_delegates/contact_name.js
+
 SC.AceTheme.contactNameRenderDelegate = SC.RenderDelegate.create({
   render: function (dataSource, context) {
     context.push('<h1>', dataSource.get('value'), '</h1>');
@@ -416,6 +449,8 @@ SC.AceTheme.contactNameRenderDelegate = SC.RenderDelegate.create({
 Now we have to tell our view to use our new render delegate to draw itself:
 
 <javascript>
+// my_app/views/contact_name.js
+
 MyApp.ContactNameView = SC.View.extend({
   displayProperties: ['value'],
   renderDelegateName: 'contactNameRenderDelegate'
@@ -432,6 +467,8 @@ contact name when it's being hovered over and take the user to the contact's
 website if it's clicked:
 
 <javascript>
+// my_app/views/contact_name.js
+
 MyApp.ContactNameView = SC.View.extend({
   displayProperties: ['value'],
   renderDelegateName: 'contactNameRenderDelegate',
@@ -454,9 +491,11 @@ MyApp.ContactNameView = SC.View.extend({
 });
 </javascript>
 
-And in +core.js+:
+And the action handler:
 
 <javascript>
+// my_app/core.js
+
 openWebsite: function () {
   var website = MyApp.contactController.get('website');
   window.open(website);
@@ -475,3 +514,4 @@ few models, and a data source make developing applications fast and easy.
 h3. Changelog
 
 * January 12, 2011: initial version by "Devin Torres":credits.html#dtorres
+* February 28, 2011: further updates by "Devin Torres":credits.html#dtorres
