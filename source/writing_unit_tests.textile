@@ -1,0 +1,233 @@
+h2. UnitTesting - Writing Unit Test Cases
+
+After reading this guide, you will be able to:
+
+* Use modules to group your unit tests together to share setup and teardown code.
+* Use assertions to test values and report results.
+* Use +start+ and +stop+ to synchronize wtih an asynchronous event such as a timer or callback.
+* Specify HTML in the case where you need to test against HTML.
+
+endprologue.
+
+h3. Overview
+
+Once you've "added a unit test file":/adding_unit_test.html, writing
+your unit test cases is easy.  
+
+A unit test file is made up of modules. A module is a collection of unit test cases that run together. An individual unit test case performs some verification on your code.
+
+h3. Defining a Module
+
+To define a module, call the +module()+ method.  For example, in the "previous guide":/adding_unit_test.html, a module
+called +MyApp.loginController+ is created.
+
+<javascript>
+module("MyApp.loginController");
+</javascript>
+
+Unit test cases defined after calling +module()+ will automatically be grouped into that module until the next +module()+ call or the end of the file.
+
+<javascript>
+module("MyApp.loginController.module1");
+test ("test1 for MyApp.loginController module 1", ...);
+test ("test2 for MyApp.loginController module 1", ...);
+
+module("MyApp.loginController.module2");
+test ("test1 for MyApp.loginController module 2", ...);
+test ("test2 for MyApp.loginController module 2", ...);
+</javascript>
+
+Within the +module+, you may optionally implement +setup()+ and +teardown()+ callbacks to run before and after each unit test case for that module.  Use these methods to setup and teardown any common testing infrastructure. 
+
+For example, if you are  writing a group of tests to work on a +Contact+ record, you might define your module like so:
+
+<javascript>
+var contact ;
+module("Test Contact record", {
+  setup: function() {
+    contact = MyApp.Contact.create({  firstName: "John", lastName: "Doe" });
+  },
+  teardown: function() {
+    contact = null; // reset
+ }
+});
+
+// .. unit tests go here
+
+</javascript>
+
+Note that any common setup you define should be placed into global variables (such as the +contact+ variable above).  Since unit tests are the last thing loaded in the page, it is OK to create these variables globally instead of isolating everything into namespaces like you should with all other code.
+
+h3. Defining a Unit Test Case
+
+Once you've defined a module, you can add individual unit test cases.  A unit test case
+is defined using the +test()+ method.  A test should have a description followed
+by the function you want to execute to perform the test.  
+
+<javascript>
+test("test description", function() {
+  var expected = "test";
+  var result   = "test";
+  equals(result, expected, "test should equal test");
+});
+</javascript>
+
+For example, if you were writing tests for a +Contact+ model object, you might add a test like this:
+
+<javascript>
+test("fullName property returns combined firstName and lastName", function() {
+  // set preconditions
+  contact.set('firstName', 'John');
+  contact.set('lastName', 'Doe');
+
+  // verify
+  equals(contact.get('fullName'), 'John Doe');
+});
+</javascript>
+
+NOTE: Use the test description to describe the _business rule_ you are testing; you (and developers that follow you) will be thankful that you did.
+
+h3. Assertions
+
+Unit test case functions may contain any valid JavaScript.  To actually record the results of your test, however, you can use one of the built-in *assertions*.
+
+Assertions are methods that test a value and then report the result.  If the assertion fails, the test runner will report a failure.  If the assertion passes, then your test is allowed to continue.
+
+h4. ok()
+
+The most basic assertion you can make is +ok()+.  This method accepts a boolean value and an optional description string.  The assertion passes if the value is true and fails otherwise.  For example, here is how you would assert that a test value is greater than 10:
+
+<javascript>
+
+ok(contacts.get('length') > 10, "should be more than 10 contacts");
+
+</javascript>
+
+To make your tests more understandable, you should always include a description when you use +ok()+ assertions.  Otherwise, the test runner will simply print the value that was returned and the value that was expected.
+
+h4. equals()
+
+The other assertion you will commonly use is +equals()+.  This method accepts two values and an optional description.  It passes if the two values are equal and fails otherwise.  The advantage of using +equals+ over +ok(a == b, "a equals b")+ is that, if the test fails, then the test runner will display both the expected value and the actual value; this can be valuable when debugging your code.
+
+For example, here is how you would test the fullName property of a contact:
+
+<javascript>
+
+equals(contact.get('fullName'), 'John Doe', 'fullName = John Doe');
+
+</javascript>
+
+Note: this method is equivalent to +equal()+ in the latest QUnit API.
+
+h4. Other assertions
+
+There are several other assertion types that you can learn about from the "QUnit pages":http://docs.jquery.com/QUnit#API_documentation, such as
++same()+ or +expects()+.  Most of these assertions are not as generally useful as +ok()+ and +equals()+. However, you can use them if you wish.
+
+
+
+h3. Asynchronous Unit Tests Cases
+
+Sometimes, a unit test case needs to stop and wait for task(s) to complete.  This is particularly true when testing code that involves loading data from a server or using timers.  In these scenarios, you can use the +stop()+ and +start()+ methods to control your test execution.
+
+The +stop()+ method temporarily pauses your unit test case from running.  This means that when your test function returns, instead of calling the module's +teardown()+ method (if defined) and running the next unit test case, the test runner will just exit.
+
+After the test runner has been stopped, you can resume it by calling +start()+.  To invoke +start()+, you will need to setup a callback or timer.  
+
+For example, the unit test case below verifies if a particular file loads from the server.  It first issues a +stop()+ to the test runner for 1 second.  If +start()+ is not called within 1 second, the test will fail.  It then uses the callback in +SC.Request.getUrl()+ to call +start()+.
+
+<javascript>
+test("load file from server", function() {
+  // setup a timeout in case of failure
+  stop(1000);
+
+  var req = SC.Request.getUrl("/foo.json").notify(function() {
+    // verify request loaded OK
+    ok(SC.typeOf(req.get('response')) !== SC.T_ERROR, "response should not be an error");
+    // resume executing tests
+    start();
+  });
+});
+</javascript>
+
+Here's a more complex example with assertions.
+
+<javascript>
+test('Create User', function() {
+  // Pause the test runner. If start() is not called within 2 seconds, fail the test.
+  stop(2000);
+
+  var user = MyApp.store.createRecord(MyApp.UserRecord, {
+    username: 'SpongeBob',
+    department: 'Accounts',
+    status: 'Active',
+    isAdmin: NO,
+    lastLoggedInDate: '2010-05-05T10:20:30Z'
+  });
+
+  equal(user.get('username'), 'SpongeBob', 'user name');
+  equal(user.get('department'), 'Accounts', 'department');
+  equal(user.get('userStatus'), 'Active', 'user status');
+  equal(user.get('isAdmin'), NO, 'user is Admin');
+  var d1 = user.get('lastLoggedInDate').toISO8601();
+  var d2 = '2010-05-05T10:20:30+00:00';
+  equal(d1, d2, 'user last logged in');
+
+  // Status should be ready new because record is new and not committed to server
+  ok(user.get('status') === SC.Record.READY_NEW, 'Status is READY_NEW');
+
+  // Commit changes
+  MyApp.store.commitRecords();
+
+  // Give our store 1 second to commit records to the remote server
+  setTimeout(checkCreate, 1000);
+});
+
+function checkCreate() {
+  // Should be to find record now
+  var query = SC.Query.local(MyApp.UserRecord, {
+    conditions: 'username = {name}',
+    name: 'SpongeBob'
+  });
+
+  var users = MyApp.store.find(query);
+  equal(users.get('length'), 1, 'SpongeBob record should be searchable by query');
+
+  // Status should now be 'clean' since it's been saved
+  equal(user.get('status'), SC.Record.READY_CLEAN, 'Status is READY_CLEAN');
+
+  // Can get our record by primary key
+  var user2 = MyApp.store.find(MyApp.UserRecord, user.get('id'));
+  equal(user2.get('username'), 'SpongeBob', 'user name');
+
+  // Resume the test runner again
+  start();
+}
+</javascript>
+
+
+
+h3. Writing HTML
+
+Normally you will not need to add HTML to your page when you write tests since you will be testing functionality provided by your application and all the HTML you need will already exist.
+
+If you do need to write out some sample HTML on the page to work against when testing, however, you can add this HTML using the method +htmlbody()+.  This method should be the first thing called in your page, even before you start a new module.
+
+To use this method, just pass a string containing the HTML you want to add.  The HTML will be appended to the main body tag.
+
+<javascript>
+// adds the h1 tag to the end of the body.
+htmlbody("<h1 id='testheader'></h1>") ;
+</javascript>
+
+
+
+h3. Moving On
+
+Now that you have written a unit test case or two, it's time to run them.  The next section will tell you everything you need to know about how unit tests are loaded and executed by the test runner.
+
+On to "Running Unit Tests »":/running_unit_tests.html
+
+h3. Changelog
+
+* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs

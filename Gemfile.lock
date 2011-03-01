@@ -51,4 +51,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  guides (~> 0.6.5)
+  guides (~> 0.6.6)

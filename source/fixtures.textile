@@ -117,6 +117,8 @@ When the fixtures are loaded into your app the relationships automatically take 
 
 WARNING: Unlike a traditional relational database it is necessary to specify both sides of the relationship.
 
+TIP: When defining the 'many' side of the fixture record, be certain to include the [ ] around a single value because Sproutcore is expecting an array of values.
+
 h4. Defining Non-String Values
 
 The above examples have referred mostly to string values in the fixture. As most data is either passed into the app via JSON or XML, +SC.Record+ is capable of transforming data from a string into the appropriate object type. See +SC.RecordAttribute.registerTransform+ for more information.
@@ -128,6 +130,26 @@ SproutCore comes with a built in data source for your fixtures. To use the fixtu
 <javascript>
 store: SC.Store.create().from(SC.Record.fixtures)
 </javascript>
+
+You can extend the built in fixture data source to simulate real world performance (important in managing user expectations).
+<shell>
+$ sc-gen data-source MyApp.MyAppsFixturesDataSource SC.FixturesDataSource
+</shell>
+
+Delete the boilerplate code in the fixture data source so your code looks like:
+<javascript>
+MyApp.MyAppsFixturesDataSource = SC.FixturesDataSource.extend(
+  {simulateRemoteResponse: YES,latency: 500	}) ; //500 mS latency
+</javascript>
+This simulates a remote response with 500 milliseconds round trip latency.  Tweak the value to match the performance of your network and servers.
+
+Next, point your store to the new fixtures data source.
+<javascript>
+store: SC.Store.create().from('MyApp.MyAppsFixturesDataSource')
+</javascript>
+
+TIP:  Notice the quotes around the data source name?  MyApp.MyAppsFixturesDataSource doesn't exist until its instantiated during the loading process.
+
 
 h3. Changelog
 
