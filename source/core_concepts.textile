@@ -317,7 +317,7 @@ MyApp.mainView.set('user', 'Jim');
 console.log(MyApp.userController.get('name')); // Jim
 </javascript>
 
-In this example, we used the absolute path to the property. Bindings also support relative properties and star properties as well.
+In this example, we used the absolute path to the property. Bindings also support relative properties and chained properties as well.
 
 As you can also see, when you update the value in one location, it is updated in the other. By defaults bindings are bi-directional but you can also set them to only go in one direction by using +SC.Binding.oneWay+ instead. In this case the local property (where the binding is defined) will be updated when the remote property changes, but changes to the local property will not propagate to the remote property.  
 
