@@ -40,6 +40,10 @@ index:
     - title: Install
       url: install
       text: "In this guide we'll walk you through installing SproutCore."
+    - title: Getting Started with HTML-Based Apps
+      url: html_based
+      text: "Learn how to build a robust web app using the power of SproutCore along with the technologies you already know, like HTML and CSS."
+      construction: true
     - title: Getting Started
       url: getting_started
       text: "Jump start your SproutCore development by playing along as we build a fully functional Todo List application."
@@ -47,9 +51,6 @@ index:
     - title: Core Concepts
       url: core_concepts
       text: "In this guide, we will touch on many of the core concepts of SproutCore like bindings and the run loop. We'll cover just enough to get you going with out getting bogged down in the details. If you want to learn more, take a look at the detailed overviews of these concepts in the \"Digging Deeper\" section."
-    - title: Using Amber
-      url: amber
-      text: "Learn how to use the lightweight Amber framework to build applications without the full SproutCore stack."
       construction: true
   Models:
     - title: SproutCore Records

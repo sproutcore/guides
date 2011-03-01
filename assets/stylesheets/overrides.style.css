@@ -39,3 +39,13 @@ dd img {
   background-position: -25px -25px;
   overflow: visible
 }
+
+.guide tt, .guide code {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  text-shadow: #fff 1px 1px 1px;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,0.05);
+  border: 1px solid #ddd;
+  padding: 1px 3px;
+}
