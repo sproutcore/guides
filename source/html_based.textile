@@ -113,7 +113,8 @@ Todos.todoListController = SC.ArrayController.create({
 
 h3. Creating New Todos with a Text Field
 
-CAUTION: *TODO* Download and apply CSS file
+NOTE: At this point, you should download "the CSS":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos.css
+and save it as +apps/todos/resources/todos.css+.
 
 We've got our model and controller set up, so let's move on to the fun part: creating the
 interface for our users. The first step is to create a text field into which the user types
@@ -191,8 +192,6 @@ Now that we have UI to create new todos, let's create the interface to display t
 We'll use the +#collection+ helper to display a list of items. +#collection+ will
 create an instance of +SC.TemplateCollectionView+ that renders every item in its underlying
 Array using the enclosed HTML.
-
-CAUTION: *TODO* Use bindCollection syntax
 
 <html filename="todos.handlebars">
 {{#collection "Todos.todoListView"}}
