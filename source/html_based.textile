@@ -108,7 +108,7 @@ Todos.todoListController = SC.ArrayController.create({
 
 h3. Creating New Todos with a Text Field
 
-NOTE: At this point, you should download "the CSS":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos.css and save it as +apps/todos/resources/todos.css+.
+NOTE: At this point, you should download "the CSS":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos.css and save it as +apps/todos/resources/stylesheets/todos.css+.
 
 We've got our model and controller set up, so let's move on to the fun part: creating the interface for our users. The first step is to create a text field into which the user types the name of their todo.
 
