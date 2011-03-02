@@ -1,12 +1,10 @@
 h2. SproutCore - Development Using TDD
 
-This guide covers building the common TODOS example project using test-driven development (TDD) techniques.
-After reading this guide, you will be able to:
+This guide covers building the common TODOS example project using test-driven development (TDD) techniques.  After reading this guide, you will be able to:
 
 * Start a new SproutCore project using TDD.
 * Build code starting from the view and working backwards to controller and model.
-* ? Do integration tests by knowing how to simulate fundamental SproutCore internals using
-run loops judiciously.
+* ? Do integration tests by knowing how to simulate fundamental SproutCore internals using run loops judiciously.
 
 endprologue.
 
@@ -18,33 +16,32 @@ h3. Getting Started
 
 Let's start with a new project; call it +todos+.  In a console:
 
-<plain>
+<shell>
 sc-init todos
 cd todos
 sc-server
-</plain>
+</shell>
 
-Browse +localhost:4020/todos+ and you should see the
-"Welcome to SproutCore!" window.
+Browse to "localhost:4020/todos":localhost:4020/todos and you should see the "Welcome to SproutCore!" window.
 
-Let's also "sanity-check" that our test framework is working AND
-let's anticipate that we're going to write integration tests:
+Let's also "sanity-check" that our test framework is working AND let's anticipate that we're going to write integration tests:
 
 # Create folder +tests+ under +apps/todos+.
 # Create folder +integration+ under +app/todos/tests+.
 # Add the following test, +sanity_check.js+, under +apps/todos/tests+:
 
-<javascript>
+<javascript filename="apps/todos/tests/sanity_check.js">
 module('Sanity Check');
 test('This should pass', function() {
     ok(true);
 });
 </javascript>
 
-Now, browse "http://localhost:4020/todos/en/current/tests.html":http://localhost:4020/todos/en/current/tests.html
-and you should see the following:
+Now, browse to "http://localhost:4020/todos/en/current/tests.html":http://localhost:4020/todos/en/current/tests.html and you should see the following:
 
+<div style='text-align: center;'>
 !/images/testing/screenshot_1st_test.png!
+</div>
 
 If you have this, we're all set up and you can proceed; otherwise debug first.
 
@@ -52,7 +49,7 @@ h3. Test a View
 
 Let's write a test to see the page display an existing task (which doesn't, of course, exist yet):
 
-<javascript>
+<javascript filename="apps/todos/tests/integration/view_task.js">
 var task;
 module("Given an existing task", {
   setup: function() {
@@ -87,17 +84,18 @@ Within the setup, I'm starting the actual application within the page, and creat
 
 To begin with here, in order to check that the item is on the page, I'm merely testing that it is within the content of the listView which is going to display the item. I could check here the display is showing the description of the item, and that the checkbox is not checked, but that's a bit more details than I care about at this point.
 
-Rerun the tests
-and you will see 2 failures:
+Rerun the tests and you will see 2 failures:
 
-# Setup exception on viewing_task.js Given an existing task module: When looking at the list of tasks: TypeError: Result of expression 'recordType'[undefined] is not an object
-# Died on test #2: Result of expression 'Todos.getPath('mainPage.mainPane.middleView.contentView')' [undefined] is not an object
+WARNING: 1) Setup exception on viewing_task.js Given an existing task module: When looking at the list of tasks: TypeError: Result of expression 'recordType'[undefined] is not an object
+<br />
+<br />
+2) Died on test #2: Result of expression 'Todos.getPath('mainPage.mainPane.middleView.contentView')' [undefined] is not an object
 
 h4. Fix the First Failure
 
-The first failure is telling me that +Todos.Task+ doesn't exist, so I have to create it (+apps/todos/models/task.js+):
+The first failure is telling me that +Todos.Task+ doesn't exist, so I have to create it:
 
-<javascript>
+<javascript filename="apps/todos/models/task.js">
 Todos.Task = SC.Record.extend({
   isDone: SC.Record.attr(Boolean),
   description: SC.Record.attr(String)
@@ -106,11 +104,11 @@ Todos.Task = SC.Record.extend({
 
 I rerun my tests, and see that the first failure is now passing, leaving me only with the second:
 
-@1. Died on test #2: Result of expression 'Todos.getPath('mainPage.mainPane.middleView.contentView')' [undefined] is not an object@
+WARNING: 1. Died on test #2: Result of expression 'Todos.getPath('mainPage.mainPane.middleView.contentView')' [undefined] is not an object
 
 This failing test tells me the path for the requested view does not exist, so I have to modify apps/todos/resources/main_page.js to include it:
 
-<javascript>
+<javascript filename="apps/todos/resources/main_page.js">
 Todos.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     childViews: 'middleView'.w(),
@@ -128,11 +126,11 @@ Todos.mainPage = SC.Page.design({
 
 This changes the failure to the following:
 
-@Died on Test #1: TypeError: Result of expression 'todosList'[null] is not an object@
+WARNING: Died on Test #1: TypeError: Result of expression 'todosList'[null] is not an object
 
 This is telling me that the content of the ListView is null. So what I need to do is bind the contentView to a controller for the tasks, so I do that by modifying the main_page again:
 
-<javascript>
+<javascript filename="apps/todos/resources/main_page.js">
 Todos.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     childViews: 'middleView'.w(),
@@ -150,20 +148,20 @@ Todos.mainPage = SC.Page.design({
 
 Now the error is:
 
-@Died on test #1: TypeError: Cannot call method 'indexOf' of null@
+WARNING: Died on test #1: TypeError: Cannot call method 'indexOf' of null
 
 Hmm. +todosList+ is null.  There isn't any content, so the binding isn't working.  Examining +main_page.js+ reveals that no controller has been set up yet, so creat it in +apps/todos/controllers/tasks.js+:
 
-<javascript>
+<javascript filename="apps/todos/controllers/tasks.js">
 Todos.tasksController = SC.ArrayController.create({
 }) ;
 </javascript>
 
 Rerunning the test yields the error:
 
-@Then I should see the task in the list, expected: true result: false@
+WARNING: Then I should see the task in the list, expected: true result: false
 
-So now my test is telling me that the item is not found in the view. This is because the controller has not had its content set to use Todos.task.
+So now my test is telling me that the item is not found in the view. This is because the controller has not had its content set to use +Todos.task+.
 
 h3. Failure is Actually Success! Time to Refactor!
 
@@ -182,7 +180,7 @@ Todos.mainPage.todosList();
 //And add the following to main_page.js
 Todos.mainPage = SC.Page.design({
   todosList: SC.outlet('mainPane.middleView.contentView'),
-  ...
+  // ...
 })
 </javascript>
 
@@ -190,8 +188,7 @@ What SC.outlet does is generate a computed property that will look up the passed
 
 Here's the new code:
 
-+main_page.js+:
-<javascript>
+<javascript filename="apps/todos/resources/main_page.js">
 Todos.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     childViews: 'middleView'.w(),
@@ -208,8 +205,7 @@ Todos.mainPage = SC.Page.design({
 });
 </javascript>
 
-and +view_task.js+:
-<javascript>
+<javascript filename="apps/todos/tests/integration/view_tasks.js">
 var task;
 module("Given an existing task", {
   setup: function() {
@@ -240,9 +236,9 @@ Rerunning the tests yields the same FAILURE, so we achieved our refactoring.
 
 h3. Add a Unit Test
 
-This is because the controller has not had it's content to be set to use Todos.task. In order to ensure that controller has not had it's content to be set to use Todos.task, I write the following unit test (+apps/todos/tests/main_test.js+):
+This is because the controller has not had it's content to be set to use Todos.task. In order to ensure that controller has not had it's content to be set to use Todos.task, I write the following unit test:
 
-<javascript>
+<javascript filename="apps/todos/tests/main_test.js">
 var mockedFindFunction, findMockObject;
 
 module("Todos.main", {
@@ -265,7 +261,8 @@ test("setup finding tasks", function() {
 </javascript>
 
 In order to make this pass, within the setup I delegate to the store to find the proper object:
-<javascript>
+
+<javascript filename="apps/todos/main.js">
 Todos.main = function main() {
   Todos.getPath('mainPage.mainPane').append() ;
   var tasks = Todos.store.find(Todos.Task); //ADDED THIS
@@ -276,7 +273,7 @@ function main() { Todos.main(); }
 
 That makes the unit test that we wrote pass, but the integration test is still failing, so we need to delegate to the controller to set it's content. Here's the unit test to specify that:
 
-<javascript>
+<javascript filename="TODO - Enter Filename">
 var mockedSetFunction, mockedFindFunction, setMockObject, findMockObject;
 module("Todos.main", {
   setup: function() {
@@ -308,7 +305,7 @@ test("setup tasksController content", function() {
 
 And to make this pass, I need to implement that delegation (+app/todos/main.js+):
 
-<javascript>
+<javascript filename="apps/todos/main.js">
 Todos.main = function main() {
   Todos.getPath('mainPage.mainPane').append() ;
   var tasks = Todos.store.find(Todos.Task);
@@ -330,7 +327,7 @@ h3. One last thing before moving on
 
 At this point, the view - although it is fully functional - is still quite ugly. Since this is purly aesthetic, I like to wait to style until all my tests are passing. I change main_page.js to be the following:
 
-<javascript>
+<javascript filename="apps/todos/resources/main_page.js">
 Todos.mainPage = SC.Page.design({
   mainPane: SC.MainPane.design({
     childViews: 'middleView'.w(),
@@ -356,3 +353,4 @@ Generally, since I tend to think of the binding to the description and the value
 h3. Changelog
 
 * February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* March     2, 2011: added filenames and added error wrappers by "Topher Fangio":credits.html#topherfangio

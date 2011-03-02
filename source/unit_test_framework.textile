@@ -10,23 +10,17 @@ endprologue.
 
 h3. Overview
 
-Rigorous unit testing is a key principle to modern agile development.
-Unit tests not only make it easier for other developers to understand and work with your code,
-it makes it easier for you to maintain your own code as well.
+Rigorous unit testing is a key principle to modern agile development.  Unit tests not only make it easier for other developers to understand and work with your code, it makes it easier for you to maintain your own code as well.
 
-In the past, unit testing JavaScript has been a difficult process,
-primarily because the infrastructure needed to run unit tests required a lot of manual setup.
+In the past, unit testing JavaScript has been a difficult process, primarily because the infrastructure needed to run unit tests required a lot of manual setup.
 
-SproutCore makes unit testing far easier by bundling an integrated
-testing framework as well as a test runner right into the build tools.  The testing framework is based on
-"jQuery's QUint":http://docs.jquery.com/QUnit.
+SproutCore makes unit testing far easier by bundling an integrated testing framework as well as a test runner right into the build tools.  The testing framework is based on "jQuery's QUint":http://docs.jquery.com/QUnit.
 
 h3. How it Works
 
 h4. Where Unit Test Files Are Stored
 
-Unit test files are stored in a directory, +tests+, under your SproutCore application subfolder.
-For example, if your application is named +hello_world+, then the +tests+ folder will have this project path:
+Unit test files are stored in a directory, +tests+, under your SproutCore application subfolder. For example, if your application is named +hello_world+, then the +tests+ folder will have this project path:
 
 @hello_world/apps/hello_world/tests@
 
@@ -42,8 +36,7 @@ See "Adding a Unit Test":/adding_unit_test.html for more information on this pro
 
 h4. Writing Unit Test Cases
 
-Once you've added a unit test file, write your unit test cases using
-the QUnit testing API.  A simple unit test looks like this:
+Once you've added a unit test file, write your unit test cases using the QUnit testing API.  A simple unit test looks like this:
 
 <javascript>
 module("HelloWorld") ;
@@ -58,56 +51,29 @@ h4. Running Unit Test Cases
 
 The test runner is activated when you launch +sc_server+.
 
-You run all the tests by simply browsing
-"http://localhost:4020/sproutcore/tests":http://localhost:4020/sproutcore/tests.
+You run all the tests by simply browsing to "http://localhost:4020/sproutcore/tests":http://localhost:4020/sproutcore/tests.
 
-You can also test a subset of unit tests; see "Running Unit Test Cases":/running_unit_test.html
-for more information.
+You can also test a subset of unit tests; see "Running Unit Test Cases":/running_unit_test.html for more information.
 
-WARNING: The test runner is not currently operational on 1.5. Unit tests have to be run manually.
-This will be fixed prior to release. See the above link for more information.
+WARNING: The test runner is not currently operational on 1.5. Unit tests have to be run manually. This will be fixed prior to release. See the above link for more information.
 
 h3. Getting the Most Out of Unit Testing
 
-To get the best results out of your test running, you should get into
-the habit of adding unit tests for every major function in your application.
-It is not necessary to add unit tests for every single method you write,
-but you should make sure your unit tests cover the major pieces of your app
-that are stitched together with bindings.  This is especially important for
-any complicated engines or for components with a large number of moving parts
-since they tend to break easily.
+To get the best results out of your test running, you should get into the habit of adding unit tests for every major function in your application.  It is not necessary to add unit tests for every single method you write, but you should make sure your unit tests cover the major pieces of your app that are stitched together with bindings.  This is especially important for any complicated engines or for components with a large number of moving parts since they tend to break easily.
 
-Assuming you have good unit tests, you should also make sure everyone in
-your team runs all of the unit tests at least once before committing any
-changes to your source repository.  Try to never commit source changes that
-leave tests failing.  This way unit tests will remain a useful check for every
-developer on the project to ensure they have not broken another piece of the code.
+Assuming you have good unit tests, you should also make sure everyone in your team runs all of the unit tests at least once before committing any changes to your source repository.  Try to never commit source changes that leave tests failing.  This way unit tests will remain a useful check for every developer on the project to ensure they have not broken another piece of the code.
 
-In order to achieve the best test coverage, you need to run your unit tests in
-every target web browser you intend to run your application in.  For example,
-when we write SproutCore code, we will load the test runner in IE6, IE7, IE8,
-Safari, Chrome, and Firefox.  Since running unit tests this many times can
-become very labor intensive if you try to do it before every checkin,
-usually the best thing to do is to run your unit tests before every
-checkin in only one or two browsers such as Firefox and Safari.
-Periodically you should set milestones in your project development where
-you will run through the unit tests on all browsers and fix anything that
-breaks unit tests for continuing with your development.
+In order to achieve the best test coverage, you need to run your unit tests in every target web browser you intend to run your application in.  For example, when we write SproutCore code, we will load the test runner in IE6, IE7, IE8, Safari, Chrome, and Firefox.  Since running unit tests this many times can become very labor intensive if you try to do it before every checkin, usually the best thing to do is to run your unit tests before every checkin in only one or two browsers such as Firefox and Safari.  Periodically you should set milestones in your project development where you will run through the unit tests on all browsers and fix anything that breaks unit tests for continuing with your development.
 
-Above all, the most important thing about unit testing is to write and run
-your unit tests regularly.  Unit tests are only useful if you maintain them.
-If you write too much code that is not covered by unit tests, they will not
-prevent enough errors for people on your team to use them regularly.
-Likewise, if you let your unit tests failing for too long, developers will
-look at test failures as "noise" and tend to ignore them.
+Above all, the most important thing about unit testing is to write and run your unit tests regularly.  Unit tests are only useful if you maintain them.  If you write too much code that is not covered by unit tests, they will not prevent enough errors for people on your team to use them regularly.  Likewise, if you let your unit tests failing for too long, developers will look at test failures as "noise" and tend to ignore them.
 
 h3. Moving On
 
-Now that you know the basics of how to use unit tests,
-it's time to start adding unit tests to your project.
+Now that you know the basics of how to use unit tests, it's time to start adding unit tests to your project.
 
 See "Adding Unit Test Files »":/adding_unit_test.html
 
 h3. Changelog
 
 * February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* March     2, 2011: paragraph formamtting by "Topher Fangio":credits.html#topherfangio

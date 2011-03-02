@@ -10,11 +10,11 @@ This guide covers unit test file generation and organization. After reading this
 endprologue.
 
 
-h3. Creating a Directory for your Unit Test Files
+h3. Creating a Directory for Your Unit Test Files
 
 When you first create your Sproutcore application, directories are automatically created for you.
 
-<plain>
+<shell>
 $ sc-init MyApp
  ~ Created directory at my_app
  ~ Created file at my_app/Buildfile
@@ -27,7 +27,7 @@ $ sc-init MyApp
  ~ Created file at apps/my_app/core.js
  ~ Created file at apps/my_app/main.js
 Your new SproutCore project is ready!
-</plain>
+</shell>
 
 By convention, SproutCore assumes that all unit tests files are located in the +tests+ sub-directory for your application (or framework).
 
@@ -56,7 +56,7 @@ h4. Automatically Creating Unit Test Files
 
 When you use the +sc-gen+ tool to add new source files to your application, it will automatically add a corresponding test file added into the +tests+ directory.  For example,
 
-<plain>
+<shell>
 $ sc-gen controller MyApp.LoginController
  ~ Created directory at controllers
  ~ Created file at controllers/login.js
@@ -65,13 +65,13 @@ $ sc-gen controller MyApp.LoginController
  ~ Created file at tests/controllers/login.js // <== The generated unit test file
 
 Your controller is now ready to use!
-</plain>
+</shell>
 
 Notice the creation of +tests/controllers/login.js+.
 
 Conveniently, the generated unit test file is built from a template:
 
-<javascript>
+<javascript filename="apps/my_app/test/controllers/login.js">
 // ==================================================
 // Project:   MyApp.loginController Unit Test
 // Copyright: ©2011 My Company, Inc.
@@ -92,22 +92,22 @@ h4. Generating Unit Test Files
 
 You can also use the +sc-gen+ tool to create your unit test file by itself:
 
-<plain>
+<shell>
 $ sc-gen test TARGET_NAME PATH/TO/TEST[.js]
-</plain>
+</shell>
 
 For example, if you wanted to add a unit test file named +views/login/render.js+ to your application, you would:
 
-<plain>
+<shell>
 $ sc-gen test MyApp views/login/render
  ~ Created file at tests/views/login/render.js
 
 Your unit test has been generated and is now ready to be configured!
-</plain>
+</shell>
 
 +render.js+ contains a sample unit test case to help you get started.
 
-<plain>
+<shell filename="apps/my_app/tests/views/login/render.js">
 // ==================================================
 // Project:   MyApp Unit Test
 // Copyright: ©2011 My Company, Inc.
@@ -122,7 +122,7 @@ test("test description", function() {
   var result   = "test";
   equals(result, expected, "test should equal test");
 });
-</plain>
+</shell>
 
 
 
@@ -146,12 +146,12 @@ Unit tests work best if you arrange them into files and directories based on how
 to your app and one unit test file per method you want to test inside that directory.
 For example, the unit tests for SC.Object might look something like:
 
-<plain>
+<shell>
 tests/system/object/create.js
 tests/system/object/extend.js
 tests/system/object/kindOf.js
 ...
-</plain>
+</shell>
 
 This way you can easily run all of the unit tests for a particular method,
 all of the unit tests for the SC.Object class itself or all of the unit tests
@@ -167,4 +167,5 @@ On to "Writing Unit Test Cases »":/writing_unit_tests.html
 
 h3. Changelog
 
-* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* February 15, 2011: initial version by "Scott Smith":credits.html#oldfartdeveloper and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* March     2, 2011: added filenames, fixed link in credits, changed +<plain>+ tags to +<shell>+ tags by "Topher Fangio":credits.html#topherfangio

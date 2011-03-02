@@ -67,9 +67,9 @@ For the rest of this guide, when the +guides+ command is referenced, prefix it w
 
 h3. Create Your Guide
 
-Create a new guide +&lt;your_guide_name&gt;.textile+ in the +source+ directory.  Use the following template:
+Create a new guide +<your_guide_name>.textile+ in the +source+ directory.  Use the following template:
 
-<plain>
+<plain filename="source/&lt;your_guide_name&gt;.textile">
 h2. Guide Topic
 
 This guide covers ... After reading this guide, you will be able to:
@@ -102,9 +102,9 @@ h3. Updating +guides.yml+
 
 You will also want to update the main +guides.yml+ in the root of the repository with your new guide. First, decide which section your guide will go under. In general, new guides will go under the <tt>Digging Deeper</tt> section.
 
-Next, create a new entry for your guide. You will need to decide on a title and description. For the URL, enter the filename you used for your guide, without the +.textile+ ending. For example, if +&lt;your_guide_name&gt;+ happens to be +weebles+, then your entry will look something like this:
+Next, create a new entry for your guide. You will need to decide on a title and description. For the URL, enter the filename you used for your guide, without the +.textile+ ending. For example, if +<your_guide_name>+ happens to be +weebles+, then your entry will look something like this:
 
-<plain>
+<plain filename="guides.yml">
 index:
   Digging Deeper:
     - title: Using SproutCore Weebles

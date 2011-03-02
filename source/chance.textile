@@ -148,11 +148,11 @@ $width: 5px;
 If you want to share your variable between files, you have to make sure they are loaded
 in the right order. The +sc_require()+ function does this:
 
-<css>
-// file1.css
+<css filename="apps/my_app/resources/file1.css">
 $width: 5px;
+</css>
 
-// file2.css
+<css filename="apps/my_app/resources/file2.css">
 // call sc_require to make sure file1 loads first:
 sc_require("file1.css");
 
@@ -169,9 +169,9 @@ Chance has a special "variable":#variables: +$theme+. It contains your theme's
 class names. Using +$theme+, you can write just +$theme.button { ... }+ to style
 a button.
 
-+$theme+ gets its initial value from the +:css_theme+ property in your app's '+Buildfile+:
++$theme+ gets its initial value from the +:css_theme+ property in your app's +Buildfile+:
 
-<ruby>
+<ruby filename="Buildfile">
 config :my_app, ... :css_theme => "ace.my-app"
 </ruby>
 
@@ -183,7 +183,7 @@ doesn't make sense: it will still be MyAwesomeTheme, just a version for errors.
 
 As described in "Theming Your App":theming_app.html, you'll make a _child theme_:
 
-<javascript>
+<javascript filename="apps/my_app/theme.js">
 MyAwesomeTheme.Error = MyAwesomeTheme.subtheme('error');
 </javascript>
 
@@ -202,13 +202,13 @@ and will get class names like +ace my-awesome-theme error+.
 SCSS's nesting matches DOM structure, Chance has a tool to match this SproutCore
 theme structure:
 
-<javascript>
+<css>
 $theme.button { /* normal styles here */ }
 
 @theme(error) {
   $theme.button { /* error styles here */ }
 }
-</javascript>
+</css>
 
 The +@theme(theme name)+ directive adds the theme name provided to the current
 theme names stored in +$theme+. All rules inside the +{+ and +}+ will be part
@@ -386,3 +386,4 @@ names are +top-left+, +top+, +top-right+, +left+, +middle+, +right+,
 h3. Changelog
 
 * January 20, 2011: initial version by "Alex Iskander":credits.html#ialexi
+* March    2, 2011: added filenames and changed +<javascript>+ tag to +<css>+ by "Topher Fangio":credits.html#topherfangio

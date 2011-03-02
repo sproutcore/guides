@@ -33,7 +33,7 @@ WARNING: The new Abbot tools do not yet support the test runner.  Until they do,
 
 h4. Starting the Test Runner
 
-The easiest way to run unit tests is to simply visit the built-in unit test runner by starting your browser and navigating to +http://localhost:4020+, then selecting +tests+ from the application list as shown.
+The easiest way to run unit tests is to simply visit the built-in unit test runner by starting your browser and navigating to "http://localhost:4020":http://localhost:4020, then selecting +tests+ from the application list as shown.
 
 !images/testing/unit_test_2.jpg(Test Runner)!
 
@@ -60,15 +60,13 @@ Sometimes you may want to run unit tests manually outside of the test runner. Fo
 
 All unit tests for an application or framework can be found at an easily computed URL using the following format:
 
-All unit tests for an application or framework can be found at an easily computed URL using the following format:
-
 @http://localhost:4020/APP_NAME/LANGUAGE/current/tests/PATH/TO/TEST.html@
 
 where:
 
-* APP_NAME is your application name.
-* LANGUAGE is the language you want to run tests for. (Usually 'en')
-* PATH/TO/TEST is the subpath from the +PROJECT_FOLDER/apps/APP_NAME/tests+ folder.  It should include the body of the javascript file name but not the +.js+ extension.
+* +APP_NAME+ is your application name.
+* +LANGUAGE+ is the language you want to run tests for. (Usually 'en')
+* +PATH/TO/TEST+ is the subpath from the +PROJECT_FOLDER/apps/APP_NAME/tests+ folder.  It should include the body of the javascript file name but not the +.js+ extension.
 
 As an example, suppose you have a unit test file located at:
 
@@ -110,3 +108,4 @@ h3. Changelog
 
 * February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
 * February 15, 2011: minor revisions by "Peter Wagenet":credits.html#pwagenet
+* March     2, 2011: minor revisions by "Topher Fangio":credits.html#topherfangio
