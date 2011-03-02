@@ -43,7 +43,7 @@ Todos = SC.Application.create();
 jQuery(document).ready(function() {
   Todos.mainPane = SC.TemplatePane.append({
     layerId: "todo",
-    templateName: "app"
+    templateName: "todos"
   });
 });
 </javascript>
@@ -120,7 +120,7 @@ We've got our model and controller set up, so let's move on to the fun part: cre
 interface for our users. The first step is to create a text field into which the user types
 the name of their todo.
 
-To start building our views, let's open +resources/templates/app.handlebars+ and add
+To start building our views, let's open +resources/templates/todos.handlebars+ and add
 some markup:
 
 <html filename="todos.handlebars">
@@ -132,11 +132,12 @@ some markup:
 Now that we've got model, view, and controller represented, it's time to open the app in our
 browser and see how it looks.
 
-During the development process, +sc-server+ makes it easy to test your application. Just do
-the following inside of your app directory:
+During the development process, +sc-server+ makes it easy to test your application. Just run
+the following inside of your project directory:
 
 <shell>
 $ sc-server
+
 Starting server at http://0.0.0.0:4020 in debug mode
 To quit sc-server, press Control-C
 >> Thin web server (v1.2.7 codename No Hup)
@@ -239,7 +240,7 @@ complete.
 The first thing we need to do is add a checkbox to each todo view. If we want to handle user
 input, we need to assign a view to the checkbox. In this case, we want to be notified whenever
 the value of the checkbox is changed by the user. Remember that we assign views using the
-+#view+ helper. Here's what the todo list looks like after updating it in +app.handlebars+:
++#view+ helper. Here's what the todo list looks like after updating it in +todos.handlebars+:
 
 <html filename="todos.handlebars">
 {{#collection "Todos.todoListView"}}
@@ -314,7 +315,7 @@ h3. The More You Know
 We can now create todos and mark them as being complete. While 76% of all statistics are
 made up, let's see if we can display more accurate information from the data we have.
 At the bottom of our list, let's display the number of todos remaining. Open
-+app.handlebars+ and put this at the bottom:
++todos.handlebars+ and put this at the bottom:
 
 <html filename="todos.handlebars">
 {{#view "Todos.statsView"}}
@@ -397,7 +398,7 @@ clearCompletedTodos: function() {
 </javascript>
 
 Next, we'll add the HTML to our template and connect it up to a view for event
-handling. Open +app.handlebars+ and add a button inside the HTML for +statsView+:
+handling. Open +todos.handlebars+ and add a button inside the HTML for +statsView+:
 
 <html filename="todos.handlebars">
 {{#view "Todos.statsView"}}
