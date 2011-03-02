@@ -196,7 +196,7 @@ CAUTION: *TODO* Use bindCollection syntax
 
 <html filename="todos.handlebars">
 {{#collection "Todos.todoListView"}}
-  <div class='todo-content'>{{title}}</div>
+  <div class='todo-content'>{{content/title}}</div>
 {{/collection}}
 </html>
 
@@ -237,16 +237,10 @@ We now have the ability to add todos, but no way to mark them as done. Before th
 of a never-ending todo list gets the better of us, let's add the ability to mark todos as
 complete.
 
-The first thing we need to do is add a checkbox to each todo view. Here's the HTML:
-
-<html>
-<input class="check" type="checkbox">
-</html>
-
-If we want to handle user input, we need to assign a view to the checkbox. In this case,
-we want to be notified whenever the value of the checkbox is changed by the user. Remember
-that we assign views using the +#view+ helper. Here's what the todo list looks like after
-updating it in +app.handlebars+:
+The first thing we need to do is add a checkbox to each todo view. If we want to handle user
+input, we need to assign a view to the checkbox. In this case, we want to be notified whenever
+the value of the checkbox is changed by the user. Remember that we assign views using the
++#view+ helper. Here's what the todo list looks like after updating it in +app.handlebars+:
 
 <html filename="todos.handlebars">
 {{#collection "Todos.todoListView"}}
@@ -277,7 +271,7 @@ one changes, the other changes automatically. Let's tie it all together:
 
 <javascript filename="todos.js">
 Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
-  valueBinding: 'parentView.content.isDone'
+  valueBinding: '.parentView.content.isDone'
 });
 </javascript>
 
@@ -390,8 +384,6 @@ in the presentation layer.
 
 h3. Clearing Completed Todos
 
-CAUTION: *TODO* Insert dad joke
-
 As we populate our list with todos, we may want to periodically clear out those
 we've completed. As you have learned, we will want to make that change to the
 +todoListController+, and let SproutCore automatically propagate those changes
@@ -410,12 +402,9 @@ handling. Open +app.handlebars+ and add a button inside the HTML for +statsView+
 
 <html filename="todos.handlebars">
 {{#view "Todos.statsView"}}
-  <span class='todo-count'>
-    <span class='number'>{{bindProperty "remaining"}}</span>
-    <span class='word'>{{bindProperty "remainingWord"}} left.</span>
-  </span>
+  <span class="remaining">{{bind "displayRemaining"}} remaining.</span>
   {{#view "Todos.clearCompletedView"}}
-  <a href="#">Clear {{bindProperty "completed"}} completed {{bindProperty "completedWord"}}</a>
+    <button>Clear Completed Todos</button>
   {{/view}}
 {{/view}}
 </html>
