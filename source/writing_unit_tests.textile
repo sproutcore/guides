@@ -60,9 +60,7 @@ Note that any common setup you define should be placed into global variables (su
 
 h3. Defining a Unit Test Case
 
-Once you've defined a module, you can add individual unit test cases.  A unit test case
-is defined using the +test()+ method.  A test should have a description followed
-by the function you want to execute to perform the test.  
+Once you've defined a module, you can add individual unit test cases.  A unit test case is defined using the +test()+ method.  A test should have a description followed by the function you want to execute to perform the test.  
 
 <javascript>
 test("test description", function() {
@@ -121,8 +119,7 @@ Note: this method is equivalent to +equal()+ in the latest QUnit API.
 
 h4. Other assertions
 
-There are several other assertion types that you can learn about from the "QUnit pages":http://docs.jquery.com/QUnit#API_documentation, such as
-+same()+ or +expects()+.  Most of these assertions are not as generally useful as +ok()+ and +equals()+. However, you can use them if you wish.
+There are several other assertion types that you can learn about from the "QUnit pages":http://docs.jquery.com/QUnit#API_documentation, such as +same()+ or +expects()+.  Most of these assertions are not as generally useful as +ok()+ and +equals()+. However, you can use them if you wish.
 
 
 
@@ -231,3 +228,4 @@ On to "Running Unit Tests »":/running_unit_tests.html
 h3. Changelog
 
 * February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* March     2, 2011: minor paragraph formatting changes by "Topher Fangio":credits.html#topherfangio

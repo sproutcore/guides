@@ -35,7 +35,9 @@ A SproutCore record consists of four main components:
 
 Each record has a unique store key which is assigned when the record is created. The store key is a unique record identifier in the whole store and is mainly used internally to relate ids, statuses and data hashes to each other in a unambigious way. The store key is the only one of the four components which is actually a property of +SC.Record+. The other three components are stored centrally in the storea and mapped to the individual records using the store key.
 
+<div style='text-align: center;'>
 !images/records/record_anatomy.png!
+</div>
 
 All records of a certain type have a unique id as usual in relational database systems. In fact the ids of SproutCore records usually are the same as the primary keys of your data in the backend. Therefore, unlike the store key, the id is not automatically created but it is your responsibility to assign a record unique id on creation.
 
@@ -64,7 +66,7 @@ h3. Defining your models
 
 Defining a model in SproutCore is as easy as subclassing +SC.Record+:
 
-<javascript>
+<javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
 	
 });
@@ -72,7 +74,7 @@ MyApp.Contact = SC.Record.extend({
 
 You just have created your custom +MyApp.Custom+ model class. However, this empty model is only of limited use, so let's add some record attributes.
 
-<javascript>
+<javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
   firstName: SC.Record.attr(String),
   lastName: SC.Record.attr(String),
@@ -84,7 +86,7 @@ WARNING: Please refer to the "documentation of SC.Record":http://docs.sproutcore
 
 We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+ and +age+ attributes with the type of the attribtue as first argument. The optional second argument of the +SC.Record.attr+ helper is an option hash. E.g. we can add some default values to our attribtues:
 
-<javascript>
+<javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
   firstName: SC.Record.attr(String, { defaultValue: 'Unspecified' }),
   lastName: SC.Record.attr(String, { defaultValue: 'Unspecified' }),
@@ -98,7 +100,7 @@ NOTE: The +defaultValue+ will not be written to the underlying data hash and the
 
 If the name of the model's attribute property differs from the name used in the data hash, you can specify a custom key for each attribute which will be used to access the data hash:
 
-<javascript>
+<javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
   firstName: SC.Record.attr(String, { key: 'first_name' }),
   lastName: SC.Record.attr(String, { key: 'last_name' }),
@@ -118,9 +120,10 @@ All basic JavaScript data types can be used as attribute types:
 
 Additionally SproutCore comes with a predefined attribute helper for date/time values. 
 
-<javascript>
+<javascript filename="in apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
-  // ...
+  ...
+
   dateOfBirth: SC.Record.attr(SC.DateTime, { format: 'YY-mm-dd' })
 });
 </javascript>
@@ -135,10 +138,11 @@ In SproutCore you don't define the primary key of your models explicitly like yo
 
 First of all, by default SproutCore uses the identifier "guid" for the primary key. You can change this identifier by defining a +primaryKey+ property in your model:
 
-<javascript>
+<javascript filename="in apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
   primaryKey: 'uid',
-  // ...
+
+  ...
 });
 </javascript>
 
@@ -160,7 +164,7 @@ h4. Relations
 
 Often models don't exist completely independent but are related to other models. For example one or more addresses could belong to the +Contact+ model we created above. So let's define the +Address+ model first:
 
-<javascript>
+<javascript filename="apps/my_app/models/address.js">
 MyApp.Address = SC.Record.extend({
   street: SC.Record.attr(String),
   number: SC.Record.attr(Number),
@@ -172,17 +176,21 @@ h5. One-to-One Relations
 
 If we only need one address to be associated with each contact, then we can use the +toOne+ relation helper:
 
-<javascript>
+<javascript filename="in apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
-  // ...
+  ...
+
   address: SC.Record.toOne(
     'MyApp.Address', 
     { isMaster: YES, inverse: 'contact' }
   )
 });
+</javascript>
 
+<javascript filename="in apps/my_app/models/address.js">
 MyApp.Address = SC.Record.extend({
-  // ...
+  ...
+
   contact: SC.Record.toOne(
     'MyApp.Contact', 
     { isMaster: NO }
@@ -200,17 +208,21 @@ h5. One-to-Many Relations
 
 If we want to associate multiple addresses with a certain contact, then we have to use the +toMany+ relation helper:
 
-<javascript>
+<javascript filename="in apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
-  // ...
+  ...
+
   address: SC.Record.toMany(
     'MyApp.Address', 
     { isMaster: YES, inverse: 'contact' }
   )
 });
+</javascript>
 
+<javascript filename="in apps/my_app/models/address.js">
 MyApp.Address = SC.Record.extend({
-  // ...
+  ...
+
   contact: SC.Record.toOne(
     'MyApp.Contact', 
     { isMaster: NO }
@@ -226,17 +238,21 @@ h5. Many-to-Many Relations
 
 If we not only want to relate multiple addresses to one contact, but also relate one address to multiple contacts, we have to use +toMany+ on both sides of the relation. SproutCore's +toMany+ helper manages many-to-many relations without a join table, which you would use in a relational database:
 
-<javascript>
+<javascript filename="in apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
-  // ...
+  ...
+
   address: SC.Record.toMany(
     'MyApp.Address', 
     { isMaster: YES, inverse: 'contact' }
   )
 });
+</javascript>
 
+<javascript filename="in apps/my_app/models/address.js">
 MyApp.Address = SC.Record.extend({
-  // ...
+  ...
+
   contact: SC.Record.toMany(
     'MyApp.Contact', 
     { isMaster: NO }
@@ -253,7 +269,7 @@ h4. Other Properties on Model Classes
 
 Any property defined on a model class not using +SC.Record.attr+ is a transient property. This means that its value is not passed through to the data hash of the record and therefore is neither committed back to the server nor loaded from incoming JSON data.
 
-<javascript>
+<javascript filename="in apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
   // transient property	
   isContact: YES, 
@@ -262,7 +278,8 @@ MyApp.Contact = SC.Record.extend({
   fullName: function() {
     return this.get('firstName') + ' ' + this.get('lastName');
   }.property('firstName', 'lastName').cacheable(),
-  // ...
+
+  ...
 });
 </javascript>
 
@@ -273,12 +290,14 @@ NOTE: If you use +set()+ on an undefined property, SproutCore by default will pa
 
 h3. Using Your Models
 
-Now that we have defined our +Contact+ and +Address+ models it's time to actually create some records. All records are managed by the store, so we have to make sure first that we have an instance of +SC.Store+ available. Usually the store is instantiated somewhere in your application's "main.js" file:
+Now that we have defined our +Contact+ and +Address+ models it's time to actually create some records. All records are managed by the store, so we have to make sure first that we have an instance of +SC.Store+ available. Usually the store is instantiated somewhere in your application's "core.js" file:
 
-<javascript>
-// ...
-store: SC.Store.create().from(SC.Record.fixtures()),
-// ...
+<javascript filename="in apps/my_app/core.js">
+MyApp = SC.Application.create({
+  ...
+
+  store: SC.Store.create().from(SC.Record.fixtures()),
+});
 </javascript>
 
 In the example above we are using fixtures as the data source. You can read more about fixtures and using other data sources in the respective guides.
@@ -316,7 +335,7 @@ NOTE: Ids are not limited to numbers, but can also be strings.
 
 When you create a record its status will be +READY_NEW+, indicating that the record is editable and does not exist on the server yet.
 
-h5. Creating associated records
+h5. Creating Associated Records
 
 When creating associated records, you first have to create the records and afterwards establish the connection between the records.
 
@@ -647,5 +666,6 @@ h4. DESTROYED Substates
 h3. Changelog
 
 * February 6, 2011: initial version by "Florian Kugler":credits.html#fkugler
+* March    2, 2011: added filenames and small fixes by "Topher Fangio":credits.html#topherfangio
 
 

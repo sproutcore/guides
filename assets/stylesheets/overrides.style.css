@@ -49,3 +49,7 @@ dd img {
   border: 1px solid #ddd;
   padding: 1px 3px;
 }
+
+div.filename {
+  padding-top: 5px;
+}

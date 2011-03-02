@@ -1,7 +1,6 @@
 h2. Core Concepts
 
-The guide covers some of the core concepts of SproutCore. By referring
-to this guide, you will be able to:
+The guide covers some of the core concepts of SproutCore. By referring to this guide, you will be able to:
 
 * Understand how classes work, including +SC.Object+
 * Be familiar with Properties, Observers, Bindings and the Run Loop
@@ -12,10 +11,7 @@ endprologue.
 
 h3. +SC.Object+ and Classes
 
-SproutCore maintains a traditional "object-oriented structure":http://en.wikipedia.org/wiki/Object-oriented_programming
-at the root of which lies +SC.Object+. +SC.Object+ defines all the basic
-features needed by a class in SproutCore. These include Properties,
-Observers and Bindings, which I will go into detail on below.
+SproutCore maintains a traditional "object-oriented structure":http://en.wikipedia.org/wiki/Object-oriented_programming at the root of which lies +SC.Object+. +SC.Object+ defines all the basic features needed by a class in SproutCore. These include Properties, Observers and Bindings, which I will go into detail on below.
 
 h4. Creating an +SC.Object+ Instance
 
@@ -25,8 +21,7 @@ Creation of an +SC.Object+ instance is straightforward.
 var obj = SC.Object.create()
 </javascript>
 
-By itself that is relatively uninsteresting. In most cases you will want
-to create your SC.Object with some pre-set properties.
+By itself that is relatively uninsteresting. In most cases you will want to create your SC.Object with some pre-set properties.
 
 <javascript>
 var person = SC.Object.create({
@@ -41,8 +36,7 @@ NOTE: We will explain the +get+ and +set+ functions in more detail later. For no
 
 h4. Creating an +SC.Object+ Subclass
 
-In many cases you will want to create subclasses of +SC.Object+ to
-handle similar objects. In the above example, we created a person.
+In many cases you will want to create subclasses of +SC.Object+ to handle similar objects. In the above example, we created a person.
 
 <javascript>
 MyApp.Person = SC.Object.extend({
@@ -55,8 +49,7 @@ MyApp.Person = SC.Object.extend({
 });
 </javascript>
 
-You could then create an instance of the +Person+ class and get the
-special properties.
+You could then create an instance of the +Person+ class and get the special properties.
 
 <javascript>
 var person = MyApp.Person.create({
@@ -68,10 +61,7 @@ person.fullName(); // Peter Wagenet
 
 h5. Calling super methods with +sc_super+
 
-In some cases when you subclass an object you will want to augment a
-method of the parent class without completely overriding it. In this
-case, SproutCore provides the +sc_super+ method which calls the original
-function.
+In some cases when you subclass an object you will want to augment a method of the parent class without completely overriding it. In this case, SproutCore provides the +sc_super+ method which calls the original function.
 
 <javascript>
 MyApp.FormalPerson = MyApp.Person.extend({
@@ -92,9 +82,7 @@ NOTE: +sc_super+ is one of the rare exceptions in SproutCore in that it is not a
 
 h5. The +init+ method
 
-+SC.Object+ also comes with built-in support for an initialization
-method that gets called as the object is being created. This is useful
-when there is some necessary setup for your object.
++SC.Object+ also comes with built-in support for an initialization method that gets called as the object is being created. This is useful when there is some necessary setup for your object.
 
 <javascript>
 MyApp.Calculation = SC.Object.extend({
@@ -121,9 +109,7 @@ WARNING: When overriding +init+ it is important that you call +sc_super+ at the 
 
 h5. Using Mixins
 
-Mixins are an easy way to extend multiple classes that don't share an
-inheritance tree with similar functionality. Mixins are just a hash with
-a series of properties that will be added to the class you create.
+Mixins are an easy way to extend multiple classes that don't share an inheritance tree with similar functionality. Mixins are just a hash with a series of properties that will be added to the class you create.
 
 <javascript>
 MyApp.Friendly = {
@@ -138,13 +124,11 @@ var person = MyApp.Person.create({ name: 'Bob' });
 person.sayHello(); // Hello, my name is Bob
 </javascript>
 
-As you may have guessed, +SC.Object.extend+ just takes a series of
-hashes and mixes them all in to a newly created class.
+As you may have guessed, +SC.Object.extend+ just takes a series of hashes and mixes them all in to a newly created class.
 
 h5. Class methods
 
-If you want, you can also define class methods on your custom classes.
-Using our Person class from above, you can do
+If you want, you can also define class methods on your custom classes.  Using our Person class from above, you can do
 
 <javascript>
 MyApp.Person.quickCreate = function(firstName, lastName){
@@ -157,8 +141,7 @@ var person = MyApp.Person.quickCreate('Peter', 'Wagenet');
 person.fullName(); // Peter Wagenet
 </javascript>
 
-However, sometimes you may want to add a series of class methods or
-properties. In this case you can use the mixin method.
+However, sometimes you may want to add a series of class methods or properties. In this case you can use the mixin method.
 
 <javascript>
 MyApp.Person.mixin({
@@ -175,18 +158,11 @@ MyApp.Person.mixin({
 
 h3. Properties, Bindings and Observers
 
-Properties, Bindings and Observers all make up what is known as the
-Key-Value Observing (KVO) system of SproutCore.
+Properties, Bindings and Observers all make up what is known as the Key-Value Observing (KVO) system of SproutCore.
 
 h4. Getters and Setters
 
-For KVO to work properly, SproutCore implements getters and setters to
-track changes to objects. This is why it's important to use +get+ and
-+set+ for any properties that might use observers, bindings, or computed
-properties. Failure to do so will quickly cause your app to get out of
-sync. I know this may sound like a bit of a pain, but don't worry,
-you'll quickly get used to using +get+ and +set+ and you'll forget you
-ever had to worry about it.
+For KVO to work properly, SproutCore implements getters and setters to track changes to objects. This is why it's important to use +get+ and +set+ for any properties that might use observers, bindings, or computed properties. Failure to do so will quickly cause your app to get out of sync. I know this may sound like a bit of a pain, but don't worry, you'll quickly get used to using +get+ and +set+ and you'll forget you ever had to worry about it.
 
 <javascript>
 var obj = SC.Object.create({ name: 'Jim' });
@@ -199,10 +175,7 @@ NOTE: Those of you who have worked in languages like Java may be familiar with h
 
 h4. Computed Properties
 
-Sometimes you may have properties that depend on other properties. These
-are known as computed properties. Computed properties are defined as
-functions with a call to +property+ and a list of the dependent
-properties.
+Sometimes you may have properties that depend on other properties. These are known as computed properties. Computed properties are defined as functions with a call to +property+ and a list of the dependent properties.
 
 <javascript>
 MyApp.Person = SC.Object.extend({
@@ -222,12 +195,9 @@ person.set('lastName', 'Smith');
 person.get('fullName'); // Peter Smith
 </javascript>
 
-As you can see, you are able to use +get+ with computed properties in
-the same way you would use it with normal ones.
+As you can see, you are able to use +get+ with computed properties in the same way you would use it with normal ones.
 
-Setting computed properties is slightly more complicated, but still easy
-to grasp. The +keyName+ and +value+ are passed in as the first two
-arguments to the property function.
+Setting computed properties is slightly more complicated, but still easy to grasp. The +keyName+ and +value+ are passed in as the first two arguments to the property function.
 
 <javascript>
 MyApp.Capitalizer = SC.Object.extend({
@@ -243,33 +213,19 @@ cap.set('capitalizedValue', 'abc');
 cap.get('capitalizedValue'); // ABC
 </javascript>
 
-In most cases you will find you can just ignore the value for +keyName+.
-Also, when the function is called via +get+, +value+ will be
-+undefined+.
+In most cases you will find you can just ignore the value for +keyName+.  Also, when the function is called via +get+, +value+ will be +undefined+.
 
 h4. Property Paths
 
-SproutCore also introduces the concept of property paths. A property path
-is a string that points to a nested property. For instance
-+"MyApp.userController.firstName"+ refers to the +firstName+ property on the
-+MyApp.userController+ object. You can also have relative paths which refer
-paths relative to the current object. For instance, within the context of
-+MyApp+, you could use +".userController.firstName"+ to point to the same
-location. As you can see, the relative property begins with a period. This will
-always be true of relative properties.
+SproutCore also introduces the concept of property paths. A property path is a string that points to a nested property. For instance +"MyApp.userController.firstName"+ refers to the +firstName+ property on the +MyApp.userController+ object. You can also have relative paths which refer paths relative to the current object. For instance, within the context of +MyApp+, you could use +".userController.firstName"+ to point to the same location. As you can see, the relative property begins with a period. This will always be true of relative properties.
 
-To work with relative property path, you can use the +getPath+ and +setPath+
-functions. These work identically to +get+ and +set+ except they expect a
-path for the first argument.
+To work with relative property path, you can use the +getPath+ and +setPath+ functions. These work identically to +get+ and +set+ except they expect a path for the first argument.
 
-In addition to +getPath+ and +setPath+ you will also see property paths used
-for observers and bindings, which we will explain below.
+In addition to +getPath+ and +setPath+ you will also see property paths used for observers and bindings, which we will explain below.
 
 h3. Observers
 
-Closely related to the concept of properties is that of observers. Observers
-do exactly what their name suggests, they observe properties, watching for
-changes. The most basic observer looks like this:
+Closely related to the concept of properties is that of observers. Observers do exactly what their name suggests, they observe properties, watching for changes. The most basic observer looks like this:
 
 <javascript>
 var obj = SC.Object.create({
@@ -282,37 +238,17 @@ obj.set('value', 'Test');
 // alert('New Value: Test');
 </javascript>
 
-As you can see +observes+ is called on a function and when the property is
-updated the function is called. You can also pass multiple properties as
-well as property paths to observes.
+As you can see +observes+ is called on a function and when the property is updated the function is called. You can also pass multiple properties as well as property paths to observes.
 
 h4. Observer Notification
 
-It is important to realize that observers have to be notified of property
-changes. The +set+ method handles this for us automatically which is why
-I have strongly encouraged its use. However, there are cases where using
-+set+ doesn't work. In these cases you can use +notifyPropertyChange+ to
-tell observers that the property has been updated,
-i.e. +this.notifyPropertyChange('value')+.
+It is important to realize that observers have to be notified of property changes. The +set+ method handles this for us automatically which is why I have strongly encouraged its use. However, there are cases where using +set+ doesn't work. In these cases you can use +notifyPropertyChange+ to tell observers that the property has been updated, i.e. +this.notifyPropertyChange('value')+.
 
-In some cases you may find that you are updating a number of properties at
-once. If you have a lot of observers that depend on these properties, you
-may find them getting called more often than necessary. In this case, you
-can use +beginPropertyChanges+ and +endPropertyChanges+ to wrap the your
-property change calls. This will cause all change notifications to happen
-once +endPropertyChanges+ is called and will prevent unnecssary duplicate
-notifications.
+In some cases you may find that you are updating a number of properties at once. If you have a lot of observers that depend on these properties, you may find them getting called more often than necessary. In this case, you can use +beginPropertyChanges+ and +endPropertyChanges+ to wrap the your property change calls. This will cause all change notifications to happen once +endPropertyChanges+ is called and will prevent unnecssary duplicate notifications.
 
 h4. Chained Property Paths
 
-Observers and bindings also use a special type of property path called a
-chained property path. When using an observer or binding, usually the
-actual observer is only added to the the second to last object in the
-property path. So, if your path is +"MyApp.usersController.mainUser.name"+
-then SproutCore finds the object at +"MyApp.usersController.mainUser"+ and
-then adds an observer for its +name+ property. However, nothing is
-observing +MyApp.usersController+ to see if +mainUser+ changes to a
-different user. For example:
+Observers and bindings also use a special type of property path called a chained property path. When using an observer or binding, usually the actual observer is only added to the the second to last object in the property path. So, if your path is +"MyApp.usersController.mainUser.name"+ then SproutCore finds the object at +"MyApp.usersController.mainUser"+ and then adds an observer for its +name+ property. However, nothing is observing +MyApp.usersController+ to see if +mainUser+ changes to a different user. For example:
 
 <javascript>
 MyApp.usersController = SC.ArrayController.create({
@@ -331,24 +267,15 @@ MyApp.usersController.setPath('mainUser.name', 'Jim'); // alert('Jim')
 MyApp.usersController.set('mainUser', SC.Object.create({ name: 'Bob' })); // No alert
 </javascript>
 
-As you can see, when we replace +mainUser+ the observer does not fire.
-This is because we only have an observer on the the original user object.
-We are not watching for changes to +usersController+.
+As you can see, when we replace +mainUser+ the observer does not fire.  This is because we only have an observer on the the original user object.  We are not watching for changes to +usersController+.
 
-What we want to do is watch for changes to +usersController.mainUser+ and
-for changes to +mainUser.name+. This is where chained property paths come
-in. To let SproutCore know that we want to observe for both changes, we
-use
+What we want to do is watch for changes to +usersController.mainUser+ and for changes to +mainUser.name+. This is where chained property paths come in. To let SproutCore know that we want to observe for both changes, we use
 
 <javascript>MyApp.usersController*mainUser.name</javascript>
 
-The asterisk (+*+) in the property path
-indicates that we want SproutCore to observe changes to all properties
-following the asterisk. In this case, that is both +mainUser+ and +name+.
-This is known as a chained observer.
+The asterisk (+*+) in the property path indicates that we want SproutCore to observe changes to all properties following the asterisk. In this case, that is both +mainUser+ and +name+. This is known as a chained observer.
 
-If we replace the previous property path with our update one, we can then
-try again:
+If we replace the previous property path with our update one, we can then try again:
 
 <javascript>
 MyApp.observerObject = SC.View.create({
@@ -363,17 +290,11 @@ MyApp.usersController.set('mainUser', SC.Object.create({ name: 'Bob' })); // ale
 
 Now we get the results we want.
 
-So why don't we always use chained observers? Observers are expensive and
-often times we don't care about changes in all levels. In the previous
-example, we don't care about changes to +MyApp.usersController+. The controller
-is set once and won't ever change through the lifetime of the application.
-Had we defaulted to chained observers we would also be observing this,
-which isn't necessary.
+So why don't we always use chained observers? Observers are expensive and often times we don't care about changes in all levels. In the previous example, we don't care about changes to +MyApp.usersController+. The controller is set once and won't ever change through the lifetime of the application. Had we defaulted to chained observers we would also be observing this, which isn't necessary.
 
 h3. Bindings
 
-When you put together Properties and Observers, you end up with Bindings.
-Bindings serve to link two properties together. For example:
+When you put together Properties and Observers, you end up with Bindings. Bindings serve to link two properties together. For example:
 
 <javascript>
 MyApp.userController = SC.Object.create({
@@ -396,22 +317,13 @@ MyApp.mainView.set('user', 'Jim');
 console.log(MyApp.userController.get('name')); // Jim
 </javascript>
 
-In this example, we used the absolute path to the property. Bindings
-also support relative properties and star properties as well.
+In this example, we used the absolute path to the property. Bindings also support relative properties and star properties as well.
 
-As you can also see, when you update the value in one location, it is
-updated in the other. By defaults bindings are bi-directional but you can
-also set them to only go in one direction by using +SC.Binding.oneWay+
-instead. In this case the local property (where the binding is defined) will
-be updated when the remote property changes, but changes to the local
-property will not propagate to the remote property.
+As you can also see, when you update the value in one location, it is updated in the other. By defaults bindings are bi-directional but you can also set them to only go in one direction by using +SC.Binding.oneWay+ instead. In this case the local property (where the binding is defined) will be updated when the remote property changes, but changes to the local property will not propagate to the remote property.  
 
 h4. Bindings Shorthand
 
-Since simple bindings are used so often, there's also a shortcut to creating
-bindings. By default, if you only specify a string for the binding it is created
-as if you had done +SC.Binding.from(STRING)+.
-In the above example, you could instead do:
+Since simple bindings are used so often, there's also a shortcut to creating bindings. By default, if you only specify a string for the binding it is created as if you had done +SC.Binding.from(STRING)+. In the above example, you could instead do:
 
 <javascript>
 userBinding: 'MyApp.userController.name'
@@ -419,9 +331,7 @@ userBinding: 'MyApp.userController.name'
 
 h4. Bindings and Chained Property Paths
 
-Since bindings make use of observers behind the scenes, the same principles
-of chained observers applies. This means that if you want to observe a
-chained property, you will want to use asterisks in your path as appropriate.
+Since bindings make use of observers behind the scenes, the same principles of chained observers applies. This means that if you want to observe a chained property, you will want to use asterisks in your path as appropriate.
 
 <javascript>
 MyApp.usersController = SC.ArrayController.create({
@@ -435,41 +345,19 @@ MyApp.userNameView = SC.LabelView.create({
 });
 </javascript>
 
-Since we used an asterisk in the +valueBinding+ property path, the binding
-will be updated if either +mainUser+ or +mainUser.name+ changes.
+Since we used an asterisk in the +valueBinding+ property path, the binding will be updated if either +mainUser+ or +mainUser.name+ changes.
 
 h3. The Run Loop
 
-Let me begin by saying that you will rarely have to reference the Run Loop
-in your app itself. However, you may find it useful in debugging and will
-likely have to use it in your unit tests. It's also worth gaining an
-understanding of it to understand more about how your app works.
+Let me begin by saying that you will rarely have to reference the Run Loop in your app itself. However, you may find it useful in debugging and will likely have to use it in your unit tests. It's also worth gaining an understanding of it to understand more about how your app works.
 
-The run loop coordinates all the events within your application. This includes
-primarily observers and timers. This helps make sure that events stay
-synchronized and run at the proper times. One of the main ways this will
-affect your app is that bindings do not fire until the Run Loop has fired.
+The run loop coordinates all the events within your application. This includes primarily observers and timers. This helps make sure that events stay synchronized and run at the proper times. One of the main ways this will affect your app is that bindings do not fire until the Run Loop has fired.
 
-SproutCore manages the run loop for you automatically triggering when it
-receives any browser events or user input. The only case in which you will
-have to manage the run loop from within your app is if you have a callback
-from an external library that is not managed by SproutCore. In this circumstance,
-you will want to trigger a new run loop by wrapping the code in +SC.RunLoop.begin()+
-and +SC.RunLoop.end()+. This will create a new run loop for that bit of code
-and will make sure all events are fired upon completion.
+SproutCore manages the run loop for you automatically triggering when it receives any browser events or user input. The only case in which you will have to manage the run loop from within your app is if you have a callback from an external library that is not managed by SproutCore. In this circumstance, you will want to trigger a new run loop by wrapping the code in +SC.RunLoop.begin()+ and +SC.RunLoop.end()+. This will create a new run loop for that bit of code and will make sure all events are fired upon completion.
 
-When working with unit tests, you will also have situations where you need
-to force bindings and observers to update so you can check for the correct
-results. In these cases, it is completely legitimate to manually invoke the run
-loop. Normally user events would trigger the run loop, but since your tests
-are automated, there are no user events taking place.
+When working with unit tests, you will also have situations where you need to force bindings and observers to update so you can check for the correct results. In these cases, it is completely legitimate to manually invoke the run loop. Normally user events would trigger the run loop, but since your tests are automated, there are no user events taking place.
 
-You may also find that when you are working in your browser's JavaScript console
-that, when you set a variable, your app's interface doesn't update as you expect. This may be
-caused by the run loop not firing (since you aren't interacting directly with
-the app no events are being triggered). In this case you should try invoking
-the run loop manually, or just move your mouse over the app to trigger a new
-event.
+You may also find that when you are working in your browser's JavaScript console that, when you set a variable, your app's interface doesn't update as you expect. This may be caused by the run loop not firing (since you aren't interacting directly with the app no events are being triggered). In this case you should try invoking the run loop manually, or just move your mouse over the app to trigger a new event.
 
 
 WARNING: Remember, you rarely need to manage the run loop manually from within your app. If you aren't certain of why you are using it, then you are probably doing something wrong.
@@ -482,3 +370,4 @@ h3. Changelog
 * January 20, 2011: corrections to "The +init+ Method" and "The Run Loop" by "Peter Wagenet":credits.html#pwagenet
 * January 24, 2011: added section on "Bindings and Chained Property Paths" by "Peter Wagenet":credits.html#pwagenet
 * February 9, 2011: made grammatical and formatting changes by Jason Gignac
+* March    2, 2011: fixed paragraph formmatting by "Topher Fangio":credits.html#topherfangio
