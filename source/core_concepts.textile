@@ -347,7 +347,7 @@ MyApp.mainView.set('user', 'Jim');
 console.log(MyApp.userController.get('name')); // Jim
 </javascript>
 
-NOTE: One very important difference between bindings and observers is that observers updated immediately, where bindings update only at the end of each run loop. This offers considerable improvements in performance, but can be confusing if you are experimenting at the console, since in that setting the run loop must be triggered manually. See 'The Run Loop' for details on how to do this.
+NOTE: One very important difference between bindings and observers is that observers update immediately, while bindings update only at the end of each run loop. This offers considerable improvements in performance, but can be confusing if you are experimenting at the console, since in that setting the run loop must be triggered manually. See 'The Run Loop' for details on how to do this.
 
 In this example, we used the absolute path to the property. Bindings also support relative properties and chained properties as well.
 
