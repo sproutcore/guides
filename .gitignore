@@ -3,3 +3,5 @@
 bin
 output
 Gemfile.lock
+*.swp
+*.swo
