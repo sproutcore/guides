@@ -16,18 +16,20 @@ Although JavaScript is a prototype-based language, SproutCore overlays the some 
 h4. Defining Classes
 
 Just as with Objective-C, JavaScript and thus, SproutCore, is not natively name spaced. Therefore, it is very important to be careful to use a consistent prefix when naming your classes. When you create a SproutCore application using the build tools, it will automatically set up a name space variable for you in core.js in your project. 
- 
-For example, if you are writing an application called "AddressBook", the build tools will create the following in core.js:
 
-<javascript>
-AddressBook = SC.Object.create();
+For example, if you are writing an application called "AddressBook", the build tools will create the following:
+
+<javascript filename="apps/address_book/core.js">
+AddressBook = SC.Application.create({
+  // ...
+});
 </javascript>
 
 In SproutCore, class names are always capitalized. If you are extending an existing SproutCore view, it is generally preferred to add the name of the view to the end of the class name. For instance, if you extend a +CollectionView+ in your AddressBook application to show a list of Contact objects, you would do it in the following manner:
 
 <javascript>
 AddressBook.ContactCollectionView = SC.CollectionView.extend({
-// Add your custom properties and functions here. 
+  // Add your custom properties and functions here.
 });
 </javascript>
 
@@ -37,7 +39,7 @@ If you are creating an instantiated SproutCore class, such as a controller, the 
 
 <javascript>
 AddressBook.contactsController = SC.ArrayController.create({
-     // Add your custom properties and functions here. 
+  // Add your custom properties and functions here.
 });
 </javascript>
 
@@ -113,9 +115,11 @@ When you access a property defined on an object multiple times, it is encouraged
 This is confusing and inefficient:
 <javascript>
 constructName: function(){
-return [this.get('content').get('prefix'),this.get('content').get('firstName'), 
-  this.get('content').get('middleName'),this.get('content').get('lastName'), 
-  this.get('content').get('suffix')].join(' '); 
+  return [this.get('content').get('prefix'),
+          this.get('content').get('firstName'),
+          this.get('content').get('middleName'),
+          this.get('content').get('lastName'),
+          this.get('content').get('suffix')].join(' ');
 }
 </javascript>
 
@@ -126,17 +130,22 @@ constructName: function(){
   var contact = this.get('content');
 
   // This is more readable and far faster.
-  return [contact.get('prefix'),contact.get('firstName'), contact.get('middleName'), 
-          contact.get('lastName'), contact.get('suffix')].join(' ');  
+  return [contact.get('prefix'),
+          contact.get('firstName'),
+          contact.get('middleName'),
+          contact.get('lastName'),
+          contact.get('suffix')].join(' ');
 }
 </javascript>
 
 This is best (using the +getEach+ function):
 <javascript>
-constructName: function(){ 
+constructName: function(){
   // This is EVEN more readable.
-  return this.get('content').getEach('prefix','firstName',
-          'middleName','lastName','suffix').join(' ');  
+  return this.get('content')
+             .getEach('prefix','firstName','middleName',
+                      'lastName','suffix')
+             .join(' ');
 }
 </javascript>
 
@@ -307,7 +316,7 @@ enqueItems: function() {
 }
 </javascript>
 
-Also, in these coding examples, you have have noticed that the {} are not new lines, that is due to the author's stance and not an official guideline. That is up to the developer to choose how to format your curly-braces since after it is compressed, it won't really matter! 
+Also, in these coding examples, you have have noticed that the +{}+ are not on new lines, that is due to the author's stance and not an official guideline. That is up to the developer to choose how to format your curly-braces since after it is compressed, it won't really matter!
 
 h3. Related Material
 
@@ -315,6 +324,7 @@ h3. Related Material
 
 "Javascript: The Good Parts":http://www.youtube.com/watch?v=hQVTIJBZook
 
-h3. Credit
+h3. Changelog
 
-This guide came mainly from the old "wiki":http://wiki.sproutcore.com/w/page/12412942/JavaScript-Style-Guide and was written by Peter Bergström
+* March 3, 2011: ported by "Mike Ball":credits.html#onkis from the "original wiki entry":http://wiki.sproutcore.com/w/page/12412942/JavaScript-Style-Guide written by "Peter Bergstrom":credits.html#pbergstrom
+* March 3, 2011: minor adjustments by "Peter Wagenet":credits.html#pwagenet

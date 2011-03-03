@@ -15,6 +15,12 @@ authors:
       nick: jz
       description: Jason Zimdars is an experienced creative director and web designer who has lead UI and UX design for numerous websites and web applications. You can see more of his design and writing at <a href="http://www.thinkcage.com/">Thinkcage.com</a> or follow him on <a href="http://twitter.com/JZ">Twitter</a>
   Contributors:
+    - name: Mike Ball
+      nick: onkis
+      description: 'Mike is a member of the SproutCore core team.'
+    - name: Peter Bergstrom
+      nick: pbergstrom
+      description: ""
     - name: Tom Dale
       nick: tomdale
       description: Member of the SproutCore core team.
@@ -51,9 +57,6 @@ authors:
     - name: Vibul Imtarnasan
       nick: veebs
       description: ""
-    - name: 'Mike Ball'
-      nick: onkis
-      description: 'Mike is a member of the SproutCore core team.'
 
 index:
   Start Here:
@@ -130,7 +133,7 @@ index:
       url: todos_tdd
       text: "Show implementing the TODOs project using TDD."
       construction: true
-  Contributing:
+  Contributing to SproutCore:
     - title: "Javascript Style Guide"
       url: "style_guide"
       text: "This guide covers the style of SproutCore framework code"

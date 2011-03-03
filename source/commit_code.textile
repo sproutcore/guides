@@ -87,50 +87,57 @@ test("basic", function() {
 </javascript>
 This test sucks because it only verifies that you can set a property on an object.
 
-
-TODO: get some more examples...
-
+TIP: For more information see "Writing Unit Tests":writing_unit_tests.html
 
 
 h4. Running unit tests
 
 You can run the unit tests by using the test runner app +http://localhost:4020/sproutcore/tests+ or by calling them manually:
 
-+http://localhost:4020/"framework or app name"/en/current/tests.html+ -> all the tests
-+http://localhost:4020/"framework or app name"/en/current/tests/path/to/your/tests.html+ -> run a specific set
+All Tests:
+@http://localhost:4020/<framework_or_app_name>/en/current/tests.html@
+
+Specific Tests:
+@http://localhost:4020/<framework_or_app_name>/en/current/tests/path/to/your/tests.html@
 
 For example:
 All of SproutCore's datastore tests:
-+http://localhost:4020/sproutcore/datastore/en/current/tests.html+
+@http://localhost:4020/sproutcore/datastore/en/current/tests.html@
 
 Just the tests in the store directory
-+http://localhost:4020/sproutcore/datastore/en/current/tests/system/store.html+
+@http://localhost:4020/sproutcore/datastore/en/current/tests/system/store.html@
 
 Just the find tests
-+http://localhost:4020/sproutcore/datastore/en/current/tests/system/store/find.html+
+@http://localhost:4020/sproutcore/datastore/en/current/tests/system/store/find.html@
+
+TIP: For more information see "Running Unit Tests":running_unit_tests.html
 
 h3. Consistency
 
  All code must be consistent with patterns found in the Application and within the Frameworks.
- example: MVC, Visitor, Statecharts
- Don't add special functionality just for shits and giggles!
+ example: MVC, Visitor, Statecharts don't add specialfunctionality without good reason!
 
 
 h3. Performance
 
 Avoid Known Slow stuff:
-   -.observes
-   -nested run loops
-   -looping
-   -missing .cacheable()
- Code must be prove-ably fast with SC.Benchmark
- Keep in mind code size in kb, number of statements(IE!), doing too much on init
+* +.observes+
+* nested run loops
+* looping
+* missing +.cacheable()+
+* Code must be prove-ably fast with +SC.Benchmark+
+* Keep in mind code size in kb, number of statements(IE!), doing too much on init
 
 h3. Maintainability
 
- • Don't override private APIs
- • Be consistent and predictable
- • Make your classes extensible for other devs! (comment and modularize)
- • Use good OO practices
- • reduce coupling between layers (parent classes should not know about their children -> looking at you SC.View)
- • refactor don't Hack -> make code better not worse!
+* Don't override private APIs
+* Be consistent and predictable
+* Make your classes extensible for other devs! (comment and modularize)
+* Use good OO practices
+* reduce coupling between layers (parent classes should not know about their children -> looking at you SC.View)
+* refactor don't Hack -> make code better not worse!
+
+h3. Changelog
+
+* March 3, 2011: initial version by "Mike Ball":credits.html#onkis
+* March 3, 2011: minor adjustments by "Peter Wagenet":credits.html#pwagenet
