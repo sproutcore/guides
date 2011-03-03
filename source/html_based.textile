@@ -78,7 +78,7 @@ h3. Managing the Model Using a Controller
 Now that we know what our data looks like, let's create a controller to manage it. Since we want to maintain an ordered list of todos, we'll use an instance of +SC.ArrayController+.
 
 <javascript filename="in apps/todos/todos.js">
-...
+// at the end of the file
 
 Todos.todoListController = SC.ArrayController.create({
   // Initialize the array controller with an empty array.
@@ -91,7 +91,7 @@ INFO: In MVC frameworks, like SproutCore, the controller layer bridges the model
 Now we have an array controller with no content. Let's add a method to create a new todo:
 
 <javascript filename="in apps/todos/todos.js">
-// at the end of the file
+// updating previous code
 
 Todos.todoListController = SC.ArrayController.create({
   // Initialize the array controller with an empty array.
