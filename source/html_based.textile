@@ -91,7 +91,7 @@ INFO: In MVC frameworks, like SproutCore, the controller layer bridges the model
 Now we have an array controller with no content. Let's add a method to create a new todo:
 
 <javascript filename="in apps/todos/todos.js">
-...
+// at the end of the file
 
 Todos.todoListController = SC.ArrayController.create({
   // Initialize the array controller with an empty array.
@@ -139,7 +139,7 @@ Open your web browser and navigate to "http://localhost:4020/todos":http://local
 NOTE: In SproutCore, whenever you want to display dynamic content or handle events, you will need to attach your HTML to a view object.
 
 <javascript filename="in apps/todos/todos.js">
-...
+// at the end of the file
 
 Todos.CreateTodoView = SC.TemplateView.create(SC.TextFieldSupport, {
   insertNewline: function() {
@@ -150,7 +150,7 @@ Todos.CreateTodoView = SC.TemplateView.create(SC.TextFieldSupport, {
       this.set('value', '');
     }
   }
-}); 
+});
 </javascript>
 
 Because +CreateTodoView+ contains a text field, we mix in +SC.TextFieldSupport+, which provides several conveniences, including a +value+ property, and higher level events such as +insertNewline+, for when the user presses +return+.
@@ -172,7 +172,7 @@ Now that we have defined our view, we need to attach it to HTML in our Handlebar
 Now that we have UI to create new todos, let's create the interface to display them.  We'll use the +#collection+ helper to display a list of items. +#collection+ will create an instance of +SC.TemplateCollectionView+ that renders every item in its underlying Array using the enclosed HTML.
 
 <html filename="in apps/todos/resources/templates/todos.handlebars">
-...
+<!-- at the end of the file -->
 
 {{#collection "Todos.todoListView"}}
   <div class='todo-content'>{{content/title}}</div>
@@ -182,7 +182,7 @@ Now that we have UI to create new todos, let's create the interface to display t
 Back in +todos.js+, we need to define the collection class that we passed to the +collection+ helper. To define the collection's underlying +Array+, we bind its +content+ property to the +todoListController+. In this case, that means that the +todoListView+ will create a <code><div></code> containing the Todo's +title+ for each item in the +todoListController+.
 
 <javascript filename="in apps/todos/todos.js">
-...
+// at the end of the file
 
 Todos.todoListView = SC.TemplateCollectionView.create({
   contentBinding: 'Todos.todoListController'
@@ -206,7 +206,7 @@ We now have the ability to add todos, but no way to mark them as done. Before th
 The first thing we need to do is add a checkbox to each todo view. If we want to handle user input, we need to assign a view to the checkbox. In this case, we want to be notified whenever the value of the checkbox is changed by the user. Remember that we assign views using the +#view+ helper. Here's what the todo list looks like after updating it in +todos.handlebars+:
 
 <html filename="in apps/todos/resources/templates/todos.handlebars">
-...
+<!-- replacing the previous code -->
 
 {{#collection "Todos.todoListView"}}
   {{#view "Todos.CheckboxView"}}
@@ -225,7 +225,7 @@ For every item in its underlying +Array+, +SC.TemplateCollectionView+ will creat
 This makes it easy to bind the value of the checkbox to the value of +isDone+, so that when one changes, the other changes automatically. Let's tie it all together:
 
 <javascript filename="in apps/todos/todos.js">
-...
+// at the end of the file
 
 Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
   valueBinding: '.parentView.content.isDone'
@@ -241,7 +241,7 @@ First, we'll tell our collection to use a custom item view. Then, in that view, 
 Here's what +todoListView+ looks like after we've updated it:
 
 <javascript filename="in apps/todos/todos.js">
-...
+// replacing the previous code
 
 Todos.todoListView = SC.TemplateCollectionView.create({
   contentBinding: 'Todos.todoListController',
@@ -265,7 +265,7 @@ h3. The More You Know
 We can now create todos and mark them as being complete. While 76% of all statistics are made up, let's see if we can display more accurate information from the data we have.  At the bottom of our list, let's display the number of todos remaining. Open +todos.handlebars+ and put this at the bottom:
 
 <html filename="in apps/todos/resources/templates/todos.handlebars">
-...
+<!-- at the end of the file -->
 
 {{#view "Todos.statsView"}}
   <span class='remaining'>{{bind "displayRemaining"}}</span>
@@ -277,7 +277,7 @@ The +bind+ helper allows us to automatically update the DOM when a property on o
 Let's go ahead and implement that view in +todos.js+ now:
 
 <javascript filename="in apps/todos/todos.js">
-...
+// at the end of the file
 
 Todos.statsView = SC.TemplateView.create({
   remainingBinding: 'Todos.todoListController.remaining',
@@ -298,10 +298,11 @@ We've also bound the view's +remaining+ property to the +todoListController+'s +
 When we have information that views need but is based on aggregate information about our models, the array controller is a good place to put it. Let's add a new computed property to +todoListController+ in +todos.js+:
 
 <javascript filename="in apps/todos/todos.js">
-...
+// updating previous code
 
 Todos.todoListController = SC.ArrayController.create({
-  ...
+
+  // ...
 
   remaining: function() {
     return this.filterProperty('isDone', false).get('length');
@@ -330,10 +331,11 @@ As we populate our list with todos, we may want to periodically clear out those 
 Let's add a new +clearCompletedTodos+ method to the controller.
 
 <javascript filename="in apps/todos/todos.js">
-...
+// updating existing code
 
 Todos.todoListController = SC.ArrayController.create({
-  ...
+
+  // ...
 
   clearCompletedTodos: function() {
     this.filterProperty('isDone', true).forEach(this.removeObject, this);
@@ -344,7 +346,7 @@ Todos.todoListController = SC.ArrayController.create({
 Next, we'll add the HTML to our template and connect it up to a view for event handling. Open +todos.handlebars+ and add a button inside the HTML for +statsView+:
 
 <html filename="in apps/todos/resources/templates/todos.handlebars">
-...
+<!-- updating existing code -->
 
 {{#view "Todos.statsView"}}
   <span class="remaining">{{bind "displayRemaining"}} remaining.</span>
@@ -357,7 +359,7 @@ Next, we'll add the HTML to our template and connect it up to a view for event h
 Now implement +Todos.clearCompletedView+:
 
 <javascript filename="in apps/todos/todos.js">
-...
+// at the end of the file
 
 Todos.clearCompletedView = SC.TemplateView.create({
   mouseUp: function() {
@@ -377,10 +379,11 @@ It turns out that, due to our application's declarative nature, all the hard wor
 Let's first create a new computed property on our controller that describes whether or not every todo is done. It might look something like this:
 
 <javascript filename="in apps/todos/todos.js">
-...
+// updating existing code
 
 Todos.todoListController = SC.ArrayController.create({
-  ...
+
+  // ...
 
   allAreDone: function() {
     return this.get('length') && this.everyProperty('isDone', true);
@@ -393,7 +396,7 @@ INFO: SproutCore has many enumerable helpers. +everyProperty('isDone', true)+ re
 Next, we'll create a checkbox to mark all items complete and bind it to this property:
 
 <html filename="in apps/todos/resources/templates/todos.handlebars">
-...
+<!-- at the end of the file -->
 
 {{#view "Todos.markAllDoneView"}}
   <input class="mark-all-done" type="checkbox"> Mark All as Done
@@ -401,7 +404,7 @@ Next, we'll create a checkbox to mark all items complete and bind it to this pro
 </html>
 
 <javascript filename="in apps/todos/todos.js">
-...
+// at the end of the file
 
 Todos.markAllDoneView = SC.TemplateView.create(SC.CheckboxSupport, {
   valueBinding: 'Todos.todoListController.allAreDone'
@@ -413,10 +416,11 @@ If you reload your browser and use the app, you'll notice that clicking all of t
 So far, our computed properties have described how to calculate a value from dependent properties. In this case, we want to accept a new value, and update dependent properties to reflect it.
 
 <javascript filename="in apps/todos/todos.js">
-...
+// updating existing code
 
 Todos.todoListController = SC.ArrayController.create({
-  ...
+
+  // ...
 
   allAreDone: function(key, value) {
     if (value !== undefined) {
@@ -438,6 +442,6 @@ Reload the app and add some todos. Click "Mark All as Done". Wow! Each of the in
 h3. Changelog
 
 * March 1, 2011: initial version by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
-* March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio
+* March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio and "Peter Wagenet":credits.html#pwagenet
 
 <input type="checkbox" onclick="document.body.style.textDecoration='line-through'; this.disabled=true;">Mark Tutorial as Done

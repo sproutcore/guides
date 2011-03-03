@@ -107,7 +107,7 @@ Your unit test has been generated and is now ready to be configured!
 
 +render.js+ contains a sample unit test case to help you get started.
 
-<shell filename="apps/my_app/tests/views/login/render.js">
+<javascript filename="apps/my_app/tests/views/login/render.js">
 // ==================================================
 // Project:   MyApp Unit Test
 // Copyright: ©2011 My Company, Inc.
@@ -122,7 +122,7 @@ test("test description", function() {
   var result   = "test";
   equals(result, expected, "test should equal test");
 });
-</shell>
+</javascript>
 
 
 
