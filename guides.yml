@@ -22,6 +22,9 @@ authors:
       nick: topherfangio
       image: topherfangio.jpg
       description: Topher is the System Architect at Pharos Resources, LLC and has experience with Ruby on Rails and other web technologies.
+    - name: Jason Gignac
+      nick: jgignac
+      description: ""
     - name: Alex Iskander
       nick: ialexi
       description: Member of the SproutCore core team.
