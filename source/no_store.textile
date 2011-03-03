@@ -12,234 +12,241 @@ h3. How To Use SproutCore Without a Model Layer
 
 This is how you do what backbone.js does in SproutCore. It does not use SproutCore's datastore.
 
-See http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/ for an example.
+See "http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/":http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/ for an example.
 
 <javascript>
 var MyApp = SC.Application.create({
-  
-    newTask: function() {
-        // optional: clear the values in the fields
-        MyApp.newTaskPane.append();
-    },
-    
-    createTask: function() {
-        // 1. Fetch the values from the fields in MyApp.newTaskPane.
-        var name = MyApp.newTaskPane.get('nameField'),
-            description = MyApp.newTaskPane.get('descriptionField');
-            
-        // 2. Send the values to the server's "create" method (disable interaction)
-        SC.Request.postUrl('/tasks').header({
-                'Accept': 'application/json'
-            }).json()
-      .notify(this, '_didCreateTask').send();
-      
-    }
-        // 3. When the server responds, create the task and add update MyApp.tasksController.
-        _didCreateTask: function(response, store, storeKey) {
-          if (SC.ok(response)) {
-            var hash = response.get('body');
-            MyApp.Task.create(hash);
-          }
-        }
-        // 4. Show the MyApp.editTaskPane
-        MyApp.editTaskPane.append();
-    },
-    
-    updateTask: function() {
-        // 1. Get the values from MyApp.selectedTaskController
-        var task = MyApp.selectedTaskController.get('content');
-        
-        // 2. Contact the server and send the updated properties for the task (disable interaction)
-        // 3. When the server responds, refresh the task with then new properties.
-        MyApp.editTaskPane.append();
-    },
-    
-    deleteTask: function() {
-        // 1. Search MyApp.tasksController for the task with id = `id`.
-        var task = MyApp.selectedTaskController.get('content');
 
-        // 2. Contact the server and ask it delete the task with id == `id` (disable interaction)
-        // 3. When the server responds, delete the task and remove it from the list.
-        MyApp.listTasksPane.append();
-    },
-    
-    showTaskList: function() {
-        // 1. Use SC.Response ajax to contact your server.
-        // You can hardcode the url in here:
-        SC.Request.getUrl('/tasks').json()
-            .notify(this, '_listDidRespond').send();
-        MyApp.listTasksPane.append();
-    } 
+  newTask: function() {
+    // optional: clear the values in the fields
+    MyApp.newTaskPane.append();
+  },
 
-    _listDidRespond: function(res) {
-        // 2. When you get the response, instatiate MyApp.Task objects and add them to a new array
-        var newArray = [];
-        var jsonHashesArray = res.get('body');
-        jsonHashesArray.forEach(function(hash) {
-            var task = MyApp.Task.create(hash);
-            newArray.push(task); 
-        });
-        
-        // 3. Set the new array as the "content"
-        MyApp.tasksController.set('conten', newArray);
+  createTask: function() {
+    // 1. Fetch the values from the fields in MyApp.newTaskPane.
+    var name = MyApp.newTaskPane.get('nameField'),
+        description = MyApp.newTaskPane.get('descriptionField');
+
+    // 2. Send the values to the remote "create" method
+    //    (disable interaction)
+    SC.Request.postUrl('/tasks')
+              .header({ 'Accept': 'application/json' }).json()
+              .notify(this, '_didCreateTask').send();
+  },
+
+  // 3. When the server responds, create the task and add update
+  //    MyApp.tasksController.
+  _didCreateTask: function(response, store, storeKey) {
+    if (SC.ok(response)) {
+      var hash = response.get('body');
+      MyApp.Task.create(hash);
     }
-   
+
+    // 4. Show the MyApp.editTaskPane
+    MyApp.editTaskPane.append();
+  },
+
+  updateTask: function() {
+    // 1. Get the values from MyApp.selectedTaskController
+    var task = MyApp.selectedTaskController.get('content');
+
+    // 2. Contact the server and send the updated properties
+    //    for the task (disable interaction)
+    // 3. When the server responds, refresh the task with then
+    //    new properties.
+    MyApp.editTaskPane.append();
+  },
+
+  deleteTask: function() {
+    // 1. Search MyApp.tasksController for the task with id = `id`.
+    var task = MyApp.selectedTaskController.get('content');
+
+    // 2. Contact the server and ask it delete the task with
+    //    id == `id` (disable interaction)
+    // 3. When the server responds, delete the task and remove
+    //    it from the list.
+    MyApp.listTasksPane.append();
+  },
+
+  showTaskList: function() {
+    // 1. Use SC.Response ajax to contact your server.
+    // You can hardcode the url in here:
+    SC.Request.getUrl('/tasks').json()
+        .notify(this, '_listDidRespond').send();
+    MyApp.listTasksPane.append();
+  }
+
+  _listDidRespond: function(res) {
+    // 2. When you get the response, instatiate MyApp.Task objects
+    //    and add them to a new array
+    var newArray = [];
+    var jsonHashesArray = res.get('body');
+    jsonHashesArray.forEach(function(hash) {
+        var task = MyApp.Task.create(hash);
+        newArray.push(task);
+    });
+
+    // 3. Set the new array as the "content"
+    MyApp.tasksController.set('conten', newArray);
+  }
+
 });
 
 //
 // Define our model class.
 //
 MyApp.Task = SC.Object.extend({
-    
-    toJSON: function() {
-        var hash = {}, key, val;
-        
-        for (key in this) {
-            if (!this.hasOwnKey(key) continue;
-            
-            val = this[key];
-            if (val.isProperty) val = this.get('val')
-            hash[key] = this.get(key)
-        }
+
+  toJSON: function() {
+    var hash = {}, key, val;
+
+    for (key in this) {
+      if (!this.hasOwnKey(key) continue;
+
+      val = this[key];
+      if (val.isProperty) val = this.get('val')
+      hash[key] = this.get(key)
     }
-    
+  }
+
 }); // gives us the "create" function.
 
 //
 // Make our Task list available to views.
 //
 MyApp.tasksController = SC.ArrayController.create({
-   
-    content: [],
-    allowsMultipleSelection: NO,
-   
+
+  content: [],
+  allowsMultipleSelection: NO,
+
 });
 
 //
-// Keeps track of the selected task so we can bind to it in our views.
+// Keeps track of the selected task so we can bind to it in
+//our views.
 //
 MyApp.selectedTaskController = SC.ObjectController.create({
-   
-   contentBinding: SC.Binding.single('MyApp.tasksController.selection')
-    
+
+ contentBinding: SC.Binding
+                   .single('MyApp.tasksController.selection')
+
 )};
 
 //
 // Create a pane to display our task list.
 //
 MyApp.listTasksPane = SC.MainPane.create({
-    
-    contentView: SC.View.create({
-        
-        childViews: 'list new'.w(),
-        
-        list: SC.ListView.create({
-           layout: { centerX:0, top:50, width:300, bottom:100 },
-       
-           contentBinding: 'MyApp.tasksController.arrangedObjects',
-           selectionBinding: 'MyApp.tasksController.selection'
-        
-           actsOnSelect: YES,
-           action: 'editTask',
-           target: MyApp
-       }),
-        
-        new: SC.ButtonView.create({
-          layout: { centerX:60, height:54, width:90, bottom:50 },
-          title: "New Task",
-          action: 'newTask',
-          target: MyApp
-        })
+
+  contentView: SC.View.create({
+
+    childViews: 'list new'.w(),
+
+    list: SC.ListView.create({
+      layout: { centerX:0, top:50, width:300, bottom:100 },
+
+      contentBinding: 'MyApp.tasksController.arrangedObjects',
+      selectionBinding: 'MyApp.tasksController.selection'
+
+      actsOnSelect: YES,
+      action: 'editTask',
+      target: MyApp
+    }),
+
+    new: SC.ButtonView.create({
+      layout: { centerX:60, height:54, width:90, bottom:50 },
+      title: "New Task",
+      action: 'newTask',
+      target: MyApp
     })
+  })
 });
 
 //
 // Create a new task pane.
 //
 MyApp.newTaskPane = SC.MainPane.create({
-    
-    nameField: SC.outlet('contentView.form.name'),
-    descriptionField: SC.outlet('contentView.form.description'),
-    
-    contentView: SC.View.create({
-        
-        childViews: 'form new'.w(),
-        
-        form: SC.View.create({
-           layout: { centerX:0, top:50, width:300, bottom:100 },
-       
-           childViews: 'name description'.w(),
-           
-           name: SC.TextFieldView.create({
-               layout: { top:10, left:10, right:10, height:80 },
-               hint: "Enter a task  name"
-               
-           }),
-           
-           description: SC.TextFieldView.create({
-               layout: { top: 100, left: 10, right: 10, bottom: 10 },
-               allowsMultipleLines: YES
-           })
-        
-        }),
-        
-        new: SC.ButtonView.create({
-          layout: { centerX:60, height:54, width:90, bottom:50 },
-          title: "Create",
-          action: 'createTask',
-          target: MyApp
-        })
+
+  nameField: SC.outlet('contentView.form.name'),
+  descriptionField: SC.outlet('contentView.form.description'),
+
+  contentView: SC.View.create({
+
+    childViews: 'form new'.w(),
+
+    form: SC.View.create({
+      layout: { centerX:0, top:50, width:300, bottom:100 },
+
+      childViews: 'name description'.w(),
+
+      name: SC.TextFieldView.create({
+        layout: { top:10, left:10, right:10, height:80 },
+        hint: "Enter a task  name"
+      }),
+
+      description: SC.TextFieldView.create({
+        layout: { top: 100, left: 10, right: 10, bottom: 10 },
+        allowsMultipleLines: YES
+      })
+
+    }),
+
+    new: SC.ButtonView.create({
+      layout: { centerX:60, height:54, width:90, bottom:50 },
+      title: "Create",
+      action: 'createTask',
+      target: MyApp
     })
+  })
 });
 
 //
 // Create an edit task pane.
 //
 MyApp.editTaskPane = SC.MainPane.create({
-    
-    contentView: SC.View.create({
-        
-        childViews: 'form update delete'.w(),
-        
-        form: SC.View.create({
-           layout: { centerX:0, top:50, width:300, bottom:100 },
-       
-           childViews: 'name description'.w(),
-           
-           name: SC.TextFieldView.create({
-               layout: { top:10, left:10, right:10, height:80 },
-               valueBinding: 'MyApp.selectedTaskController.name'
-               
-           }),
-           
-           description: SC.TextFieldView.create({
-               layout: { top: 100, left: 10, right: 10, bottom: 10 },
-               allowsMultipleLines: YES,
-               valueBinding: 'MyApp.selectedTaskController.description'
-           })
-        
-        }),
-        
-        update: SC.ButtonView.create({
-          layout: { right:10, height:54, width:90, bottom:50 },
-          title: "Update",
-          action: 'updateTask',
-          target: MyApp
-        }),
 
-        delete: SC.ButtonView.create({
-          layout: { right:120, height:54, width:90, bottom:50 },
-          title: "Delete",
-          action: 'deleteTask',
-          target: MyApp
-        })
+  contentView: SC.View.create({
+
+    childViews: 'form update delete'.w(),
+
+    form: SC.View.create({
+      layout: { centerX:0, top:50, width:300, bottom:100 },
+
+      childViews: 'name description'.w(),
+
+      name: SC.TextFieldView.create({
+        layout: { top:10, left:10, right:10, height:80 },
+        valueBinding: 'MyApp.selectedTaskController.name'
+      }),
+
+      description: SC.TextFieldView.create({
+        layout: { top: 100, left: 10, right: 10, bottom: 10 },
+        allowsMultipleLines: YES,
+        valueBinding: 'MyApp.selectedTaskController.description'
+      })
+
+    }),
+
+    update: SC.ButtonView.create({
+      layout: { right:10, height:54, width:90, bottom:50 },
+      title: "Update",
+      action: 'updateTask',
+      target: MyApp
+    }),
+
+    delete: SC.ButtonView.create({
+      layout: { right:120, height:54, width:90, bottom:50 },
+      title: "Delete",
+      action: 'deleteTask',
+      target: MyApp
     })
+  })
 });
 
 main() {
-  MyApp.showTaskList(); // Puts the list on the screen.  
+  MyApp.showTaskList(); // Puts the list on the screen.
 };
 
 </javascript>
 
-* Feb 02, 2011: initial version by "Erich Ocean":credits.html#erichocean and "Geoffrey Donaldson":credits.html#geoffreyd
+* March 2, 2011: initial version by "Erich Ocean":credits.html#erichocean and "Geoffrey Donaldson":credits.html#geoffreyd
+* March 2, 2011: cleanup by "Peter Wagenet":credits.html#pwagenet

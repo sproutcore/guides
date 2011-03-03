@@ -20,7 +20,7 @@ Follow along with the "Using a server without the store":no_store.html Guide.
 
 h3. Using the Store
 
-However, if you are going to deal with more than a handful of data, or want to take advantage of relationships between data, then managing it all on your own quickly gets messy. One of SproutCore's strongest features is it's Data Store. The Store can hold all of your data in memory allowing you to search through it with "Queries":queries.html. It is also the central place for your data, allowing you to bind many different views to the same record and have changes propagated easily.
+However, if you are going to deal with more than a handful of data, or want to take advantage of relationships between data, then managing it all on your own quickly gets messy. One of SproutCore's strongest features is it's Data Store. The Store can hold all of your data in memory allowing you to search through it with "Queries":records.html#using-queries It is also the central place for your data, allowing you to bind many different views to the same record and have changes propagated easily.
 
 Connecting your store to a server can be one of the most daunting tasks in creating your app: 
 
@@ -55,4 +55,4 @@ Have a look at the "Connecting With a DataSource":data_source.html Guide.
 
 h3. Changelog
 
-* Feb 02, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd and "Erich Ocean":credits.html#erichocean
+* March 2, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd and "Erich Ocean":credits.html#erichocean

@@ -1,6 +1,6 @@
 h2. Connecting with a DataSource
 
-This guide covers how to write a DataSource using the API's in sproutcore 1.0 - 1.5. 
+This guide covers how to write a DataSource using the API's in SproutCore 1.0&ndash;1.5.
 After reading this guide, you will be able to:
 
 * Understand what a DataSource is, and where it fits into the SproutCore Data Stream
@@ -14,7 +14,7 @@ WARNING: This is a Draft Copy, and although the information in here is correct, 
 
 h3. What is a DataSource?
 
-A DataSource is the layer that sits between your SproutCore application's "store":/model_overview.html#store and your backend. To start out, your app will probably be setup to use "fixtures":fixtures.html. This will populate your app with data without having to hit your server in development.  When you are ready to interact with your backend, you can create your own DataSource that will send and receive data to and from your backend.
+A DataSource is the layer that sits between your SproutCore application's "store":records.html#models-records-and-the-store and your backend. To start out, your app will probably be setup to use "fixtures":fixtures.html. This will populate your app with data without having to hit your server in development.  When you are ready to interact with your backend, you can create your own DataSource that will send and receive data to and from your backend.
 
 NOTE: A DataSource is different from the Store. The Store is the in memory storage for your records, while the DataSource is the communication layer linking the store to your backend.
 
@@ -94,11 +94,11 @@ h4. Creating a DataSource
 
 To generate a DataSource, use the command:
 
-<plain>
+<shell>
 sc-gen data-source MyApp.RESTDataSource
-</plain>
+</shell>
 
-NOTE: Anywhere you see MyApp, replace this with the name of the application that your building.
+NOTE: Anywhere you see MyApp, replace this with the name of the application that you're building.
 
 This will make a file in +apps/my_app/data_sources/simple.js+. This file will be stubbed with the default functions that will get called by the store.
 
@@ -124,13 +124,13 @@ h3. Writing The DataSource
 
 h4. Our First Fetch
 
-The first thing that your app will likely do is to fetch a bunch of data. This is usually done via a "query":/queries.html. The query for finding all ToDo's will look like:
+The first thing that your app will likely do is to fetch a bunch of data. This is usually done via a "query":records.html#using-queries. The query for finding all ToDo's will look like:
 
 <javascript>
   MyApp.QUERY_ALL_TODOS = SC.Query.local(MyApp.Todo)
 </javascript>
 
-NOTE: Our DataSource will be written assuming that "local queries":/queries.html#local_queries are being used. Local queries are what you will be using most of the time. Remote queries will be covered in a separate guide.
+NOTE: Our DataSource will be written assuming that "local queries":records.html#local-vs-remote-queries are being used. Local queries are what you will be using most of the time. Remote queries will be covered in a separate guide.
 
 When you call +App.store.find(MyApp.QUERY_ALL_TODOS)+, the store will return a "RecordArray":http://docs.sproutcore.com/symbols/SC.RecordArray.html containing matching records (or an empty recordArray, if nothing matches). This RecordArray is linked to the query so that it will automatically update any time the query conditions match a new record. After it has returned, the store will call 'fetch' on its attached DataSource. 
 
@@ -225,11 +225,11 @@ Then we would use this instead:
 var body = response.get('body')
     records = body.records;
 </javascript>
-NOTE: Note how we didn't use .get('records'), this is because the JSON is converted into plain JS, not SC.Object's.
+NOTE: Note how we didn't use +.get('records')+, this is because the JSON is converted into plain JS, not +SC.Object+'s.
 
 Now we call "loadRecords":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#loadRecords on the store to actually put our data into the store. The first parameter is the Record Type of the objects you are going to load. The second is an array of plain JS object hashes containing your records data.
 
-WARNING: You need to make sure that your data hashes have their "primary key":#a-records-primarykey properties, in this case '+id+'.
+WARNING: You need to make sure that your data hashes have their "primary key":records.html#record-ids properties, in this case '+id+'.
 
 NOTE: This is the usual way of calling +loadRecords+, but it can be called with a few different signatures. This allows for quite complex behaviour, such as loading multiple record types at once. These will be covered by other guides.
 
@@ -479,4 +479,5 @@ h4. Datasource for Remote Query
 
 h3. Changelog
 
-* Feb 02, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd
+* March 2, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd
+* March 2, 2011: minor fixes by "Peter Wagenet":credits.html#pwagenet
