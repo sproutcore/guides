@@ -1,0 +1,58 @@
+h2. Connecting to a Server
+
+There are a number of options for connecting your SproutCore application to a server.
+
+Here we give an overview of the options that you have.
+
+endprologue.
+
+WARNING: This is a Draft Copy, and although the information in here is correct, it may be incomplete in places.
+
+h3. When you have a light app, with limited server needs
+
+SproutCore includes a powerful model layer, called the datastore. SproutCore has special code in it's controller and view layers to make the datastore the most efficient source of data.
+
+Nevertheless, you don't have to use the datastore in your application. Like most high-quality frameworks, the datastore is an optional framework in SproutCore (though it is "on" by default).
+
+If you come from a jQuery (or other JS framework), you're probably used to making your own AJAX calls and handling the response yourself. Toolkits like "BackBone":http://documentcloud.github.com/backbone/ work like this. If you have a small app, and feel more comfortable with this approach:
+
+Follow along with the "Using a server without the store":no_store.html Guide.
+
+h3. Using the Store
+
+However, if you are going to deal with more than a handful of data, or want to take advantage of relationships between data, then managing it all on your own quickly gets messy. One of SproutCore's strongest features is it's Data Store. The Store can hold all of your data in memory allowing you to search through it with "Queries":queries.html. It is also the central place for your data, allowing you to bind many different views to the same record and have changes propagated easily.
+
+Connecting your store to a server can be one of the most daunting tasks in creating your app: 
+
+* How do I know when to send a message to the server? 
+* Do I have to rewrite my server?
+
+There are some different choices depending on what setup you already have (if any).
+
+h4. When you have an existing, server-based MVC app
+
+If you are coming to SproutCore with a server side app that you already have running, the fastest way of getting going is to contact you server and update the store to match based on the response. For example, if you want to update a record in the store, you would ask the server to update the record and then when the update is successful, you would update the store locally.
+
+This is possible because SproutCore's datastore framework allows for nested stores. With a nested store, edits are "buffered" in the nested store. You would send the changes in the nested store to the server, and when it responds, update the base store and clear (or destroy) the nested store.
+
+This makes your "base" store a read-only copy of the server. You can push new data from the server into the base store at any time, update existing data, or delete data. Any *changes* to data are made in a nested store where they can easily be aborted or cleared.
+
+This puts the server 100% in control of the "base" store. There are techniques to keep your base store easily up to date, and to refresh parts of the store when needed. Very sophisticated apps can be built with this approach, and it is the most appropriate way to build a SproutCore application if you already have an existing server-based MVC app.
+
+_We will have a guide for this soon._
+
+The Downside to this approach is that your app will have to wait on responses from the server, meaning that you don't have a truly responsive user experience. See the next section if this is a concern.
+
+h4. When you are building a new SproutCore app from scratch, without an existing server
+
+The final approach puts a SproutCore data store in 100% control.
+
+This method of connecting to the server is to use SproutCore's default method of a DataSource. The Store is designed to interact with the DataSource, letting it know when things have changed. When using a dataSource you can trear your Store like a local copy of your server. You can ask for records, save records or create records directly in the store, and your dataSource will then take care of propogating these changes to your server.
+
+This method will give you the most interactive setup, allowing your user to keep clicking, and not have to wait on your servers responses before moving on. If your going for the best user experience in an app, this is the way to go.
+
+Have a look at the "Connecting With a DataSource":data_source.html Guide.
+
+h3. Changelog
+
+* Feb 02, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd and "Erich Ocean":credits.html#erichocean

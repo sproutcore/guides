@@ -28,6 +28,12 @@ authors:
     - name: Alex Iskander
       nick: ialexi
       description: Member of the SproutCore core team.
+    - name: Geoffrey Donaldson
+      nick: geoffreyd
+      image: geoffreyd.jpg
+      description: Geoffrey is a freelance SproutCore Developer. Working with SproutCore since 2009.
+    - name: Erich Ocean
+      nick: erichocean
     - name: Florian Kugler
       nick: fkugler
       description: ""
@@ -67,7 +73,7 @@ index:
       text: "The SproutCore data framework is a full-featured ORM-like framework for working with data in SproutCore. Learn about the SproutCore data framework and how you can use it to interact with your data sources."
       construction: true
     - title: Hooking Up to a Backend
-      url: data_source
+      url: connect_server
       text: "This guide covers how to create a SproutCore data source, which will retrieve data from your servers and make them available to the SproutCore Records you designed in the previous guide."
       construction: true
     - title: Transactions Using Nested Stores
