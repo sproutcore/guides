@@ -192,46 +192,42 @@ h4. Using CSS to Style a View
 Let's make the interface a bit more visually appealing and user friendly by giving a usage hint when no contact has been selected yet. We ca create a generic view and add the class name +myapp-usage-hint+ to the +classNames+ array, and then a label view as a child to display the hint: Our +bottomRightView+ should now look like this:
 
 <javascript filename="in apps/my_app/resources/main_page.js">
-  ...
+bottomRightView: SC.View.design({
+  childViews: 'usageHint contactDetails'.w(),
 
-    bottomRightView: SC.View.design({
-      childViews: 'usageHint contactDetails'.w(),
+  usageHint: SC.View.design({
+    classNames: 'myapp-usage-hint',
+    isVisibleBinding: SC.Binding.from('MyApp.contactsController.hasSelection').not(),
 
-      usageHint: SC.View.design({
-        classNames: 'myapp-usage-hint',
-        isVisibleBinding: SC.Binding.from('MyApp.contactsController.hasSelection').not(),
+    childViews: [SC.LabelView.design({
+      layout: { width: 300, height: 22, centerX: 0, centerY: 0 },
+      tagName: 'h1',
+      textAlign: SC.ALIGN_CENTER,
+      value: "Select a contact"
+    })]
+  }),
 
-        childViews: [SC.LabelView.design({
-          layout: { width: 300, height: 22, centerX: 0, centerY: 0 },
-          tagName: 'h1',
-          textAlign: SC.ALIGN_CENTER,
-          value: "Select a contact"
-        })]
-      }),
+  contactDetails: SC.View.design({
+    layout: { top: 50, left: 50, bottom: 50, right: 20 },
 
-      contactDetails: SC.View.design({
-        layout: { top: 50, left: 50, bottom: 50, right: 20 },
+    childViews: 'nameLabel phoneLabel addressLabel'.w(),
 
-        childViews: 'nameLabel phoneLabel addressLabel'.w(),
+    nameLabel: SC.LabelView.design({
+      layout: { width: 500, height: 18 },
+      valueBinding: 'MyApp.contactController.name'
+    }),
 
-        nameLabel: SC.LabelView.design({
-          layout: { width: 500, height: 18 },
-          valueBinding: 'MyApp.contactController.name'
-        }),
+    phoneLabel: SC.LabelView.design({
+      layout: { top: 40, width: 500, height: 18 },
+      valueBinding: 'MyApp.contactController.phone'
+    }),
 
-        phoneLabel: SC.LabelView.design({
-          layout: { top: 40, width: 500, height: 18 },
-          valueBinding: 'MyApp.contactController.phone'
-        }),
-
-        addressLabel: SC.LabelView.design({
-          layout: { top: 80, width: 500, height: 500 },
-          valueBinding: 'MyApp.contactController.address'
-        })
-      })
+    addressLabel: SC.LabelView.design({
+      layout: { top: 80, width: 500, height: 500 },
+      valueBinding: 'MyApp.contactController.address'
     })
-
-  ...
+  })
+})
 </javascript>
 
 
@@ -328,7 +324,7 @@ h4. Render Delegates
 Render delegates are an easy way to manage theming your apps. You can create a render delegate to manage the rendering of your views for you and add it to the theme you're using. Render delegates also have a +render+ and +update+ method, but their first argument is the +dataSource+, or the view delegating to them. Let's recreate the last scenario using an +SC.RenderDelegate+ that we're going to create in +render_delegates/contact_name.js+:
 
 <javascript filename="apps/my_app/render_delegates/contact_name.js">
-SC.AceTheme.contactNameRenderDelegate = SC.RenderDelegate.create({
+MyApp.MyTheme.contactNameRenderDelegate = SC.RenderDelegate.create({
   render: function (dataSource, context) {
     context.push('<h1>', dataSource.get('value'), '</h1>');
   },
@@ -346,6 +342,8 @@ MyApp.ContactNameView = SC.View.extend({
   renderDelegateName: 'contactNameRenderDelegate'
 });
 </javascript>
+
+TIP: For a more detailed overview of themeing see "Theming Your App":theming_app.html
 
 h3. View Events
 
@@ -377,14 +375,10 @@ MyApp.ContactNameView = SC.View.extend({
 And in +core.js+:
 
 <javascript filename="in apps/my_app/core.js">
-  ...
-
-    openWebsite: function () {
-      var website = MyApp.contactController.get('website');
-      window.open(website);
-    }
-
-  ...
+openWebsite: function () {
+  var website = MyApp.contactController.get('website');
+  window.open(website);
+}
 </javascript>
 
 You should return +YES+ when you've handled the event, otherwise it would propagate to all of it's parent views.
@@ -396,4 +390,5 @@ SproutCore views are powerful, and when coupled with bindings, controllers, a fe
 h3. Changelog
 
 * January 12, 2011: initial version by "Devin Torres":credits.html#dtorres
-* March    2, 2011: added filenames and small code example changes by "Topher Fangio":credits.html#topherfangio
+* March 2, 2011: added filenames and small code example changes by "Topher Fangio":credits.html#topherfangio
+* March 2, 2011: some corrections to section on render delegates by "Peter Wagenet":credits.html#pwagenet
