@@ -94,7 +94,6 @@ index:
     - title: Core View Concepts
       url: views
       text: "In this guide, we will cover the basics of SproutCore views, and show you how to customize the built-in SproutCore views for your own use."
-      construction: true
     - title: Building Your Own Views
       url: custom_views
       text: "Most applications will quickly go beyond the built-in SproutCore views. In this guide, we will cover how to build and style your own views."
@@ -137,6 +136,8 @@ index:
     - title: "Javascript Style Guide"
       url: "style_guide"
       text: "This guide covers the style of SproutCore framework code"
+      construction: true
     - title: "Comitter Guidelines"
       url: "commit_code"
       text: "A detailed checklist of the do's and don'ts of SC Framework code..."
+      construction: true
