@@ -148,13 +148,13 @@ $width: 5px;
 If you want to share your variable between files, you have to make sure they are loaded
 in the right order. The +sc_require()+ function does this:
 
-<css filename="apps/my_app/resources/file1.css">
+<css filename="apps/my_app/resources/stylesheets/file1.css">
 $width: 5px;
 </css>
 
-<css filename="apps/my_app/resources/file2.css">
+<css filename="apps/my_app/resources/stylesheets/file2.css">
 // call sc_require to make sure file1 loads first:
-sc_require("file1.css");
+sc_require("resources/stylesheets/file1.css");
 
 .my-thingy {
   width: $width;
