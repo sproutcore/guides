@@ -261,6 +261,8 @@ Todos.todoListView = SC.TemplateCollectionView.create({
 });
 </javascript>
 
+NOTE: +.$()+ is a SproutCore convenience function for grabbing the jQuery bound object. In this context, +this.$()+ is shorthand for +jQuery(this.get('layer'))+.
+
 Reload your application in the browser and try it out. As soon as you click a todo's checkbox, the text will become crossed out. Keep in mind you didn't need to update any views when marking the +Todo+ as done; bindings did it for. If a different part of the app changes the +Todo+ item's +isDone+ property, your list item would automatically update without any more work on your part.
 
 h3. The More You Know
