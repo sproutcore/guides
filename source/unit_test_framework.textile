@@ -75,5 +75,5 @@ See "Adding Unit Test Files »":/adding_unit_test.html
 
 h3. Changelog
 
-* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul Imtarnasan":credits.html#veebs
 * March     2, 2011: paragraph formamtting by "Topher Fangio":credits.html#topherfangio

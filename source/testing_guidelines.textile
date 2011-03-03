@@ -27,4 +27,4 @@ On to "SproutCore Development Using TDD »":/todos_tdd.html
 
 h3. Changelog
 
-* February 15, 2011: initial placeholder by "Scott Smith":credits.html#ssmith and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* February 15, 2011: initial placeholder by "Scott Smith":credits.html#ssmith and "Vibul Imtarnasan":credits.html#veebs

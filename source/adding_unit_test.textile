@@ -161,5 +161,5 @@ On to "Writing Unit Test Cases »":/writing_unit_tests.html
 
 h3. Changelog
 
-* February 15, 2011: initial version by "Scott Smith":credits.html#oldfartdeveloper and "Vibul &quot;Veebs&quot; Imtarnasan":credits.html#veebs
+* February 15, 2011: initial version by "Scott Smith":credits.html#oldfartdeveloper and "Vibul Imtarnasan":credits.html#veebs
 * March     2, 2011: added filenames, fixed link in credits, changed +<plain>+ tags to +<shell>+ tags by "Topher Fangio":credits.html#topherfangio
