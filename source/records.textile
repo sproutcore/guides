@@ -380,7 +380,7 @@ if (status & SC.Record.READY) {
 }
 
 // checks if the record is in the READY_NEW state
-if ((status & SC.Record.READY_NEW) == SC.Record.READY_NEW) { 
+if ((status === SC.Record.READY_NEW) { 
   // ...
 }
 </javascript>
