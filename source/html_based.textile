@@ -107,6 +107,8 @@ Todos.todoListController = SC.ArrayController.create({
 });
 </javascript>
 
+NOTE: You might find the "pushObject":http://docs.sproutcore.com/symbols/SC.Array.html#SC.Array.pushObject call in the above code confusing. SC.ArrayController and the related SC.ObjectController behave as a proxies for the object you set as their "content" property.  This means that when you work with controllers, instead of accessing properties on the controller content you will access the controller itself.  For example, you can normally bind views in your UI directly to the ArrayController and they will work as if you bound directly to the content array. The advantage of this is that you can later change the content of the controller to point to another array and UI will update appropriately without needing you to reconfigure each UI item individually.
+
 h3. Creating New Todos with a Text Field
 
 NOTE: At this point, you should download "the CSS":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos.css and save it as +apps/todos/resources/stylesheets/todos.css+.
