@@ -27,7 +27,8 @@ This will create several files needed for your application, inside the *+apps/to
 **** *templates/* - Place all Handlebars templates here.
 ***** *todos.handlebars* - The main template for the application
 **** *images/* - Place all image assets here.
-**** *todos.css* - The CSS to style your views
+**** *stylesheets/* - Place all css here
+***** *todos.css* - The CSS to style your views
 *** *tests/*
 * *Buildfile* - Tells SproutCore how your application should be built. Usually, you can just use the defaults provided.
 * *README*
