@@ -86,7 +86,7 @@ NOTE: +sc_super+ is one of the rare exceptions in SproutCore in that it is not a
 
 h5. The +init+ method
 
-Whenever an instance of +SC.Object+ is created, the +init+ method is called. This function can be overriden when you need to perform some setup functionality when creating your object.
+Whenever an instance of +SC.Object+ is created, the +init+ method is called. This function can be overridden when you need to perform some setup functionality when creating your object.
 
 <javascript>
 MyApp.Calculation = SC.Object.extend({
