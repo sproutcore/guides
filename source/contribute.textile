@@ -109,7 +109,7 @@ index:
   Digging Deeper:
     - title: Using SproutCore Weebles
       url: weebles
-      text: "Learn how to use the SproutCore Weebles framework to build magical and revolutionary Sproutcore applications"
+      text: "Learn how to use the SproutCore Weebles framework to build magical and revolutionary SproutCore applications"
 </plain>
 
 Once you are done, commit your work and then push your guide to your fork:

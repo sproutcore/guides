@@ -49,7 +49,7 @@ You may have noticed that the first two examples use +.create()+ and the third u
 
 When you use +.create()+, you are creating an instance of a class. It is similar to using the new operator. On the other hand, when you use +.extend()+, the resulting object is created as a new a subclass, where the properties and functions from the base class are added in addition to the things that you define on your own.
 
-+.design()+ is essentially the same as +.extend()+.  It allows Greenhouse and the sproutcore design framework to create parallel classes that can be used to manipulate views at design time.  Unless you're including the design framework +.design()+ works the same as +.extend()+.
++.design()+ is essentially the same as +.extend()+.  It allows Greenhouse and the SproutCore design framework to create parallel classes that can be used to manipulate views at design time.  Unless you're including the design framework +.design()+ works the same as +.extend()+.
 
 
 h3. Properties and Variables
