@@ -12,7 +12,7 @@ endprologue.
 
 h3. Creating a Directory for Your Unit Test Files
 
-When you first create your Sproutcore application, directories are automatically created for you.
+When you first create your SproutCore application, directories are automatically created for you.
 
 <shell>
 $ sc-init MyApp

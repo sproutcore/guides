@@ -38,7 +38,7 @@ Which will return a "JSON":http://en.wikipedia.org/wiki/Json array like:
 [
   {
     "id": 1,
-    "title": "Learn to use Sproutcore",
+    "title": "Learn to use SproutCore",
     "done": false
   },
   {
@@ -212,7 +212,7 @@ This works because our server responds with an array at the top level of the JSO
   records: [
     {
       "id": 1,
-      "title": "Learn to use Sproutcore",
+      "title": "Learn to use SproutCore",
       "done": false
     }
   ]

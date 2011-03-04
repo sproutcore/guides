@@ -16,7 +16,7 @@ h3. Models, Records and the Store
 
 In SproutCore the model layer is the lowest application layer and holds all your data as well as the business logic of your application. The controller layer calls into the model layer to modify data and retrieves data from the model layer mostly using bindings. 
 
-The model layer is also responsible for talking to your server, fetching and commiting data when necessary. The server communication aspect of the model layer is not covered in this guide, but in the guide about using data sources.
+The model layer is also responsible for talking to your server, fetching and committing data when necessary. The server communication aspect of the model layer is not covered in this guide, but in the guide about using data sources.
 
 Models are a blueprint for your data, they define the data schema of your application. This data schema is mostly very similar to the data schema of your backend. In SproutCore models are defined by subclassing +SC.Record+. When you actually want to create a data record from one of your blueprints, you use +SC.Store+ to create an instance of a +SC.Record+ class. The store manages the lifecycle and the data of your records in a central place. When you retrieve or update a property from a record, the record actually uses the store to access the underlying data hash.
 

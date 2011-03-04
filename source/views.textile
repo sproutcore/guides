@@ -1,4 +1,4 @@
-h2. Core Concepts
+h2. Core View Concepts
 
 The guide covers some of the core concepts of views in SproutCore. By referring to this guide, you will be able to:
 
@@ -114,7 +114,7 @@ The labels are wrapped in +contactDetails+ so they can be cushioned from the edg
 
 h3. Binding Views to Controllers
 
-Instead of having our source list content and our label values in our views, let's bind them to some controllers. We'll start by creating an SC.ArrayController for our contacts and an SC.ObjectController that proxies individual contact objects:
+Instead of having our source list content and our label values in our views, let's bind them to some controllers. We'll start by creating an SC.ArrayController for our list of contacts:
 
 <javascript filename="apps/my_app/controllers/contacts.js">
 MyApp.contactsController = SC.ArrayController.create({
@@ -139,7 +139,11 @@ MyApp.contactsController = SC.ArrayController.create({
     })
   ]
 });
+</javascript>
 
+And then an SC.ObjectController that proxies individual contact objects:
+
+<javascript filename="apps/my_app/controllers/contact.js">
 MyApp.contactController = SC.ObjectController.create({
   contentBinding: SC.Binding.from('MyApp.contactsController.selection').single()
 });
@@ -230,8 +234,6 @@ bottomRightView: SC.View.design({
 })
 </javascript>
 
-
-
 Right now it looks rather small, so let's add some style to it. Create a file in the +resources+ directory and name it +theme.css+:
 
 <css filename="apps/my_app/resources/theme.css">
@@ -257,7 +259,7 @@ NOTE: As soon as you start overriding methods such as +render+ and +update+, you
 
 The +update+ method is called whenever a property that is defined on the view's +displayProperties+ array is changed on the view. The +render+ method is passed a +context+ variable which is an +SC.RenderContext+. +SC.RenderContext+ is used to queue up and build HTML for a view. You build HTML by calling +context.push()+ and passing it HTML:
 
-<javascript>
+<javascript filename="apps/creepy_app/views/charles_jolley.js">
 CreepyApp.CharlesJolleyView = SC.View.extend({
   render: function (context) {
     context.push("<h1>Charles Jolley is 31 years young...</h1>");
@@ -267,7 +269,7 @@ CreepyApp.CharlesJolleyView = SC.View.extend({
 
 You can also use +context.begin()+ and +context.end()+ to begin building a tag and push arguments that are "stringable" (have a toString) into it:
 
-<javascript>
+<javascript filename="apps/creepy_app/views/charles_jolley.js">
 CreepyApp.CharlesJolleyView = SC.View.extend({
   displayProperties: ['name', 'age'],
   name: 'Charles Jolley',
@@ -283,7 +285,7 @@ CreepyApp.CharlesJolleyView = SC.View.extend({
 
 The +update+ method is passed a jQuery handle of the view's layer, the DOM element that belongs to the view. You can use it and all of jQuery's API to manipulate the DOM and update your view:
 
-<javascript>
+<javascript filename="apps/creepy_app/views/charles_jolley.js">
 CreepyApp.CharlesJolleyView = SC.View.extend({
   displayProperties: ['name', 'age'],
   name: 'Charles Jolley',
@@ -392,3 +394,4 @@ h3. Changelog
 * January 12, 2011: initial version by "Devin Torres":credits.html#dtorres
 * March 2, 2011: added filenames and small code example changes by "Topher Fangio":credits.html#topherfangio
 * March 2, 2011: some corrections to section on render delegates by "Peter Wagenet":credits.html#pwagenet
+* March 4, 2011: corrected the title and added a few more filenames by "Devin Torres":credits.html#dtorres

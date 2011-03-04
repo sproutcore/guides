@@ -117,7 +117,7 @@ When the fixtures are loaded into your app the relationships automatically take 
 
 WARNING: Unlike a traditional relational database it is necessary to specify both sides of the relationship.
 
-TIP: When defining the 'many' side of the fixture record, be certain to include the [ ] around a single value because Sproutcore is expecting an array of values.
+TIP: When defining the 'many' side of the fixture record, be certain to include the [ ] around a single value because SproutCore is expecting an array of values.
 
 h4. Defining Non-String Values
 

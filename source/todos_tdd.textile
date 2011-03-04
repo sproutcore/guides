@@ -319,7 +319,7 @@ And that makes all of our existing tests (both unit and integration) pass.
 
 h3. Reflection on mocking problems.
 
-To be honest, I'm not entirely happy with the mocking that I just did, because I wasn't able to validate what was contained within the messages that were going between the objects. The mock really should be able to do something like wasCalledWith, and give it a parameter. That's what I would generally do in something like Jasmine, but I haven't worked out how to integrate a solid mocking or spying framework with Sproutcore yet.
+To be honest, I'm not entirely happy with the mocking that I just did, because I wasn't able to validate what was contained within the messages that were going between the objects. The mock really should be able to do something like wasCalledWith, and give it a parameter. That's what I would generally do in something like Jasmine, but I haven't worked out how to integrate a solid mocking or spying framework with SproutCore yet.
 
 Also, I really should have written the delegation to the controller first, but since I knew I couldn't validate what it was called with it would have missed testing that the main function delegated to the store to find the tasks, so I broke the true BDD cycle there. But, I guess it works for now.
 
