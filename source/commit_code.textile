@@ -16,7 +16,7 @@ Javascript can be beautiful and annoying all at the same time.  "Crockford's JSL
 * use of +==+ and +!=+ instead of +===+ and +!==+
 * Extra or missing commas
 
-The following JS lint config can be used in combination with the "SproutCore Textmate bundle":https://github.com/sproutit/sproutcore-tmbundle
+The following JS lint config can be used in combination with the "SproutCore Textmate bundle":https://github.com/sproutit/sproutcore-tmbundle.
 
 Install it at +<path to your Textmate bundles>/SproutCore.tmbundle/Support/bin/prefs.js+
 <javascript>
@@ -49,17 +49,17 @@ var JSLINT_PREFS = {
   
 </javascript>
 
-TODO: we should have a command line tool that is included in the build tools so there is a consistent standard and so all the cool kids using VI have an option
+TODO: we should have a command line tool that is included in the build tools so there is a consistent standard and so all the cool kids using VI have an option.
 
 h3. Unit Tests
 
 h4. Don't break anyone else's tests
 
-On stable builds all the unit tests should pass.  On development branches if there are broken tests because of a major project that someone on the Core Team is doing thats you can ignore those failures.
+On stable builds, all of the unit tests should pass.  On development branches, if there are broken tests because of a major project that someone on the Core Team is doing, you can ignore those failures.
 
 h4. Write good tests
 
-Writing good unit tests is something often pontificated on by seasoned developers so rather than waste time with a long essay I'll just show some examples of good and bad unit tests:
+Writing good unit tests is something often pontificated on by seasoned developers, so rather than waste time with a long essay I'll just show some examples of good and bad unit tests:
 
 
 h5. View Unit Tests
@@ -77,7 +77,8 @@ test("basic", function() {
   equals(label.text(), 'Hello World', 'should have label');
 });
 </javascript>
-This test is great because it verifies that the *rendered DOM* is correct
+
+The above test is great because it verifies that the *rendered DOM* is correct.
 
 <javascript>
 test("basic", function() {
@@ -85,37 +86,39 @@ test("basic", function() {
   equals(view.get('title'), 'Hello World', 'should have label');
 });
 </javascript>
+
 This test sucks because it only verifies that you can set a property on an object.
 
-TIP: For more information see "Writing Unit Tests":writing_unit_tests.html
+TIP: For more information see "Writing Unit Tests":writing_unit_tests.html.
 
 
 h4. Running unit tests
 
 You can run the unit tests by using the test runner app +http://localhost:4020/sproutcore/tests+ or by calling them manually:
 
-All Tests:
-@http://localhost:4020/<framework_or_app_name>/en/current/tests.html@
+* All Tests:
+  @http://localhost:4020/<framework_or_app_name>/en/current/tests.html@
 
-Specific Tests:
-@http://localhost:4020/<framework_or_app_name>/en/current/tests/path/to/your/tests.html@
+* Specific Tests:
+  @http://localhost:4020/<framework_or_app_name>/en/current/tests/path/to/your/tests.html@
 
 For example:
-All of SproutCore's datastore tests:
-@http://localhost:4020/sproutcore/datastore/en/current/tests.html@
 
-Just the tests in the store directory
-@http://localhost:4020/sproutcore/datastore/en/current/tests/system/store.html@
+* All of SproutCore's datastore tests ("link":http://localhost:4020/sproutcore/datastore/en/current/tests.html):
+  @http://localhost:4020/sproutcore/datastore/en/current/tests.html@
 
-Just the find tests
-@http://localhost:4020/sproutcore/datastore/en/current/tests/system/store/find.html@
+* Just the tests in the store directory ("link":http://localhost:4020/sproutcore/datastore/en/current/tests/system/store.html):
+  @http://localhost:4020/sproutcore/datastore/en/current/tests/system/store.html@
 
-TIP: For more information see "Running Unit Tests":running_unit_tests.html
+* Just the find tests ("link":http://localhost:4020/sproutcore/datastore/en/current/tests/system/store/find.html):
+  @http://localhost:4020/sproutcore/datastore/en/current/tests/system/store/find.html@
+
+TIP: For more information see "Running Unit Tests":running_unit_tests.html.
 
 h3. Consistency
 
  All code must be consistent with patterns found in the Application and within the Frameworks.
- example: MVC, Visitor, Statecharts don't add specialfunctionality without good reason!
+ example: MVC, Visitor, Statecharts don't add special functionality without good reason!
 
 
 h3. Performance
@@ -125,8 +128,8 @@ Avoid Known Slow stuff:
 * nested run loops
 * looping
 * missing +.cacheable()+
-* Code must be prove-ably fast with +SC.Benchmark+
-* Keep in mind code size in kb, number of statements(IE!), doing too much on init
+* code must be prove-ably fast with +SC.Benchmark+
+* keep in mind code size in kb, number of statements(IE!), doing too much on init
 
 h3. Maintainability
 
@@ -134,10 +137,11 @@ h3. Maintainability
 * Be consistent and predictable
 * Make your classes extensible for other devs! (comment and modularize)
 * Use good OO practices
-* reduce coupling between layers (parent classes should not know about their children -> looking at you SC.View)
-* refactor don't Hack -> make code better not worse!
+* Reduce coupling between layers (parent classes should not know about their children -> looking at you SC.View)
+* Refactor, don't _hack_ -> *make code better not worse!*
 
 h3. Changelog
 
 * March 3, 2011: initial version by "Mike Ball":credits.html#onkis
 * March 3, 2011: minor adjustments by "Peter Wagenet":credits.html#pwagenet
+* March 3, 2011: minor grammatical/formatting changes by "Topher Fangio":credits.html#topherfangio
