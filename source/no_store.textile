@@ -14,7 +14,7 @@ This is how you do what backbone.js does in SproutCore. It does not use SproutCo
 
 See "http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/":http://www.jamesyu.org/2011/01/27/cloudedit-a-backbone-js-tutorial-by-example/ for an example.
 
-<javascript>
+<javascript filename="apps/my_app/core.js">
 var MyApp = SC.Application.create({
 
   newTask: function() {
@@ -87,7 +87,7 @@ var MyApp = SC.Application.create({
     });
 
     // 3. Set the new array as the "content"
-    MyApp.tasksController.set('conten', newArray);
+    MyApp.tasksController.set('content', newArray);
   }
 
 });
@@ -101,11 +101,11 @@ MyApp.Task = SC.Object.extend({
     var hash = {}, key, val;
 
     for (key in this) {
-      if (!this.hasOwnKey(key) continue;
+      if (!this.hasOwnKey(key)) continue;
 
       val = this[key];
-      if (val.isProperty) val = this.get('val')
-      hash[key] = this.get(key)
+      if (val.isProperty) val = this.get('val');
+      hash[key] = this.get(key);
     }
   }
 
@@ -248,5 +248,8 @@ main() {
 
 </javascript>
 
+h3. Changelog
+
 * March 2, 2011: initial version by "Erich Ocean":credits.html#erichocean and "Geoffrey Donaldson":credits.html#geoffreyd
 * March 2, 2011: cleanup by "Peter Wagenet":credits.html#pwagenet
+* March 7, 2011: small bug fixes and filename addition by "Topher Fangio":credits.html#topherfangio

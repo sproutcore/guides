@@ -20,7 +20,7 @@ Follow along with the "Using a server without the store":no_store.html Guide.
 
 h3. Using the Store
 
-However, if you are going to deal with more than a handful of data, or want to take advantage of relationships between data, then managing it all on your own quickly gets messy. One of SproutCore's strongest features is it's Data Store. The Store can hold all of your data in memory allowing you to search through it with "Queries":records.html#using-queries It is also the central place for your data, allowing you to bind many different views to the same record and have changes propagated easily.
+However, if you are going to deal with more than a handful of data, or want to take advantage of relationships between data, then managing it all on your own quickly gets messy. One of SproutCore's strongest features is it's Data Store. The Store can hold all of your data in memory allowing you to search through it with "Queries":records.html#using-queries. It is also the central place for your data, allowing you to bind many different views to the same record and have changes propagated easily.
 
 Connecting your store to a server can be one of the most daunting tasks in creating your app: 
 
@@ -41,13 +41,13 @@ This puts the server 100% in control of the "base" store. There are techniques t
 
 _We will have a guide for this soon._
 
-The Downside to this approach is that your app will have to wait on responses from the server, meaning that you don't have a truly responsive user experience. See the next section if this is a concern.
+The downside to this approach is that your app will have to wait on responses from the server, meaning that you don't have a truly responsive user experience. See the next section if this is a concern.
 
 h4. When you are building a new SproutCore app from scratch, without an existing server
 
 The final approach puts a SproutCore data store in 100% control.
 
-This method of connecting to the server is to use SproutCore's default method of a DataSource. The Store is designed to interact with the DataSource, letting it know when things have changed. When using a dataSource you can treat your Store like a local copy of your server. You can ask for records, save records or create records directly in the store, and your DataSource will then take care of propogating these changes to your server.
+This method of connecting to the server is to use SproutCore's default method of a DataSource. The Store is designed to interact with the DataSource, letting it know when things have changed. When using a dataSource you can treat your Store like a local copy of your server. You can ask for records, save records or create records directly in the store, and your dataSource will then take care of propogating these changes to your server.
 
 This method will give you the most interactive setup, allowing your user to keep clicking, and not have to wait on your servers responses before moving on. If your going for the best user experience in an app, this is the way to go.
 
@@ -56,3 +56,4 @@ Have a look at the "Connecting With a DataSource":data_source.html Guide.
 h3. Changelog
 
 * March 2, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd and "Erich Ocean":credits.html#erichocean
+* March 22, 2011: minor spelling corrections by "Topher Fangio":credits.html#topherfangio
