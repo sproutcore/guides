@@ -1,0 +1,80 @@
+h2. Core Concepts:
+
+The guide covers some of the core concepts of animations in SproutCore.  By referring to this guide, you will be able to:
+
+* Know what type of animations you can use
+* Understand the syntax of SC.View.Animate
+* Make your applications UI come to life
+
+endprologue.
+
+
+h3. Introduction:
+
+SC.View.Animate allows you to create user interfaces that come to life with movement.  There is a wide array of visual effects that you can use as simple stand alone effects or combine them to make sophisticated and rich visual effects.
+
+When used tactfully, these visual effects can be used to create seamless transitions between views, provide 3D space to a flat view or object, or help draw attention to a specific part of your application.  The possibilities are endless with SC.View.Animate.
+
+By using and combining the CCS animations with the DOM mouse and touch events, SC.View.Animate brings high performing, interactive application to the cloud.
+
+h3. Syntax:
+
+Lets take a look at what the syntax for SC.View.Animate looks like:
+
+<javascript>
+	.animate(['key',value OR hash of key/values],{duration:value, timing:'hash value'});
+</javascript>
+
+As an example: 
+
+<javascript>
+	.animate('rotateY',180,{duration:1.4, timing:'ease-in-out'});
+</javascript>
+
+The first parameter passed is what type of animation effect you would like to use.  This is a detailed list of what animation effects you can use:
+
+	opacity
+	scale
+	top
+	bottom
+	left
+	right
+	rotateX
+	rotateY
+	rotateZ
+	centerX
+	centerY
+	
+The second parameter passed is the duration of the animations effect and is a value of seconds.
+
+The third parameter passed relates to the animations timing.  More specifically, it allows for animations to change their speed over its duration.  These can be set to preset values using the keywords listed below:
+
+	ease
+	ease-in
+	ease-in-out
+	ease-out
+	linear
+
+h3. Using SC.Animate:
+
+SC.View.Animate is used within a function.  Below is a few examples on how to write your animations:
+
+<javascript>
+	// Flips an object 180 degrees on its Y axis for half a second //
+	myApp.myObject.animate('rotateY',180,{duration:.5, timing:'ease'});
+</javascript>
+
+<javascript>
+	// Flips an object 360 degrees on its Y axis for half a second //
+	myApp.myObject.animate('rotateY',360,{duration:.5, timing:'ease'});
+</javascript>
+
+<javascript>
+	// Fades an objects opacity out to a value of 0 within a half a second //
+	myApp.myObject.animate('opacity',0,{duration:.5, timing:'ease-in-out'});
+</javascript>
+
+<javascript>
+	// Fades an objects opacity in to a value of 1 within a half a second //
+	myApp.myObject.animate('opacity',0,{duration:.5, timing:'ease-in-out'});
+</javascript>

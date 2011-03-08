@@ -57,6 +57,14 @@ authors:
     - name: Vibul Imtarnasan
       nick: veebs
       description: ""
+    - name: Chad Eubanks
+      nick: ceubanks
+      image: tcb-globe.png
+      description: "Chad Eubanks is the Lead UI Engineer for The Code Boutique."
+    - name: Kyle Carriedo
+      nick: kcarriedo
+      image: tcb-globe.png
+      description: "Kyle Carriedo is the Lead Software Engineer for The Code Boutique."
 
 index:
   Start Here:
@@ -98,6 +106,9 @@ index:
       url: custom_views
       text: "Most applications will quickly go beyond the built-in SproutCore views. In this guide, we will cover how to build and style your own views."
       construction: true
+    - title: Animations
+      url: animate
+      text: "In this guide, we will cover the basics of using animations in SproutCore, and show you how to add SC.View.Animate in your code."
   Theming:
     - title: Theming Your App
       url: theming_app
