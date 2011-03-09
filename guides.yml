@@ -112,6 +112,7 @@ index:
     - title: Animations
       url: animate
       text: "In this guide, we will cover the basics of using animations in SproutCore, and show you how to add SC.View.Animate in your code."
+      construction: true
   Theming:
     - title: Theming Your App
       url: theming_app
