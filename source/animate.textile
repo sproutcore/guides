@@ -16,10 +16,20 @@ Animations play an important role when engineering an application.  They allow a
 
 h4.  What is SC.View.Animate?
 
+SC.View.Animate is a set of features and functionality that makes is easy to build compelling user interfaces.  SC.View.Animation animates the properties of a view or object.  You'll need to think about three things when applying an animation:  The type of animation you'd like to apply, the duration in seconds needed to complete the animation, and how smooth the animations move between frames. 
+
 h4.  What are the features of SC.View.Animate?
+
+SC.View.Animate uses CSS3 animations and javascript as a fallback when needed.  Animations can be combined with multiple types, synchronized and executed at once or executed concurrently.  When using SC.View.Animate the property of a view animates and changes without redrawing the view.  Therefore, the views properties change during the animation.  
+
 
 h4.  What are the benefits of SC.View.Animate?
 
+Using SC.View.Animate has many benefits.  By using CSS-only timing functions of the animations before falling back to JavaScript is that JavaScript performance is not impacted.  When JavaScript handles the timing functions it has to do some semi-heavy calculations each frame.  Using CSS-only timing functions gives a graceful degradation of sorts.  This approach allows your application to be cross-browser compliant and have optimized performance.
+
+Furthermore, combing multiple types of animations on one view allows you to step outside of the preset effects and enables you to create custom effects.  While synchronizing multiple views to animate at once enables your application to become cinematic or a presentation of sorts.  
+
+And last, when used with a callback method your animations can become concurrent and fluid.  We will explore the aforementioned features and benefits of SC.View.Animate through practical, real-world scenarios towards the end of this guide.  But before we do so lets have a detailed look at SC.View.Animate.
 
 h3. A detailed look
 
