@@ -1,80 +1,94 @@
 h2. Core Concepts:
 
 The guide covers some of the core concepts of animations in SproutCore.  By referring to this guide, you will be able to:
-
-* Know what type of animations you can use
-* Understand the syntax of SC.View.Animate
-* Make your applications UI come to life
+ 
+* Gain a basic understanding of SC.View Animate
+* Become familiar with the types of animations, how to set their duration, and understand the timing of the effect.
+* Take the information provided and apply it to an existing application.
+* See real world examples for animating buttons on a toolbar, animating views on touch enabled devices, and creating a 3d plane on a 2d view.
 
 endprologue.
 
 
-h3. Introduction:
+h3. Introduction
 
-SC.View.Animate allows you to create user interfaces that come to life with movement.  There is a wide array of visual effects that you can use as simple stand alone effects or combine them to make sophisticated and rich visual effects.
+Animations play an important role when engineering an application.  They allow a stagnant set of states and views to become fluid with movement.  When used tactfully, these visual effects can be used to create seamless transitions between views, provide 3D space to a flat view or object, or help draw attention to a specific part of your application.  The possibilities are endless with SC.View.Animate.
 
-When used tactfully, these visual effects can be used to create seamless transitions between views, provide 3D space to a flat view or object, or help draw attention to a specific part of your application.  The possibilities are endless with SC.View.Animate.
+h4.  What is SC.View.Animate?
 
-By using and combining the CCS animations with the DOM mouse and touch events, SC.View.Animate brings high performing, interactive application to the cloud.
+h4.  What are the features of SC.View.Animate?
 
-h3. Syntax:
+h4.  What are the benefits of SC.View.Animate?
 
-Lets take a look at what the syntax for SC.View.Animate looks like:
 
-<javascript>
-	.animate(['key',value OR hash of key/values],{duration:value, timing:'hash value'});
-</javascript>
+h3. A detailed look
 
-As an example: 
+To start with we will explore the syntax for SC.View.Animate.  Below is a basic animation that fades a views opacity from 1.0 down to 0.0.  The duration for how long it takes for the animation to take place is 1.5 seconds and the timing is eased in then out. 
 
 <javascript>
-	.animate('rotateY',180,{duration:1.4, timing:'ease-in-out'});
+	myApp.myView.animate('opacity',0.0, {duration:1.5, timing:'ease-in-out'});
 </javascript>
 
-The first parameter passed is what type of animation effect you would like to use.  This is a detailed list of what animation effects you can use:
+h4. Type of animation effects
 
-	opacity
-	scale
-	top
-	bottom
-	left
-	right
-	rotateX
-	rotateY
-	rotateZ
-	centerX
-	centerY
-	
+After you set which view you would like to animate, the first parameter passed is the type of animation effect you would like to use.  The following is a list of what animation effects you can use:
+
+h5. opacity
+
+h5. scale
+
+h5. top
+
+h5. bottom
+
+h5. left
+
+h5. right
+
+h5. rotateX,
+
+h5. rotateY,
+
+h5. rotateZ,
+
+h5. centerX,
+
+h5. centerY
+
+
+h4. Duration of an animation
+
 The second parameter passed is the duration of the animations effect and is a value of seconds.
 
-The third parameter passed relates to the animations timing.  More specifically, it allows for animations to change their speed over its duration.  These can be set to preset values using the keywords listed below:
+h4. Timing of an animation
 
-	ease
-	ease-in
-	ease-in-out
-	ease-out
-	linear
+The third parameter passed relates to the animations timing.  More specifically, it allows for animations to change their speed over its duration.
+	
+
+h5. ease
+
+h5. linear
+
+h5. ease-in
+
+h5. ease-out
+
+h5. ease-in-out
 
 h3. Using SC.Animate:
 
-SC.View.Animate is used within a function.  Below is a few examples on how to write your animations:
+h4. Adding animations to an existing application
 
-<javascript>
-	// Flips an object 180 degrees on its Y axis for half a second //
-	myApp.myObject.animate('rotateY',180,{duration:.5, timing:'ease'});
-</javascript>
+// Here we can have a developer grab an existing application from git and add the animations to the app.  By having the developer use an existing application allows us to walk a developer through with minimal distraction and adds an emphasis to the topic at hand... animations. //
 
-<javascript>
-	// Flips an object 360 degrees on its Y axis for half a second //
-	myApp.myObject.animate('rotateY',360,{duration:.5, timing:'ease'});
-</javascript>
+h4. Example animation one: animating buttons on a navigation menu
 
-<javascript>
-	// Fades an objects opacity out to a value of 0 within a half a second //
-	myApp.myObject.animate('opacity',0,{duration:.5, timing:'ease-in-out'});
-</javascript>
+// Here we will focus only on the animations part of our application and could have a link to the demo (hosted on strobe of course).  The code example shown in the guides will only be the animations. //
 
-<javascript>
-	// Fades an objects opacity in to a value of 1 within a half a second //
-	myApp.myObject.animate('opacity',0,{duration:.5, timing:'ease-in-out'});
-</javascript>
+h4. Example animation two:  animating views for touch enabled devices
+
+// We would like to show how to use animations with touch enabled devices.  This of course is dependent of 1.5 becoming touch capable.  Currently, our applications do not render on touch devices.  When deployed applications start to a white screen and throw a sc.device error. With the bug set aside, we would like to show how to create custom animations such as a drill down listview for mobile devices or for a tablets navigation menu and navigating through views with a swipe on a tablet. //
+
+h4. Example animation three: using animation in a 3d plane 
+
+// Here we can have some fun and introduce the developer to animating on a 3d plane.  This part of animations is great for creating splash page, and ads. // 
