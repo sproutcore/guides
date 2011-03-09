@@ -100,7 +100,7 @@ sc-gen data-source MyApp.RESTDataSource
 
 NOTE: Anywhere you see MyApp, replace this with the name of the application that you're building.
 
-This will make a file in +apps/my_app/data_sources/simple.js+. This file will be stubbed with the default functions that will get called by the store.
+This will make a file in +apps/my_app/data_sources/rest.js+. This file will be stubbed with the default functions that will get called by the store.
 
 h4. Linking to the Store
 
@@ -239,9 +239,9 @@ If the server returned an error, such as +404+ Not Found, or the +500+ series of
 
 h4. Gaining Flexibility
 
-This design is simple, but as you can see, not very flexible, it only allows for one url. That wont get us very far. But given that all of our records are going to have a very similar URL, it should be simple to dynamically generated this URL.
+This design is simple, but as you can see, not very flexible, it only allows for one url. That wont get us very far. But given that all of our records are going to have a very similar URL, it should be simple to dynamically generate this URL.
 
-We can have each of our models know what their URL will be.
+We can have each of our models know what their URL will be:
 
 <javascript>
 MyApp.Todo = SC.Record.extend(
@@ -271,13 +271,15 @@ fetch: function(store, query) {
 },
 </javascript>
 
-The fetch method will now use a dynamic URL for each record type.
+The fetch method will now use a dynamic URL for each record type.  
+
+NOTE: The "fmt":http://docs.sproutcore.com/symbols/String.html#String#fmt function outputs a formatted string. If you are from a Java background, you'll know it as +String.Format+.
 
 h4. Change of Mind
 
 Fetching records is fun but it will only get us so far. Eventually we are going to want to make some changes to these records.
 
-Each time our store wants to commit changes to the server, the +updateRecord+ method well be called for each of the changed records.
+Each time our store wants to commit changes to the server, the +updateRecord+ method will be called for each of the changed records.
 <javascript>
 updateRecord: function(store, storeKey) {
   var recordType = store.recordTypeFor(storeKey),
@@ -315,7 +317,13 @@ Our API will return the following from our PUT command.
 }
 </javascript>
 
-So we test for it +response.get('body').status === "OK"+. If all is good, then we call +dataSourceDidComplete+ to tell the store we are done.
+So we test for it:
+
+<javascript>
+response.get('body').status === "OK"
+</javascript>   
+
+If all is good, then we call +dataSourceDidComplete+ to tell the store we are done.
 
 h5. Server Processing
 
@@ -386,8 +394,7 @@ Things should start feeling pretty familiar now, you can probably guess what's g
 <javascript>
 destroyRecord: function(store, storeKey) {
   var recordType = store.recordTypeFor(storeKey),
-      id = store.idFor(storeKey),
-      data = store.readDataHash(storeKey);
+      id = store.idFor(storeKey);
   
   SC.Request.deleteUrl("/%@/%@".fmt(recordType.resourcePath, id))
     .notify(this, 'destroyRecordDidComplete', store, storeKey)

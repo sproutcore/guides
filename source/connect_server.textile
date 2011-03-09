@@ -31,7 +31,7 @@ There are some different choices depending on what setup you already have (if an
 
 h4. When you have an existing, server-based MVC app
 
-If you are coming to SproutCore with a server side app that you already have running, the fastest way of getting going is to contact you server and update the store to match based on the response. For example, if you want to update a record in the store, you would ask the server to update the record and then when the update is successful, you would update the store locally.
+If you are coming to SproutCore with a server side app that you already have running, the fastest way of getting going is to contact your server and update the store to match based on the response. For example, if you want to update a record in the store, you would ask the server to update the record and then when the update is successful, you would update the store locally.
 
 This is possible because SproutCore's datastore framework allows for nested stores. With a nested store, edits are "buffered" in the nested store. You would send the changes in the nested store to the server, and when it responds, update the base store and clear (or destroy) the nested store.
 
@@ -47,7 +47,7 @@ h4. When you are building a new SproutCore app from scratch, without an existing
 
 The final approach puts a SproutCore data store in 100% control.
 
-This method of connecting to the server is to use SproutCore's default method of a DataSource. The Store is designed to interact with the DataSource, letting it know when things have changed. When using a dataSource you can trear your Store like a local copy of your server. You can ask for records, save records or create records directly in the store, and your dataSource will then take care of propogating these changes to your server.
+This method of connecting to the server is to use SproutCore's default method of a DataSource. The Store is designed to interact with the DataSource, letting it know when things have changed. When using a dataSource you can treat your Store like a local copy of your server. You can ask for records, save records or create records directly in the store, and your DataSource will then take care of propogating these changes to your server.
 
 This method will give you the most interactive setup, allowing your user to keep clicking, and not have to wait on your servers responses before moving on. If your going for the best user experience in an app, this is the way to go.
 
