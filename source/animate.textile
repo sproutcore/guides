@@ -45,7 +45,11 @@ After you set which view you would like to animate, the first parameter passed i
 
 h5. opacity
 
+Opacity has a value of 0.0 - 1.0.  The value assigned is that of a percentage.  Therefore, 0.6 is setting a views opacity to 60% transparency.  Opacity is a great way to switch between two views that are stacked on each other. 
+
 h5. scale
+
+Scale has a value of 0.0 - infinite.  The value assigned is that of a percentage.  Therefore, 2.0 is setting a views height and width 200% larger then its defined properties in your view.  Scale allows you to create bounce effects and explore the 3d plane.
 
 h5. top
 
