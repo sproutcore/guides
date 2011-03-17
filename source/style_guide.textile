@@ -235,7 +235,7 @@ While some style guidelines just make for more readable code, the suggestions in
 
 h4. Always use ===
 
-You should always use ===  and !== when comparing objects.  This special form of equality is both faster and performs fewer transforms on the values you are comparing.  It will behave more like you would expect compare to other languages than == or !=.  If you want to see if a value is either +null+ OR +undefined+, use +SC.none(foo)+.  
+You should always use *===* and *!==* when comparing objects.  This special form of equality is both faster and performs fewer transforms on the values you are comparing.  It will behave more like you would expect compare to other languages than == or !=.  If you want to see if a value is either +null+ OR +undefined+, use +SC.none(foo)+.  
 
 h4. Cache Length in For Loops
 
