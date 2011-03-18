@@ -22,11 +22,22 @@ dd img {
 
 #guides {
   background-color: #2A8008;
-  color: #5FBB58;
+  color: #3C9936;
 }
 
 #guides hr {
   background-color: #5FBB58;
+}
+
+#guides dl dt {
+  color: #5FBB58;
+  letter-spacing: 0.05em;
+  font-weight: bold;
+}
+
+#guides dl dd {
+  text-indent: -10px;
+  margin-left: 18px;
 }
 
 #mainCol a, #subCol a, #feature a, a, a:link, a:visited {
