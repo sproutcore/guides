@@ -178,7 +178,7 @@ Now that we have UI to create new todos, let's create the interface to display t
 <!-- at the end of the file -->
 
 {{#collection "Todos.todoListView"}}
-  <div class='todo-content'>{{content/title}}</div>
+  {{content.title}}
 {{/collection}}
 </html>
 
@@ -212,10 +212,12 @@ The first thing we need to do is add a checkbox to each todo view. If we want to
 <!-- replacing the previous code -->
 
 {{#collection "Todos.todoListView"}}
-  {{#view "Todos.CheckboxView"}}
-    <input class="check" type="checkbox">
-  {{/view}}
-  <div class='todo-content'>{{content/title}}</div>
+  <label>
+    {{#view "Todos.CheckboxView"}}
+      <input class="check" type="checkbox">
+    {{/view}}
+    {{content.title}}
+  </label>
 {{/collection}}
 </html>
 
@@ -239,29 +241,24 @@ Until now, SproutCore has been creating item views for each +Todo+ for us. Often
 
 In our todos app, we want to display completed todos in a different visual style than uncompleted todos. We'll do that using CSS, but first we'll need to add an HTML +class+ so the browser can distinguish between the two.
 
-First, we'll tell our collection to use a custom item view. Then, in that view, we will observe for changes to the +isDone+ property, and toggle the class based on its value.
-
-Here's what +todoListView+ looks like after we've updated it:
+We'll use a property on the collection helper to set up this binding:
 
 <javascript filename="in apps/todos/todos.js">
-// replacing the previous code
+<!-- replacing the previous code -->
 
-Todos.todoListView = SC.TemplateCollectionView.create({
-  contentBinding: 'Todos.todoListController',
-
-  itemView: SC.TemplateView.extend({
-    // Add the 'done' class to this view
-    // if the Todo object is marked isDone
-    isDoneDidChange: function() {
-      var isDone = this.getPath('content.isDone');
-
-      this.$().toggleClass('done', isDone);
-    }.observes('.content.isDone')
-  })
-});
+{{#collection "Todos.todoListView" itemClassBinding="content.isDone"}}
+  <label>
+    {{#view "Todos.CheckboxView"}}
+      <input class="check" type="checkbox">
+    {{/view}}
+    {{content.title}}
+  </label>
+{{/collection}}
 </javascript>
 
-NOTE: +.$()+ is a SproutCore convenience function for grabbing the jQuery bound object. In this context, +this.$()+ is shorthand for +jQuery(this.get('layer'))+.
+This property defines a binding on each of the item views. Each item will get the class +is-done+ if its associated content object is +isDone+. SproutCore will automatically dasherize property names into class names.
+
+NOTE: All views have a number of properties, including +id+, +class+, and +classBinding+. The +collection+ helper allows you to prefix any of those properties with +item+, which will then apply them to each of the child item views. For instance, if you use the +itemClass+ property on a collection, each item will get that class.
 
 Reload your application in the browser and try it out. As soon as you click a todo's checkbox, the text will become crossed out. Keep in mind you didn't need to update any views when marking the +Todo+ as done; bindings did it for. If a different part of the app changes the +Todo+ item's +isDone+ property, your list item would automatically update without any more work on your part.
 
@@ -270,10 +267,10 @@ h3. The More You Know
 We can now create todos and mark them as being complete. While 76% of all statistics are made up, let's see if we can display more accurate information from the data we have.  At the bottom of our list, let's display the number of todos remaining. Open +todos.handlebars+ and put this at the bottom:
 
 <html filename="in apps/todos/resources/templates/todos.handlebars">
-<!-- at the end of the file -->
+<!-- after the create todo view -->
 
 {{#view "Todos.statsView"}}
-  <span class='remaining'>{{bind "displayRemaining"}}</span>
+  {{bind "displayRemaining"}}
 {{/view}}
 </html>
 
@@ -327,7 +324,7 @@ Here's how it all fits together:
   !images/html_based/bindings.png!
 </div>
 
-INFO: As we build up our application, we create *declarative* links between objects. These links describe how application state flows from the model layer to the HTML in the presentation layer.  
+INFO: As we build up our application, we create *declarative* links between objects. These links describe how application state flows from the model layer to the HTML in the presentation layer.
 
 h3. Clearing Completed Todos
 
@@ -353,11 +350,11 @@ Next, we'll add the HTML to our template and connect it up to a view for event h
 <html filename="in apps/todos/resources/templates/todos.handlebars">
 <!-- updating existing code -->
 
-{{#view "Todos.statsView"}}
-  <span class="remaining">{{bind "displayRemaining"}} remaining.</span>
+{{#view "Todos.statsView" id="stats"}}
   {{#view "Todos.clearCompletedView"}}
     <button>Clear Completed Todos</button>
   {{/view}}
+  {{bind "displayRemaining"}} remaining.
 {{/view}}
 </html>
 
@@ -404,7 +401,9 @@ Next, we'll create a checkbox to mark all items complete and bind it to this pro
 <!-- at the end of the file -->
 
 {{#view "Todos.markAllDoneView"}}
-  <input class="mark-all-done" type="checkbox"> Mark All as Done
+  <label>
+    <input class="mark-all-done" type="checkbox"> Mark All as Done
+  </label>
 {{/view}}
 </html>
 
@@ -448,5 +447,6 @@ h3. Changelog
 
 * March 1, 2011: initial version by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
 * March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio and "Peter Wagenet":credits.html#pwagenet
+* March 22, 2011: cleaned up demo based on new features by "Yehuda Katz":credits.html#wycats
 
 <input type="checkbox" onclick="document.body.style.textDecoration='line-through'; this.disabled=true;">Mark Tutorial as Done
