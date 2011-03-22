@@ -269,7 +269,7 @@ We can now create todos and mark them as being complete. While 76% of all statis
 <html filename="in apps/todos/resources/templates/todos.handlebars">
 <!-- after the create todo view -->
 
-{{#view "Todos.statsView"}}
+{{#view "Todos.statsView" id="stats"}}
   {{bind "displayRemaining"}}
 {{/view}}
 </html>
