@@ -45,7 +45,7 @@ dd img {
 }
 
 #header h1 {
-  background-image: url(../images/logo.png);
+  background-image: url(../images/logo_small.png);
   background-size: auto 120px;
   background-position: -25px -25px;
   overflow: visible
