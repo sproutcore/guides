@@ -22,15 +22,16 @@ authors:
       nick: pbergstrom
       description: ""
     - name: Kyle Carriedo
+      nick: kcarriedo
       image: tcb-globe.png
-      description: Kyle is the Lead Software Engineer of The Code Boutique.  Currently, he is working on his Masters in Computer Science, Unix Admin certification from University California of San Diego and recieved his Bachelors in Computer Science from San Francisco State University.  When Kyle is not creating software for the cloud or iOS, he is spending his time loving life with his family.  
+      description: Kyle is the Lead Software Engineer of The Code Boutique.
     - name: Tom Dale
       nick: tomdale
       description: Member of the SproutCore core team.
     - name: Chad Eubanks
-      nick: Banks
+      nick: ceubanks
       image: tcb-globe.png
-      description: Chad is the Lead UI Engineer of The Code Boutique.  He recieved formal and informal training from industry leaders such as Apple Incs. WWDC 2009, WWDC 2010, The Big Nerd Ranch, The Art Institue, and University California of San Diego for computer programming, web development, web design, and law.
+      description: Chad is the Lead UI Engineer of The Code Boutique.
     - name: Topher Fangio
       nick: topherfangio
       image: topherfangio.jpg
@@ -67,10 +68,6 @@ authors:
     - name: Vibul Imtarnasan
       nick: veebs
       description: ""
-    - name: Kyle Carriedo
-      nick: kcarriedo
-      image: tcb-globe.png
-      description: "Kyle Carriedo is the Lead Software Engineer for The Code Boutique."
 
 index:
   Start Here:
@@ -114,7 +111,7 @@ index:
       construction: true
     - title: Animations
       url: animate
-      text: "In this guide, we will cover the basics of using animations in SproutCore, and show you how to add SC.View.Animate in your code."
+      text: "In this guide, we will cover the basics of using animations in SproutCore, and show you how to add SC.View#animate in your code."
       construction: true
   Theming:
     - title: Theming Your App
