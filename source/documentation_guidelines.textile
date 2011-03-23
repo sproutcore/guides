@@ -19,7 +19,7 @@ h4. Common and supported Markdown syntax:
  * For headers, add three dashes (---) for 2nd level headers, and three (===) for 1st level headers. These go on the subsequent line
  * For list, prefix each line with a dash (-)
 
-<javascript file="Sample Class Documentation">
+<javascript filename="Sample Class Documentation">
 /**
   @class
   
@@ -65,7 +65,7 @@ It’s important to keep in mind that the jsdoc toolkit does not parse javascrip
 
 In the example below, the response property is marked as optional by wrapping the name in square brackets.
 
-<javascript file="Sample Instance Method Documentation">
+<javascript filename="Sample Instance Method Documentation">
 /**
   Method description.
     
@@ -84,7 +84,7 @@ h4. Class Methods
 Class methods are usually implemented by mixing-in extra methods to an existing class. For these methods/properties to show up in the same location in the generated output, you need to add a +@scope+ declaration just as you did with the class.
 
 
-<javascript file="Sample Class Method Documentation">
+<javascript filename="Sample Class Method Documentation">
 /**
   @class
 
@@ -99,7 +99,7 @@ h4. Properties
 
 Properties are arguably the simplest entity to document. You simply need to write a description of what the property represents, and what type it is. You can optionally provide a default value.
 
-<javascript file="Sample Property Documentation">
+<javascript filename="Sample Property Documentation">
 /**
   Description
   
@@ -115,7 +115,7 @@ h4. Computed Properties
 
 Computed Properties are documented just like regular properties but they add the +@field+ property.
 
-<javascript file="Sample Computed Property Documentation">
+<javascript filename="Sample Computed Property Documentation">
 /**
   Description
   
@@ -133,4 +133,9 @@ If, during development, you would like to test your documentation and see how it
 *Note*: Generating documentation in TextMate requires the Web Sharing feature of Mac OS X to be enabled since it uses apache to display your files.
 
 h4. References
-http://code.google.com/p/jsdoc-toolkit/wiki/TagReference
+
+* "JSDoc Tag Reference":http://code.google.com/p/jsdoc-toolkit/wiki/TagReference
+
+h3. Changelog
+
+* March 22, 2011: initial version by "Majd Taby":credits.html#mtaby

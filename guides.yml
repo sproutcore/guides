@@ -51,6 +51,9 @@ authors:
       nick: oldfartdeveloper
       image: oldfartdeveloper.jpg
       description: Scott is a Senior Developer at Hedgeye Risk Management.
+    - name: Majd Taby
+      nick: mtaby
+      description: Member of the SproutCore core team.
     - name: Devin Torres
       nick: dtorres
       description: ""
@@ -141,3 +144,6 @@ index:
       url: "commit_code"
       text: "A detailed checklist of the do's and don'ts of SC Framework code..."
       construction: true
+    - title: "Documentation Guidelines"
+      url: "documentation_guidelines"
+      text: "Writing and generating jsdoc documentation"
