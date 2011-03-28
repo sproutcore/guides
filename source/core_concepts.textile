@@ -506,9 +506,7 @@ the app no events are being triggered). In this case you should try invoking
 the run loop manually, or just move your mouse over the app to trigger a new
 event.
 
-
 WARNING: Remember, you rarely need to manage the run loop manually from within your app. If you aren't certain of why you are using it, then you are probably doing something wrong. The average user should use the run loop only in Unit Tests or in the console.
-
 
 h3. Changelog
 
