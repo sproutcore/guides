@@ -86,10 +86,10 @@ To begin with here, in order to check that the item is on the page, I'm merely t
 
 Rerun the tests and you will see 2 failures:
 
-WARNING: 1) Setup exception on viewing_task.js Given an existing task module: When looking at the list of tasks: TypeError: Result of expression 'recordType'[undefined] is not an object
+WARNING: 1) Setup exception on integration/view_task.js Given an existing task module: When looking at the list of tasks: TypeError: Cannot read property 'prototype' of undefined
 <br />
 <br />
-2) Died on test #2: Result of expression 'Todos.getPath('mainPage.mainPane.middleView.contentView')' [undefined] is not an object
+2) Died on test #2: TypeError: Cannot call method 'get' of undefined
 
 h4. Fix the First Failure
 
@@ -104,7 +104,7 @@ Todos.Task = SC.Record.extend({
 
 I rerun my tests, and see that the first failure is now passing, leaving me only with the second:
 
-WARNING: 1. Died on test #2: Result of expression 'Todos.getPath('mainPage.mainPane.middleView.contentView')' [undefined] is not an object
+WARNING: 1. Died on test #2: TypeError: Cannot call method 'get' of undefined
 
 This failing test tells me the path for the requested view does not exist, so I have to modify apps/todos/resources/main_page.js to include it:
 
@@ -150,7 +150,7 @@ Now the error is:
 
 WARNING: Died on test #1: TypeError: Cannot call method 'indexOf' of null
 
-Hmm. +todosList+ is null.  There isn't any content, so the binding isn't working.  Examining +main_page.js+ reveals that no controller has been set up yet, so creat it in +apps/todos/controllers/tasks.js+:
+Hmm. +todosList+ is null.  There isn't any content, so the binding isn't working.  Examining +main_page.js+ reveals that no controller has been set up yet, so create it in +apps/todos/controllers/tasks.js+:
 
 <javascript filename="apps/todos/controllers/tasks.js">
 Todos.tasksController = SC.ArrayController.create({
@@ -236,7 +236,7 @@ Rerunning the tests yields the same FAILURE, so we achieved our refactoring.
 
 h3. Add a Unit Test
 
-This is because the controller has not had it's content to be set to use Todos.task. In order to ensure that controller has not had it's content to be set to use Todos.task, I write the following unit test:
+The test fails because the controller has not had it's content to be set to use Todos.task. In order to ensure that controller has not had it's content to be set to use Todos.task, I write the following unit test:
 
 <javascript filename="apps/todos/tests/main_test.js">
 var mockedFindFunction, findMockObject;
@@ -259,6 +259,8 @@ test("setup finding tasks", function() {
   Todos.getPath('mainPage.mainPane').remove();
 });
 </javascript>
+
+WARNING: Should delegate to the store to find the tasks, expected: 1 result: 0
 
 In order to make this pass, within the setup I delegate to the store to find the proper object:
 
@@ -348,9 +350,10 @@ Todos.mainPage = SC.Page.design({
 });
 </javascript>
 
-Generally, since I tend to think of the binding to the description and the value as functionality, I think I would want an integration test which checks both of those values. However for the sake of brevity (this post is already quite long), I'll leave out those tests.
+Generally, since I tend to think of the binding to the description and the value as functionality, I think I would want an integration test which checks both of those values. However for the sake of brevity, I'll leave out those tests.
 
 h3. Changelog
+
 
 * February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul Imtarnasan":credits.html#veebs
 * March     2, 2011: added filenames and added error wrappers by "Topher Fangio":credits.html#topherfangio
