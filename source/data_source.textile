@@ -6,7 +6,7 @@ After reading this guide, you will be able to:
 * Understand what a DataSource is, and where it fits into the SproutCore Data Stream
 * Create your own DataSource and link it to your App
 
-If you are looking for other methods of talking to the server, "look here":connect_server.html
+If you are looking for other methods of talking to the server, "look here":connect_server.html.
 
 endprologue.
 
@@ -22,7 +22,7 @@ TODO: A diagram will be nice, showing the layers of a SproutCore application, wi
 
 h3. When should I make my own DataSource?
 
-If you want to be able to persist the data that your users enter, over sessions, then you'll want to save it, either to a server or to local storage. The beauty of SproutCore's data layers is that you can write your app and seamlessly move from one data source to an other and nothing but your DataSource will need to be changed.
+If you want to be able to persist the data that your users enter, over sessions, then you'll want to save it, either to a server or to local storage. The beauty of SproutCore's data layers is that you can write your app and seamlessly move from one data source to another and nothing but your DataSource will need to be changed.
 
 h3. A look at the API
 
@@ -148,7 +148,7 @@ This is when we get to take action. The generated DataSource will already contai
 
 Currently, this DataSource will not do anything except return NO. This tells the store that we are not going to handle this query.
 
-We also get given a hint of what we need to do next. When the server responds, we will call +store.dataSourceDidFetchQuery(query)+ to let the store know that this query has been updated.
+We are also given a hint of what we need to do next. When the server responds, we will call +store.dataSourceDidFetchQuery(query)+ to let the store know that this query has been updated.
 
 Now we want to fetch all the Todo's
 
@@ -177,14 +177,15 @@ fetchDidComplete: function(response, store, query) {
 </javascript>
 
 Our +Fetch+ function is pretty simple. For now, we are constructing an +Request+ to send to the server.
+
 "SC.Request":http://docs.sproutcore.com/symbols/SC.Request.html is SproutCore's simple wrapper around an Ajax call.
 
 NOTE: You are not restricted to using an SC.Request inside of a DataSource, but it is advised that you don't go making calls to your server from just anywhere in your app.
 
-".getUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.getUrl tells our request that we want to use the GET method to contact the given url. You can also use 
-"putUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.putUrl,
-"postUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.postUrl or
-"deleteUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.deleteUrl.
+".getUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.getUrl tells our request that we want to use the GET method to contact the given url. You can also use the following
+* "putUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.putUrl
+* "postUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.postUrl
+* "deleteUrl":http://docs.sproutcore.com/symbols/SC.Request.html#SC.Request.deleteUrl
 
 ".json":http://docs.sproutcore.com/symbols/SC.Request.html#json lets the request know that we are expecting the server to send back JSON, so it will automatically parse it for us. Without this, the return value would be a string. We could also have called +.xml()+ if your server talks XML.
 
@@ -205,6 +206,7 @@ First thing we do when the response comes back is check to see if there was an e
 If all is good, we can now load the records into the store. First we need to get the RecordType that is stored in the query so we can inform the store. For us, it will be +MyApp.Todo+.
 
 Next, we get our records with +response.get('body')+.  This is where the JSON string is converted into JS objects for us. If we did not call +.json()+ on the +Request+, it would return a string.
+
 This works because our server responds with an array at the top level of the JSON. If your server returned something like:
 <javascript>
 {
@@ -239,7 +241,7 @@ If the server returned an error, such as +404+ Not Found, or the +500+ series of
 
 h4. Gaining Flexibility
 
-This design is simple, but as you can see, not very flexible, it only allows for one url. That wont get us very far. But given that all of our records are going to have a very similar URL, it should be simple to dynamically generate this URL.
+This design is simple, but as you can see, not very flexible, it only allows for one url. That won't get us very far. But given that all of our records are going to have a very similar URL, it should be simple to dynamically generate this URL.
 
 We can have each of our models know what their URL will be:
 
@@ -273,7 +275,7 @@ fetch: function(store, query) {
 
 The fetch method will now use a dynamic URL for each record type.  
 
-NOTE: The "fmt":http://docs.sproutcore.com/symbols/String.html#String#fmt function outputs a formatted string. If you are from a Java background, you'll know it as +String.Format+.
+NOTE: The "fmt":http://docs.sproutcore.com/symbols/String.html#String#fmt function outputs a formatted string.
 
 h4. Change of Mind
 
@@ -453,7 +455,7 @@ This time, we'll always be passing the datahash into +dataSourceDidComplete+, to
 
 h3. Things to Note
 
-Some important things to note will go here.
+TODO: Some important things to note will go here.
 
 h4. A Records PrimaryKey
 
@@ -488,3 +490,4 @@ h3. Changelog
 
 * March 2, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd
 * March 2, 2011: minor fixes by "Peter Wagenet":credits.html#pwagenet
+* March 22, 2011: minor fixes/formatting by "Topher Fangio":credits.html#topherfangio

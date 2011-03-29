@@ -1,0 +1,120 @@
+h2. Core Concepts:
+
+The guide covers some of the core concepts of animations in SproutCore.  By referring to this guide, you will be able to:
+ 
+* Gain a basic understanding of +SC.View#animate+
+* Become familiar with the types of animations, how to set their duration, and understand the timing of the effect.
+* Take the information provided and apply it to an existing application.
+* See real world examples for animating buttons on a toolbar, animating views on touch enabled devices, and creating a 3d plane on a 2d view.
+
+endprologue.
+
+_TODO: This needs more substance and less fluff. This also needs to be more guide-like and less API-like._
+
+h3. Introduction
+
+Animations play an important role when engineering an application.  They allow a stagnant set of states and views to become fluid with movement.  When used tactfully, these visual effects can be used to create seamless transitions between views, provide 3D space to a flat view or object, or help draw attention to a specific part of your application.  The possibilities are endless with +SC.View#animate+.
+
+h4.  What is SC.View#animate?
+
++SC.View#animate+ is a set of features and functionality that makes it easy to build compelling user interfaces. It animates the properties of a view.  You'll need to think about three things when applying an animation:  The type of animation you'd like to apply, the duration in seconds needed to complete the animation, and how smoothly the animations move between frames. 
+
+h4.  What are the features of SC.View#animate?
+
++SC.View#animate+ uses CSS3 animations and javascript as a fallback when needed.  Animations can be combined with multiple types, synchronized and executed at once or executed concurrently.  When using +SC.View#animate+, the property of a view animates and changes without redrawing the view.  Therefore, the views properties change during the animation.
+
+WARNING: The JavaScript fallback has not yet been implemented.
+
+h4.  What are the benefits of SC.View#animate?
+
+Using +SC.View#animate+ has many benefits.  By using CSS-only timing functions of the animations before falling back to JavaScript, allows JavaScript performance to not be impacted.  When JavaScript handles the timing functions it has to do some semi-heavy calculations each frame.  Using CSS-only timing functions gives a graceful degradation of sorts.  This approach allows your application to be cross-browser compliant and have optimized performance.
+
+Furthermore, combing multiple types of animations on one view allows you to step outside of the preset effects and enables you to create custom effects.  While synchronizing multiple views to animate at once enables your application to become cinematic or a presentation of sorts.  
+
+And last, when used with a callback method your animations can become concurrent and fluid.  We will explore the aforementioned features and benefits of +SC.View#animate+ through practical, real-world scenarios towards the end of this guide.  But before we do so lets have a detailed look at +SC.View#animate+.
+
+h3. A detailed look
+
+To start with we will explore the syntax for +SC.View#animate+.  Below is a basic animation that fades a views opacity from +1.0+ down to +0.0+.  The duration for how long it takes for the animation to take place is 1.5 seconds and the timing is eased in then out.
+
+<javascript>
+  myApp.myView.animate('opacity', 0.0, {
+    duration:1.5,
+    timing:'ease-in-out'
+  });
+</javascript>
+
+h4. Type of animation effects
+
+After you set which view you would like to animate, the first parameter passed is the type of animation effect you would like to use.  The following is a list of what animation effects you can use:
+
+h5. +opacity+
+
+Opacity has a value of +0.0 - 1.0+.  The value assigned is that of a percentage.  Therefore, +0.6+ is setting a views opacity to +60%+ transparency.  Opacity is a great way to switch between two views that are stacked on each other. 
+
+h5. +scale+
+
+Scale has a value of +0.0 - infinite+.  The value assigned is that of a percentage.  Therefore, +2.0+ is setting a views height and width 200% larger then its defined properties in your view.  Scale allows you to create bounce effects and explore the 3d plane through the z axis.
+
+h5. +top+ / +bottom+ / +left+ / +right+ / +height+ / +width+
+
++top+, +bottom+, +left+, +right+, +height+, and +width+ changes the value of each property in your layout.  In order to use +top+, +bottom+, +left+, and/or +right+, the view in which you are animating must be assigned those values.  The value assign is that of a pixel.  Therefore, if you have a view with a value of +'left:10'+ assign to the left property and within your animation you adjust the properties value to +'left:100'+ then the view will glide to the newly assigned +left+ value.
+
+h5. +rotateX+ / +rotateY+ / +rotateZ+
+
++rotateX+, +rotateY+, and +rotateZ+ allows you to change a views position within a 3d plane.  Below is a graph showing how X, Y, and Z interact with a 3d plane. <div style='text-align: center'> !images/animate/xyz.png! </div>
+
+
+h4. Duration of an animation
+
+The second parameter passed is pretty straight forward and is the duration of the animations effect. It has a value of seconds.
+
+h4. Timing of an animation
+
+The third parameter passed relates to the animations timing.  More specifically, it allows for animations to change their speed over its duration.  The values assigned to timing is preset and determined based on what timing option you pass. 
+
+h5. +linear+
+
+The +linear+ animation timing function provides and straight-line interpolation between the starting value and the final animated value assigned to your view.
+<div style='text-align: center'> !images/animate/linear_graph.png! </div>
+
+h5. +ease-in+
+
+The +ease-in+ animation timing function allows the animation to start slow, get faster and faster as the animation plays out, and finally become constant again.  However, the constant state occurs faster than a basic curve would be.
+
++ease-in+ starts with a shallow slope during the start of the animation.  During this part of the animation the animated value does not change much, but as time goes on, the animated value starts to change more quickly until the final value is achieved.  This timing function provides the user with a subtle cue and allows the user time to adjust or acknowledge the fact that something is changing.  Furthermore, with the animations speed dramatically increasing towards the end, the visual cue places an emphasis on the achieved state of the animated property value.  
+<div style='text-align: center'> !images/animate/ease_in_graph.png! </div>   
+
+h5. +ease-out+
+
+The +ease-out+ animation is the opposite of ease-in.  Instead of starting slow and speeding up, the +ease-out+ timing starts off fast and slows down till the animated value is reached.  This timing function provides the user with a cue that draws their attention to the initial change and gives an emphasis to the start of the animation and less to the ending.
+<div style='text-align: center'> !images/animate/ease_out_graph.png! </div>  
+
+h5. +ease-in-out+
+
+The +ease-in-out+ timing function starts off slowly, accelerates in the middle, and then slows down again towards the end.  This animation, much like its name describes, is a combination between +ease-in+ and +ease-out+.  The cue provided with +ease-in-out+ gives more emphasis on the middle of the animation and less towards the beginning and ending.
+<div style='text-align: center'> !images/animate/ease_in_out_graph.png! </div>  
+
+h3. Using +SC.View#animate+:
+
+h4. Adding animations to an existing application
+
+_TODO: Here we can have a developer grab an existing application from git and add the animations to the app.  By having the developer use an existing application allows us to walk a developer through with minimal distraction and adds an emphasis to the topic at hand... animations._
+
+h4. Example animation one: animating buttons on a navigation menu
+
+_TODO: Here we will focus only on the animations part of our application and could have a link to the demo (hosted on strobe of course).  The code example shown in the guides will only be the animations._
+
+h4. Example animation two:  animating views for touch enabled devices
+
+_TODO: We would like to show how to use animations with touch enabled devices, such as a drill down listview for mobile devices or for a tablets navigation menu and navigating through views with a swipe on a tablet._
+
+h4. Example animation three: using animation in a 3d plane
+
+_TODO: Here we can have some fun and introduce the developer to animating on a 3d plane.  This part of animations is great for creating splash pages, and ads._
+
+
+h3. Changelog
+
+* March 22, 2011: initial version by "Chad Eubanks":credits.html#ceubanks and "Kyle Carriedo":credits.html#kcarriedo
+* March 22, 2011: some cleanup by "Peter Wagenet":credits.html#pwagenet
