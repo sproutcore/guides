@@ -28,6 +28,10 @@ authors:
     - name: Tom Dale
       nick: tomdale
       description: Tom graduated from UC Irvine with a degree in criminology in 2008. He built an internal tool for the Apple retail stores in 2009, which was his first time using SproutCore, his first exposure to JavaScript, and his first time meeting Charles Jolley. From 2009 to the end of 2010, he helped maintain SproutCore at Apple and assisted building the next generation of their web applications. Now he works at Strobe where he couldn't be more excited about making web applications the big thing instead of just the _next_ big thing. In his spare time he runs a cash-for-beer exchange program at many local San Francisco dive bars.
+    - name: Geoffrey Donaldson
+      nick: geoffreyd
+      image: geoffreyd.jpg
+      description: Geoffrey is a freelance SproutCore Developer. Working with SproutCore since 2009.
     - name: Chad Eubanks
       nick: ceubanks
       image: tcb-globe.png
@@ -39,22 +43,21 @@ authors:
     - name: Jason Gignac
       nick: jgignac
       description: Jason is an experienced web developer, particularly specializing in Enterprise applications. He works for Rackspace in San Antonio, TX, where he builds in Ruby, C#, Perl, Javascript, and anything else that the motley hodgepodge of enterprise platforms requires. He also loves to read old boring books, and maintains that he'll talk Emily Dickinson into marriage, someday. He has been working on Sproutcore for less than a year, but is jumping to the thick of things as far as possible.
+    - name: Vibul Imtarnasan
+      nick: veebs
+      description: Vibul is an entrepreneur, solutions architect and software developer. He blogs at http://www.veebsbraindump.com/.
     - name: Alex Iskander
       nick: ialexi
       description: Member of the SproutCore core team.
-    - name: Geoffrey Donaldson
-      nick: geoffreyd
-      image: geoffreyd.jpg
-      description: Geoffrey is a freelance SproutCore Developer. Working with SproutCore since 2009.
-    - name: Erich Ocean
-      nick: erichocean
-      description: In 2008-2009, I consulted with Apple on the transition from SproutCore 0.9 to 1.0 which entailed almost a complete rewrite of the codebase. I am still considered to be a SproutCore "thought leader", though I no longer guide SproutCore's day-to-day development. I have also trained and mentored companies and individuals on SproutCore throughout the world.
     - name: Florian Kugler
       nick: fkugler
-      description: Florian was a software developer and sports biomechanist before co-founding the elite sports consulting company Aprendo (http://www.aprendo.nl). He is currently building IT systems to support elite sports processes. 
+      description: Florian was a software developer and sports biomechanist before co-founding the elite sports consulting company Aprendo (http://www.aprendo.nl). He is currently building IT systems to support elite sports processes.
     - name: Shawn Morel
       nick: shawnmorel
       description: Shawn Morel is a software generalist with lots of experience building user interfaces in Cocoa, Flex, and bare-bones HTML.
+    - name: Erich Ocean
+      nick: erichocean
+      description: In 2008-2009, I consulted with Apple on the transition from SproutCore 0.9 to 1.0 which entailed almost a complete rewrite of the codebase. I am still considered to be a SproutCore "thought leader", though I no longer guide SproutCore's day-to-day development. I have also trained and mentored companies and individuals on SproutCore throughout the world.
     - name: Scott "oldfartdeveloper" Smith
       nick: oldfartdeveloper
       image: oldfartdeveloper.jpg
@@ -64,10 +67,8 @@ authors:
       description: Member of the SproutCore core team.
     - name: Devin Torres
       nick: dtorres
-      description: Devin has worked with SproutCore since 0.9 and has developed more SproutCore applications than he can remember. He continues to explore opportunities to utilize SproutCore and HTML5 technologies in new and exciting ways. You can read his blog at http://devintorres.com/ or follow him on Twitter @devinus.
-    - name: Vibul Imtarnasan
-      nick: veebs
-      description: Vibul is an entrepreneur, solutions architect and software developer. He blogs at http://www.veebsbraindump.com/.
+      image: devintorres.jpg
+      description: Devin has worked with SproutCore since 2009 and has developed more SproutCore applications than he can remember. He continues to explore opportunities to utilize SproutCore and HTML5 technologies in new and exciting ways. You can read his blog at http://devintorres.com/ or follow him on Twitter @devinus.
 
 index:
   Start Here:
