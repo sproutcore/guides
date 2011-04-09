@@ -38,7 +38,7 @@ Go ahead and open +todos.js+ now. You should see the following code:
 <javascript filename="apps/todos/todos.js">
 Todos = SC.Application.create();
 
-jQuery(document).ready(function() {
+SC.ready(function() {
   Todos.mainPane = SC.TemplatePane.append({
     layerId: "todo",
     templateName: "todos"
@@ -62,7 +62,7 @@ Todos.Todo = SC.Object.extend({
   isDone: false
 });
 
-jQuery(document).ready(function() {
+SC.ready(function() {
   Todos.mainPane = SC.TemplatePane.append({
     layerId: 'todos',
     templateName: 'todos'
