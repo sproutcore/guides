@@ -57,10 +57,9 @@ POST: /todos/
   "done": false
 }
 </plain>
-The server will tell us that it's all good, and return the new ID for us.
+The server will return the new ID for us.
 <javascript>
 {
-  "status": "OK",
   "id": 3
 }
 </javascript>
@@ -79,12 +78,7 @@ You'll see just one object returned:
 </javascript>
 The API also allows us to send a PUT to update an existing ToDo item and DELETE to remove it.
 
-A PUT or DELETE response will look like:
-<javascript>
-{
-  "status": "OK"
-}
-</javascript>
+A PUT or DELETE response will not have a body, we will know that everything is ok if HTTP status is 200
 
 With this basic understanding of how the server works, we can get started writing our DataSource.
 
@@ -296,7 +290,7 @@ updateRecord: function(store, storeKey) {
 },
 
 updateRecordDidComplete: function(response, store, storeKey, id) {
-  if(SC.ok(response) && response.get('body').status === "OK") {
+  if(SC.ok(response) && response.get('status') === 200) {
     // Tell the store that we have successfully updated
     store.dataSourceDidComplete(storeKey);
   } else {
@@ -312,18 +306,13 @@ This code should look familiar with only a few differences. This time we don't h
 
 NOTE: In this instance we call +send()+ with an object. This is possible, because we also called +json()+. Without this, +send()+ would need to be called with a string.
 
-Our API will return the following from our PUT command.
-<javascript>
-{
-  "status": "OK"
-}
-</javascript>
+Our API will return empty response with status 200 from our PUT command.
 
 So we test for it:
 
 <javascript>
-response.get('body').status === "OK"
-</javascript>   
+response.get('status') === 200
+</javascript>
 
 If all is good, then we call +dataSourceDidComplete+ to tell the store we are done.
 
@@ -333,7 +322,6 @@ If your server needs to process the data, it might need to send back different d
 
 <javascript>
 {
-  "status": "OK",
   "record": {
     "id": 3,
     "title": "Profit!",
@@ -356,7 +344,6 @@ h4. Going for Creation
 Creating records is much like updating them, but when you first create a record in the store, it does not have an +id+. So when the server responds, with the +id+:
 <javascript>
 {
-  "status": "OK",
   "id": 3
 }
 </javascript>
@@ -375,7 +362,7 @@ createRecord: function(store, storeKey) {
 
 createRecordDidComplete: function(response, store, storeKey) {
   var body = response.get('body');
-  if(SC.ok(response) && body.status === "OK") {
+  if(SC.ok(response) && response.get('status') === 200) {
     // Tell the store that we have successfully updated
     store.dataSourceDidComplete(storeKey, null, body.id);
   } else {
@@ -407,7 +394,7 @@ destroyRecord: function(store, storeKey) {
 
 destroyRecordDidComplete: function(response, store, storeKey) {
   var body = response.get('body');
-  if(SC.ok(response) && body.status === "OK") {
+  if(SC.ok(response) && response.get('status') === 200) {
     // Tell the store that we have successfully updated
     store.dataSourceDidDestroy(storeKey);
   } else {
@@ -441,7 +428,7 @@ retrieveRecord: function(store, storeKey) {
 },
 
 retrieveRecordDidComplete: function(response, store, storeKey, id) {
-  if(SC.ok(response) && response.get('body').status === "OK") {
+  if(SC.ok(response) && response.get('status') === 200) {
     // Tell the store that we have successfully updated
     store.dataSourceDidComplete(storeKey, response.get('body').record);
   } else {
