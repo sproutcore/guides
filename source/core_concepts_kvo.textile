@@ -316,3 +316,122 @@ console.log(MyApp.userNameView.get('value'));
 </javascript>
 
 Since we used an asterisk in the property path, the binding will be updated when either <code>mainUser</code> or <code>mainUser.name</code> changes.
+
+h4. Binding Transforms
+
+By default, Sproutcore creates simple bi-directional bindings.  A change on one property will be relayed to the other side and vice versa with no changes in between.  Sometimes, this behavior isn't exactly what you want.  For example, what if you have an object that expects a Boolean on one side and another object that emits a Number on the other side?
+
+Sproutcore provides an way to implement custom bindings through *binding transforms*.  Transforms convert values that change on one side of the bindings into another value before it is applied to the other side.
+
+|_. Helper |_. Description |
+|oneWay()|Forces binding to only relay changes in one direction.  Changes on the "from" side (the path you name as the value) will be relayed to the "to" side (the property you name before "Binding").  Changes in the other direction will not be relayed. |
+|bool()|Forces all values to become booleans.  +null+, +undefined+, +0+, and +false+ all become +false+.  All other values become +true+ |
+|single()|Forces all values to a non-Enumerable value.  Arrays with one item in them will be converted to that item only.  Arrays with multiple items will be converted to a placeholder value (default +SC.MULTIPLE_PLACEHOLDER+).|
+|multiple()|Forces all values to an Array-like value.  +null+ or +undefined+ becomes an empty array.  Single objects will be wrapped in an array.  Arrays and enumerables pass through unchanged.|
+|notEmpty()|Does not allow empty values.  +null+, +undefined+, empty strings and empty arrays are converted to a placeholder value (default +SC.EMPTY_PLACEHOLDER+)|
+|notNull()|Does not allow +null+ values.  This is a more restricted version of notEmpty()|
+|not()|Inverts the transform.  This is equivalent to +bool()+ but the resulting boolean will be inverted.|
+|isNull()|Transforms the value to +YES+ if the original value is +null+ or +undefined+ and +NO+ otherwise.  Useful for enabled/disabling UI when you have no content|
+|noError()|Ensures no Error objects are allowed through.  Errors will be converted to +null+.|
+
+Transforms can be chained together.  You can use this facility to construct just the type of binding you want.  For example, if you have an object that expects single values only, no errors and no empty values, you could code:
+ 
+<javascript>
+userBinding: SC.Binding.from('MyApp.userController.name'.single().noError().notEmpty()
+</javascript>
+
+As another example, if you only need a one way binding that is of a boolean type, you could code:
+
+<javascript>
+isVisibleBinding: SC.Binding.from('MyApp.userController.isBusy").oneWay().bool()
+</javascript>
+
+In addition to using the built-in transforms listed above, you can also add your own transforms.  A transform is simply a function that accepts an untransformed value and returns the transformed value.  It has the following signature.
+
+<javascript>
+function(value, isForward) {
+  // do transform
+  return transformedValue;
+}
+</javascript>
+
+The first parameter passed to a transform function will be the untransformed +value+.  
+
+If +isForward+ is +YES+, then the value being passed came from the "from" side of the binding (i.e. the "Binding.path" you named).  If +isForward+ is +NO+, then the value came from the "to" side (i.e. the property you named with "propertyBinding").  You can vary your transform behavior if you are based on the direction of the change.
+
+Your transform function should transform the value as needed and return it.  If you don't want to perform any kind of transform, then return the value as it was passed in.
+
+For example, to make a string upper case:
+
+<javascript>
+userBinding: SC.Binding.from('MyApp.userController.name')
+  .transform(function(value, isForward) {
+    return (value && value.toString) ? value.toString().toUpperCase() : '';
+  })
+</javascript>
+
+If you want use a transform over and over again, you can define a new method on the +SC.Binding+ object like so:
+
+<javascript>
+SC.Binding.upperCaseString = function() {
+  return this.transform(function(value, isForward) {
+    return (value && value.toString) ? value.toString().toUpperCase() : '';
+  });
+};
+
+...
+
+userBinding: SC.Binding.from('MyApp.userController.name'.upperCaseString())
+
+</javascript>
+
+
+h4. Manually Creating and Disconnecting Bindings
+
+Most of the time you will setup bindings using the class definition method described above.  Occasionally, however, you may want to setup and teardown bindings yourself.  
+ 
+To create a binding just use the +bind()+ method defined on +SC.Observable+ and inherited by +SC.Object+.  The first parameter you pass should be the property name you want to bind to.  The second is the same thing you would set as the value of a binding property:
+ 
+<javascript>
+myView.bind('isVisible', SC.Binding.from('MyApp.mainController.title').bool());
+ 
+// is the same as
+ 
+myView = SC.View.create({
+  isVisibleBinding: SC.Binding.from('MyApp.mainController.title').bool()
+});
+</javascript>
+ 
+Note that when you manually create a binding, the +BindingDefaults+ property is not consulted.  You must configure the binding exactly as you need.
+
+If you have created a binding and need to disconnect it for some reason, you can call the +disconnect()+ method on the binding itself.
+
+If you manually create a binding using bind(), the actual binding object is returned from the bind() call.
+
+If you create a binding by defining it on your class, you can find the binding instance on the same property on an object instance:
+
+<javascript>
+var binding = myView.bind('isVisible', SC.Binding.from('MyApp.mainController.title').bool());
+ 
+// is the same as
+ 
+myView = SC.View.create({
+  isVisibleBinding: SC.Binding.form('MyApp.mainController.title').bool()
+});
+var binding = myView.get('isVisibleBinding');
+ 
+// disconnect!
+binding.disconnect();
+</javascript>
+
+You can reconnect a binding that has been disconnected using the +connect()+ method as well.
+
+h3. Changelog
+
+* January 12, 2011: initial partial version by "Peter Wagenet":credits.html#pwagenet
+* January 19, 2011: further updates by "Peter Wagenet":credits.html#pwagenet
+* January 24, 2011: added section on "Bindings and Chained Property Paths" by "Peter Wagenet":credits.html#pwagenet
+* March 2, 2011: fixed paragraph formmatting by "Topher Fangio":credits.html#topherfangio
+* March 2, 2011: fixed grammar, clarified phrasing, added examples to the Observer section by "Jason Gignac":credits.html#jgignac
+* April 13, 2011: "Binding Transforms" and "Manually Creating and Disconnecting Bindings" sections copied from wiki and edited by "Vibul Imtarnasan":credits.html#veebs
+* July 19, 2013: added "Changelog" by "Topher Fangio":credits.html#topherfangio

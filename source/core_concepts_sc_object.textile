@@ -175,3 +175,10 @@ person.fullName(); // Mary Shelley
 </javascript>
 
 Note that the <code>mixin()</code> method is different from the Mixins described above. The <code>mixin()</code> method will add the properties and methods within the block as _Class properties and methods_. Mixins themselves add _instance variables and methods_.
+
+h3. Changelog
+
+* January 12, 2011: initial partial version by "Peter Wagenet":credits.html#pwagenet
+* January 19, 2011: further updates by "Peter Wagenet":credits.html#pwagenet
+* January 20, 2011: corrections to "The +init+ Method" and "The Run Loop" by "Peter Wagenet":credits.html#pwagenet
+* July 19, 2013: added "Changelog" by "Topher Fangio":credits.html#topherfangio
