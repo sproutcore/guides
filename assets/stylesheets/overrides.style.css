@@ -64,3 +64,10 @@ dd img {
 div.filename {
   padding-top: 5px;
 }
+
+ol.chapters li a p {
+  /*
+   * FIXES: Firefox incorrectly renders block elements inside of list items
+   */
+  display: inline;
+}
