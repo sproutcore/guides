@@ -64,3 +64,7 @@ dd img {
 div.filename {
   padding-top: 5px;
 }
+
+ol.chapters a {
+  text-decoration: none;
+}
