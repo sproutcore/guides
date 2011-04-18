@@ -478,3 +478,4 @@ h3. Changelog
 * March 2, 2011: initial version by "Geoffrey Donaldson":credits.html#geoffreyd
 * March 2, 2011: minor fixes by "Peter Wagenet":credits.html#pwagenet
 * March 22, 2011: minor fixes/formatting by "Topher Fangio":credits.html#topherfangio
+* April 18, 2011: corrections and fixes by "Piotr Sarnacki":credits.html#drogus

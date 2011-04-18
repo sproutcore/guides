@@ -58,6 +58,9 @@ authors:
     - name: Erich Ocean
       nick: erichocean
       description: In 2008-2009, Erich consulted with Apple on the transition from SproutCore 0.9 to 1.0 which entailed almost a complete rewrite of the codebase. He also provides SproutCore training and mentoring to companies and individuals throughout the world.
+    - name: Piotr Sarnacki
+      nick: drogus
+      description: ""
     - name: Scott "oldfartdeveloper" Smith
       nick: oldfartdeveloper
       image: oldfartdeveloper.jpg
