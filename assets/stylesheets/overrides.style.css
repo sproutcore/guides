@@ -70,8 +70,11 @@ ol.chapters a {
 }
 
 ol.chapters li a p {
-  /*
-   * FIXES: Firefox incorrectly renders block elements inside of list items
-   */
+  /* FIXES: Firefox incorrectly renders block elements inside of list items */
   display: inline;
+}
+
+.syntaxhighlighter {
+  /* FIXES: Chome cuts off underscores on the last line of a code block */
+  padding-bottom: 1px;
 }
