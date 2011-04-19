@@ -145,7 +145,7 @@ And then an SC.ObjectController that proxies individual contact objects:
 
 <javascript filename="apps/my_app/controllers/contact.js">
 MyApp.contactController = SC.ObjectController.create({
-  contentBinding: SC.Binding.from('MyApp.contactsController.selection').single()
+  contentBinding: SC.Binding.single('MyApp.contactsController.selection')
 });
 </javascript>
 
