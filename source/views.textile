@@ -201,7 +201,7 @@ bottomRightView: SC.View.design({
 
   usageHint: SC.View.design({
     classNames: 'myapp-usage-hint',
-    isVisibleBinding: SC.Binding.from('MyApp.contactsController.hasSelection').not(),
+    isVisibleBinding: SC.Binding.not('MyApp.contactsController.hasSelection'),
 
     childViews: [SC.LabelView.design({
       layout: { width: 300, height: 22, centerX: 0, centerY: 0 },
