@@ -229,7 +229,7 @@ WARNING: You need to make sure that your data hashes have their "primary key":re
 
 NOTE: This is the usual way of calling +loadRecords+, but it can be called with a few different signatures. This allows for quite complex behaviour, such as loading multiple record types at once. These will be covered by other guides.
 
-Finally, we call ".dataSourceDidErrorQuery":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#dataSourceDidErrorQuery to let the store know that we have finished loading records, and it is now time to update the passed in query. The query that we passed in is the one that was given to us by +fetch+.  It was passed in through to the callback.
+Finally, we call ".dataSourceDidFetchQuery":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#dataSourceDidFetchQuery to let the store know that we have finished loading records, and it is now time to update the passed in query. The query that we passed in is the one that was given to us by +fetch+.  It was passed in through to the callback.
 
 If the server returned an error, such as +404+ Not Found, or the +500+ series of server errors, then we'll let the store know with ".dataSourceDidErrorQuery":http://docs.sproutcore.com/symbols/SC.Store.html#SC.Store#dataSourceDidErrorQuery. This sets the query into an error state, for which you can later check and deal with.
 
