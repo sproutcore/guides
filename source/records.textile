@@ -128,7 +128,7 @@ MyApp.Contact = SC.Record.extend({
 });
 </javascript>
 
-For a reference of how to specify your custom date format check the documentation of  "SC.DateTime#toFormatedString":http://docs.sproutcore.com/symbols/SC.DateTime.html#SC.DateTime%23toFormattedString.
+For a reference of how to specify your custom date format check the documentation of  "SC.DateTime#toFormatedString":http://docs.sproutcore.com/symbols/SC.DateTime.html#toFormattedString.
 
 
 
@@ -565,7 +565,7 @@ query = SC.Query.local(MyApp.Contacts, {
 
 In this case the results are sorted in an ascending order, first by last name and second by first name. If you omit the +ASC+ keyword, the results are by default sorted in an ascending order. To sort them in descending order, put the keyword +DESC+ after the name of the property.
 
-NOTE: If you need a custom sorting order, you can register your own comparison operator for a specific model attribute using +SC.Query.registerComparison+. Please refer to the "documentation":http://docs.sproutcore.com/symbols/SC.Query.html#SC.Query%23registerComparison for further details.
+NOTE: If you need a custom sorting order, you can register your own comparison operator for a specific model attribute using +SC.Query.registerComparison+. Please refer to the "documentation":http://docs.sproutcore.com/symbols/SC.Query.html#.registerComparison for further details.
 
 
 h5. Scoped Queries
