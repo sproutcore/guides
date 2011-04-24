@@ -243,7 +243,7 @@ In our todos app, we want to display completed todos in a different visual style
 
 We'll use a property on the collection helper to set up this binding:
 
-<javascript filename="in apps/todos/todos.js">
+<javascript filename="in apps/todos/resources/templates/todos.handlebars">
 <!-- replacing the previous code -->
 
 {{#collection Todos.TodoListView itemClassBinding="content.isDone"}}
