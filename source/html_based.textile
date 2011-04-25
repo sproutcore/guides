@@ -123,6 +123,8 @@ To start building our views, let's open +resources/templates/todos.handlebars+ a
        placeholder="What needs to be done?" >
 </html>
 
+NOTE: For more information about using Handlebars, visit the "Handlebars website":http://handlebars.strobeapp.com/.
+
 Now that we've got model, view, and controller represented, it's time to open the app in our browser and see how it looks.
 
 During the development process, +sc-server+ makes it easy to test your application. Just run the following inside of your project directory:
