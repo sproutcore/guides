@@ -165,7 +165,6 @@ MyApp = SC.Application.create({
 
 TIP:  Notice the quotes around the data source name?  +MyApp.MyAppsFixturesDataSource+ doesn't exist until its instantiated during the loading process.
 
-
 h3. Changelog
 
 * January 11, 2011: initial version by "Peter Wagenet":credits.html#pwagenet

@@ -124,8 +124,7 @@ Pushing your changes back to the remote repository:
 $ git push origin <branchName>
 </shell>
 
-TIP:  branchName above is the name you used at the beginning of the guide in the git checkout step.  If you can't remember the name use 'git branch -a' to list the branches. 
-
+TIP:  branchName above is the name you used at the beginning of the guide in the git checkout step.  If you can't remember the name use 'git branch -a' to list the branches.
 
 Next, submit a pull request from your repository. Make sure to make the pull request using the branch you used for the guide.
 

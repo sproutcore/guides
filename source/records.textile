@@ -287,9 +287,6 @@ MyApp.Contact = SC.Record.extend({
 
 NOTE: If you use +set()+ on an undefined property, SproutCore by default will pass the value through to the underlying data hash. You can turn this behavior off by setting +ignoreUnknownProperties: YES+ in your model classes.
 
-
-
-
 h3. Using Your Models
 
 Now that we have defined our +Contact+ and +Address+ models it's time to actually create some records. All records are managed by the store, so we have to make sure first that we have an instance of +SC.Store+ available. Usually the store is instantiated somewhere in your application's "core.js" file:
@@ -406,9 +403,6 @@ if (status === SC.Record.READY_NEW) {
 
 NOTE: For a complete list of record state constants see the "documentation of the SC.Record class":http://docs.sproutcore.com/symbols/SC.Record.html.
 
-
-
-
 h3. Finding Records in the Store
 
 Because the store manages all records in memory, you can query it for records of a certain type, records with a certain id or more complex search criteria.
@@ -424,7 +418,6 @@ myContact = MyApp.store.find(MyApp.Contact, 1);
 This statement returns the record of type +MyApp.Contact+ with the id 1. If the record does not exist, then the return value will be +null+. 
 
 WARNING: When +find+ is called with a record type and an id as arguments, it only looks for records of exactly this type. It will not return records which type is a subclass of the specified record type.
-
 
 h4. Finding All Records of a Certain Type
 
@@ -485,7 +478,6 @@ Please refer to the "documentation of SC.Array":http://docs.sproutcore.com/symbo
 NOTE: If the query was not yet fetched from the server, the store automatically forwards it to the data source to load the data from the server.
 
 NOTE: +SC.RecordArray+s automatically get updated by the store when you add or remove records to/from the store which match the corresponding query.
-
 
 h5. Conditions
 
@@ -567,7 +559,6 @@ In this case the results are sorted in an ascending order, first by last name an
 
 NOTE: If you need a custom sorting order, you can register your own comparison operator for a specific model attribute using +SC.Query.registerComparison+. Please refer to the "documentation":http://docs.sproutcore.com/symbols/SC.Query.html#SC.Query%23registerComparison for further details.
 
-
 h5. Scoped Queries
 
 All the queries you used until now will cause the store to match all records in memory with the query's conditions. You can also build one query on top of another to construct more efficient query trees:
@@ -595,7 +586,6 @@ Remote queries (build with +SC.Query.remote+) on the other hand return a +SC.Rec
 
 WARNING: You should use local queries in almost all cases. If you use remote queries you probably know what you're doing and have already passed the scope of this guide...
 
-
 h4. Extending SproutCore's Query Language
 
 If SproutCore's built-in query operators are not sufficient for your use case, you can easily extend the query language. For example by default there are no bit-wise operators, so lets implement a +BITAND+ operator which evaluates to +true+ if the bit-wise and of the two arguments is unequal to zero:
@@ -618,7 +608,6 @@ SC.Query.registerQueryExtension('BITAND', {
 We call +SC.Query.registerQueryExtension+ to register the new operator with the name +BITAND+ as first argument. The key components of the hash passed as second argument are +evalType+ and +evaluate+. +evalType+ is either +BOOLEAN+ (if you return a boolean value in +evaluate+) or +PRIMITIVE+ (if you return e.g. a number or a string). The actual operation is implemented in the +evaluate+ function after the operands are retrieved by +this.leftSide.evaluate(r,w)+ and +this.rightSide.evaluate(r,w)+. 
 
 NOTE: Look at the source of SC.Query ("datastore/system/query.js") for more examples of how to implement query operators.
-
 
 h3. In-Depth Information about Record States
 
