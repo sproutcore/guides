@@ -92,7 +92,6 @@ index:
     - title: SproutCore Records
       url: records
       text: "The SproutCore data framework is a full-featured ORM-like framework for working with data in SproutCore. Learn about the SproutCore data framework and how you can use it to interact with your data sources."
-      construction: true
     - title: Hooking Up to a Backend
       url: connect_server
       text: "This guide covers how to create a SproutCore data source, which will retrieve data from your servers and make them available to the SproutCore Records you designed in the previous guide."
@@ -108,7 +107,6 @@ index:
     - title: Core View Concepts
       url: views
       text: "In this guide, we will cover the basics of SproutCore views, and show you how to customize the built-in SproutCore views for your own use."
-      construction: true
     - title: Building Your Own Views
       url: custom_views
       text: "Most applications will quickly go beyond the built-in SproutCore views. In this guide, we will cover how to build and style your own views."
@@ -121,7 +119,6 @@ index:
     - title: Theming Your App
       url: theming_app
       text: "In this guide, we'll cover how to change the style of SproutCore controls in your app. As an example, we'll re-theme an SC.ButtonView."
-      construction: true
     - title: Writing Themeable Controls
       url: themeable_controls
       text: "In this guide, we'll go over to how to develop a control that can be themed. This can be useful if you want to have different visual displays in your application (like a regular and overlay theme) or when distributing a theme for wider use."
@@ -129,7 +126,6 @@ index:
     - title: "Using Chance, SproutCore's CSS Framework"
       url: chance
       text: "Chance is SproutCore's CSS preprocessor. In this guide, you will learn how to use the CSS extensions that come with Chance to streamline your styling workflow."
-      construction: true
   Testing:
     - title: "Unit Testing"
       url: unit_test_framework
@@ -150,12 +146,10 @@ index:
     - title: "SproutCore Development Using TDD"
       url: todos_tdd
       text: "Show implementing the TODOs project using TDD."
-      construction: true
   Contributing to SproutCore:
     - title: "Javascript Style Guide"
       url: "style_guide"
       text: "This guide covers the style of SproutCore framework code"
-      construction: true
     - title: "Comitter Guidelines"
       url: "commit_code"
       text: "A detailed checklist of the do's and don'ts of SC Framework code..."
