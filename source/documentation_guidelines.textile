@@ -6,18 +6,18 @@ endprologue.
 
 h3. Overview
 
-SproutCore uses the jsdoc-toolkit (http://code.google.com/p/jsdoc-toolkit/) to generate its documentation. As such, your SproutCore classes should follow strict code-documenting formatting guidelines in order to properly generate your HTML documentation. This document outlines the proper  format you should use.
+SproutCore uses the "jsdoc-toolkit":http://code.google.com/p/jsdoc-toolkit/ to generate its documentation. As such, your SproutCore classes should follow strict code-documenting formatting guidelines in order to properly generate your HTML documentation. This document outlines the proper  format you should use.
 
 h3. Classes
 
-Classes must always start with an @class directive, followed by optional the class description. You can use Markdown (http://daringfireball.net/projects/markdown/) to style your description (add headings, paragraphs, code, etc.)
-JsDoc Toolkit also supports tags in your comments to add metadata about your class. For example, you can specify who the author of the class is, what classes it inherits from,  what classes are related, and what version of the frameworks it’s been available since. 
+Classes must always start with an +@class+ directive, followed by optional the class description. You can use "Markdown":http://daringfireball.net/projects/markdown/ to style your description (add headings, paragraphs, code, etc.)
+JsDoc Toolkit also supports tags in your comments to add metadata about your class. For example, you can specify who the author of the class is, what classes it inherits from,  what classes are related, and what version of the frameworks it’s been available since.
 
 h4. Common and supported Markdown syntax:
 
  * For code samples, make sure you indent the code block further than the other text
- * For headers, add three dashes (---) for 2nd level headers, and three (===) for 1st level headers. These go on the subsequent line
- * For list, prefix each line with a dash (-)
+ * For headers, add three dashes (+---+) for 2nd level headers, and three (+===+) for 1st level headers. These go on the subsequent line
+ * For list, prefix each line with a dash (+-+)
 
 <javascript filename="Sample Class Documentation">
 /**
@@ -128,7 +128,7 @@ isAsynchronous: function(){...
 
 h3. Testing and viewing your documentation during development
 
-If, during development, you would like to test your documentation and see how it looks once it's generated, then you can use the SproutCore TextMate bundle available on github(URL of SproutCore.tmbundle on github)":https://github.com/sproutcore/sproutcore-tmbundle which includes a Command to generate documentation for the current file you are viewing. To activate it, go to a jsdoc-documented javascript file, and click CMD+CTRL+G
+If, during development, you would like to test your documentation and see how it looks once it's generated, then you can use the SproutCore TextMate bundle available on "github":https://github.com/sproutcore/sproutcore-tmbundle which includes a Command to generate documentation for the current file you are viewing. To activate it, go to a jsdoc-documented javascript file, and click CMD + CTRL + G.
 
 *Note*: Generating documentation in TextMate requires the Web Sharing feature of Mac OS X to be enabled since it uses apache to display your files.
 

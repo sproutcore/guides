@@ -36,7 +36,7 @@ By convention, SproutCore assumes that all unit tests files are located in the +
 Hence, create the +tests+ directory if it is missing.
 
 Unlike like most folders, SproutCore assumes that each file in the tests
-directory that ends in '.js' or '.rhtml' is a unit test.  You can load each
+directory that ends in +.js+ or +.rhtml+ is a unit test.  You can load each
 of these unit tests individually or as a group from the built-in test runner.
 
 NOTE: The files in the +tests+ directory are omitted from your production deployment.
