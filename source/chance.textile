@@ -80,7 +80,7 @@ Nesting helps you reduce repetition of class names. The nesting in your CSS matc
 your nesting of HTML elements: if rule B is inside rule A, it will match descendants
 of elements that match rule A.
 
-h4. &amp;.another-rule
+h4. +&.another-rule+
 
 Nesting is nice to match elements inside of each other, but what about when you 
 want to use nesting to match a single element?
@@ -112,7 +112,7 @@ $theme.button.active.sel {
 But nesting won't work: We can't nest +active+ inside +button+ because it needs to
 match the same element!
 
-&amp;. SCSS provides &amp;. And it basically does exactly what we want, continuing
+SCSS provides +&.+ which does exactly what we want, continuing
 the parent selector:
 
 <css>
@@ -177,7 +177,7 @@ config :my_app, ... :css_theme => "ace.my-app"
 
 h4. +@theme+ Directive
 
-Let's say you created MyAwesomeTheme. But you need a red variation for all of your
+Let's say you created +MyAwesomeTheme+. But you need a red variation for all of your
 app's error windows, error toolbars, etc. Creating a brand new  theme
 doesn't make sense: it will still be MyAwesomeTheme, just a version for errors.
 

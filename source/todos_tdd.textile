@@ -8,9 +8,11 @@ This guide covers building the common TODOS example project using test-driven de
 
 endprologue.
 
+<construction>
 h3. Prerequisites
 
 _TODO: establish learning preparation and what already needs to be installed._
+</construction>
 
 h3. Getting Started
 
@@ -275,7 +277,11 @@ function main() { Todos.main(); }
 
 That makes the unit test that we wrote pass, but the integration test is still failing, so we need to delegate to the controller to set it's content. Here's the unit test to specify that:
 
-<javascript filename="TODO - Enter Filename">
+<construction>
+_TODO: Enter filename below_
+</construction>
+
+<javascript>
 var mockedSetFunction, mockedFindFunction, setMockObject, findMockObject;
 module("Todos.main", {
   setup: function() {

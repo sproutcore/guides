@@ -49,7 +49,9 @@ var JSLINT_PREFS = {
   
 </javascript>
 
+<construction>
 TODO: we should have a command line tool that is included in the build tools so there is a consistent standard and so all the cool kids using VI have an option.
+</construction>
 
 h3. Unit Tests
 
