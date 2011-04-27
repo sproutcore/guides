@@ -113,7 +113,9 @@ h3. Moving On
 
 This concludes the main programming guide for working with Unit Tests in SproutCore applications.  You're now ready to change the world with awesome unit tests!
 
+<construction>
 On to the "SproutCore Testing Guidelines »":/testing_guidelines.html
+</construction>
 
 h3. Changelog
 

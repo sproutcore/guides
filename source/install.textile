@@ -64,9 +64,11 @@ Options:
       [--environment=ENVIRONMENT]      
 </shell>
 
+<construction>
 h3. Next Steps
 
 Great, you're good to go. You'll probably want to continue with the "Getting Started":getting_started.html guide.
+</construction>
 
 h3. Changelog
 
