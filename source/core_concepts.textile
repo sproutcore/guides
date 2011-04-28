@@ -376,17 +376,17 @@ MyApp.userNameView = SC.LabelView.create({
   valueBinding: 'MyApp.usersController*mainUser.name'
 });
 
-MyApp.usersController.mainUser.name = "Harriet";
+MyApp.usersController.setPath('mainUser.name', "Harriet");
 
 // The run loop must run
 
-MyApp.userNameView.get("value"); // 'Harriet'
+MyApp.userNameView.get('value'); // "Harriet"
 
-MyApp.usersController.mainUser = SC.Object.create({ name: 'Eunice' });
+MyApp.usersController.set('mainUser', SC.Object.create({ name: 'Eunice' }));
 
 // The run loop must run
 
-MyApp.userNameView.get("value"); // 'Eunice'
+MyApp.userNameView.get('value'); // "Eunice"
 
 </javascript>
 
