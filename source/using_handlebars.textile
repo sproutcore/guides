@@ -1,0 +1,348 @@
+h2. Using Handlebars
+
+This guide covers displaying content in the browser using Handlebars templates and SC.TemplateView. After reading this guide, you will be able to:
+
+* Describe the markup of your application using Handlebars-flavored HTML.
+* Have your HTML update automatically when your data model changes.
+* Handle user interaction by assigning views to sections of HTML.
+* Integrate templates into existing applications.
+* Build new applications entirely with templates.
+
+endprologue.
+
+h3. Handlebars
+
+SproutCore comes bundled with "Handlebars":http://handlebars.strobeapp.com, a semantic templating language. These templates look like regular HTML, with embedded handlebars expressions:
+
+<html>
+Hello, <b>{{name}}</b>!
+</html>
+
+You should store your Handlebars templates inside your application's +resources/templates+ directory. Make sure you save them with a +.handlebars+ extension. At runtime, SproutCore will compile and load these templates so they are available for you to use in your views.
+
+In addition to the stock Handlebars templating library, SproutCore comes bundled with a rich set of extensions that make templates bindings-aware by default. That means that you define your template once, and any time the underlying objects change, the template updates automatically. It's like magic.
+
+h3. SC.TemplateView
+
+An SC.TemplateView is a view that is responsible for rendering a Handlebars template and inserting it into the DOM.
+
+To tell the TemplateView which template to use, set its +templateName+ property. For example, if I saved a template to a file called +sayhello.handlebars+, I would set the +templateName+ property to +"sayhello"+.
+
+<html filename="apps/myapp/resources/templates/sayhello.handlebars">
+Hello, <b>{{name}}</b>!
+</html>
+
+<javascript>
+var view = SC.TemplateView.create({
+  templateName: 'sayhello',
+  name: "Bob"
+});
+</javascript>
+
+h3. Handlebars Basics
+
+As you've already seen, you can print the value of a property by enclosing it in a Handlebars expression, or a series of braces, like this:
+
+<html>
+My new car is {{color}}.
+</html>
+
+This will look up and print the TemplateView's +color+ property.
+
+Handlebars also comes with several built-in helpers that allow you to control how your templates are rendered.
+
+h4. {{#if}}, {{else}}, and {{#unless}}
+
+Sometimes you may only want to display part of your template if a property exists. For example, let's say we have a view with a +person+ property that contains an object with +firstName+ and +lastName+ fields:
+
+<javascript>
+SC.SayHelloView = SC.TemplateView.extend({
+  person: SC.Object.create({
+    firstName: "Joy",
+    lastName: "Clojure"
+  })
+});
+</javascript>
+
+In order to display part of the template only if the +person+ object exists, we can use the +{{#if}}+ helper to conditionally render a block:
+
+<html>
+{{#if person}}
+  Welcome back, <b>{{person.firstName}} {{person.lastName}}</b>!
+{{/if}
+</html>
+
+NOTE: Handlebars will not render the block if the argument passed evaluates to +false+, +undefined+, +null+ or +[]+ (i.e., any "falsy" value).
+
+If the expression evaluates to falsy, we can also display an alternate template using +{{else}}+:
+
+<html>
+{{#if person}}
+  Welcome back, <b>{{person.firstName}} {{person.lastName}}</b>!
+{{else}}
+  Please log in.
+{{/if}
+</html>
+
+To only render a block if a value is falsy, use +{{#unless}}+:
+
+<html>
+{{#unless hasPaid}}
+  You owe: ${{total}}
+{{/unless}
+</html>
+
+NOTE: {{#if}} and {{#unless}} are examples of block expressions. These allow you to invoke a helper with a portion of your template. Block expressions look like normal expressions except that they contain a hash before the helper name, and require a closing expression.
+
+h4. {{#with}}
+
+Sometimes you may want to invoke a section of your template with a context different than the SC.TemplateView. For example, we can clean up the above template by using the +{{#with}}+ helper:
+
+<html>
+{{#with person}}
+  Welcome back, <b>{{firstName}} {{lastName}}</b>!
+{{/with}}
+</html>
+
+NOTE: {{#with}} changes the _context_ of the block you pass to it. The context is the object on which properties are looked up. By default, the context is the SC.TemplateView to which the template belongs.
+
+h4. Binding Element Attributes with {{bindAttr}}
+
+In addition to text, you may also want your templates to dictate the attributes of your HTML elements. For example, imagine a view that contains a URL:
+
+<javascript>
+  SC.LogoView = SC.TemplateView.extend({
+    logoUrl: 'http://tehgooglez.theydonothing.com/images/logo.png'
+  });
+</javascript>
+
+The best way to display the URL as in image in Handlebars is like this:
+
+<html>
+<div id="logo">
+  <img {{bindAttr src="logoUrl"}} alt="Logo">
+</div>
+</html>
+
+If you use {{bindAttr}} with a Boolean value, it will add or remove the specified attribute:
+
+<javascript>
+SC.InputView = SC.TemplateView.extend({
+  isSelected: true
+});
+</javascript>
+
+<html>
+<input {{bindAttr checked="isSelected"}}>
+</html>
+
+h4. Binding Class Names with {{bindAttr}}
+
+The +class+ attribute can be bound like any other attribute, but it also has some additional special behavior. The default behavior works like you'd expect:
+
+<javascript>
+SC.AlertView = SC.TemplateView.extend({
+  priority: "p4",
+  isUrgent: true
+});
+</javascript>
+
+<html>
+<div {{bindAttr class="priority"}}>
+  Warning!
+</div>
+</html>
+
+This template will emit the following HTML:
+
+<html>
+<div class="p4">
+  Warning!
+</div>
+</html>
+
+If the value to which you bind is a Boolean, however, the dasherized version of that property will be applied as a class:
+
+<html>
+<div {{bindAttr class="isUrgent"}}>
+  Warning!
+</div>
+</html>
+
+This emits the following HTML:
+
+<html>
+<div class="is-urgent">
+  Warning!
+</div>
+</html>
+
+Unlike other attributes, you can also bind multiple classes:
+
+<html>
+<div {{bindAttr class="isUrgent priority"}}>
+  Warning!
+</div>
+</html>
+
+h4. Localized Strings with {{loc}}
+
+SproutCore has built-in support for localized applications. To emit a localized version of a string, use the +{{loc}}+ helper:
+
+<html>
+{{loc myLocalizedString}}
+</html>
+
+h3. Building a View Hierarchy
+
+So far, we've discussed writing templates for a single view. However, as your application grows, you will often want to create a hierarchy of views to encapsulate different areas on the page. Each view will be responsible for handling events and maintaining the properties needed to display it.
+
+h4. {{view}}
+
+To add a child view to a parent, use the +{{view}}+ helper, which takes a path to a view class.
+
+<javascript>
+// Define parent view
+MyApp.UserView = SC.TemplateView.extend({
+  templateName: 'user',
+  
+  firstName: "Albert",
+  lastName: "Hofmann"
+});
+
+// Define child view
+MyApp.InfoView = SC.TemplateView.extend({
+  templateName: 'info',
+  
+  posts: 25,
+  hobbies: "Riding bicycles"
+});
+</javascript>
+
+<html filename="user.handlebars">
+User: {{firstName}} {{lastName}}
+{{view MyApp.InfoView}}
+</html>
+
+<html filename="info.handlebars">
+<b>Posts:</b> {{posts}}
+<br>
+<b>Hobbies:</b> {{hobbies}}
+</html>
+
+If we were to create an instance of MyApp.UserView and render it, we would get a DOM representation like this:
+
+<html>
+User: Albert Hofmann
+<div>
+  <b>Posts:</b> 25
+  <br>
+  <b>Hobbies:</b> Riding bicycles
+</div>
+</html>
+
+h4. Relative Paths
+
+Instead of specifying an absolute path, you can also specify which view class to use relative to the parent view. For example, we could nest the above view hierarchy like this:
+
+<javascript>
+MyApp.UserView = SC.TemplateView.extend({
+  templateName: 'user',
+  
+  firstName: "Albert",
+  lastName: "Hofmann",
+  
+  InfoView: SC.TemplateView.extend({
+    templateName: 'info',
+
+    posts: 25,
+    hobbies: "Riding bicycles"
+  })
+});
+</javascript>
+
+<html filename="user.handlebars">
+User: {{firstName}} {{lastName}}
+{{view InfoView}}
+</html>
+
+h4. Setting Child View Templates
+
+If you'd like to specify the template your child views use (instead of having to place them in a separate Handlebars file), you can use the block form of the +{{view}}+ helper. We might rewrite the above example like this:
+
+<javascript>
+MyApp.UserView = SC.TemplateView.extend({
+  templateName: 'user',
+  
+  firstName: "Albert",
+  lastName: "Hofmann"
+});
+
+MyApp.InfoView = SC.TemplateView.extend({  
+  posts: 25,
+  hobbies: "Riding bicycles"
+});
+</javascript>
+
+<html filename="user.handlebars">
+User: {{firstName}} {{lastName}}
+{{#view MyApp.InfoView}}
+  <b>Posts:</b> {{posts}}
+  <br>
+  <b>Hobbies:</b> {{hobbies}}
+{{/view}}
+</html>
+
+When you do this, it may be helpful to think of it as __assigning__ views to portions of the page. This allows you to encapsulate event handling for just that part of the page.
+
+h4. Setting Up Bindings
+
+So far in our examples, we have been setting values directly on the views. But to best implement an MVC architecture, we should actually be __binding__ the properties of our views to the controller layer.
+
+Let's set up a controller to represent our user data:
+
+<javascript>
+MyApp.userController = SC.ObjectController.create({
+  content: SC.Object.create({
+    firstName: "Albert",
+    lastName: "Hofmann",
+    posts: 25,
+    hobbies: "Riding bicycles"
+  })
+});
+</javascript>
+
+INFO: An SC.ObjectController is a controller that serves as a proxy to another object, contained in the controller's +content+ property. If you want to change the object that your views are displaying, just set the +content+ property to the new object. Since your views are all bound to the controller, they will update automatically without having to reconfigure the bindings.
+
+Now let's update MyApp.UserView to bind to MyApp.userController:
+
+<javascript>
+MyApp.UserView = SC.TemplateView.extend({
+  templateName: 'user',
+  
+  firstNameBinding: 'MyApp.userController.firstName',
+  lastNameBinding: 'MyApp.userController.lastName'
+});
+</javascript>
+
+When we only have a few bindings to configure, like with MyApp.InfoView, it is sometimes useful to be able to declare those bindings in the template. You can do that by passing additional arguments to the +{{view}}+ helper. If all you're doing is configuring bindings, this often allows you to bypass having to create a new subclass.
+
+<html filename="user.handlebars">
+User: {{firstName}} {{lastName}}
+{{#view MyApp.InfoView postsBinding="MyApp.userController.posts"
+        hobbiesBinding="MyApp.userController.hobbies"}}
+  <b>Posts:</b> {{posts}}
+  <br>
+  <b>Hobbies:</b> {{hobbies}}
+{{/view}}
+</html>
+
+NOTE: You can actually pass __any__ property as a parameter to {{view}}, not just bindings. However, if you are doing anything other than setting up bindings, it is generally a good idea to create a new subclass.
+
+h4. Assigning an ID
+
+h4. Assigning Class Names, Class Bindings
+
+h3. Displaying a List of Items
+
+h3. Using Templates Inside Other Controls
