@@ -16,7 +16,6 @@ dd img {
 
 #header .wrapper {
   height: 58px;
-  overflow: hidden;
 }
 
 #header .nav a {
@@ -39,6 +38,31 @@ dd img {
 
 #container {
   background: white url(../images/containergradient.png) repeat-x scroll;
+}
+
+#container .wrapper {
+  border: 1px solid #d2cece;
+  border-radius: 6px;
+  margin-top: 2.5em;
+}
+
+#mainCol {
+  margin: 0;
+  padding: 0 35px;
+  border-right: 1px solid #d2cece;
+}
+
+#mainCol h3.team {
+  margin: 0 -35px;
+  padding: 1em 28px;
+  border-bottom: 1px solid #d2cece;
+}
+
+#mainCol h3.section {
+  font-size: 1.25em;
+  text-transform: uppercase;
+  border-bottom: 1px solid #d2cece;
+  padding-top: 1em;
 }
 
 #guides {
@@ -66,10 +90,10 @@ dd img {
 }
 
 #header h1 {
-  background-image: url(../images/logo_small.png);
-  background-size: auto 120px;
-  background-position: -25px -25px;
-  overflow: visible
+  background-image: url(../images/logo-nav.png);
+  background-repeat: none;
+  background-position: 0 10px;
+  margin-left: -25px;
 }
 
 .guide tt, .guide code {
