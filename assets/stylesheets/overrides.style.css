@@ -1,3 +1,7 @@
+#container {
+  background: white url(../images/criscross.png) repeat scroll;
+}
+
 dd img {
   float: left;
   height: 36px;
