@@ -1,7 +1,3 @@
-#container {
-  background: white url(../images/criscross.png) repeat scroll;
-}
-
 dd img {
   float: left;
   height: 36px;
@@ -22,6 +18,10 @@ dd img {
   background-color: #2A8008;
   background-image: none;
   color: #fff;
+}
+
+#container {
+  background: white url(../images/containergradient.png) repeat-x scroll;
 }
 
 #guides {
