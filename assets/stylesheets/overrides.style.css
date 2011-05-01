@@ -52,17 +52,19 @@ dd img {
   border-right: 1px solid #d2cece;
 }
 
-#mainCol h3.team {
+#mainCol h3.group {
   margin: 0 -35px;
-  padding: 1em 28px;
+  padding: 15px 28px;
   border-bottom: 1px solid #d2cece;
+  font-weight: normal;
 }
 
 #mainCol h3.section {
-  font-size: 1.25em;
-  text-transform: uppercase;
-  border-bottom: 1px solid #d2cece;
   padding-top: 1em;
+  border-bottom: 1px solid #d2cece;
+  font-size: 1.25em;
+  font-weight: normal;
+  text-transform: uppercase;
 }
 
 #guides {
