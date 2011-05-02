@@ -108,8 +108,8 @@ dd img {
 #subCol {
   width: 17em;
   border-left: 1px solid #d2cece;
-  padding-bottom: 32767px;
-  margin-bottom: 32767px;
+  padding-bottom: 30000px;
+  margin-bottom: -30000px;
   background: #e8ecf0 url(../images/strobe/sidebargradient.png) repeat-x 0 0;
   border-top-right-radius: 6px;
   -webkit-border-top-right-radius: 6px;
