@@ -4,36 +4,16 @@ dd img {
   margin-right: 10px;
 }
 
-#topNav {
-  display: none;
-}
-
-#header {
-  background-image: url(../images/pixelsheader.png);
-  background-repeat: repeat;
-  padding: 0;
-}
-
-#header .wrapper {
-  height: 58px;
-}
-
-#header .nav a {
-  color: #C3C3C3;
-}
-
-#header .nav .index, #header .nav .index a {
-  background-color: #2A8008;
-  background-image: none;
-  color: #fff;
-}
-
 #feature {
   background: #A7B5BF;
-  background-image: url(../images/pixelsfeature.png);
+  background-image: url(../images/header/pixels.png);
   background-repeat: repeat-x;
   border-bottom: 1px #fff;
   padding: 1px;
+}
+
+#feature .wrapper {
+  margin-top: 100px;
 }
 
 #container {
@@ -89,13 +69,6 @@ dd img {
 
 #mainCol a, #subCol a, #feature a, a, a:link, a:visited {
   color: #0A6008;
-}
-
-#header h1 {
-  background-image: url(../images/logo-nav.png);
-  background-repeat: none;
-  background-position: 0 10px;
-  margin-left: -25px;
 }
 
 .guide tt, .guide code {
