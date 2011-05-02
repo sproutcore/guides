@@ -51,7 +51,6 @@
       <h2><%= Guides.meta["title"] %></h2>
       <p><%= Guides.meta["description"] %></p>
     <% end %>
-      <%= yield(:index_section) %>
     </div>
   </div>
 
@@ -60,9 +59,13 @@
       <div id="mainCol">
         <%= yield %>
       </div>
+      <% if index_section = yield(:index_section).presence %>
+        <%= index_section %>
+      <% else %>
       <div id="subCol">
         <%= yield(:sidebar) %>
       </div>
+      <% end %>
     </div>
   </div>
 
