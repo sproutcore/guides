@@ -89,6 +89,7 @@ dd img {
 }
 
 #mainCol dl dt {
+  font-weight: normal;
   margin-top: 1em;
   clear: left;
 }
