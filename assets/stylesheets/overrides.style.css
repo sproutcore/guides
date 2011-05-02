@@ -54,10 +54,12 @@ dd img {
 }
 
 #mainCol h3.group {
+  font-size: 225%;
+  font-weight: 200;
   margin: 0 -35px;
-  padding: 15px 28px;
+  padding: 10px 35px;
   border-bottom: 1px solid #d2cece;
-  font-weight: normal;
+  border-top: 1px solid #d2cece;
 }
 
 #mainCol h3.section {
@@ -66,6 +68,21 @@ dd img {
   font-size: 1.25em;
   font-weight: normal;
   text-transform: uppercase;
+}
+
+#mainCol dl dt {
+  margin-top: 1em;
+  clear: left;
+}
+
+#mainCol dl dd {
+  font-size: 115%;
+  padding-bottom: 1.5em;
+}
+
+#mainCol dl dd:last-child {
+  margin-bottom: 0;
+  border-bottom: 0;
 }
 
 #guides {
@@ -89,7 +106,12 @@ dd img {
 }
 
 #mainCol a, #subCol a, #feature a, a, a:link, a:visited {
-  color: #0A6008;
+  font-size: 110%;
+  color: #047ed7;
+}
+
+#mainCol a, #subCol a, #feature a {
+  font-weight: normal;
 }
 
 .guide tt, .guide code {
