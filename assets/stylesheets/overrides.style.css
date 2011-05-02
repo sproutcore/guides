@@ -12,7 +12,7 @@ dd img {
 #feature {
   background: #A7B5BF;
   background-image: url(../images/header/pixels.png);
-  background-repeat: repeat-x;
+  background-repeat: repeat;
   border-bottom: 1px #fff;
   padding: 1px;
 
@@ -22,6 +22,7 @@ dd img {
 }
 
 #feature .wrapper {
+  height: 70px;
   margin-top: 80px;
   margin-bottom: 30px;
 }
