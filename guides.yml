@@ -9,7 +9,7 @@ authors:
       description: Yehuda Katz is a member of the SproutCore, Ruby on Rails and jQuery Core Teams; during the daytime, he works as an architect at Strobe. Yehuda is the co-author of the best-selling jQuery in Action, the upcoming Rails 3 in Action, and is a contributor to Ruby in Practice. He blogs at <a href="http://yehudakatz.com">yehudakatz.com</a> and can be found on Twitter as <a href="http://twitter.com/wycats">@wycats</a>.
     - name: Peter Wagenet
       nick: pwagenet
-      image: pwagenet.jpg
+      image: credits/pwagenet.jpg
       description: Peter Wagenet is a member of the SproutCore Core Team and a SproutCore engineer at Strobe. Prior to working at Strobe, Peter was also a Ruby on Rails engineer and still enjoys tinkering around with it in his free time. His projects can be found on <a href="http://github.com/wagenet">github</a> and his Twitter at <a href="http://twitter.com/wagenet">@wagenet</a>.
   Designers:
     - name: Jason Zimdars
@@ -24,22 +24,22 @@ authors:
       description: Peter is a long time SproutCore developer and engineer at Strobe. He first began developing SproutCore applications in 2007 at Apple where he was the architect for the MobileMe Calendar application. For his graduate thesis, he wrote a SproutCore application, <a href=http://papercube.peterbergstrom.com/>PaperCube</a>, that explored a new way to navigate academic citation networks using web-based visualizations <a href=https://github.com/pbergstr/PaperCube>see it on GitHub</a>.
     - name: Kyle Carriedo
       nick: kcarriedo
-      image: tcb-globe.png
+      image: credits/tcb-globe.png
       description: Kyle is the Lead Software Engineer of The Code Boutique. Currently, he is working on his Masters in Computer Science, Unix Admin certification from University California of San Diego and received his Bachelors in Computer Science from San Francisco State University.
     - name: Tom Dale
       nick: tomdale
       description: "Tom is an engineer at Strobe and a member of the SproutCore Core Team. He built an internal tool for the Apple retail stores in 2009, which was his first time using SproutCore, his first exposure to JavaScript, and his first time meeting Charles Jolley. From 2009 to the end of 2010, he helped maintain SproutCore at Apple and assisted building the next generation of their web applications."
     - name: Geoffrey Donaldson
       nick: geoffreyd
-      image: geoffreyd.jpg
+      image: credits/geoffreyd.jpg
       description: Geoffrey is a freelance SproutCore Developer. He has been working with SproutCore since 2009.
     - name: Chad Eubanks
       nick: ceubanks
-      image: tcb-globe.png
+      image: credits/tcb-globe.png
       description: Chad is the Lead UI Engineer of The Code Boutique. He recieved formal and informal training from industry leaders such as Apple Incs. WWDC 2009, WWDC 2010, The Big Nerd Ranch, The Art Institute, and University California of San Diego for computer programming, web development, web design, and law.
     - name: Topher Fangio
       nick: topherfangio
-      image: topherfangio.jpg
+      image: credits/topherfangio.jpg
       description: Topher is the System Architect at Pharos Resources, LLC and has experience with Ruby on Rails and other web technologies.
     - name: Jason Gignac
       nick: jgignac
@@ -64,14 +64,14 @@ authors:
       description: ""
     - name: Scott "oldfartdeveloper" Smith
       nick: oldfartdeveloper
-      image: oldfartdeveloper.jpg
+      image: credits/oldfartdeveloper.jpg
       description: Scott is a Senior Developer at Hedgeye Risk Management.
     - name: Majd Taby
       nick: mtaby
       description: Majd is a member of the SproutCore core team.
     - name: Devin Torres
       nick: dtorres
-      image: devintorres.jpg
+      image: credits/devintorres.jpg
       description: Devin has worked with SproutCore since 2009 and has developed more SproutCore applications than he can remember. He continues to explore opportunities to utilize SproutCore and HTML5 technologies in new and exciting ways. You can read his blog at <a href="http://devintorres.com/">devintorres.com</a> or follow him on Twitter <a href="http://twitter.com/devinus">@devinus</a>.
 
 index:
