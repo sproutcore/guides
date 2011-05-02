@@ -38,7 +38,7 @@ dd img {
 }
 
 #container {
-  background: white url(../images/containergradient.png) repeat-x scroll;
+  background: white url(../images/strobe/containergradient.png) repeat-x scroll;
 }
 
 #container .wrapper {
