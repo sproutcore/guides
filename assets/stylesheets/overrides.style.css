@@ -83,6 +83,7 @@ dd img {
 
 #mainCol h3.section {
   padding-top: 1em;
+  padding-bottom: 0.5em;
   border-bottom: 1px solid #d2cece;
   font-size: 1.25em;
   font-weight: normal;
@@ -103,6 +104,19 @@ dd img {
 #mainCol dl dd:last-child {
   margin-bottom: 0;
   border-bottom: 0;
+}
+
+#mainCol div {
+  margin-top: 2em;
+  vertical-align: middle;
+}
+
+#mainCol div h3 {
+  font-size: 150%;
+}
+
+#mainCol div p {
+  margin-left: 115px;
 }
 
 #subCol {
