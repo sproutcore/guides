@@ -1,0 +1,165 @@
+/* Reset
+--------------------------------------------- */
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* Base
+--------------------------------------------- */
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  color: #444;
+  font: 12px/1.5 "Helvetica Neue", Arial, sans-serif;
+}
+
+.container {
+  width: 960px;
+  margin: 0 auto;
+}
+
+/* Inputs */
+
+input,
+textarea,
+select,
+button {
+  font: 12px "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Links */
+
+a:link,
+a:visited {
+	text-decoration: none;
+}
+
+
+/* Banner
+--------------------------------------------- */
+
+[role="banner"] {
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
+  border-bottom: 1px solid #000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  background: #000;
+  background: rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 1px 9px rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  -moz-box-shadow: 0 1px 9px rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 9px rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+}
+
+#logo,
+[role="banner"] nav,
+[role="banner"] form {
+  float: left;
+}
+
+/* Logo */
+
+#logo {
+  margin-top: 11px;
+}
+
+/* Navigation */
+
+[role="banner"] nav {
+  width: 600px;
+  text-align: center;
+}
+
+[role="banner"] nav li {
+  display: inline-block;
+  padding: 16px 15px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+}
+
+[role="banner"] nav li.active {
+  background: url(../images/header/glow.png) no-repeat 50% 0;
+}
+
+[role="banner"] nav li.disabled {
+  opacity: 0.25;
+}
+
+[role="banner"] nav a:link,
+[role="banner"] nav a:visited {
+  color: #fff;
+}
+
+[role="banner"] nav a:hover,
+[role="banner"] nav .active a {
+  color: #beff9d;
+}
+
+/* Search */
+
+[role="banner"] input {
+  width: 165px;
+  height: 14px;
+  margin-top: 13px;
+  padding: 5px 8px 5px 27px;
+  border: 0;
+  color: #eee;
+  background: #000 url(../images/header/search.png) no-repeat 8px 6px;
+  background: rgba(0, 0, 0, 0.19) url(../images/header/search.png) no-repeat 8px 6px;
+  -webkit-border-radius: 12px;
+  -moz-border-radius: 12px;
+  border-radius: 12px;
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 1px 6px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 1px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 1px 6px rgba(0, 0, 0, 0.5);
+}
+
+[role="banner"] input:focus {
+  outline: 0;
+  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.07);
+}
