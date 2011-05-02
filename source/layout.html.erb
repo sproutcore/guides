@@ -1,50 +1,47 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta charset="utf-8" />
+  <title><%= yield(:page_title) %></title>
 
-<title><%= yield(:page_title) %></title>
+  <!-- guides styles -->
+  <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/strobe.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/overrides.style.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/overrides.print.css" media="print" />
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
 
-<link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
-<link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-<link rel="stylesheet" type="text/css" href="stylesheets/overrides.style.css" />
-<link rel="stylesheet" type="text/css" href="stylesheets/overrides.print.css" media="print" />
-
-
-<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
-<link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shThemeRailsGuides.css" />
+  <!-- syntax highlighting styles -->
+  <link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shThemeRailsGuides.css" />
 </head>
 <body class="guide">
   <% if @edge %>
-  <div>
-    <img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" />
-  </div>
+  <div><img src="images/edge_badge.png" alt="edge-badge" id="edge-badge" /></div>
   <% end %>
-  <div id="topNav">
-    <div class="wrapper">
-      <%= yield :top_nav %>
+
+  <header role="banner">
+    <div class="container">
+      <h1 id="logo">
+        <a href="/"><img src="images/header/logo.png" alt="SproutCore" /></a>
+      </h1>
+      <nav role="navigation">
+        <ul>
+          <li><a href="#">About</a></li>
+          <li class="disabled">Demos</li>
+          <li><a href="#">Docs</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </nav>
+      <form action="#" role="search">
+        <input type="text" />
+      </form>
     </div>
-  </div>
-  <div id="header">
-    <div class="wrapper clearfix">
-      <h1><a href="index.html" title="Return to home page"><%= Guides.meta["title"] %></a></h1>
-      <p class="hide"><a href="#mainCol">Skip navigation</a>.</p>
-      <ul class="nav">
-        <li><a href="index.html">Home</a></li>
-        <li class="index"><a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">Guides Index <span id="guidesArrow">&#9656;</span></a>
-          <div id="guides" class="clearfix" style="display: none;">
-            <hr />
-            <%= clickable_index %>
-          </div>
-        </li>
-        <li><a href="contribute.html">Contribute</a></li>
-        <li><a href="credits.html">Credits</a></li>
-      </ul>
-    </div>
-  </div>
-  <hr class="hide" />
+  </header>
 
   <div id="feature">
     <div class="wrapper">
@@ -83,7 +80,7 @@
   <script type="text/javascript" src="javascripts/syntaxhighlighter/shBrushPlain.js"></script>
   <script type="text/javascript">
     SyntaxHighlighter.all()
-    
+
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-19584397-1']);
     _gaq.push(['_setDomainName', 'none']);
