@@ -42,9 +42,14 @@ dd img {
 }
 
 #container .wrapper {
+  margin-top: 3.5em;
   border: 1px solid #d2cece;
   border-radius: 6px;
-  margin-top: 2.5em;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.24);
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.24);
 }
 
 #mainCol {
