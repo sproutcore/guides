@@ -1,5 +1,5 @@
 title: SproutCore Guides
-description: These guides are designed to help you get up and running and feeling productive with SproutCore.
+description: These guides are designed to help you write and perfect your code.
 
 team_name: The People Who Make It Happen
 authors:
@@ -79,7 +79,7 @@ authors:
 
 index:
   Start Here:
-    - title: Install
+    - title: Install SproutCore
       url: install
       text: "In this guide we'll walk you through installing SproutCore."
     - title: Getting Started with HTML-Based Apps
