@@ -1,5 +1,6 @@
 body {
   color: #3e434c;
+  background: #fff;
 }
 
 dd img {
@@ -47,6 +48,7 @@ dd img {
 
 #container .wrapper {
   position: relative;
+  overflow: hidden;
   margin-top: 3.5em;
   border: 1px solid #d2cece;
   border-radius: 6px;
@@ -60,7 +62,6 @@ dd img {
 #mainCol {
   margin: 0;
   padding: 0 35px;
-  border-right: 1px solid #d2cece;
 }
 
 #mainCol h3.group:first-child {
@@ -105,10 +106,32 @@ dd img {
 }
 
 #subCol {
-  width: auto;
-  border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
+  width: 17em;
+  border-left: 1px solid #d2cece;
+  padding-bottom: 32767px;
+  margin-bottom: 32767px;
+  background: #e8ecf0 url(../images/strobe/sidebargradient.png) repeat-x 0 0;
+  border-top-right-radius: 6px;
+  -webkit-border-top-right-radius: 6px;
+  -moz-border-radius-topright: 6px;
+}
+
+#subCol h3 {
+  margin: 1em 0 1.5em 0;
+  font-size: 125%;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #718090;
+}
+
+#subCol p {
+  clear: left;
+  margin-bottom: 3em;
+}
+
+#subCol p img {
+  float: left;
+  margin: 0.3em 1em 0 0;
 }
 
 #guides {
