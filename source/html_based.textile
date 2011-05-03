@@ -235,6 +235,8 @@ This makes it easy to bind the value of the checkbox to the value of +isDone+, s
 // before SC.ready
 
 Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
+  classNames: ['checkbox'],
+
   valueBinding: '.parentView.content.isDone'
 });
 </javascript>
@@ -353,8 +355,8 @@ Next, we'll add the HTML to our template and connect it up to a view for event h
 <!-- updating existing code -->
 
 {{#view Todos.StatsView id="stats"}}
-  {{#view Todos.ClearCompletedView}}
-    <button>Clear Completed Todos</button>
+  {{#view Todos.ClearCompletedView classBinding="isActive"}}
+    Clear Completed Todos
   {{/view}}
   {{displayRemaining}} remaining.
 {{/view}}
@@ -365,8 +367,19 @@ Now implement +Todos.ClearCompletedView+:
 <javascript filename="in apps/todos/todos.js">
 // before SC.ready
 
-Todos.ClearCompletedView = SC.TemplateView.extend({
+Todos.ClearCompletedView = SC.TemplateView.extend({  
+  classNames: ['button'],
+ 
+  // Setting isActive to true will trigger the classBinding and add
+  // 'is-active' to our layer's class names.
+  mouseDown: function() {
+    this.set('isActive', true);
+  },
+ 
+  // Setting isActive to false will remove 'is-active' from our
+  // layer's class names.
   mouseUp: function() {
+    this.set('isActive', false);
     Todos.todoListController.clearCompletedTodos();
   }
 });
@@ -413,6 +426,8 @@ Next, we'll create a checkbox to mark all items complete and bind it to this pro
 // at the end of the file
 
 Todos.MarkAllDoneView = SC.TemplateView.extend(SC.CheckboxSupport, {
+  classNames: ['checkbox'],
+
   valueBinding: 'Todos.todoListController.allAreDone'
 });
 </javascript>
