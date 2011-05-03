@@ -235,6 +235,8 @@ This makes it easy to bind the value of the checkbox to the value of +isDone+, s
 // before SC.ready
 
 Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
+  classNames: ['checkbox'],
+
   valueBinding: '.parentView.content.isDone'
 });
 </javascript>
@@ -353,8 +355,8 @@ Next, we'll add the HTML to our template and connect it up to a view for event h
 <!-- updating existing code -->
 
 {{#view Todos.StatsView id="stats"}}
-  {{#view Todos.ClearCompletedView}}
-    <button>Clear Completed Todos</button>
+  {{#view Todos.ClearCompletedView classBinding="isActive"}}
+    Clear Completed Todos
   {{/view}}
   {{displayRemaining}} remaining.
 {{/view}}
@@ -365,8 +367,19 @@ Now implement +Todos.ClearCompletedView+:
 <javascript filename="in apps/todos/todos.js">
 // before SC.ready
 
-Todos.ClearCompletedView = SC.TemplateView.extend({
+Todos.ClearCompletedView = SC.TemplateView.extend({  
+  classNames: ['button'],
+ 
+  // Setting isActive to true will trigger the classBinding and add
+  // 'is-active' to our layer's class names.
+  mouseDown: function() {
+    this.set('isActive', true);
+  },
+ 
+  // Setting isActive to false will remove 'is-active' from our
+  // layer's class names.
   mouseUp: function() {
+    this.set('isActive', false);
     Todos.todoListController.clearCompletedTodos();
   }
 });
@@ -413,6 +426,8 @@ Next, we'll create a checkbox to mark all items complete and bind it to this pro
 // at the end of the file
 
 Todos.MarkAllDoneView = SC.TemplateView.extend(SC.CheckboxSupport, {
+  classNames: ['checkbox'],
+
   valueBinding: 'Todos.todoListController.allAreDone'
 });
 </javascript>
@@ -444,6 +459,80 @@ When you set a computed property, your function is called with the property key 
 Because bindings are bidirectional, SproutCore will set +allAreDone+ to +true+ when the user clicks the "Mark All as Done" checkbox. Conversely, unchecking it will make SproutCore set +allAreDone+ to +false+, unchecking all todos.
 
 Reload the app and add some todos. Click "Mark All as Done". Wow! Each of the individual check boxes gets checked off. If you uncheck one of them, the "Mark All as Done" checkbox unchecks itself.  When you use SproutCore, as you scale your UI, you never need to wonder whether a new feature will work consistently with parts of the UI you already implemented. Because you build your view layer to simply reflect the state of your models, you can make changes however you want and see them update automatically.
+
+h2. Addendum: Mobile Devices
+
+So far in this guide, you've created a simple ToDos app that showcased some of the more powerful components of SproutCore: templates, bindings and event delegation.  However, it does not yet work on "mobile" devices, which is to say, small screened devices with touch interfaces and two orientations.  Instead of writing a new app to run on these devices, we will simply extend the existing app.
+
+h3. Touch Support
+
+First we need our button and checkboxes to respond to touch events.  Update these views, adding +touchStart+ and +touchEnd+ functions like so:
+
+<javascript filename="in apps/todos/todos.js">
+// updating existing code
+
+Todos.ClearCompletedView = SC.TemplateView.extend({
+
+  // ...
+
+  touchStart: function(touch) {
+    this.mouseDown(touch);
+  },
+
+  touchEnd: function(touch) {
+    this.mouseUp(touch);
+  }
+});
+
+Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
+  
+  // ...
+
+  touchStart: function(touch) { },
+ 
+  touchEnd: function(touch) {
+    this.toggleProperty('value');
+  }
+});
+
+Todos.MarkAllDoneView = SC.TemplateView.extend(SC.CheckboxSupport, {
+  
+  // ...
+
+  touchStart: function(touch) { },
+ 
+  touchEnd: function(touch) {
+    this.toggleProperty('value');
+  }
+});
+
+SC.ready(function() {
+  Todos.mainPane = SC.TemplatePane.append({
+    
+    // ...
+
+    touchStart: function(touch) {
+      touch.allowDefault();
+    },
+
+    touchesDragged: function(evt, touches) {
+      evt.allowDefault();
+    },
+
+    touchEnd: function(touch) {
+      touch.allowDefault();
+    }
+  });
+});
+</javascript>
+
+For the button, we trigger the mouse handling code that was previously written. For the checkboxes, we toggle the value on each touch and finally, we allow the default actions for un-handled touches in order to leave scrolling to the browser.
+
+h3. Mobile Specific Styles
+
+At this point, we actually have the app fully functional for mobile devices.  It just doesn't look right.  So download "the CSS for mobile":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos_mobile.css and save it as +apps/todos/resources/stylesheets/todos_mobile.css+.  Now load your app on a device and you should see the same simple app, but styled properly for mobile devices and responding to touch events.
+
+Now is probably a good time to highlight the fact that we just increased the target base for our app by several fold simply by extending the view layer, all without touching the model or controller layers.  Truly it is a simple example, but SproutCore makes it easy to do the same with even large scale applications.
 
 h3. Changelog
 
