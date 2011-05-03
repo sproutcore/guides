@@ -281,7 +281,7 @@ div.filename {
 }
 
 #subCol ol.chapters {
-  list-style: decimal inside;
+  list-style: decimal outside;
 }
 
 #subCol ol.chapters a {
@@ -292,7 +292,7 @@ div.filename {
 #subCol ol.chapters > li {
   color: #000;
   font-size: 115%;
-  margin: 1.5em 0;
+  margin: 1.5em;
 }
 
 #subCol ol.chapters li ul li {
