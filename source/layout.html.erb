@@ -55,6 +55,11 @@
   <div id="container">
     <div class="wrapper">
       <div id="mainCol">
+        <% if header_section = yield(:header_section).presence %>
+          <div class="headerSection">
+            <%= header_section %>
+          </div>
+        <% end %>
         <%= yield %>
       </div>
       <% if index_section = yield(:index_section).presence %>
