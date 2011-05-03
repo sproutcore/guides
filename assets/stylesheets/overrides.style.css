@@ -125,7 +125,6 @@ dd img {
 }
 
 #mainCol div {
-  margin-top: 2em;
   vertical-align: middle;
 }
 
@@ -133,7 +132,7 @@ dd img {
   font-size: 150%;
 }
 
-#mainCol div p {
+#mainCol div.author p {
   margin-left: 115px;
 }
 
