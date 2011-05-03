@@ -83,6 +83,14 @@ dd img {
   font-weight: 200;
 }
 
+#mainCol .headerSection ul li {
+  font-weight: bold;
+  padding-left: 30px;
+  margin: 0.8em 0;
+  background-image: url(../images/strobe/check.png);
+  background-position: 5px 0;
+}
+
 /** Guide body styles */
 #mainCol h3,
 #mainCol h4,
