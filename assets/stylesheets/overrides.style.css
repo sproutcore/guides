@@ -142,11 +142,10 @@ dd img {
 #subCol p {
   clear: left;
   margin-bottom: 3em;
-  line-height: 2em;
 }
 
-#subCol p a {
-  font-weight: 300;
+#subCol ul.links li {
+  line-height: 2em;
 }
 
 #subCol p img {
