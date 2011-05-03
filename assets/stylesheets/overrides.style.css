@@ -65,6 +65,23 @@ dd img {
   padding: 0 35px;
 }
 
+/** Guide headers */
+#mainCol .headerSection {
+  background: #f7f7f7 url(../images/strobe/guidegradient.png) repeat-x;
+  border-top: 0;
+  border-top-left-radius: 6px;
+  -webkit-border-top-left-radius: 6px;
+  -moz-border-radius-topleft: 6px;
+  margin: 0 -35px;
+  padding: 10px 35px;
+  border-bottom: 1px solid #d2cece;
+  border-top: 1px solid #d2cece;
+}
+
+#mainCol .headerSection h2 {
+  font-size: 225%;
+  font-weight: 200;
+}
 #mainCol h3.group:first-child {
   background: #f7f7f7 url(../images/strobe/guidegradient.png) repeat-x;
   border-top: 0;
