@@ -214,6 +214,16 @@ div.code_container div.filename {
   color: #718090;
 }
 
+#subCol h3.chapter {
+  margin-top: -5px;
+}
+
+#subCol h3.chapter img {
+  position: relative;
+  top: 5px;
+  margin-right: 10px;
+}
+
 #subCol p {
   clear: left;
   margin-bottom: 3em;
@@ -270,11 +280,27 @@ div.filename {
   padding-top: 5px;
 }
 
-ol.chapters a {
-  text-decoration: none;
+#subCol ol.chapters {
+  list-style: decimal inside;
 }
 
-ol.chapters li a p {
+#subCol ol.chapters a {
+  text-decoration: none;
+  font-weight: normal;
+}
+
+#subCol ol.chapters > li {
+  color: #000;
+  font-size: 115%;
+  margin: 1.5em 0;
+}
+
+#subCol ol.chapters li ul li {
+  margin-left: 1em;
+  background-position: 0 3px;
+}
+
+#subCol ol.chapters li a p {
   /* FIXES: Firefox incorrectly renders block elements inside of list items */
   display: inline;
 }
