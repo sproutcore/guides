@@ -82,6 +82,55 @@ dd img {
   font-size: 225%;
   font-weight: 200;
 }
+
+/** Guide body styles */
+#mainCol h3,
+#mainCol h4,
+#mainCol h5 {
+  font-size: 150%;
+  font-weight: 500;
+  margin: 1em 0;
+}
+
+#mainCol h4 {
+  font-size: 125%;
+}
+
+#mainCol h5 {
+  font-size: 110%;
+}
+
+#mainCol p {
+  margin-bottom: 1em;
+}
+
+div.code_container {
+  background: #e9f6d3 url(../images/strobe/tab-code.png) no-repeat left top;
+}
+
+div.code_container div.filename {
+  background-color: #cbe1af;
+  margin-left: -11px;
+}
+
+.note {
+  background: #fff9d8 url(../images/strobe/tab-notes.png) no-repeat left top;
+}
+
+.info {
+  background: #e5cfec url(../images/strobe/tab-pin.png) no-repeat left top;
+}
+
+#mainCol dd.work-in-progress, #subCol dd.work-in-progress {
+	background: #fff9d8 url(../images/strobe/tab-notes.png) no-repeat left top;
+}
+
+#mainCol div.warning, #subCol dd.warning {
+	background: #f9d9d8 url(../images/strobe/tab-warning.png) no-repeat left top;
+}
+
+
+/** Index and credits headers */
 #mainCol h3.group:first-child {
   background: #f7f7f7 url(../images/strobe/guidegradient.png) repeat-x;
   border-top: 0;
@@ -199,13 +248,12 @@ dd img {
 }
 
 .guide tt, .guide code {
+  background-color: #deeac9;
+  border: 1px solid #cad5b7;
+  padding: 1px 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
-  text-shadow: #fff 1px 1px 1px;
-  border-radius: 5px;
-  background-color: rgba(0,0,0,0.05);
-  border: 1px solid #ddd;
-  padding: 1px 3px;
+  border-radius: 3px;
 }
 
 div.filename {
