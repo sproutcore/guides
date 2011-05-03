@@ -132,7 +132,7 @@ dd img {
 }
 
 #subCol h3 {
-  margin: 1em 0 1.5em 0;
+  margin: 0.4em 0 1em 0;
   font-size: 125%;
   font-weight: bold;
   text-transform: uppercase;
@@ -142,6 +142,11 @@ dd img {
 #subCol p {
   clear: left;
   margin-bottom: 3em;
+  line-height: 2em;
+}
+
+#subCol p a {
+  font-weight: 300;
 }
 
 #subCol p img {
