@@ -25,7 +25,8 @@ dd img {
   height: 70px;
   margin-top: 80px;
   margin-bottom: 30px;
-  width: 54em;
+  width: 670px;
+  padding-right: 290px;
 }
 
 #feature img {
@@ -49,9 +50,8 @@ dd img {
 }
 
 #container .wrapper {
-  width: 76em;
+  width: 960px;
   position: relative;
-  overflow: hidden;
   margin-top: 3.5em;
   border: 1px solid #d2cece;
   border-radius: 6px;
@@ -65,7 +65,7 @@ dd img {
 #mainCol {
   margin: 0;
   padding: 0 35px 2em 35px;
-  width: 50em;
+  width: 610px;
 }
 
 /** Guide headers */
@@ -196,11 +196,12 @@ div.code_container div.filename {
 }
 
 #subCol {
-  width: 19em;
+  width: 240px;
   border-left: 1px solid #d2cece;
-  padding: 1em 1.5em;
+  padding: 1em 20px;
   padding-bottom: 30000px;
   margin-bottom: -30000px;
+  overflow: hidden;
   background: #e8ecf0 url(../images/strobe/sidebargradient.png) repeat-x 0 0;
   border-top-right-radius: 6px;
   -webkit-border-top-right-radius: 6px;
@@ -294,6 +295,11 @@ div.filename {
   color: #000;
   font-size: 115%;
   margin: 1.5em;
+  margin-right: 0;
+}
+
+#subCol ol.chapters li ul {
+  margin-right: 0;
 }
 
 #subCol ol.chapters li ul li {
