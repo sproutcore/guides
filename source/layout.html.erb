@@ -45,8 +45,8 @@
     <% if page_header = yield(:page_header).presence %>
       <%= page_header %>
     <% else %>
-      <img src="../images/strobe/guides.png">
-      <h2><%= Guides.meta["title"] %></h2>
+      <a href="/"><img src="../images/strobe/guides.png"></a>
+      <h2><a href="/"><%= Guides.meta["title"] %></a></h2>
       <p><%= Guides.meta["description"] %></p>
     <% end %>
     </div>
