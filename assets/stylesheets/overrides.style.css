@@ -148,8 +148,11 @@ dd img {
   margin: 0;
   padding: 0 35px 2em 35px;
   width: 610px;
-  background: #fff;
   border-right: 1px solid #d2cece;
+  background: #fff;
+  border-top-left-radius: 6px;
+  -webkit-border-top-left-radius: 6px;
+  -moz-border-radius-topleft: 6px;
 }
 
 /** Guide headers */
