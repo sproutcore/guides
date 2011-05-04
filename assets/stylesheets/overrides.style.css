@@ -15,18 +15,21 @@ dd img {
   background-repeat: repeat;
   border-bottom: 1px #fff;
   padding: 1px;
-
-  text-shadow: 0 0 1px #fff;
-  text-shadow: 0 0 3px #fff;
-  text-shadow: 0 0 5px #fff;
 }
 
 #feature .wrapper {
   height: 70px;
   margin-top: 80px;
   margin-bottom: 30px;
-  width: 670px;
-  padding-right: 290px;
+  padding: 0;
+  width: 960px;
+}
+
+#feature .feature_header {
+  width: 680px;
+  text-shadow: 0 0 1px #fff;
+  text-shadow: 0 0 3px #fff;
+  text-shadow: 0 0 5px #fff;
 }
 
 #feature img {
@@ -44,6 +47,40 @@ dd img {
 #feature p {
   font-size: 125%;
   margin-top: -0.5em;
+}
+
+#feature .feature_sidebar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 280px;
+}
+
+#feature #guidesMenu,
+#feature #guides .guidesMenu {
+  font-size: 115%;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #454b54;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.32);
+}
+
+#feature #guidesMenu {
+  display: block;
+  width: 214px;
+  height: 49px;
+  margin: 1.2em auto;
+  text-align: center;
+  padding-top: 14px;
+  background: url(../images/strobe/guide-button.png) no-repeat;
+}
+
+#feature #guidesMenu:hover {
+  background-image: url(../images/strobe/guide-button-hover.png);
+}
+
+#feature #guidesMenu:active {
+  background-image: url(../images/strobe/guide-button-active.png);
 }
 
 #container {

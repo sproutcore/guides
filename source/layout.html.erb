@@ -42,13 +42,20 @@
 
   <div id="feature">
     <div class="wrapper">
-    <% if page_header = yield(:page_header).presence %>
-      <%= page_header %>
-    <% else %>
-      <a href="/"><img src="../images/strobe/guides.png"></a>
-      <h2><a href="/"><%= Guides.meta["title"] %></a></h2>
-      <p><%= Guides.meta["description"] %></p>
-    <% end %>
+      <div class="feature_header">
+      <% if page_header = yield(:page_header).presence %>
+        <%= page_header %>
+      <% else %>
+        <a href="/"><img src="../images/strobe/guides.png"></a>
+        <h2><a href="/"><%= Guides.meta["title"] %></a></h2>
+        <p><%= Guides.meta["description"] %></p>
+      <% end %>
+      </div>
+      <div class="feature_sidebar">
+        <a href="index.html" onclick="guideMenu(); return false;" id="guidesMenu">
+          Guides Index <span id="guidesArrow">&#9656;</span>
+        </a>
+      </div>
     </div>
   </div>
 
