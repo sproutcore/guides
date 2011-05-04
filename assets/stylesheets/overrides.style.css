@@ -140,12 +140,16 @@ dd img {
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.24);
   -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.24);
   -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.24);
+  /* background for sidebar */
+  background: url(../images/strobe/sidebar-gradient.png) repeat-x;
 }
 
 #mainCol {
   margin: 0;
   padding: 0 35px 2em 35px;
   width: 610px;
+  background: #fff;
+  border-right: 1px solid #d2cece;
 }
 
 /** Guide headers */
@@ -277,14 +281,10 @@ div.code_container div.filename {
 }
 
 #subCol {
+  background: transparent;
   position: absolute;
   width: 240px;
-  border-left: 1px solid #d2cece;
   padding: 1em 20px;
-  padding-bottom: 30000px;
-  margin-bottom: -30000px;
-  overflow: hidden;
-  background: #e8ecf0 url(../images/strobe/sidebargradient.png) repeat-x 0 0;
   border-top-right-radius: 6px;
   -webkit-border-top-right-radius: 6px;
   -moz-border-radius-topright: 6px;
