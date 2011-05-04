@@ -41,14 +41,13 @@ NOTE: This second parameter helps work around a limitation of JavaScript which s
 
 h3. Enumerables in SproutCore
 
-In general, SproutCore objects that represent lists implement the +Enumerable+ interface. When working with views that expect to work with a list of things, like a CollectionView or TemplateCollectionView, this means that any list-like construct will work. Some examples:
+In general, SproutCore objects that represent lists implement the Enumerable interface. Some examples:
 
-* +Array+: SproutCore extends the native JavaScript Array with the +Enumerable+ interface
-* +ArrayController+: A construct that wraps a native Array and adds additional functionality for the view layer.
-* +SparseArray+: An Array-like object that will incrementally load in ranges as they are needed by the view layer.
-* +RecordArray+: An Array-like object that represents a list of Record objects. <tt>RecordArray</tt>s are "live", and the Data Store can update them when new data comes in from the backend.
-* +Set+: An object that can quickly answer whether it includes an object.
-* +jQuery+: SproutCore extends the jQuery object with +Enumerable+
+* *Array*: SproutCore extends the native JavaScript Array with the Enumerable interface
+* *ArrayController*: A construct that wraps a native Array and adds additional functionality for the view layer.
+* *SparseArray*: An Array-like object that will incrementally load in ranges as they are needed by the view layer.
+* *RecordArray*: An Array-like object that represents a list of Record objects. <tt>RecordArray</tt>s are "live", and the Data Store can update them when new data comes in from the backend.
+* *Set*: An object that can quickly answer whether it includes an object.
 
 h3. The Enumerable Interface
 
