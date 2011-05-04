@@ -384,3 +384,60 @@ div.filename {
   /* FIXES: Chome cuts off underscores on the last line of a code block */
   padding-bottom: 1px;
 }
+
+#footer {
+  height: 235px;
+  padding: 0;
+  overflow: hidden;
+  color: #fff;
+  background: #343434 url(../images/strobe/footer-sunburst.jpg) no-repeat center;
+}
+
+#footer .wrapper {
+  margin: 20px auto;
+  width: 960px;
+}
+
+#footer h4 {
+  font-weight: bold;
+  font-size: 110%;
+  margin: 20px 0 5px 0;
+}
+
+#footer a {
+  color: #9be577;
+  font-size: 100%;
+}
+
+#footer p {
+  margin-bottom: 2em;
+  font-size: 90%;
+}
+
+#footer .about,
+#footer .site-nav,
+#footer .connect {
+  float: left;
+  width: 275px;
+  height: 235px;
+}
+
+#footer .site-nav {
+  margin-left: 120px;
+}
+
+#footer .site-nav ul {
+  font-size: 95%;
+  float: left;
+  margin: 0 30px 20px 0;
+}
+
+#footer .connect input[type="text"] {
+  width: 160px;
+}
+
+#footer .connect a {
+  float: left;
+  margin-right: 5px;
+  font-size: 90%;
+}
