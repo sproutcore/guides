@@ -23,6 +23,8 @@ dd img {
   margin-bottom: 30px;
   padding: 0;
   width: 960px;
+  position: relative;
+  z-index: 10; /* ensure the guides index is above #container content */
 }
 
 #feature .feature_header {
@@ -83,6 +85,46 @@ dd img {
   background-image: url(../images/strobe/guide-button-active.png);
 }
 
+#feature #guides .guidesMenu {
+  float: right;
+  margin: -10px 24px 10px 0;
+}
+
+#guides {
+  top: 16px;
+  right: 36px;
+  width: 520px;
+  background-color: #fff;
+  color: #3e434c;
+}
+
+#guides .L {
+  width: 240px;
+}
+#guides .R {
+  width: 240px;
+  margin-left: 40px;
+}
+
+#guides hr {
+  background-color: #d2cece;
+}
+
+#guides dl {
+  font-size: 140%;
+}
+
+#guides dl dt {
+  color: #3e434c;
+  letter-spacing: 0.05em;
+  font-weight: bold;
+}
+
+#guides dl dd {
+  text-indent: -10px;
+  margin-left: 18px;
+}
+
 #container {
   background: white url(../images/strobe/containergradient.png) repeat-x scroll;
 }
@@ -108,6 +150,7 @@ dd img {
 
 /** Guide headers */
 #mainCol .headerSection {
+  position: relative;
   background: #f7f7f7 url(../images/strobe/guidegradient.png) repeat-x;
   border-top: 0;
   border-top-left-radius: 6px;
@@ -234,6 +277,7 @@ div.code_container div.filename {
 }
 
 #subCol {
+  position: absolute;
   width: 240px;
   border-left: 1px solid #d2cece;
   padding: 1em 20px;
@@ -276,26 +320,6 @@ div.code_container div.filename {
 #subCol p img {
   float: left;
   margin: 0.3em 1em 0 0;
-}
-
-#guides {
-  background-color: #2A8008;
-  color: #3C9936;
-}
-
-#guides hr {
-  background-color: #5FBB58;
-}
-
-#guides dl dt {
-  color: #5FBB58;
-  letter-spacing: 0.05em;
-  font-weight: bold;
-}
-
-#guides dl dd {
-  text-indent: -10px;
-  margin-left: 18px;
 }
 
 #mainCol a, #subCol a, #feature a, a, a:link, a:visited {
