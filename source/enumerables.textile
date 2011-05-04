@@ -4,7 +4,6 @@ This guide covers how to work with enumerable SproutCore objects, like Arrays, S
 
 * Identify the SproutCore enumerable objects
 * Fluently work with enumerable objects using the +Enumerable+ interface
-* Write your own +Enumerable+ object
 
 endprologue.
 
