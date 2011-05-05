@@ -181,11 +181,12 @@ dd img {
 }
 
 #mainCol .headerSection ul li {
+  font-size: 110%;
   font-weight: bold;
   padding-left: 30px;
   margin: 0.8em 0;
   background-image: url(../images/strobe/check.png);
-  background-position: 5px 0;
+  background-position: 7px 1px;
 }
 
 /** Guide body styles */
