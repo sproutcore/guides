@@ -70,19 +70,19 @@ dd img {
 #feature #guidesMenu {
   display: block;
   width: 214px;
-  height: 49px;
+  height: 34px;
   margin: 1.2em auto;
   text-align: center;
-  padding-top: 14px;
-  background: url(../images/strobe/guide-button.png) no-repeat;
+  padding-top: 13px;
+  background: url(../images/strobe/guide-button.png) no-repeat center -1px;
 }
 
 #feature #guidesMenu:hover {
-  background-image: url(../images/strobe/guide-button-hover.png);
+  background-position: center center;
 }
 
 #feature #guidesMenu:active {
-  background-image: url(../images/strobe/guide-button-active.png);
+  background-position: center bottom;
 }
 
 #feature #guides .guidesMenu {
