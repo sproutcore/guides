@@ -176,6 +176,10 @@ dd img {
   font-weight: 200;
 }
 
+#mainCol .headerSection p {
+  font-size: 125%;
+}
+
 #mainCol .headerSection ul li {
   font-weight: bold;
   padding-left: 30px;
