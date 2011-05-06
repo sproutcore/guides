@@ -3,61 +3,55 @@ description: These guides are designed to help you get up and running and feelin
 
 authors:
   Documentation Team:
-    - name: Yehuda Katz
-      nick: wycats
-      description: Yehuda Katz is a member of the SproutCore, Ruby on Rails and jQuery Core Teams; during the daytime, he works as an architect at Strobe. Yehuda is the co-author of the best-selling jQuery in Action, the upcoming Rails 3 in Action, and is a contributor to Ruby in Practice. He blogs at <a href="http://yehudakatz.com">yehudakatz.com</a> and can be found on Twitter as <a href="http://twitter.com/wycats">@wycats</a>.
     - name: Peter Wagenet
       nick: pwagenet
       image: pwagenet.jpg
       description: Peter Wagenet is a member of the SproutCore Core Team and a SproutCore engineer at Strobe. Prior to working at Strobe, Peter was also a Ruby on Rails engineer and still enjoys tinkering around with it in his free time. His projects can be found on <a href="http://github.com/wagenet">github</a> and his Twitter at <a href="http://twitter.com/wagenet">@wagenet</a>.
+    - name: Yehuda Katz
+      nick: wycats
+      description: Yehuda Katz is a member of the SproutCore, Ruby on Rails and jQuery Core Teams; during the daytime, he works as an architect at Strobe. Yehuda is the co-author of the best-selling jQuery in Action, the upcoming Rails 3 in Action, and is a contributor to Ruby in Practice. He blogs at <a href="http://yehudakatz.com">yehudakatz.com</a> and can be found on Twitter as <a href="http://twitter.com/wycats">@wycats</a>.
   Designers:
     - name: Jason Zimdars
       nick: jz
       description: Jason Zimdars is an experienced creative director and web designer who has lead UI and UX design for numerous websites and web applications. You can see more of his design and writing at <a href="http://www.thinkcage.com/">Thinkcage.com</a> or follow him on <a href="http://twitter.com/JZ">Twitter</a>
   Contributors:
+    - name: Alex Iskander
+      nick: ialexi
+      description: Alex is a member of the SproutCore core team.
+    - name: Chad Eubanks
+      nick: ceubanks
+      image: tcb-globe.png
+      description: Chad is the Lead UI Engineer of The Code Boutique. He recieved formal and informal training from industry leaders such as Apple Incs. WWDC 2009, WWDC 2010, The Big Nerd Ranch, The Art Institute, and University California of San Diego for computer programming, web development, web design, and law.
+    - name: Devin Torres
+      nick: dtorres
+      image: devintorres.jpg
+      description: Devin has worked with SproutCore since 2009 and has developed more SproutCore applications than he can remember. He continues to explore opportunities to utilize SproutCore and HTML5 technologies in new and exciting ways. You can read his blog at <a href="http://devintorres.com/">devintorres.com</a> or follow him on Twitter <a href="http://twitter.com/devinus">@devinus</a>.
+    - name: Jason Gignac
+      nick: jgignac
+      description: Jason is an experienced web developer, particularly specializing in Enterprise applications. He works for Rackspace in San Antonio, TX, where he builds in Ruby, C#, Perl, Javascript, and anything else that the motley hodgepodge of enterprise platforms requires. He has been working on Sproutcore for less than a year, but is jumping to the thick of things as far as possible.
+    - name: Kyle Carriedo
+      nick: kcarriedo
+      image: tcb-globe.png
+      description: Kyle is the Lead Software Engineer of The Code Boutique. Currently, he is working on his Masters in Computer Science, Unix Admin certification from University California of San Diego and received his Bachelors in Computer Science from San Francisco State University.
+    - name: Erich Ocean
+      nick: erichocean
+      description: In 2008-2009, Erich consulted with Apple on the transition from SproutCore 0.9 to 1.0 which entailed almost a complete rewrite of the codebase. He also provides SproutCore training and mentoring to companies and individuals throughout the world.
+    - name: Florian Kugler
+      nick: fkugler
+      description: Florian was a software developer and sports biomechanist before co-founding the elite sports consulting company <a href="http://www.aprendo.nl">Aprendo</a>. He is currently building IT systems to support elite sports processes.
+    - name: Geoffrey Donaldson
+      nick: geoffreyd
+      image: geoffreyd.jpg
+      description: Geoffrey is a freelance SproutCore Developer. He has been working with SproutCore since 2009.
+    - name: Majd Taby
+      nick: mtaby
+      description: Majd is a member of the SproutCore core team.
     - name: Mike Ball
       nick: onkis
       description: Mike is an Eloqua employee and member of the SproutCore core team.
     - name: Peter Bergstrom
       nick: pbergstrom
       description: Peter is a long time SproutCore developer and engineer at Strobe. He first began developing SproutCore applications in 2007 at Apple where he was the architect for the MobileMe Calendar application. For his graduate thesis, he wrote a SproutCore application, <a href=http://papercube.peterbergstrom.com/>PaperCube</a>, that explored a new way to navigate academic citation networks using web-based visualizations <a href=https://github.com/pbergstr/PaperCube>see it on GitHub</a>.
-    - name: Kyle Carriedo
-      nick: kcarriedo
-      image: tcb-globe.png
-      description: Kyle is the Lead Software Engineer of The Code Boutique. Currently, he is working on his Masters in Computer Science, Unix Admin certification from University California of San Diego and received his Bachelors in Computer Science from San Francisco State University.
-    - name: Tom Dale
-      nick: tomdale
-      description: "Tom is an engineer at Strobe and a member of the SproutCore Core Team. He built an internal tool for the Apple retail stores in 2009, which was his first time using SproutCore, his first exposure to JavaScript, and his first time meeting Charles Jolley. From 2009 to the end of 2010, he helped maintain SproutCore at Apple and assisted building the next generation of their web applications."
-    - name: Geoffrey Donaldson
-      nick: geoffreyd
-      image: geoffreyd.jpg
-      description: Geoffrey is a freelance SproutCore Developer. He has been working with SproutCore since 2009.
-    - name: Chad Eubanks
-      nick: ceubanks
-      image: tcb-globe.png
-      description: Chad is the Lead UI Engineer of The Code Boutique. He recieved formal and informal training from industry leaders such as Apple Incs. WWDC 2009, WWDC 2010, The Big Nerd Ranch, The Art Institute, and University California of San Diego for computer programming, web development, web design, and law.
-    - name: Topher Fangio
-      nick: topherfangio
-      image: topherfangio.jpg
-      description: Topher is the System Architect at Pharos Resources, LLC and has experience with Ruby on Rails and other web technologies.
-    - name: Jason Gignac
-      nick: jgignac
-      description: Jason is an experienced web developer, particularly specializing in Enterprise applications. He works for Rackspace in San Antonio, TX, where he builds in Ruby, C#, Perl, Javascript, and anything else that the motley hodgepodge of enterprise platforms requires. He has been working on Sproutcore for less than a year, but is jumping to the thick of things as far as possible.
-    - name: Vibul Imtarnasan
-      nick: veebs
-      description: Vibul is an entrepreneur, solutions architect and software developer. He blogs at <a href="http://www.veebsbraindump.com/">veebsbraindump.com</a>.
-    - name: Alex Iskander
-      nick: ialexi
-      description: Alex is a member of the SproutCore core team.
-    - name: Florian Kugler
-      nick: fkugler
-      description: Florian was a software developer and sports biomechanist before co-founding the elite sports consulting company <a href="http://www.aprendo.nl">Aprendo</a>. He is currently building IT systems to support elite sports processes.
-    - name: Shawn Morel
-      nick: shawnmorel
-      description: Shawn Morel is a software generalist with lots of experience building user interfaces in Cocoa, Flex, and bare-bones HTML.
-    - name: Erich Ocean
-      nick: erichocean
-      description: In 2008-2009, Erich consulted with Apple on the transition from SproutCore 0.9 to 1.0 which entailed almost a complete rewrite of the codebase. He also provides SproutCore training and mentoring to companies and individuals throughout the world.
     - name: Piotr Sarnacki
       nick: drogus
       description: ""
@@ -65,13 +59,22 @@ authors:
       nick: oldfartdeveloper
       image: oldfartdeveloper.jpg
       description: Scott is a Senior Developer at Hedgeye Risk Management.
-    - name: Majd Taby
-      nick: mtaby
-      description: Majd is a member of the SproutCore core team.
-    - name: Devin Torres
-      nick: dtorres
-      image: devintorres.jpg
-      description: Devin has worked with SproutCore since 2009 and has developed more SproutCore applications than he can remember. He continues to explore opportunities to utilize SproutCore and HTML5 technologies in new and exciting ways. You can read his blog at <a href="http://devintorres.com/">devintorres.com</a> or follow him on Twitter <a href="http://twitter.com/devinus">@devinus</a>.
+    - name: Shawn Morel
+      nick: shawnmorel
+      description: Shawn Morel is a software generalist with lots of experience building user interfaces in Cocoa, Flex, and bare-bones HTML.
+    - name: Tom Dale
+      nick: tomdale
+      description: "Tom is an engineer at Strobe and a member of the SproutCore Core Team. He built an internal tool for the Apple retail stores in 2009, which was his first time using SproutCore, his first exposure to JavaScript, and his first time meeting Charles Jolley. From 2009 to the end of 2010, he helped maintain SproutCore at Apple and assisted building the next generation of their web applications."
+    - name: Topher Fangio
+      nick: topherfangio
+      image: topherfangio.jpg
+      description: Topher is the System Architect at Pharos Resources, LLC and has experience with Ruby on Rails and other web technologies.
+    - name: Tyler Keating
+      nick: publickeating
+      description: Tyler is an engineer at Strobe and a member of the SproutCore Core Team.
+    - name: Vibul Imtarnasan
+      nick: veebs
+      description: Vibul is an entrepreneur, solutions architect and software developer. He blogs at <a href="http://www.veebsbraindump.com/">veebsbraindump.com</a>.
 
 index:
   Start Here:
