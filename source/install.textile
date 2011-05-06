@@ -79,4 +79,4 @@ h3. Changelog
 
 * February 1, 2011: first pass at the user install docs by "Shawn Morel":credits.html#shawnmorel
 * April 26, 2011: Updating gem instructions to start with stable 1.5, by Parker Morse
-* May 5, 2011: Updated to include instructions on bundled install and general cleanup, by Colin Campbell
+* May 5, 2011: Updated to include instructions on bundled install and general cleanup, by "Colin Campbell":credits.html#colin

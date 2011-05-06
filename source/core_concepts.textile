@@ -499,4 +499,4 @@ h3. Changelog
 * January 24, 2011: added section on "Bindings and Chained Property Paths" by "Peter Wagenet":credits.html#pwagenet
 * March    2, 2011: fixed paragraph formmatting by "Topher Fangio":credits.html#topherfangio
 * March 2, 2011: fixed grammar, clarified phrasing, added examples to the Observer section by "Jason Gignac":credits.html#jgignac
-* May 5, 2011: Fixed grammar, updated examples and generally modified structure for flow, by "Colin Campbell":#credits.html#colin
+* May 5, 2011: Fixed grammar, updated examples and generally modified structure for flow, by "Colin Campbell":credits.html#colin

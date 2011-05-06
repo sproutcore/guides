@@ -179,4 +179,4 @@ h3. Changelog
 
 * January 11, 2011: initial version by "Peter Wagenet":credits.html#pwagenet
 * March    2, 2011: added filenames and fixed code formatting by "Topher Fangio":credits.html#topherfangio
-* May 5, 2011: Minor tweaks and additions, by "Colin Campbell":#credits.html#colin
+* May 5, 2011: Minor tweaks and additions, by "Colin Campbell":credits.html#colin
