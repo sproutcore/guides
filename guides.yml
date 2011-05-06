@@ -114,6 +114,9 @@ index:
       url: custom_views
       text: "Most applications will quickly go beyond the built-in SproutCore views. In this guide, we will cover how to build and style your own views."
       construction: true
+    - title: Using Handlebars Templates
+      url: using_handlebars
+      text: "Learn how to make your application come to life by leveraging the tight integration between SproutCore and Handlebars, a semantic templating language."
     - title: Animations
       url: animate
       text: "In this guide, we will cover the basics of using animations in SproutCore, and show you how to add SC.View#animate in your code."
