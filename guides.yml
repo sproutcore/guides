@@ -72,6 +72,10 @@ authors:
       nick: dtorres
       image: devintorres.jpg
       description: Devin has worked with SproutCore since 2009 and has developed more SproutCore applications than he can remember. He continues to explore opportunities to utilize SproutCore and HTML5 technologies in new and exciting ways. You can read his blog at <a href="http://devintorres.com/">devintorres.com</a> or follow him on Twitter <a href="http://twitter.com/devinus">@devinus</a>.
+    - name: Colin Campbell
+      nick: colin
+      image: colin.jpg
+      description: "Colin is an engineer at Strobe and a member of the SproutCore Core Team. You can follow him on Twitter <a href='http://twitter.com/Colin_Campbell'>@Colin_Campbell</a>"
 
 index:
   Start Here:
