@@ -10,69 +10,58 @@ This guide covers the basics of SproutCore's model layer. By referring to this g
 
 endprologue.
 
-
-
 h3. Models, Records and the Store
 
-In SproutCore the model layer is the lowest application layer and holds all your data as well as the business logic of your application. The controller layer calls into the model layer to modify data and retrieves data from the model layer mostly using bindings. 
+The model layer is the lowest application layer and holds all your data as well as the business logic of your application. The controller layer calls into the model layer to modify data and retrieves data from the model layer, mostly using bindings.
 
-The model layer is also responsible for talking to your server, fetching and committing data when necessary. The server communication aspect of the model layer is not covered in this guide, but in the guide about using data sources.
+The model layer is also responsible for talking to your server, and fetches and commits data when necessary. The server communication aspect of the model layer is not covered in this guide.
 
-Models are a blueprint for your data, they define the data schema of your application. This data schema is mostly very similar to the data schema of your backend. In SproutCore models are defined by subclassing +SC.Record+. When you actually want to create a data record from one of your blueprints, you use +SC.Store+ to create an instance of a +SC.Record+ class. The store manages the lifecycle and the data of your records in a central place. When you retrieve or update a property from a record, the record actually uses the store to access the underlying data hash.
+Models are the blueprint for your data; they define the data schema of your application. This data schema is mostly very similar to the data schema of your backend. In SproutCore, models are defined by subclassing +SC.Record+. When you want to create an +SC.Record+ instance, you use +SC.Store+. The store manages the lifecycle and the data of your records. When you retrieve or update a property from a record, the record will use the store to access and update the underlying data hash.
 
-All the classes of SproutCore's model layer are located in the "datastore" folder inside of the main sproutcore folder. Have a look at the source code there if you want to have more in-depth information. The code has plenty of inline documentation and can be a valuable resource to gain deeper insights in how the store works.
+All the classes of SproutCore's model layer are located in the Datastore framework (located in the +frameworks/datastore+ folder of the SproutCore framework). For in-depth coverage of the Datastore API, reference the documentation or source code.
 
+h3. Anatomy of an +SC.Record+
 
-
-
-h3. Anatomy of Records
-
-A SproutCore record consists of four main components:
+An +SC.Record+ consists of four main components:
 # Store key
 # Id
 # Status
 # Data hash
 
-Each record has a unique store key which is assigned when the record is created. The store key is a unique record identifier in the whole store and is mainly used internally to relate ids, statuses and data hashes to each other in an unambiguous way. The store key is the only one of the four components which is actually a property of +SC.Record+. The other three components are stored centrally in the store and mapped to the individual records using the store key.
+Each record has a unique store key which is assigned to the instance by the +SC.Store+ when it is created. The store key is a unique record identifier in the +SC.Store+ and is mainly used internally to relate ids, statuses and data hashes to each other in an unambiguous way.
 
 <div style='text-align: center;'>
 !images/records/record_anatomy.png!
 </div>
 
-All records of a certain type have a unique id as usual in relational database systems. In fact the ids of SproutCore records usually are the same as the primary keys of your data in the backend. Therefore, unlike the store key, the id is not automatically created but it is your responsibility to assign a unique id when creating or loading records.
+As with most ORM (Object Relational Mapping) systems, all records of a certain type have a unique identifier. The IDs of +SC.Record+ instances are usually the same as the primary key values in the backend. Unlike the store key, the ID is not automatically created. It is your responsibility to assign a unique ID when creating or loading records.
 
-The status of a record represents its current state with respect to the corresponding record on the server. The store uses the status property to determine if a record can be edited safely and which records need to be commited back to the server. 
+The status of an +SC.Record+ represents its current state with respect to the corresponding record on the server. The store uses the status property to determine if a record can be edited safely and which records need to be committed back to the server.
 
-Last but not least, the actual data of a record is stored in a plain JSON data hash. When you get or set a property on a record, the value of this property is read from or written to the data hash. 
+The data that an +SC.Record+ represents is stored as a plain JSON data hash in the +SC.Store+. When you get or set a property on a record, the value of this property is read from or written to the data hash. The value of a property can be transformed using +SC.RecordAttribute+, which is discussed in the "Defining Your Models":#defining-your-models section.
 
 h4. Primary Record States
 
-There are five primary record status codes in SproutCore:
+There are five primary record status values of an +SC.Record+:
 * +SC.Record.EMPTY+
 * +SC.Record.READY+
 * +SC.Record.BUSY+
 * +SC.Record.DESTROYED+
 * +SC.Record.ERROR+
 
-The names of these states are pretty self explanatory: EMPTY indicates a non existing record. READY indicates that the record can be safely edited. BUSY indicates that the record is currently locked for write operations, mostly because of an ongoing commmunication with the server. Finally DESTROYED is the state of destroyed records and ERROR indicates that something went wrong while processing this record.
++SC.Record.EMPTY+ indicates an +SC.Record+ instance that has no corresponding data hash. +SC.Record.READY+ indicates that the record can be safely modified. +SC.Record.BUSY+ indicates that the record is currently being sent to or received from the persistent datastore and is locked for write operations. Finally, +SC.Record.DESTROYED+ is the state of an +SC.Record+ instance that has been destroyed and is no longer being actively managed by the +SC.Store+ and +SC.Record.ERROR+ indicates that something went wrong while creating or updating the instance, such as a problem saving it to your persistent datastore.
 
-The three main states READY, BUSY and DESTROYED have several substates. You will learn more about these substates below when you actually start working with records. You can also refer to the complete overview of record states in the last section of this guide.
+The three main states (+SC.Record.READY+, +SC.Record.BUSY+ and +SC.Record.DESTROYED+) have several sub-states. You will learn more about these sub-states below when you actually start working with records. You can also refer to the complete overview of record states in the "In-Depth Information about Record States":#in-depth-information-about-record-states section.
 
-
-
-
-
-h3. Defining your models
+h3. Defining Your Models
 
 Defining a model in SproutCore is as easy as subclassing +SC.Record+:
 
 <javascript filename="apps/my_app/models/contact.js">
-MyApp.Contact = SC.Record.extend({
-	
-});
+MyApp.Contact = SC.Record.extend({});
 </javascript>
 
-You just have created your custom +MyApp.Contact+ model class. However, this empty model is only of limited use, so let's add some record attributes.
+You just have created your custom +MyApp.Contact+ +SC.Record+ class. However, as an empty model, its only of limited use. Let's add some record attributes.
 
 <javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
@@ -82,9 +71,9 @@ MyApp.Contact = SC.Record.extend({
 });
 </javascript>
 
-WARNING: Property names defined on +SC.Record+ itself cannot be used for custom record attribtutes. Please refer to the "documentation of SC.Record":http://docs.sproutcore.com/symbols/SC.Record.html for a list of all reserved names!
+WARNING: Property names defined on +SC.Record+ itself cannot be used for custom record attributes. Please refer to the "documentation of SC.Record":http://docs.sproutcore.com/symbols/SC.Record.html for a list of all reserved names.
 
-We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+ and +age+ attributes with the type of each attribute as first argument. The optional second argument of +SC.Record.attr+ is an option hash. E.g. we can add some default values to our attribtues:
+We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+ and +age+ attributes with the type of each attribute as the first argument. The optional second argument of +SC.Record.attr+ is an option hash, which can contain a number of different modifiers:
 
 <javascript filename="apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
@@ -94,9 +83,9 @@ MyApp.Contact = SC.Record.extend({
 });
 </javascript>
 
-Whenever you specify a +defaultValue+ option on an attribute it will return this default value if it's  +null+ or +undefined+.
+When you specify a +defaultValue+ option on an attribute, it will return this default value if the attribute's value is +null+ or +undefined+.
 
-NOTE: The +defaultValue+ will not be written to the underlying data hash and therefore not committed back to the server. 
+NOTE: The +defaultValue+ will not be written to the underlying data hash and therefore not committed back to the server.
 
 If the name of the model's attribute property differs from the name you want to use in the data hash, you can specify a custom key for each attribute which will be used to access the data hash:
 
@@ -108,17 +97,16 @@ MyApp.Contact = SC.Record.extend({
 });
 </javascript>
 
-
 h4. Attribute Types
 
-All basic JavaScript data types can be used as attribute types: 
+All basic JavaScript data types can be used as attribute types:
 * String
 * Number
 * Boolean
 * Array
 * Object
 
-Additionally SproutCore comes with a predefined attribute helper for date/time values. 
+Additionally SproutCore comes with a predefined attribute helper for +SC.DateTime+ values, which can be used to manage dates and times:
 
 <javascript filename="in apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
@@ -130,13 +118,11 @@ MyApp.Contact = SC.Record.extend({
 
 For a reference of how to specify your custom date format check the documentation of  "SC.DateTime#toFormatedString":http://docs.sproutcore.com/symbols/SC.DateTime.html#toFormattedString.
 
+h4. Record IDs
 
+You don't define the primary key property of your models explicitly like you defined your custom attributes. Primary keys are managed by the store, so every record has an +id+ property. However, you can specify the identifier of this +id+ property. This is where it can become a bit confusing at first... but let's clear it up step by step.
 
-h4. Record Ids
-
-In SproutCore you don't define the primary key property of your models explicitly like you defined your custom attributes above. The records' primary keys are managed by the store, so every record inherently has an id property. However, you can specify the identifier of this id property. This is where it can become a bit confusing at first... but let's clear it up step by step.
-
-First of all, by default SproutCore uses the identifier "guid" for the primary key. You can change this identifier by defining a +primaryKey+ property in your model:
+By default, SproutCore uses the +guid+ identifier for the primary key. You can change this identifier by defining a +primaryKey+ property in your model:
 
 <javascript filename="in apps/my_app/models/contact.js">
 MyApp.Contact = SC.Record.extend({
@@ -146,23 +132,22 @@ MyApp.Contact = SC.Record.extend({
 });
 </javascript>
 
-NOTE: If you want to use your custom id identifier in all your models, you can make your life a bit easier and your code more maintainable by defining a custom record base class, where you define the primaryKey property. Then you can subclass this custom base class to create your models.
+NOTE: If you want to use your custom ID identifier in all your models, you can make your code more maintainable by defining a base +SC.Record+ subclass, where you define the primaryKey property. Then you can subclass this base class to create your models.
 
-However, this primary key identifier is only used to identify the id property in the underlying data hash, but not to get or set the id on a record. For example if you create a record and pass a hash with initial values, then SproutCore will now look for a property called "uid" in the hash when you don't explicitly specify an id. If you want to get or set the id of a record though, you always use +'id'+ independent of the +primaryKey+'s value:
+The primary key identifier is only used to identify the +id+ property in the underlying data hash. It is not used to get or set the +id+ on a record. For example, if you create a record and pass a hash with initial values, then SproutCore will look for a property called +guid+ in the hash when you don't explicitly specify +id+. If you want to get or set the +id+ of an +SC.Record+ instance, you always use +'id'+ independent of the +primaryKey+'s value:
 
 <javascript>
-myRecord.get('id'); // note: NOT 'uid'
+myRecord.get('id'); // note: NOT 'guid'
 myRecord.set('id', 1);
 </javascript>
 
-WARNING: You should never change the id of an existing record using +set()+ like above. And if you do so, you should know what you are doing and probably not need this guide...
+WARNING: You should never change the +id+ of an existing record using +set()+ like above.
 
-It is a best practice to never include the id in the data hash, because then you end up with two ids: the id property in the data hash and the id managed by the store. If you receive a JSON data hash from the server (where the id is necessarily included) then you should extract and delete the id from this hash before using it to load the record into the store.
-
+It is a best practice to never include the +id+ in the data hash, because then you end up with two ids: the id property in the data hash and the id managed by the store. If you receive a JSON data hash from the server (where the id is necessarily included) then you should extract and delete the id from this hash before using it to load the record into the store.
 
 h4. Relations
 
-Often models don't exist completely independent of each other but are related to other models. For example one or more addresses could belong to the +Contact+ model we created above. So let's define the +Address+ model first:
+Often models don't exist completely independent of each other, but are related to other models. For example one or more addresses could belong to the +Contact+ model we created above. So let's define the +Address+ model first:
 
 <javascript filename="apps/my_app/models/address.js">
 MyApp.Address = SC.Record.extend({
@@ -170,7 +155,6 @@ MyApp.Address = SC.Record.extend({
   number: SC.Record.attr(Number),
 });
 </javascript>
-
 
 h5. One-to-One Relations
 
@@ -655,6 +639,6 @@ h4. DESTROYED Substates
 h3. Changelog
 
 * February 6, 2011: initial version by "Florian Kugler":credits.html#fkugler
-* March    2, 2011: added filenames and small fixes by "Topher Fangio":credits.html#topherfangio
+* March 2, 2011: added filenames and small fixes by "Topher Fangio":credits.html#topherfangio
 * March 2, 2011: minor corrections by "Florian Kugler":credits.html#fkugler
-
+* May 5, 2011: Grammar corrections, by "Colin Campbell":credits.html#colin
