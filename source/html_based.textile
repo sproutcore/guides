@@ -33,6 +33,18 @@ This will create several files needed for your application, inside the *+apps/to
 * *Buildfile* - Tells SproutCore how your application should be built. Usually, you can just use the defaults provided.
 * *README*
 
+h3. Introduction
+
+HTML-based apps use a subset of the entire SproutCore desktop library. When you generate an HTML-based app, you still get all of the core features of SproutCore, like property observation and binding. However, some of the UI niceties of the Desktop framework, like panels and most views, are not included. The Datastore framework is also not included. This greatly lowers the final size of your application. If, for instance, you would like to use the Datastore framework in your HTML-based app, you can include that framework in your +Buildfile+:
+
+<shell>
+config :all, :required => ["sproutcore/core_foundation", "sproutcore/datastore"], :theme => "sproutcore/empty_theme"
+</shell>
+
+NOTE: When generating a desktop app, you can use +SC.TemplateView+. HTML-based apps are a strict subset of the functionality available in desktop-based apps, so everything you see in this guide will work in a desktop app.
+
+h3. Getting Started
+
 Go ahead and open +todos.js+ now. You should see the following code:
 
 <javascript filename="apps/todos/todos.js">
@@ -451,5 +463,6 @@ h3. Changelog
 * March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio and "Peter Wagenet":credits.html#pwagenet
 * March 22, 2011: cleaned up demo based on new features by "Yehuda Katz":credits.html#wycats
 * April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
+* May 5, 2011: added paragraph about the differences between HTML-based apps and traditional SproutCore Desktop apps, by "Colin Campbell":credits.html#colin
 
 <input type="checkbox" onclick="document.body.style.textDecoration='line-through'; this.disabled=true;">Mark Tutorial as Done
