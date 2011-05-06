@@ -554,5 +554,5 @@ h3. Changelog
 * March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio and "Peter Wagenet":credits.html#pwagenet
 * March 22, 2011: cleaned up demo based on new features by "Yehuda Katz":credits.html#wycats
 * April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
-* May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#tylerkeating
+* May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
 
