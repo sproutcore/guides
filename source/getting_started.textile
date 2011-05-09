@@ -44,7 +44,7 @@ Todos = SC.Application.create();
 
 SC.ready(function() {
   Todos.mainPane = SC.TemplatePane.append({
-    layerId: "todo",
+    layerId: "todos",
     templateName: "todos"
   });
 });
@@ -135,7 +135,7 @@ Go ahead and replace that with:
        placeholder="What needs to be done?" >
 </html>
 
-NOTE: For more information about using Handlebars, visit the "Handlebars website":http://handlebars.strobeapp.com/.
+NOTE: For more information about using Handlebars, visit the "Handlebars website":http://www.handlebarsjs.com/.
 
 Now that we've got model, view, and controller represented, it's time to open the app in our browser and see how it looks.
 
@@ -158,7 +158,7 @@ NOTE: In SproutCore, view objects are responsible for updating the DOM and handl
 <javascript filename="in apps/todos/todos.js">
 // before SC.ready
 
-Todos.CreateTodoView = SC.TemplateView.extend(SC.TextFieldSupport, {
+Todos.CreateTodoView = SC.TextField.extend({
   insertNewline: function() {
     var value = this.get('value');
 
@@ -170,9 +170,7 @@ Todos.CreateTodoView = SC.TemplateView.extend(SC.TextFieldSupport, {
 });
 </javascript>
 
-Since +CreateTodoView+ contains a text field, we should use the mixin +SC.TextFieldSupport+, which provides several conveniences, including a +value+ property, and higher level events such as +insertNewline+, for when the user presses +return+.
-
-NOTE: When creating a new object, you can include a mixin, which will extend the default behavior of the class. In this case, we extend the default +TemplateView+ behavior with functionality specific to views that wrap input tags. You can include as many mixins as you'd like by passing them as parameters to +create()+ and +extend()+.
+Since +CreateTodoView+ contains a text field, we create a subclass of +SC.TextField+, which provides several conveniences for working with text fields. For example, you can access the +value+ property and respond to higher level events such as +insertNewline+, when the user presses +return+.
 
 Now that we have defined our view, we need to attach it to HTML in our Handlebars template.  Wrap the <code><input></code> like so:
 
@@ -191,22 +189,17 @@ Now that we have an interface to create new todos, let's create the interface to
 <html filename="in apps/todos/resources/templates/todos.handlebars">
 <!-- at the end of the file -->
 
-{{#collection Todos.TodoListView}}
+{{#collection SC.TemplateCollectionView ¬
+  contentBinding="Todos.todoListController"}}
   {{content.title}}
 {{/collection}}
 </html>
 
-Notice that we've associated a class to the +collection+ helper, which doesn't yet exist. So back in +todos.js+, we need to also define the collection class Todos.TodoListView.  At the same time, we will bind the collection view's +content+ property to the +content+ of our +todoListController+. With the above template, for each item in the todoListController's +content+ array, +TodoListView+ will render the block <code>{{content.title}}</code>, which will simply create a <code><div></code> containing the item's +title+.
+NOTE: We are using a continuation character, ¬, to indicate that the lines should be entered unbroken.
 
-<javascript filename="in apps/todos/todos.js">
-// at the end of the file
+Notice that we've also told the collection to bind its +content+ property to our +todoListController+. For every item in the array controller, the collection view will create a new child view that renders the +{{content.title}}+ template.
 
-Todos.TodoListView = SC.TemplateCollectionView.extend({
-  contentBinding: 'Todos.todoListController'
-});
-</javascript>
-
-NOTE: You set up bindings by creating a property whose name ends in +Binding+. In this case, we bind +Todos.todoListController+ to the +Todos.TodoListView+'s +content+ property. When one end of a binding changes, SproutCore will automatically update the other end.
+NOTE: You set up bindings by creating a property whose name ends in +Binding+. In this case, we bind +Todos.todoListController+ to thecollection view's +content+ property. When one end of a binding changes, SproutCore will automatically update the other end.
 
 This is a good time to visit "http://localhost:4020/todos":"http://localhost:4020/todos in your browser (or reload if you still have it open). It should look the same as before. Type a todo into the text field and hit return.
 
@@ -225,34 +218,28 @@ The first thing we need to do is add a checkbox to each todo list item. As was m
 <html filename="in apps/todos/resources/templates/todos.handlebars">
 <!-- replacing the previous code -->
 
-{{#collection Todos.TodoListView}}
-    {{view Todos.CheckboxView}}
+{{#collection SC.TemplateCollectionView ¬
+  contentBinding="Todos.todoListController"}}
+  {{view Todos.MarkDoneView}}
 {{/collection}}
 </html>
 
-Now implement +Todos.CheckboxView+, which we just referenced. Since our view will wrap an +input+ tag of type +checkbox+, we will mix in +SC.CheckboxSupport+. This gives the view a +value+ property that reflects the value in the DOM, and, because it is a SproutCore property, we can observe any changes to it.
+Now implement +Todos.MarkDoneView+, which we just referenced. Since our view implements a checkbox, we will subclass the +SC.Checkbox+ control. This gives the view a +value+ property that reflects the value in the DOM, as well as a +title+ property that displays a label for the checkbox.
 
 INFO: Under the hood, SproutCore binds an event handler to the +change+ event and updates +value+ when the event occurs. This may change as needed for browser compatibility, and working with a SproutCore property insulates you from those concerns.
 
 For every item in its underlying +Array+, +SC.TemplateCollectionView+ will create a new child view whose +content+ property contains the object the view should represent. In our case, there will be a child view for each todo, and each will have a +content+ property set to a corresponding +Todo+ object.
 
-This makes it easy to bind the value of the checkbox to the value of +isDone+, so that when one changes, the other changes automatically. Let's tie it all together:
+This makes it easy to bind the properties of the checkbox to the properties of the +Todo+ object we're representing. In this case, we bind +value+ to +isDone+ and +title+ to +title+, so that when one changes, the other changes automatically. Let's tie it all together:
 
 <javascript filename="in apps/todos/todos.js">
 // before SC.ready
 
-Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
-  classNames: ['checkbox'],
-
-  template: SC.Handlebars.compile('<label><input type="checkbox">{{title}}</label>'),
-
+Todos.MarkDoneView = SC.Checkbox.extend({
   titleBinding: '.parentView.content.title',
-  
   valueBinding: '.parentView.content.isDone'
 });
 </javascript>
-
-Notice that +Todos.CheckboxView+ provides its own template.  Since it is a simple template, we've compiled it directly in the class.  Alternatively, we could have used the +templateName+ property again with the name of another Handlebars template file in +apps/todos/resources/templates+.
 
 Before you reload the browser to see the new checkbox todo list items, the stylesheet we provided includes a CSS class meant to give completed todos a unique look, so lets also bind the class of each item to the object's isDone property.
 
@@ -261,8 +248,10 @@ We'll use a property on the collection helper to set up this binding:
 <javascript filename="in apps/todos/resources/templates/todos.handlebars">
 <!-- replacing the previous code -->
 
-{{#collection Todos.TodoListView itemClassBinding="content.isDone"}}
-    {{view Todos.CheckboxView}}
+{{#collection SC.TemplateCollectionView ¬
+  contentBinding="Todos.todoListController" ¬
+  itemClassBinding="content.isDone"}}
+  {{view Todos.MarkDoneView}}
 {{/collection}}
 </javascript>
 
@@ -270,7 +259,7 @@ This property defines a binding on each of the item views. Each item will get th
 
 NOTE: All views have a number of properties, including +id+, +class+, and +classBinding+. The +collection+ helper allows you to prefix any of those properties with +item+, which will then apply them to each of the child item views. For instance, if you use the +itemClass+ property on a collection, each item will get that class.
 
-Now reload your application in the browser and try it out. As soon as you click a todo's checkbox, the text will become crossed out. Keep in mind you didn't need to update any views when marking the +Todo+ as done; bindings did it for. If a different part of the app changes the +Todo+ item's +isDone+ property, your list item would automatically update without any more work on your part.
+Now reload your application in the browser and try it out. As soon as you click a todo's checkbox, the text will become crossed out. Keep in mind you didn't need to update any views when marking the +Todo+ as done; bindings did it for you. If a different part of the app changes the +Todo+ item's +isDone+ property, your list item would automatically update without any more work on your part.
 
 h3. The More You Know
 
@@ -280,11 +269,11 @@ We can now create todos and mark them as being complete. While 76% of all statis
 <!-- after the Todos.CreateTodoView -->
 
 {{#view Todos.StatsView id="stats"}}
-  {{displayRemaining}}
+  {{displayRemaining}} remaining
 {{/view}}
 </html>
 
-The +bind+ helper, <code>{{key}}</code>, allows us to automatically update the DOM when a property on our view changes. In this case, we're saying that the content os the Todos.StatsView should be bound to the value of the view's +displayRemaining+ property.  As with the other bindings, this will be automatically updated for us whenever the value changes.
+Handlebars expressions, like <code>{{displayRemaining}}</code>, allows us to automatically update the DOM when a property on our view changes. In this case, we're saying that the content of the Todos.StatsView should be bound to the value of the view's +displayRemaining+ property.  As with the other bindings, this will be updated for us automatically whenever the value changes.
 
 Let's go ahead and implement that view in +todos.js+ now:
 
@@ -297,7 +286,7 @@ Todos.StatsView = SC.TemplateView.extend({
   displayRemaining: function() {
     var remaining = this.get('remaining');
     return remaining + (remaining === 1 ? " item" : " items");
-  }.property('remaining').cacheable()
+  }.property('remaining')
 });
 </javascript>
 
@@ -355,47 +344,30 @@ Todos.todoListController = SC.ArrayController.create({
 });
 </javascript>
 
-Next, we'll add the HTML to our template and connect it up to a view for event handling. Open +todos.handlebars+ and add a button inside the HTML for +statsView+ as shown here:
+Next, let's add a button to our template. Open +todos.handlebars+ and add a button inside the HTML for +statsView+ as shown here:
 
 <html filename="in apps/todos/resources/templates/todos.handlebars">
 <!-- updating existing code -->
 
 {{#view Todos.StatsView id="stats"}}
-  {{#view Todos.ClearCompletedView classBinding="isActive"}}
+  {{#view SC.Button classBinding="isActive" ¬
+    target="Todos.todoListController" ¬
+    action="clearCompletedTodos"}}
     Clear Completed Todos
   {{/view}}
   {{displayRemaining}} remaining.
 {{/view}}
 </html>
 
-Now implement the view, +Todos.ClearCompletedView+:
+We've defined an instance of +SC.Button+, which calls a method on an object when it is clicked. In this case we've told the button to call the +clearCompletedTodos+ method (its action) on the +Todos.todoListController+ object (its target).
 
-<javascript filename="in apps/todos/todos.js">
-// before SC.ready
-
-Todos.ClearCompletedView = SC.TemplateView.extend({  
-  classNames: ['button'],
- 
-  // Setting isActive to true will trigger the classBinding and add
-  // 'is-active' to our layer's class names.
-  mouseDown: function() {
-    this.set('isActive', true);
-  },
- 
-  // Setting isActive to false will remove 'is-active' from our
-  // layer's class names.
-  mouseUp: function() {
-    this.set('isActive', false);
-    Todos.todoListController.clearCompletedTodos();
-  }
-});
-</javascript>
+We've also told it to add an +is-active+ class to the view when it is clicked or tapped. Every +SC.Button+ has an +isActive+ property that will be true when it is in the process of being clicked. This allows us to display a visual cue to the user that they have hit the right target.
 
 Go back to your browser and try it out. Add some todos, then mark them done and clear them.  Because we previously bound the visual list to the +todoListController+, making a change through new means has the expected effect.
 
 h3. Marking All as Done
 
-Let's say you've decided to get busy for a day and actually get all of your work done. Wouldn't it be nice to have a way to easily mark every todo as complete?
+Let's say you've decided to actually get all of your work done. Wouldn't it be nice to have a way to easily mark every todo as complete?
 
 It turns out that, due to our application's declarative nature, all the hard work is already done. We just need a way to mark every +Todo+ complete.
 
@@ -414,29 +386,17 @@ Todos.todoListController = SC.ArrayController.create({
 });
 </javascript>
 
-INFO: SproutCore has many enumerable helpers. +everyProperty('isDone', true)+ returns true if every item in the array has an +isDone+ property that evaluates to +true+. You can find the full list of helpers in "SC.Enumerable":http://edgedocs.sproutcore.com/symbols/SC.Enumerable.html.
+INFO: SproutCore has many enumerable helpers. +everyProperty('isDone', true)+ returns true if every item in the array has an +isDone+ property that evaluates to +true+. You can find out more in the "Enumerables guide.":/enumerables.html
 
 Next, we'll create a checkbox view to mark all items complete and bind its value to the controller's property:
 
 <html filename="in apps/todos/resources/templates/todos.handlebars">
 <!-- directly below the Todos.StatsView -->
 
-{{#view Todos.MarkAllDoneView}}
-  <label>
-    <input class="mark-all-done" type="checkbox"> Mark All as Done
-  </label>
-{{/view}}
+{{view SC.Checkbox class="mark-all-done" ¬
+  title="Mark All as Done" ¬
+  valueBinding="Todos.todoListController.allAreDone"}}
 </html>
-
-<javascript filename="in apps/todos/todos.js">
-// before SC.ready
-
-Todos.MarkAllDoneView = SC.TemplateView.extend(SC.CheckboxSupport, {
-  classNames: ['checkbox'],
-
-  valueBinding: 'Todos.todoListController.allAreDone'
-});
-</javascript>
 
 If you were to reload your browser and use the app now, you'd notice that clicking all of the checkboxes of your todos will cause the "Mark All as Done" checkbox to become checked. However, it doesn't work in the other direction: clicking "Mark All as Done" has no effect.
 
@@ -469,81 +429,11 @@ Reload the app and add some todos. Click "Mark All as Done". Wow! Each of the in
 
 INFO: When you use SproutCore, as you scale your UI, you never need to wonder whether a new feature will work consistently with parts of the UI you already implemented. Since you build your view layer to simply reflect the state of your models, you can make changes however you want and see them update automatically.
 
-h2. Addendum: Mobile Devices
-
-So far in this guide, you've created a simple ToDos app that showcased a few of the powerful components of SproutCore.  However, the application does not yet work properly on "mobile" devices, which is to say, small screened devices with touch interfaces and two orientations.  Instead of writing several apps to target each of these existing and future devices, we will instead simply extend the app we already have.
-
-h3. Touch Support
-
-First we need our button and checkboxes to respond to touch events.  Update these views, adding +touchStart+ and +touchEnd+ functions like so:
-
-<javascript filename="in apps/todos/todos.js">
-// updating existing code
-
-Todos.ClearCompletedView = SC.TemplateView.extend({
-
-  // ...
-
-  touchStart: function(touch) {
-    this.mouseDown(touch);
-  },
-
-  touchEnd: function(touch) {
-    this.mouseUp(touch);
-  }
-});
-
-Todos.CheckboxView = SC.TemplateView.extend(SC.CheckboxSupport, {
-  
-  // ...
-
-  touchStart: function(touch) { },
- 
-  touchEnd: function(touch) {
-    this.toggleProperty('value');
-  }
-});
-
-Todos.MarkAllDoneView = SC.TemplateView.extend(SC.CheckboxSupport, {
-  
-  // ...
-
-  touchStart: function(touch) { },
- 
-  touchEnd: function(touch) {
-    this.toggleProperty('value');
-  }
-});
-
-SC.ready(function() {
-  Todos.mainPane = SC.TemplatePane.append({
-    
-    // ...
-
-    touchStart: function(touch) {
-      touch.allowDefault();
-    },
-
-    touchesDragged: function(evt, touches) {
-      evt.allowDefault();
-    },
-
-    touchEnd: function(touch) {
-      touch.allowDefault();
-    }
-  });
-});
-</javascript>
-
-For the button, we trigger the mouse handling code that was previously written. For the checkboxes, we toggle the value on each touch and finally, we allow the default actions for un-handled touches in order to leave scrolling to the browser.
-
 h3. Mobile Specific Styles
 
-At this point, we actually have the app fully functional on all modern mobile devices.  It just doesn't "look" right for most of them.  So download "the CSS for mobile":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos_mobile.css and save it as +apps/todos/resources/stylesheets/todos_mobile.css+.  Now load your app on a mobile device and you should see the same simple app, but styled properly for mobile devices and responding to touch events.
+At this point, we actually have the app fully functional on all modern mobile devices.  Let's optimize the experience for all of the different screen sizes we might encounter.  Download "the CSS for mobile":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos_mobile.css and save it as +apps/todos/resources/stylesheets/todos_mobile.css+.  Now load your app on a mobile device and you should see the same app, but styled properly for mobile devices and responding to touch events.
 
-NOTE: The SproutCore development server will be available on your local network at your machine's IP address, ex. http://x.x.x.x:4020/todos
-
-Finally, this is a good time to highlight the fact that we just increased the target base for our app by several fold simply by extending the view layer, all without touching the model or controller layers.  Truly this was a simple example, but SproutCore makes it easy to do the same with large scale applications, allowing you to re-use the core of your application and focus on the user experience per device as you wish.
+NOTE: The SproutCore development server will be available on your local network at your machine's IP address. For example, you might visit http://192.168.1.1:4020/todos.
 
 h3. Resources
 
@@ -556,7 +446,7 @@ Now that you have finished the first part of the Getting Started tutorial, you w
 
 h3. Continue On
 
-Now that you've built a basic SproutCore app, continue on to "the next part of this tutorial":html_based_2.html to learn about working with SproutCore's model layer.
+Now that you've built a basic SproutCore app, continue on to "the next part of this tutorial":getting_started_2.html to learn about working with SproutCore's model layer.
 
 h3. Changelog
 
@@ -565,4 +455,4 @@ h3. Changelog
 * March 22, 2011: cleaned up demo based on new features by "Yehuda Katz":credits.html#wycats
 * April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
 * May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
-
+* May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
