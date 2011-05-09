@@ -333,6 +333,10 @@ div.code_container div.filename {
   margin: 0.3em 1em 0 0;
 }
 
+#subCol p.getInvolved a {
+  font-weight: bold;
+}
+
 #mainCol a, #subCol a, #feature a, a, a:link, a:visited {
   font-size: 110%;
   color: #047ed7;
