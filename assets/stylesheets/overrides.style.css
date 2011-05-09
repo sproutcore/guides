@@ -210,8 +210,12 @@ dd img {
   margin-bottom: 1em;
 }
 
+#mainCol ul {
+  margin-bottom: 1em;
+}
+
 div.code_container {
-  background: #e9f6d3 url(../images/strobe/tab-code.png) no-repeat left top;
+  background: #eee url(../images/strobe/tab-code.png) no-repeat left top;
 }
 
 div.code_container div.filename {
@@ -347,6 +351,10 @@ div.code_container div.filename {
 }
 
 .guide tt, .guide code {
+  font-family: "Monaco", "Anonymous Pro", "Inconsolata", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace !important;
+}
+
+.guide tt {
   background-color: #deeac9;
   border: 1px solid #cad5b7;
   padding: 1px 3px;

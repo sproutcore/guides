@@ -21,10 +21,10 @@
   overflow-x: auto !important;
 }
 .syntaxhighlighter .line.alt1 {
-  background-color: #e9f6d3 !important;
+  background-color: #eee !important;
 }
 .syntaxhighlighter .line.alt2 {
-  background-color: #e9f6d3 !important;
+  background-color: #eee !important;
 }
 .syntaxhighlighter .line.highlighted.alt1, .syntaxhighlighter .line.highlighted.alt2 {
   background-color: #c3defe !important;
