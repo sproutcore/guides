@@ -326,6 +326,8 @@ div.code_container div.filename {
 #subCol p {
   clear: left;
   margin-bottom: 3em;
+	font-size: 14px;
+	line-height: 20px;
 }
 
 #subCol ul.links li {
@@ -334,7 +336,7 @@ div.code_container div.filename {
 
 #subCol p img {
   float: left;
-  margin: 0.3em 1em 0 0;
+  margin: 0.3em 1em 2em 0;
 }
 
 #subCol p.getInvolved a {
