@@ -152,11 +152,10 @@ index:
   Contributing to SproutCore:
     - title: "Javascript Style Guide"
       url: "style_guide"
-      text: "This guide covers the style of SproutCore framework code"
-    - title: "Comitter Guidelines"
+      text: "This guide covers the style of SproutCore framework code."
+    - title: "Committer Guidelines"
       url: "commit_code"
-      text: "A detailed checklist of the do's and don'ts of SC Framework code..."
-      construction: true
+      text: "A detailed checklist of the do's and don'ts of SC framework code."
     - title: "Documentation Guidelines"
       url: "documentation_guidelines"
-      text: "Writing and generating jsdoc documentation"
+      text: "Writing and generating jsdoc documentation."

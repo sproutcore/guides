@@ -1,12 +1,12 @@
 h2. SproutCore Documentation Guidelines
 
-This guide will walk you through generating documentation for your sproutcore classes in a format that is friendly to jsdoc-toolkit, which is the library SC uses for generating docs from the code.
+This guide will walk you through writing documentation for your SproutCore classes in a format that is friendly to jsdoc-toolkit, the library used for generating documentation from code.
 
 endprologue.
 
 h3. Overview
 
-SproutCore uses the "jsdoc-toolkit":http://code.google.com/p/jsdoc-toolkit/ to generate its documentation. As such, your SproutCore classes should follow strict code-documenting formatting guidelines in order to properly generate your HTML documentation. This document outlines the proper  format you should use.
+SproutCore uses the "jsdoc-toolkit":http://code.google.com/p/jsdoc-toolkit/ to generate its documentation. As such, your SproutCore classes should follow strict code-documenting formatting guidelines in order to properly generate your HTML documentation. This document outlines the proper format you should use.
 
 h3. Classes
 
