@@ -46,7 +46,7 @@
       <% if page_header = yield(:page_header).presence %>
         <%= page_header %>
       <% else %>
-        <a href="/"><img src="../images/strobe/guides.png"></a>
+        <a href="/"><img src="images/strobe/guides.png"></a>
         <h2><a href="/"><%= Guides.meta["title"] %></a></h2>
         <p><%= Guides.meta["description"] %></p>
       <% end %>
@@ -87,56 +87,53 @@
   </div>
 
   <hr class="hide" />
-  <div id="footer">
-    <div class="wrapper">
-      <div class="about">
-        <h4>What is SproutCore?</h4>
-        <p>SproutCore is an HTML5 application framework for building blazingly fast, innovative user experiences on the web no matter which device you’re using.</p>
-
-        <h4>Legal Stuff</h4>
-        <p>Copyright 2011 <a href="http://strobecorp.com">Strobe Inc.</a><br>
-          The SproutCore framework is MIT licensed.</p>
-      </div>
-
-      <div class="site-nav">
-        <h4>Site Navigation</h4>
-        <ul>
-          <li><a>About</a></li>
-          <li><a>Blog</a></li>
-          <li><a>Community</a></li>
-          <li><a>Contact Us</a></li>
-          <li><a>Contribute</a></li>
-        </ul>
-        <ul>
-          <li><a>Credits</a></li>
-          <li><a>Docs</a></li>
-          <li><a>Downloads</a></li>
-          <li><a>GitHub</a></li>
-          <li><a>Guide</a></li>
-        </ul>
-
-        <img src="/images/strobe/html5logo.png">
-      </div>
-
-      <div class="connect">
-        <h4>Get in Touch, Stay Informed</h4>
-        <a><img src="/images/strobe/twitter.png"></a>
-        <a><img src="/images/strobe/facebook.png"></a>
-        <a><img src="/images/strobe/groups.png"></a>
-        <a>
-          Subscribe to<br>
-          Mailing List
-        </a>
-        <div style="clear:left"></div>
-
-        <h4>Sign Up For Our Newsletter</h4>
-        <form action="/newsletter/subscribe" method="post" accept-charset="utf-8">
-          <input type="text" value="enter your email address…" width="45">
-          <input type="submit" value="Sign Up">
-        </form>
-      </div>
-    </div>
-  </div>
+	  <footer>
+	    <div class="container">
+	      <div class="col">
+	        <a href="index.html"><img src="images/footer/sc_logo_medium.png" alt="SproutCore" /></a>
+	        <p id="license">
+	          Copyright 2011 <a href="http://www.strobecorp.com">Strobe Inc</a>.
+	          <br />
+	          SproutCore framework is under MIT License.
+	        </p>
+	      </div>
+	      <nav class="col">
+	        <h1>Site Navigation</h1>
+	        <ul>
+	          <li><a href="/about/">About</a></li>
+	          <li><a href="http://docs.sproutcore.com">Docs</a></li>
+	          <li><a href="http://blog.sproutcore.com">Blog</a></li>
+	          <li><a href="#" onclick="app.startDownload(); return false;">Download</a></li>
+	          <li><a href="/community/">Community</a></li>
+	          <li><a href="https://github.com/sproutcore/sproutcore">GitHub</a></li>
+	          <li><a href="#" onclick="app.openModal($('#contact-us')); return false;">Contact Us</a></li>
+	          <li><a href="http://guides.sproutcore.com">Guides</a></li>
+	        </ul>
+	        <a href="http://www.w3.org/html/logo/"><img src="images/footer/html5_tech.png" alt="HTML5 Powered" /></a>
+	      </nav>
+	      <div class="col">
+	        <h1>Get in Touch, Stay Informed</h1>
+	        <ul class="social">
+	          <li><a href="http://twitter.com/sproutcore"><img src="images/footer/twitter.png" alt="Twitter" /></a></li>
+	          <li><a href="http://www.facebook.com/sproutcore"><img src="images/footer/facebook.png" alt="Facebook" /></a></li>
+	          <li><a href="http://groups.google.com/group/sproutcore"><img src="images/footer/google.png" alt="Google Groups" /></a></li>
+						<li><a href="http://groups.google.com/group/sproutcore">Subscribe To Mailing List</a></li>
+	        </ul>
+					<a href="http://eepurl.com/dK1-Y" target="_blank" id="newsletter" class="button secondary">Sign-Up For Our Newsletter!</a>
+	<!-- Commented out until we have mailchimp API integration.
+					<h2>Subscribe To Newsletter</h2>
+	        <div id="subscribe">     
+	          <form>     
+	            <input type="text" name="email" />
+	            <button name="subscribe">Sign-Up</button>
+	            <div class="processing"><img src="/img/spinner.gif"></div>
+	            <div class="error"></div>
+	          </form>
+	        </div>
+	-->
+	      </div>
+	    </div>
+	  </footer>
 
   <script src="http://code.jquery.com/jquery-1.6.min.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" src="javascripts/sproutGuides.js"></script>
