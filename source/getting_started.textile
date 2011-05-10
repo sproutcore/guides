@@ -16,7 +16,7 @@ You can see the finished source code for this application "on Github":https://gi
 
 h3. Installing SproutCore
 
-This guide assumes you have already installed SproutCore. If you have not, please "install it now":http://www.sproutcore.com/redirect_to_install/.
+This guide assumes you have already installed SproutCore. If you have not, please "install it now":http://www.sproutcore.com/install/?redirect=1.
 
 h3. Generate Your New Application
 
