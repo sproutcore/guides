@@ -135,7 +135,7 @@ Go ahead and replace that with:
        placeholder="What needs to be done?" >
 </html>
 
-NOTE: For more information about using Handlebars, visit the "Handlebars website":http://www.handlebarsjs.com/.
+NOTE: For more information about using Handlebars, visit the "Handlebars website":http://www.handlebarsjs.com/. To learn more about using Handlebars with SproutCore, make sure to check out the "Using Handlebars Template":http://guides-redesign.strobeapp.com/using_handlebars.html guide.
 
 Now that we've got model, view, and controller represented, it's time to open the app in our browser and see how it looks.
 
