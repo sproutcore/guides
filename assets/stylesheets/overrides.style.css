@@ -506,6 +506,7 @@ body > footer > .container > .col a,
 body > footer > .container > .col a:link,
 body > footer >  .container > .col a:visited {
 	font-size: 15px;
+	color: #a1bed5;
 }
 
 body > footer .col:nth-child(1) {
