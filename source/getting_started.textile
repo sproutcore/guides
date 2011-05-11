@@ -18,6 +18,8 @@ h3. Installing SproutCore
 
 This guide assumes you have already installed SproutCore. If you have not, please "install it now":http://www.sproutcore.com/install/?redirect=1.
 
+NOTE: This tutorial requires the 1.6.0 beta. The Windows and Mac installers are both for the beta version, but if you install via RubyGems, you'll need to use <code>gem install sproutcore --pre</code> to get the beta.
+
 h3. Generate Your New Application
 
 First, generate your new HTML-based application.
