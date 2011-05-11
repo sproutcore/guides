@@ -14,6 +14,8 @@ h3. Following Along
 
 You can see the finished source code for this application "on Github":https://github.com/sproutcore/Todos-Example/. To it in action, check out "getting-started.strobeapp.com":http://getting-started.strobeapp.com.
 
+There is also a screencast available on "Vimeo":http://vimeo.com/23527342.
+
 h3. Installing SproutCore
 
 This guide assumes you have already installed SproutCore. If you have not, please "install it now":http://www.sproutcore.com/install/?redirect=1.
