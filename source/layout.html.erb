@@ -76,10 +76,12 @@
         <% end %>
         <%= yield %>
       </div>
-      <% if index_section = yield(:index_section).presence %>
+      <% if index_items = yield(:index_items).presence %>
         <div id="subCol">
           <h3 class="chapter"><img src="images/strobe/chapters.png" alt="" />Chapters</h3>
-          <ol class="chapters"><%= index_section %></ol>
+          <ol class="chapters">
+            <%= index_items %>
+          </ol>
         </div>
       <% else %>
       <div id="subCol">
