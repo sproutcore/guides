@@ -34,9 +34,9 @@ TIP:  The -b switch is the branch name you are creating.  When the time comes to
 
 This will create a new branch for you to work on your new guide or to edit an existing guide. Next, you will need to get the +guides+ executable.
 
-h4. If You Use OSX and Aren't a Ruby Developer
+h4. If You Use OSX or Windows and Aren't a Ruby Developer
 
-The easiest way to get started with the guides on OSX is to download and install the "guides pkg":http://guides-pkg.strobeapp.com/Guides.pkg. This will give you the +guides+ executable on your machine, and does not require you to have a C compiler on your computer.
+The easiest way to get started with the guides is to download and install the "guides pkg":http://installers.sproutcore.com/Guides.pkg on OSX or the "guides exe":http://installers.sproutcore.com/Guides.exe on Windows. This will give you the +guides+ executable on your machine, and does not require you to have a C compiler on your computer.
 
 h4. If You're a Ruby Developer
 
