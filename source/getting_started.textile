@@ -161,7 +161,7 @@ To quit sc-server, press Control-C
 
 Open your web browser and navigate to "http://localhost:4020/todos":http://localhost:4020/todos. You should see your application load. Once you've verified that the application is up and running, it's time to tell SproutCore how to handle events for your <code><input></code> tag. When the user types in the field and presses +return+, we will create a new Todo and have it inserted into the content of the array controller.
 
-NOTE: In SproutCore, view objects are responsible for updating the DOM and handling events.  For instance, this allows us to buffer changes to the DOM for maximum performance and to support generic cross-platform event handling.  Whenever you want to display dynamic content or handle events, you will use a view object.
+NOTE: In SproutCore, view objects are responsible for updating the DOM and handling events. Among other things, this allows us to buffer changes to the DOM for maximum performance and to support generic cross-platform event handling.  Whenever you want to display dynamic content or handle events, you will use a view object.
 
 <javascript filename="in apps/todos/todos.js">
 // before SC.ready
@@ -234,7 +234,7 @@ The first thing we need to do is add a checkbox to each todo list item. As was m
 
 Now implement <code>Todos.MarkDoneView</code>, which we just referenced. Since our view implements a checkbox, we will subclass the <code>SC.Checkbox</code> control. This gives the view a +value+ property that reflects the value in the DOM, as well as a +title+ property that displays a label for the checkbox.
 
-INFO: Under the hood, SproutCore binds an event handler to the +change+ event and updates +value+ when the event occurs. This may change as needed for browser compatibility, and working with a SproutCore property insulates you from those concerns.
+INFO: Under the hood, SproutCore binds an event handler to the +change+ event and updates +value+ when the event occurs. This may change as needed for browser compatibility, but working with a SproutCore property insulates you from those concerns.
 
 For every item in its underlying <code>Array</code>, <code>SC.TemplateCollectionView</code> will create a new child view whose +content+ property contains the object the view should represent. In our case, there will be a child view for each todo, and each will have a +content+ property set to a corresponding <code>Todo</code> object.
 
