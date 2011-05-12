@@ -26,7 +26,8 @@ config :all,¬
 </ruby>
 
 h3. Defining the Model
-The first think that we need to modify in code is +Todos.Todo+. Currently it's just a subclass of +SC.Object+. Let's change it to +SC.Record+:
+
+The first thing that we need to modify in code is +Todos.Todo+. Currently it's just a subclass of +SC.Object+. Let's change it to +SC.Record+:
 
 <javascript filename="apps/todos/todos.js">
 Todos.Todo = SC.Record.extend({
