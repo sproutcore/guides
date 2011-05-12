@@ -131,13 +131,13 @@ We've got our model and controller set up, so let's move on to the fun part: cre
 
 To start building our views, let's open +resources/templates/todos.handlebars+.  You'll see that the initialization pre-populated the file with a snippet of HTML:
 
-<html filename="todos.handlebars">
+<html filename="apps/todos/resources/templates/todos.handlebars">
 <h1>Welcome to SproutCore!</h1>
 </html>
 
 Go ahead and replace that with:
 
-<html filename="todos.handlebars">
+<html filename="apps/todos/resources/templates/todos.handlebars">
 <h1>Todos</h1>
 <input id="new-todo" type="text"
        placeholder="What needs to be done?" >
