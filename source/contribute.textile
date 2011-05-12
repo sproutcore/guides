@@ -94,7 +94,7 @@ $ guides preview
 >> Listening on 0.0.0.0:9292, CTRL+C to stop
 </shell>
 
-Go to +http://localhost:9292/&lt;your_guide_name&gt;.html+ in a browser. After making a change, refresh to see it update live.
+Go to +http://localhost:9292/<your_guide_name>.html+ in a browser. After making a change, refresh to see it update live.
 
 If you do not see your changes, check the terminal window where you ran the +preview+ command for error messages.
 
