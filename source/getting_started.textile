@@ -207,9 +207,9 @@ NOTE: We are using a continuation character, ¬, to indicate that the lines shou
 
 Notice that we've also told the collection to bind its +content+ property to our <code>todoListController</code>. For every item in the array controller, the collection view will create a new child view that renders the +{{content.title}}+ template.
 
-NOTE: You set up bindings by creating a property whose name ends in +Binding+. In this case, we bind +Todos.todoListController+ to thecollection view's +content+ property. When one end of a binding changes, SproutCore will automatically update the other end.
+NOTE: You set up bindings by creating a property whose name ends in +Binding+. In this case, we bind +Todos.todoListController+ to the collection view's +content+ property. When one end of a binding changes, SproutCore will automatically update the other end.
 
-This is a good time to visit "http://localhost:4020/todos":"http://localhost:4020/todos in your browser (or reload if you still have it open). It should look the same as before. Type a todo into the text field and hit return.
+This is a good time to visit "http://localhost:4020/todos":http://localhost:4020/todos in your browser (or reload if you still have it open). It should look the same as before. Type a todo into the text field and hit return.
 
 Look at that! As soon as we create a new todo and insert it into the array controller, the view updates automatically.
 
