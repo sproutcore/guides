@@ -349,9 +349,9 @@ console.log(MyApp.userController.get('name')); // Jim
 
 NOTE: One very important difference between bindings and observers is that observers update almost immediately (see Section 3.1: Observer Notification), while bindings update only at the end of each run loop. This offers considerable improvements in performance, but can be confusing if you are acting outside the normal SproutCore context - for instance, when using a console. See 'The Run Loop' for more details.
 
-In this example, we used the absolute path to the property. Bindings also support relative properties and chained properties as well.
+In this example, we used the absolute path to the property. Bindings support relative properties and chained properties as well.
 
-As you can also see, when you update the value in one location, it is updated in the other. By defaults bindings are bi-directional but you can also set them to only go in one direction by using +SC.Binding.oneWay+ instead. In this case the local property (where the binding is defined) will be updated when the remote property changes, but changes to the local property will not propagate to the remote property.  
+As you can also see, when you update the value in one location, it is updated in the other. By default bindings are bi-directional but you can also set them to only go in one direction by using +SC.Binding.oneWay+ instead. In this case the local property (where the binding is defined) will be updated when the remote property changes, but changes to the local property will not propagate to the remote property.  
 
 h4. Bindings Shorthand
 
