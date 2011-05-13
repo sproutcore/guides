@@ -37,7 +37,7 @@ var array = [1,2,3];
 array.forEach(array.removeObject, array);
 </javascript>
 
-NOTE: This second parameter helps work around a limitation of JavaScript which sets the value of +this+ to methods used this way to +window+.
+NOTE: This second parameter helps work around a limitation of JavaScript which sets the value of +this+ to +window+ in methods used this way.
 
 h3. Enumerables in SproutCore
 
