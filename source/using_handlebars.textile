@@ -433,7 +433,7 @@ h3. Displaying a List of Items
 If you need to display a basic list of items, use Handlebar's +{{each}}+ helper:
 
 <javascript>
-MyApp.PeopleView = SC.View.extend({
+MyApp.PeopleView = SC.TemplateView.extend({
   people: [ SC.Object.create({ name: 'Steph'}),
             SC.Object.create({ name: 'Tom' }) ]
 });
