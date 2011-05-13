@@ -6,7 +6,9 @@ endprologue.
 
 h3. How to Contribute?
 
-First, you will need to fork the SproutCore guides repository from Github. Go to https://github.com/sproutcore/sproutguides and click the Fork button. Then, check your forked copy out onto your local machine.
+First, you will need to fork the SproutCore guides repository from Github.
+
+Go to +https://github.com/sproutcore/sproutguides+ and fork it. Then, check your forked copy out onto your local machine.
 
 <shell>
 $ git clone git@github.com:<yourname>/sproutguides.git
@@ -30,7 +32,7 @@ $ git fetch upstream
 $ git checkout -b <branchName> upstream/master
 </shell>
 
-TIP:  The -b switch is the branch name you are creating.  When the time comes to push your changes back to the remote server you will need this name.  Everyone will see this name, so choose wisely.
+TIP: The -b switch is the branch name you are creating. When the time comes to push your changes back to the remote server you will need this name. Everyone will see this name, so choose wisely.
 
 This will create a new branch for you to work on your new guide or to edit an existing guide. Next, you will need to get the +guides+ executable.
 
@@ -63,7 +65,9 @@ $ bundle install --binstubs
 
 The above commands will download the source, compile and install the +guides+ executable in the +bin+ sub-directory.
 
-For the rest of this guide, when the +guides+ command is referenced, prefix it with +bin+. For instance, if you are instructed to run <tt>guides preview</tt>, instead run <tt>bin/guides preview</tt>.
+TIP: This action may take a while to download and place everithing in place for local usage.
+
+For the rest of this guide, when the +guides+ command is referenced, prefix it with +bin+. For instance, if you are instructed to run +guides preview+, instead run +bin/guides preview+.
 
 h3. Create Your Guide
 
@@ -85,7 +89,7 @@ h3. Topics Should Use h3
 Each topic should use an h3.
 </plain>
 
-To preview your guide as you write it, run the +preview+ command.
+To preview your guide as you write it, run the +guides preview+ command.
 
 <shell>
 $ guides preview
@@ -94,13 +98,13 @@ $ guides preview
 >> Listening on 0.0.0.0:9292, CTRL+C to stop
 </shell>
 
-Go to +http://localhost:9292/&lt;your_guide_name&gt;.html+ in a browser. After making a change, refresh to see it update live.
+Go to +http://localhost:9292/<your_guide_name>.html+ in a browser. After making a change, refresh to see it update live.
 
 If you do not see your changes, check the terminal window where you ran the +preview+ command for error messages.
 
-h3. Updating +guides.yml+
+h4. Updating +guides.yml+
 
-You will also want to update the main +guides.yml+ in the root of the repository with your new guide. First, decide which section your guide will go under. In general, new guides will go under the <tt>Digging Deeper</tt> section.
+You will also want to update the main +guides.yml+ in the root of the repository with your new guide. First, decide which section your guide will go under. In general, new guides will go under the +Digging Deeper+ section.
 
 Next, create a new entry for your guide. You will need to decide on a title and description. For the URL, enter the filename you used for your guide, without the +.textile+ ending. For example, if +<your_guide_name>+ happens to be +weebles+, then your entry will look something like this:
 
@@ -130,7 +134,7 @@ Next, submit a pull request from your repository. Make sure to make the pull req
 
 h3. Some Guidelines
 
-* Guides are written in a modified Textile. For examples take a look at existing guides, or some of the "Rails Guides":https://github.com/rails/rails/tree/master/railties/guides/source for some examples
+* Guides are written in a modified Textile. For examples take a look at existing guides, or some of the "Rails Guides":https://github.com/rails/rails/tree/master/railties/guides/source for some examples.
 * For now, follow the "Rails Guides Conventions":https://github.com/lifo/docrails/wiki/rails-guides-conventions.
 * Assets are stored in the +assets+ directory.
 * Sample format: "Fixtures":http://github.com/sproutcore/sproutguides/blob/master/source/fixtures.textile.
@@ -164,6 +168,6 @@ Documentation requests and questions can be posted on the "SproutCore mailing li
 
 h3. Contact
 
-* IRC : "#sproutcore-dev":irc://irc.freenode.net/sproutcore-dev
+* IRC: "#sproutcore-dev":irc://irc.freenode.net/sproutcore-dev
 * Twitter: "@sproutcore":http://twitter.com/#!/sproutcore
-* Email : TBD
+* Email: TBD
