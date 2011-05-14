@@ -71,7 +71,7 @@ workspaceView: SC.WorkspaceView.design({
 })
 </javascript>
 
-Our UI is starting to come together. We can see where we're going to have our contacts listed and where their details will be displayed. The +dividerThickness+ is just a aesthetic property since the default really fat/ +defaultThickness+ will make our fixed view--in this case the +topLeftView+--300 pixels wide.
+Our UI is starting to come together. We can see where we're going to have our contacts listed and where their details will be displayed. The +dividerThickness+ is just a aesthetic property since the default +defaultThickness+ will make our fixed view--in this case the +topLeftView+--300 pixels wide.
 
 NOTE: When you use values less than 1 for dimensions in SproutCore they're interpreted as percentages. E.g. +width: 0.5+ tells SproutCore that you want it to be 50% wide.
 
@@ -111,7 +111,7 @@ bottomRightView: SC.View.design({
 })
 </javascript>
 
-The labels are wrapped in +contactDetails+ so they can be cushioned from the edges of the parent view to see them better. +phoneLabel+ and +addressLabel+ are given a +top+ to clear each other so they don't overlap, and +addressLabel+ is given a large +height+ so a long address can wrap within the label. Right now these labels are only placeholders until we hook their values to a binding.
+The labels are wrapped in +contactDetails+ so they can be cushioned from the edges of the parent view to see them better. +phoneLabel+ and +addressLabel+ are given a +top+ to clear each other so they don't overlap, and +addressLabel+ is given a large +height+ so a long address can wrap within the label. Right now these LabelViews are only placeholders until we hook their values to a binding.
 
 h3. Binding Views to Controllers
 
@@ -191,7 +191,7 @@ bottomRightView: SC.View.design({
 })
 </javascript>
 
-NOTE: Using +SC.Binding.oneWay+ is not necessary here, but using one way bindings when you don't need changes from the view reflected back to the controller--which is the case for these label views--is more performant.
+NOTE: Using +SC.Binding.oneWay+ is not necessary here, but using one way bindings when you don't need changes from the view reflected back to the controller--which is the case for these label views--gives better performance.
 
 The contact information will now change automatically whenever a new contact is selected.
 
@@ -261,7 +261,7 @@ Now we have nice looking instructions for when a user first starts using the app
 
 h4. The render and update Methods
 
-The +render+ method is used to generate the view's HTML and is called whenever the view first renders itself and any subsequent updates to the view can be handled by an +update+ method after that.
+The +render+ method is used to generate the view's HTML and is called whenever the view first renders itself. Any subsequent updates to the view can be handled by an +update+ method.
 
 NOTE: As soon as you start overriding methods such as +render+ and +update+, your views really need to be in their own files under the +views+ directory.  A good rule of thumb is that +main_page.js+ should never have anything longer than a one line function.
 
