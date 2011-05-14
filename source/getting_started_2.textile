@@ -15,7 +15,7 @@ In the "first part of this guide":getting_started.html, you learned how to build
 
 The best way to change that is to use SproutCore's Data Store framework to manage records. An instance of +SC.Store+ is responsible for managing the lifecycle of your records. Behind the scenes, the store uses an +SC.DataSource+ to translate retrieve data from your server and persist changes back.
 
-If you still have your Todos app from Part 1, use that. If not, you can get a "completed version from GitHub":https://www.github.com/sproutcore/Todos-Example.
+If you still have your Todos app from the first part of this guide, use that. If not, you can get a "completed version":https://www.github.com/sproutcore/Todos-Example from GitHub.
 
 Now that we'll be using the Data Store, we need to tell SproutCore to include it when your run your application. You can add this dependency in the Buildfile. Just change +config+ line to:
 
