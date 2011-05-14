@@ -11,7 +11,7 @@ endprologue.
 
 h3. Introduction
 
-After you've created your first SproutCore project, you'll notice the file +main_page.js+ in your resources folder. This is the main page that your app appends to the DOM in your +main+ function. Let's start by looking at what every SproutCore project starts with as it's main page:
+After you've created your first SproutCore project, you'll notice the file +main_page.js+ in your resources folder. This is the main page that your app appends to the DOM in your +main+ function. Let's start by looking at what every SproutCore project starts with as its main page:
 
 INFO: The file +main_page.js+ is included into the application's resources folder when using <code>sc-init</code> without the <code>--template</cpde> param.
 
@@ -35,10 +35,9 @@ To understand what all of this means, we'll have to look at and understand what 
 App.getPath('mainPage.mainPane').append();
 </javascript>
 
-+App.mainPage.mainPane+ is an +SC.MainPane+ which is itself an +SC.Pane+. There will probably be many panes in your app because a pane is just like a regular view except that it doesn't need to live within a parent view. These can be anything from a pallette to a popup to a menu. In this case, our pane is an +SC.MainPane+ which automatically makes itself the main pane as soon as
-it's appended to the doument.
++App.mainPage.mainPane+ is an +SC.MainPane+ which is itself an +SC.Pane+.  There will probably be many panes in your app because a pane is just like a regular view except that it doesn't need to live within a parent view. These can be anything from a palette to a popup to a menu. In this case, our pane is an +SC.MainPane+ which automatically makes itself the main pane as soon as it's appended to the doument.
 
-Our main pane is configured with only one +childView+, an +SC.LabelView+.  SproutCore uses absolute positioning to layout it's views, and this label view is no different. Giving it a width and height allows us to center the label directly into the center of the page using +centerX+ and +centerY+ which specify how many pixels offset from the center we'd like the view.
+Our main pane is configured with only one +childView+, an +SC.LabelView+.  SproutCore uses absolute positioning to lay out its views, and this label view is no different. Giving it a width and height allows us to place the label directly in the center of the page using +centerX+ and +centerY+. These attributes specify how many pixels offset from the center we'd like the view.
 
 NOTE: The +w+ function splits a string by spaces and turns it into an array.  We could have accomplished the same thing by using +childViews:['labelView']+.
 
@@ -198,7 +197,7 @@ The contact information will now change automatically whenever a new contact is 
 
 h3. Custom View Styling and Rendering
 
-SproutCore provides three ways to customize how your view looks. You can simply give it a class name and add it to the view's +classNames+ array property to style it using CSS, override it's +render+ method to use it's own custom HTML, or use an +SC.RenderDelegate+ to render and update all views of the view type.
+SproutCore provides three ways to customize how your view looks. You can simply give it a class name and add it to the view's +classNames+ array property to style it using CSS, override its +render+ method to use its own custom HTML, or use an +SC.RenderDelegate+ to render and update all views of the view type.
 
 h4. Using CSS to Style a View
 
