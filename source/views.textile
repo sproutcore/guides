@@ -115,7 +115,7 @@ The labels are wrapped in +contactDetails+ so they can be cushioned from the edg
 
 h3. Binding Views to Controllers
 
-Instead of having our source list content and our label values in our views, let's bind them to some controllers. We'll start by creating an <code>SC.ArrayController</code> for our list of contacts:
+Instead of having our source list content and our label values in our views, let's bind them to some controllers. We'll start by creating an +SC.ArrayController+ for our list of contacts:
 
 <javascript filename="apps/app/controllers/contacts.js">
 App.contactsController = SC.ArrayController.create({
@@ -147,7 +147,7 @@ App.contactsController = SC.ArrayController.create({
 
 Because we are only going to be working with one object at a time, +allowsMultipleSelection: NO+ will restrict the ability to select only one item.
 
-And then an SC.ObjectController that proxies our selected object:
+And then an +SC.ObjectController+ that proxies individual contact objects:
 
 <javascript filename="apps/my_app/controllers/contact.js">
 MyApp.contactController = SC.ObjectController.create({
@@ -275,7 +275,7 @@ CreepyApp.CharlesJolleyView = SC.View.extend({
 });
 </javascript>
 
-You can also use +context.begin()+ and +context.end()+ to begin building a tag and push arguments that are "stringable" (have a toString) into it:
+You can also use +context.begin()+ and +context.end()+ to begin building a tag and push arguments that are "stringable" (have a +toString+ method) into it:
 
 <javascript filename="apps/creepy_app/views/charles_jolley.js">
 CreepyApp.CharlesJolleyView = SC.View.extend({
@@ -315,7 +315,7 @@ CreepyApp.CharlesJolleyView = SC.View.extend({
 })
 </javascript>
 
-Say we wanted to make the name of the contact bigger in the details. To do this, let's create a custom view called +App.ContactNameView+ that will put the contact name in an h1 tag:
+Say we wanted to make the name of the contact bigger in the details. To do this, let's create a custom view called +App.ContactNameView+ that will put the contact name in an +h1+ tag:
 
 <javascript filename="apps/app/views/contact_name.js">
 App.ContactNameView = SC.View.extend({
