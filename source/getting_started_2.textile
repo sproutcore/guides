@@ -1,4 +1,4 @@
-h2. Getting Started With HTML-Based Apps Part 2
+h2. Getting Started: Part 2
 
 After reading this guide you will be able to:
 
