@@ -2,16 +2,16 @@ h2. The SproutCore Enumerable API
 
 This guide covers how to work with enumerable SproutCore objects, like Arrays, Sets, ArrayControllers, and RecordArrays. When you are done with this guide, you should be able to:
 
-* Identify the SproutCore enumerable objects
-* Fluently work with enumerable objects using the +Enumerable+ interface
+* Identify the SproutCore enumerable objects.
+* Fluently work with enumerable objects using the Enumerable interface.
 
 endprologue.
 
 h3. What Are Enumerables?
 
-In SproutCore, an +Enumerable+ is any object that contains a number of child objects, and which allows you to work with those children using the +Enumerable+ interface. The most basic +Enumerable+ is the built-in JavaScript +Array+.
+In SproutCore, an Enumerable is any object that contains a number of child objects, and which allows you to work with those children using the Enumerable interface. The most basic Enumerable is the built-in JavaScript Array.
 
-For instance, all <tt>Enumerable</tt>s support the standard +forEach+ method:
+For instance, all Enumerables support the standard +forEach+ method:
 
 <javascript>
 [1,2,3].forEach(function(item) {
@@ -19,7 +19,7 @@ For instance, all <tt>Enumerable</tt>s support the standard +forEach+ method:
 });
 </javascript>
 
-In general, +Enumerable+ methods, like +forEach+, take an optional second parameter, which will become the value of +this+ in the callback function:
+In general, Enumerable methods, like +forEach+, take an optional second parameter, which will become the value of +this+ in the callback function:
 
 <javascript>
 var array = [1,2,3];
@@ -29,7 +29,7 @@ array.forEach(function(item) {
 }, array)
 </javascript>
 
-Among other reasons, you will find this useful when using another +Enumerable+ method as a callback to +forEach+:
+Among other reasons, you will find this useful when using another Enumerable method as a callback to +forEach+:
 
 <javascript>
 var array = [1,2,3];
@@ -43,10 +43,10 @@ h3. Enumerables in SproutCore
 
 In general, SproutCore objects that represent lists implement the Enumerable interface. Some examples:
 
-* *Array*: SproutCore extends the native JavaScript Array with the Enumerable interface
+* *Array*: SproutCore extends the native JavaScript Array with the Enumerable interface.
 * *ArrayController*: A construct that wraps a native Array and adds additional functionality for the view layer.
 * *SparseArray*: An Array-like object that will incrementally load in ranges as they are needed by the view layer.
-* *RecordArray*: An Array-like object that represents a list of Record objects. <tt>RecordArray</tt>s are "live", and the Data Store can update them when new data comes in from the backend.
+* *RecordArray*: An Array-like object that represents a list of Record objects. RecordArray's are "live", and the Data Store can update them when new data comes in from the backend.
 * *Set*: An object that can quickly answer whether it includes an object.
 
 h3. The Enumerable Interface
@@ -55,9 +55,9 @@ h4. Parameters
 
 The callbacks to Enumerable methods take three arguments:
 
-* +item+: the item for the current iteration
-* +index+: an Integer, counting up from 0
-* +self+: the Enumerable itself
+* *item*: the item for the current iteration.
+* *index*: an Integer, counting up from 0.
+* *self*: the Enumerable itself.
 
 h4. Enumeration
 
@@ -86,15 +86,14 @@ var people = [
 
 people.invoke('sayHello');
 
-// will output:
-//   Hello from Juan
-//   Hello from Charles
-//   Hello from Majd
+// Hello from Juan
+// Hello from Charles
+// Hello from Majd
 </javascript>
 
 h4. First and Last
 
-You can get the first or last object from an Enumerable by +get+ing +firstObject+ or +lastObject+.
+You can get the first or last object from an Enumerable by getting +firstObject+ or +lastObject+.
 
 <javascript>
 [1,2,3].get('firstObject') // 1
@@ -110,7 +109,7 @@ h4. Transforming
 You can transform an Enumerable into a derived Array by using the +map+ method:
 
 <javascript>
-["Goodbye", "cruel", "world"].map(function(item, index, self) {
+['Goodbye', 'cruel', 'world'].map(function(item, index, self) {
   return item + "!";
 });
 
@@ -155,8 +154,8 @@ Todo = SC.Object.extend({
 });
 
 todos = [
-  Todo.create({title: "Write code", isDone: true}),
-  Todo.create({title: "Go to sleep"})
+  Todo.create({ title: 'Write code', isDone: true }),
+  Todo.create({ title: 'Go to sleep' })
 ];
 
 todos.filterProperty('isDone', true);
@@ -172,9 +171,9 @@ You can sort an Enumerable based on the value of some property or list of proper
 
 <javascript>
 var todos = [
-  Todo.create({title: "Write code", isDone: true}),
-  Todo.create({title: "Go to sleep"}),
-  Todo.create({title: "Eat lunch", isDone: true})
+  Todo.create({ title: 'Write code', isDone: true }),
+  Todo.create({ title: 'Go to sleep' }),
+  Todo.create({ title: 'Eat lunch', isDone: true })
 ];
 
 todos.sortProperty('isDone', 'title');
@@ -185,7 +184,7 @@ todos.sortProperty('isDone', 'title');
 // * Write code
 </javascript>
 
-Internally, the +sortProperty+ method uses +SC.compare+, which uses SproutCore's comparable semantics. You can override the default comparison behavior for a custom object by using the SC.Comparable mixin.
+Internally, the +sortProperty+ method uses +SC.compare+, which uses SproutCore's comparable semantics. You can override the default comparison behavior for a custom object by using the +SC.Comparable+ mixin.
 
 h4. Aggregate Information (All or Any)
 
@@ -197,9 +196,9 @@ Person = SC.Object.extend({
   isHappy: false
 });
 
-var people = [
-  Person.create({ name: "Yehuda", isHappy: true }),
-  Person.create({ name: "Majd", isHappy: false })
+var people = [          
+  Person.create({ name: 'Yehuda', isHappy: true }),
+  Person.create({ name: 'Majd', isHappy: false })
 ];
 
 people.every(function(person, index, self) {
