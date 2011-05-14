@@ -58,7 +58,7 @@ App.mainPage = SC.Page.design({
 
 NOTE: The class method +design+ performs like +extend+ and may register with SproutCore's +designer+ framework, which is the basis of the interface builder, Greenhouse. You should never use +design+ outside of a page definition.
 
-We now have a nice toolbar on the top of the page, but we still don't have a list of any contacts. If we want a list on the right and details on the left, it sounds like +SC.SplitView+ is the perfect view to do that, so let's make that our +contentView+:
+We now have a nice toolbar on the top of the page, but we still don't have a list of any contacts. If we want a list on the left and details on the right, it sounds like +SC.SplitView+ is the perfect view to do that, so let's make that our +contentView+:
 
 <javascript filename="in apps/app/resoureces/main_page.js">
 workspaceView: SC.WorkspaceView.design({
