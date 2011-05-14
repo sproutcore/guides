@@ -58,7 +58,7 @@ NOTE: +design+ performs like +extend+ and may register with SproutCore's +design
 
 We now have a nice toolbar on the top of the page, but we still don't have a list of any contacts. If we want a list on the left and details on the right, it sounds like +SC.SplitView+ is the perfect view to do that, so let's make that our +contentView+:
 
-<javascript filename="in apps/my_app/resoureces/main_page.js">
+<javascript filename="in apps/my_app/resources/main_page.js">
 workspaceView: SC.WorkspaceView.design({
   contentView: SC.SplitView.design({
     dividerThickness: 1,
@@ -192,7 +192,7 @@ SproutCore provides three ways to customize how your view looks. You can simply 
 
 h4. Using CSS to Style a View
 
-Let's make the interface a bit more visually appealing and user friendly by giving a usage hint when no contact has been selected yet. We ca create a generic view and add the class name +myapp-usage-hint+ to the +classNames+ array, and then a label view as a child to display the hint: Our +bottomRightView+ should now look like this:
+Let's make the interface a bit more visually appealing and user friendly by giving a usage hint when no contact has been selected yet. We can create a generic view and add the class name +myapp-usage-hint+ to the +classNames+ array, and then a label view as a child to display the hint. Our +bottomRightView+ should now look like this:
 
 <javascript filename="in apps/my_app/resources/main_page.js">
 bottomRightView: SC.View.design({
@@ -344,7 +344,7 @@ MyApp.ContactNameView = SC.View.extend({
 });
 </javascript>
 
-TIP: For a more detailed overview of themeing see "Theming Your App":theming_app.html
+TIP: For a more detailed overview of theming see "Theming Your App":theming_app.html
 
 h3. View Events
 
