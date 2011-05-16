@@ -49,7 +49,7 @@ My new car is {{color}}.
 This will look up and print the TemplateView's +color+ property. For example, if your view looks like this:
 
 <javascript>
-MyApp.CarView = SC.TemplateView.extend({
+App.CarView = SC.TemplateView.extend({
   color: 'blue'
 });
 </javascript>
@@ -81,7 +81,7 @@ h4. {{#if}}, {{else}}, and {{#unless}}
 Sometimes you may only want to display part of your template if a property exists. For example, let's say we have a view with a +person+ property that contains an object with +firstName+ and +lastName+ fields:
 
 <javascript>
-SC.SayHelloView = SC.TemplateView.extend({
+App.SayHelloView = SC.TemplateView.extend({
   person: SC.Object.create({
     firstName: "Joy",
     lastName: "Clojure"
@@ -117,7 +117,7 @@ To only render a block if a value is falsy, use +{{#unless}}+:
 {{/unless}}
 </html>
 
-+{{#if}}+ and +{{#unless}}+ are examples of block expressions. These allow you to invoke a helper with a portion of your template. Block expressions look like normal expressions except that they contain a hash before the helper name, and require a closing expression.
++{{#if}}+ and +{{#unless}}+ are examples of block expressions. These allow you to invoke a helper with a portion of your template. Block expressions look like normal expressions except that they contain a hash (#) before the helper name, and require a closing expression.
 
 h4. {{#with}}
 
@@ -136,9 +136,9 @@ h4. Binding Element Attributes with {{bindAttr}}
 In addition to text, you may also want your templates to dictate the attributes of your HTML elements. For example, imagine a view that contains a URL:
 
 <javascript>
-  SC.LogoView = SC.TemplateView.extend({
-    logoUrl: 'http://www.mycorp.com/images/logo.png'
-  });
+App.LogoView = SC.TemplateView.extend({
+  logoUrl: 'http://www.mycorp.com/images/logo.png'
+});
 </javascript>
 
 The best way to display the URL as an image in Handlebars is like this:
@@ -159,7 +159,7 @@ This generates the following HTML:
 If you use +{{bindAttr}}+ with a Boolean value, it will add or remove the specified attribute. For example, given this SproutCore view:
 
 <javascript>
-SC.InputView = SC.TemplateView.extend({
+App.InputView = SC.TemplateView.extend({
   isSelected: true
 });
 </javascript>
@@ -180,7 +180,7 @@ h4. Binding Class Names with {{bindAttr}}
 The +class+ attribute can be bound like any other attribute, but it also has some additional special behavior. The default behavior works like you'd expect:
 
 <javascript>
-SC.AlertView = SC.TemplateView.extend({
+App.AlertView = SC.TemplateView.extend({
   priority: "p4",
   isUrgent: true
 });
@@ -242,7 +242,7 @@ To add a child view to a parent, use the +{{view}}+ helper, which takes a path t
 
 <javascript>
 // Define parent view
-MyApp.UserView = SC.TemplateView.extend({
+App.UserView = SC.TemplateView.extend({
   templateName: 'user',
 
   firstName: "Albert",
@@ -250,7 +250,7 @@ MyApp.UserView = SC.TemplateView.extend({
 });
 
 // Define child view
-MyApp.InfoView = SC.TemplateView.extend({
+App.InfoView = SC.TemplateView.extend({
   templateName: 'info',
 
   posts: 25,
@@ -260,7 +260,7 @@ MyApp.InfoView = SC.TemplateView.extend({
 
 <html filename="user.handlebars">
 User: {{firstName}} {{lastName}}
-{{view MyApp.InfoView}}
+{{view App.InfoView}}
 </html>
 
 <html filename="info.handlebars">
@@ -269,7 +269,7 @@ User: {{firstName}} {{lastName}}
 <b>Hobbies:</b> {{hobbies}}
 </html>
 
-If we were to create an instance of MyApp.UserView and render it, we would get a DOM representation like this:
+If we were to create an instance of <code>App.UserView</code> and render it, we would get a DOM representation like this:
 
 <html>
 User: Albert Hofmann
@@ -285,7 +285,7 @@ h4. Relative Paths
 Instead of specifying an absolute path, you can also specify which view class to use relative to the parent view. For example, we could nest the above view hierarchy like this:
 
 <javascript>
-MyApp.UserView = SC.TemplateView.extend({
+App.UserView = SC.TemplateView.extend({
   templateName: 'user',
 
   firstName: "Albert",
@@ -310,14 +310,14 @@ h4. Setting Child View Templates
 If you'd like to specify the template your child views use (instead of having to place them in a separate Handlebars file), you can use the block form of the +{{view}}+ helper. We might rewrite the above example like this:
 
 <javascript>
-MyApp.UserView = SC.TemplateView.extend({
+App.UserView = SC.TemplateView.extend({
   templateName: 'user',
 
   firstName: "Albert",
   lastName: "Hofmann"
 });
 
-MyApp.InfoView = SC.TemplateView.extend({
+App.InfoView = SC.TemplateView.extend({
   posts: 25,
   hobbies: "Riding bicycles"
 });
@@ -325,23 +325,23 @@ MyApp.InfoView = SC.TemplateView.extend({
 
 <html filename="user.handlebars">
 User: {{firstName}} {{lastName}}
-{{#view MyApp.InfoView}}
+{{#view App.InfoView}}
   <b>Posts:</b> {{posts}}
   <br>
   <b>Hobbies:</b> {{hobbies}}
 {{/view}}
 </html>
 
-When you do this, it may be helpful to think of it as __assigning__ views to portions of the page. This allows you to encapsulate event handling for just that part of the page.
+When you do this, it may be helpful to think of it as assigning views to portions of the page. This allows you to encapsulate event handling for just that part of the page.
 
 h4. Setting Up Bindings
 
-So far in our examples, we have been setting static values directly on the views. But to best implement an MVC architecture, we should actually be __binding__ the properties of our views to the controller layer.
+So far in our examples, we have been setting static values directly on the views. But to best implement an MVC architecture, we should actually be binding the properties of our views to the controller layer.
 
 Let's set up a controller to represent our user data:
 
 <javascript>
-MyApp.userController = SC.ObjectController.create({
+App.userController = SC.ObjectController.create({
   content: SC.Object.create({
     firstName: "Albert",
     lastName: "Hofmann",
@@ -351,25 +351,25 @@ MyApp.userController = SC.ObjectController.create({
 });
 </javascript>
 
-INFO: An SC.ObjectController is a controller that serves as a proxy to another object, contained in the controller's +content+ property. If you want to change the object that your views are displaying, just set the +content+ property to the new object. Since your views are all bound to the controller, they will update automatically without having to reconfigure their bindings.
+INFO: An <code>SC.ObjectController</code> is a controller that serves as a proxy to another object, contained in the controller's +content+ property. If you want to change the object that your views are displaying, just set the +content+ property to the new object. Since your views are all bound to the controller, they will update automatically without having to reconfigure their bindings.
 
-Now let's update MyApp.UserView to bind to MyApp.userController:
+Now let's update <code>App.UserView</code> to bind to <code>App.userController</code>:
 
 <javascript>
-MyApp.UserView = SC.TemplateView.extend({
+App.UserView = SC.TemplateView.extend({
   templateName: 'user',
 
-  firstNameBinding: 'MyApp.userController.firstName',
-  lastNameBinding: 'MyApp.userController.lastName'
+  firstNameBinding: 'App.userController.firstName',
+  lastNameBinding: 'App.userController.lastName'
 });
 </javascript>
 
-When we only have a few bindings to configure, like with MyApp.InfoView, it is sometimes useful to be able to declare those bindings in the template. You can do that by passing additional arguments to the +{{view}}+ helper. If all you're doing is configuring bindings, this often allows you to bypass having to create a new subclass.
+When we only have a few bindings to configure, like with <code>App.InfoView</code>, it is sometimes useful to be able to declare those bindings in the template. You can do that by passing additional arguments to the +{{#view}}+ helper. If all you're doing is configuring bindings, this often allows you to bypass having to create a new subclass.
 
 <html filename="user.handlebars">
 User: {{firstName}} {{lastName}}
-{{#view MyApp.InfoView postsBinding="MyApp.userController.posts"
-        hobbiesBinding="MyApp.userController.hobbies"}}
+{{#view App.InfoView postsBinding="App.userController.posts"
+        hobbiesBinding="App.userController.hobbies"}}
   <b>Posts:</b> {{posts}}
   <br>
   <b>Hobbies:</b> {{hobbies}}
@@ -382,16 +382,16 @@ h4. Modifying a View's HTML
 
 When you append a view, it creates a new HTML element that holds its content. If your view has any child views, they will also be displayed as child nodes of the parent's HTML element.
 
-By default, new instances of SC.View create a +<div>+ element. You can override this by passing a +tagName+ parameter:
+By default, new instances of <code>SC.View</code> create a +<div>+ element. You can override this by passing a +tagName+ parameter:
 
 <html>
-{{view MyApp.InfoView tagName="span"}}
+{{view App.InfoView tagName="span"}}
 </html>
 
 You can also assign an ID attribute to the view's HTML element by passing an +id+ parameter:
 
 <html>
-{{view MyApp.InfoView id="info-view"}}
+{{view App.InfoView id="info-view"}}
 </html>
 
 This makes it easy to style using CSS ID selectors:
@@ -406,20 +406,20 @@ This makes it easy to style using CSS ID selectors:
 You can assign class names similarly:
 
 <html>
-{{view MyApp.InfoView class="info urgent"}}
+{{view App.InfoView class="info urgent"}}
 </html>
 
 You can bind class names to a property of the view by using +classBinding+ instead of +class+. The same behavior as described in +bindAttr+ applies:
 
 <javascript>
-SC.AlertView = SC.TemplateView.extend({
+App.AlertView = SC.TemplateView.extend({
   priority: "p4",
   isUrgent: true
 });
 </javascript>
 
 <html>
-{{view MyApp.AlertView classBinding="isUrgent priority"}}
+{{view App.AlertView classBinding="isUrgent priority"}}
 </html>
 
 This yields a view wrapper that will look something like this:
@@ -430,11 +430,11 @@ This yields a view wrapper that will look something like this:
 
 h3. Displaying a List of Items
 
-If you need to display a basic list of items, use Handlebar's +{{each}}+ helper:
+If you need to display a basic list of items, use Handlebar's +{{#each}}+ helper:
 
 <javascript>
-MyApp.PeopleView = SC.TemplateView.extend({
-  people: [ SC.Object.create({ name: 'Steph'}),
+App.PeopleView = SC.TemplateView.extend({
+  people: [ SC.Object.create({ name: 'Steph' }),
             SC.Object.create({ name: 'Tom' }) ]
 });
 </javascript>
@@ -456,62 +456,62 @@ This will print a list like this:
 
 h4. SC.TemplateCollectionView
 
-Sometimes you will need each item in your list to handle events. In that case, you will need more sophistication than what +{{each}}+ can provide. You can use the +{{collection}}+ helper to create a new SC.TemplateCollectionView. You can bind the instance of SC.TemplateCollectionView to an array, and it will create a new SC.TemplateView for each item.
+Sometimes you will need each item in your list to handle events. In that case, you will need more sophistication than what +{{#each}}+ can provide. You can use the +{{#collection}}+ helper to create a new <code>SC.TemplateCollectionView</code>. You can bind the instance of <code>SC.TemplateCollectionView</code> to an array, and it will create a new <code>SC.TemplateView</code> for each item.
 
-Usually, you will bind the collection to an SC.ArrayController, like this:
+Usually, you will bind the collection to an <code>SC.ArrayController</code>, like this:
 
 <javascript>
-MyApp.peopleController = SC.ArrayController.create({
+App.peopleController = SC.ArrayController.create({
   content: ['Steph', 'Tom', 'Ryan', 'Chris', 'Jill']
 });
 </javascript>
 
 <html>
-{{#collection SC.TemplateCollectionView contentBinding="MyApp.peopleController"}}
+{{#collection SC.TemplateCollectionView contentBinding="App.peopleController"}}
   Hi, {{content}}!
 {{/collection}}
 </html>
 
 NOTE: The template you pass to the block helper will look up properties relative to each child view. To access the item in the array that the view should represent, refer to the +content+ property via {{content}}.
 
-Remember that under the hood, SC.TemplateCollectionView creates a new view for each item in the bound array. By default, each new view will be an instance of SC.TemplateView. You can tell the collection which type of view to create instances of by subclassing SC.TemplateCollectionView and supplying a custom class:
+Remember that under the hood, <code>SC.TemplateCollectionView</code> creates a new view for each item in the bound array. By default, each new view will be an instance of <code>SC.TemplateView</code>. You can tell the collection which type of view to create instances of by subclassing <code>SC.TemplateCollectionView</code> and supplying a custom class:
 
 <javascript>
-MyApp.PeopleCollectionView = SC.TemplateCollectionView.extend({
+App.PeopleCollectionView = SC.TemplateCollectionView.extend({
   itemView: SC.TemplateView.extend({
     mouseDown: function(evt) {
-      window.alert('You clicked on '+this.get('content'));
+      window.alert('You clicked on ' + this.get('content'));
     }
   })
 });
 </javascript>
 
 <html>
-{{#collection MyApp.PeopleCollectionView contentBinding="MyApp.peopleController"}}
+{{#collection App.PeopleCollectionView contentBinding="App.peopleController"}}
   Hi, {{content}}!
 {{/collection}}
 </html>
 
 If you run this code, you should see an alert every time you click on one of the items.
 
-The +{{collection}}+ helper takes the same options as +{{view}}+, as described above. For example, you can set an HTML +id+ attribute on the SC.TemplateCollectionView's container like this:
+The +{{#collection}}+ helper takes the same options as +{{#view}}+, as described above. For example, you can set an HTML +id+ attribute on the container of <code>SC.TemplateCollectionView</code> like this:
 
 <html>
-{{collection MyApp.MyCollectionView id="my-collection"}}
+{{collection App.MyCollectionView id="my-collection"}}
 </html>
 
 What if you want to set the class name of every child view, though? If you prepend an option with +item+, that option will instead be set on the child. For example, let's say you wanted to set a class name on each item in your collection:
 
 <html>
-{{collection MyApp.MyCollectionView itemClass="collection-item"}}
+{{collection App.MyCollectionView itemClass="collection-item"}}
 </html>
 
 h3. Using SC.TemplateView Inside Desktop Controls
 
-If you're building a desktop-style application, you can get the best of both native and web worlds by integrating SC.TemplateViews into SproutCore's other controls. For example, you can easily embed an SC.TemplateView inside an SC.ScrollView:
+If you're building a desktop-style application, you can get the best of both native and web worlds by integrating <code>SC.TemplateViews</code> into SproutCore's other controls. For example, you can easily embed an <code>SC.TemplateView</code> inside an <code>SC.ScrollView</code>:
 
-<javascript filename="apps/myapp/resources/main_page.js">
-MyApp.mainPage = SC.Page.design({
+<javascript filename="apps/app/resources/main_page.js">
+App.mainPage = SC.Page.design({
   mainPane: SC.MainPane.extend({
     childViews: ['scrollView'],
 
