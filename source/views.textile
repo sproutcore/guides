@@ -148,11 +148,11 @@ App.contactsController = SC.ArrayController.create({
 
 Because we are only going to be working with one object at a time, +allowsMultipleSelection: NO+ will restrict the ability to select only one item.
 
-And then an SC.ObjectController that proxies our selected object:
+And then an <code>SC.ObjectController</code> that proxies our selected object:
 
-<javascript filename="apps/my_app/controllers/contact.js">
-MyApp.contactController = SC.ObjectController.create({
-  contentBinding: 'MyApp.contactsController.selection'
+<javascript filename="apps/app/controllers/contact.js">
+App.contactController = SC.ObjectController.create({
+  contentBinding: 'App.contactsController.selection'
 });
 </javascript>
 
