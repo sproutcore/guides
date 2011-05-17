@@ -1,4 +1,4 @@
-h2. Using Records and the Data Store
+h2. SproutCore Records
 
 This guide covers the basics of SproutCore's model layer. By referring to this guide, you will be able to:
 
