@@ -118,6 +118,7 @@ Instead of having our source list content and our label values in our views, let
 
 <javascript filename="apps/my_app/controllers/contacts.js">
 MyApp.contactsController = SC.ArrayController.create({
+  allowsMultipleSelection: NO,
   content: [
     SC.Object.create({
       name: "Devin Torres",
@@ -141,13 +142,17 @@ MyApp.contactsController = SC.ArrayController.create({
 });
 </javascript>
 
-And then an SC.ObjectController that proxies individual contact objects:
+Because we are only going to be working with one object at a time, +allowsMultipleSelection: NO+ will restrict the ability to select only one item.
+
+And then an SC.ObjectController that proxies our selected object:
 
 <javascript filename="apps/my_app/controllers/contact.js">
 MyApp.contactController = SC.ObjectController.create({
-  contentBinding: SC.Binding.single('MyApp.contactsController.selection')
+  contentBinding: 'MyApp.contactsController.selection'
 });
 </javascript>
+
+NOTE: An object controller will automatically detect if you have a single selection and will automatically set it's content to the only item in the selection set. If you are in the rare case of needing to force a single selection, you can use +SC.Binding.single('MyApp.contactsController.selection')+.
 
 Now we can bind our source list to the +SC.ArrayController+ to get a dynamic list of contacts and individual contact selection support:
 
