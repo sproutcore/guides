@@ -245,6 +245,8 @@ identifying a rectangle:
 }
 </css>
 
+NOTE: The +@include slice()+ directive works just like the CSS +url()+ directive - linking to images is relative to where your CSS file is located. For instance, if your CSS file is located at +apps/your_app/resources/stylesheets/your_app.css+ and your image is +apps/your_app/resources/images/my_image.png+, your URL string would be +"../images/my_image.png"+.
+
 You don't have to specify all parameters. For instance, if you only specify
 a left, the rectangle will go from there to the right edge. If you only
 specify a right, it will go from there to the left edge.
