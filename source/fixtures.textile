@@ -111,7 +111,7 @@ App.Employee.FIXTURES = [
 
 App.Company.FIXTURES = [
   { guid: 1, name: "Strobe, Inc.", employees: [1,2] },
-  { guid: 2, name: "Apple", employees: [3] }
+  { guid: 2, name: "Apple, Inc.", employees: [3] }
 ];
 </javascript>
 
