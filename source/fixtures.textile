@@ -1,17 +1,17 @@
 h2. Using Fixtures
 
-This guide covers the use of fixtures in your app. By referring to this guide, you will be able to:
+This guide covers the use of fixtures in your application. By referring to this guide, you will be able to:
 
-* Understand the purpose of fixtures
-* Write your own fixtures
-* Set up relationships within fixtures
-* Use the fixtures data source
+* Understand the purpose of fixtures.
+* Write your own fixtures.
+* Set up relationships within fixtures.
+* Use the fixtures data source.
 
 endprologue.
 
 h3. The Purpose of Fixtures
 
-Fixtures are a quick and easy way to preload your app with sample data without having to write a custom data source. This is especially useful in the early stages of app development as it allows you to focus on the general app structure without having to be concerned with your app's backend.
+Fixtures are a quick and easy way to preload your application with sample data without having to write a custom data source. This is especially useful in the early stages of development as it allows you to focus on the general structure without having to be concerned with your application's backend.
 
 h4. How Fixtures Work
 
@@ -19,8 +19,8 @@ Fixtures are defined as an array of hashes with each hash containing the attribu
 
 A sample fixture looks something like:
 
-<javascript filename="apps/my_app/fixtures/my_model.js">
-MyApp.MyModel.FIXTURES = [
+<javascript filename="apps/app/fixtures/my_model.js">
+App.MyModel.FIXTURES = [
   { guid: 1,
     firstName: "Michael",
     lastName: "Scott" },
@@ -33,25 +33,25 @@ MyApp.MyModel.FIXTURES = [
 
 h4. Defining Fixtures
 
-SproutCore looks for fixtures assigned to +MyApp.MyModel.FIXTURES+. By convention, fixtures are defined in +my_app/fixtures/my_model.js+. By default fixtures are not included in production builds.
+SproutCore looks for fixtures assigned specifically to a model (i.e. +App.MyModel.FIXTURES+ on the above example). By convention, fixtures are defined in the +app/fixtures+ folder of your application (i.e. +app/fixtures/my_model.js+). By default fixtures are not included in production builds.
 
 NOTE: If you use +sc-gen+ to create your models then you may have noticed that some placeholder fixtures already exist. You will still need to modify these fixtures to suit your needs. Read on to learn how.
 
 h3. Writing Your Own Fixtures
 
-Writing fixtures is relatively straight forward. As you can see in the above example, each item gets its own hash in the format of +propertyName: value+. If your model looks like
+Writing fixtures is relatively straightforward. Each item representing a record gets its own hash in the format of +propertyName: value+. If your model looks like:
 
-<javascript filename="apps/my_app/models/article.js">
-MyApp.Article = SC.Record.extend({
+<javascript filename="apps/app/models/article.js">
+App.Article = SC.Record.extend({
   title: SC.Record.attr(String),
   body:  SC.Record.attr(String)
 });
 </javascript>
 
-then your fixture will look like
+Your fixture will look like:
 
-<javascript filename="apps/my_app/fixtures/article.js">
-MyApp.Article.FIXTURES = [
+<javascript filename="apps/app/fixtures/article.js">
+App.Article.FIXTURES = [
   { guid: 1,
     title: "Writing a SproutCore app",
     body: "Writing a SproutCore app is fun and exciting!" },
@@ -68,29 +68,31 @@ WARNING: You must specify a value for the +primaryKey+ in your fixtures.
 
 h4. Defining Relationships
 
-Since relationships are only specified with the foreign key it is quite easy to set them up in your fixtures. If you have model declaration like the following
+Since relationships are only specified with the foreign key it is quite easy to set them up in your fixtures. If you have model declaration, like the following, where an employee belongs to a company and a company has many employees:
 
-<javascript filename="apps/my_app/models/employee.js">
-MyApp.Employee = SC.Record.extend({
+<javascript filename="apps/app/models/employee.js">
+App.Employee = SC.Record.extend({
   firstName: SC.Record.attr(String),
   lastName:  SC.Record.attr(String),
-  company:   SC.Record.toOne("MyApp.Company", {
-     inverse: "contacts", isMaster: NO
+  company:   SC.Record.toOne("App.Company", {
+     inverse: "contacts",
+     isMaster: NO
   })
 });
 
-MyApp.Company = SC.Record.extend({
+App.Company = SC.Record.extend({
   name:      SC.Record.attr(String),
-  employees: SC.Record.toMany("MyApp.Employee", {
-    inverse: "group", isMaster: YES
+  employees: SC.Record.toMany("App.Employee", {
+    inverse: "group",
+    isMaster: YES
   })
 });
 </javascript>
 
-then you would set up your fixtures like
+You would set up your fixtures like:
 
-<javascript filename="apps/my_app/fixtures/employee.js">
-MyApp.Employee.FIXTURES = [
+<javascript filename="apps/app/fixtures/employee.js">
+App.Employee.FIXTURES = [
   { guid: 1,
     firstName: "Peter",
     lastName:  "Wagenet",
@@ -104,16 +106,16 @@ MyApp.Employee.FIXTURES = [
   { guid: 3,
     firstName: "Juan",
     lastName:  "Pinzon",
-    company: 2 } // Apple
+    company: 2 } // Apple, Inc.
 ];
 
-MyApp.Company.FIXTURES = [
+App.Company.FIXTURES = [
   { guid: 1, name: "Strobe, Inc.", employees: [1,2] },
-  { guid: 2, name: "Apple", employees: [3] }
+  { guid: 2, name: "Apple, Inc.", employees: [3] }
 ];
 </javascript>
 
-When the fixtures are loaded into your app the relationships automatically take over and point to the appropriate records.
+When the fixtures are loaded into your application the relationships automatically take over and point to the appropriate records.
 
 WARNING: Unlike a traditional relational database it is necessary to specify both sides of the relationship.
 
@@ -121,49 +123,44 @@ TIP: When defining the 'many' side of the fixture record, be certain to include 
 
 h4. Defining Non-String Values
 
-The above examples have referred mostly to string values in the fixture. As most data is either passed into the app via JSON or XML, +SC.Record+ is capable of transforming data from a string into the appropriate object type. See +SC.RecordAttribute.registerTransform+ for more information.
+The above examples have referred mostly to string values in the fixture. As most data is either passed into the application via "JSON":http://www.json.org or "XML":http://www.w3.org/XML/, +SC.Record+ is capable of transforming data from a string into the appropriate object type. See +SC.RecordAttribute.registerTransform+ for more information.
 
 h3. Hooking Up Your Fixtures
 
-SproutCore comes with a built in data source for your fixtures. To use the fixtures data source you merely need to set the following in your app's +core.js+
+SproutCore comes with a built-in data source for your fixtures. To use the fixtures data source you merely need to set the following in your application's +core.js+.
 
-<javascript filename="in apps/my_app/core.js">
-MyApp = SC.Application.create({
-  // ...
-
+<javascript filename="in apps/app/core.js">
+App = SC.Application.create({
   store: SC.Store.create().from(SC.Record.fixtures)
-
-  // ...
 });
 </javascript>
 
-You can extend the built in fixture data source to simulate real world performance (important in managing user expectations).
+You can extend the built-in fixture data source to simulate real world performance (important in managing user expectations).
+
 <shell>
-$ sc-gen data-source MyApp.MyAppsFixturesDataSource SC.FixturesDataSource
+$ sc-gen data-source App.AppsFixturesDataSource SC.FixturesDataSource
 </shell>
 
 Delete the boilerplate code in the fixture data source so your code looks like:
-<javascript filename="apps/my_app/data_sources/my_apps_fixtures.js">
-MyApp.MyAppsFixturesDataSource = SC.FixturesDataSource.extend({
+
+<javascript filename="apps/app/data_sources/apps_fixtures.js">
+App.AppsFixturesDataSource = SC.FixturesDataSource.extend({
   simulateRemoteResponse: YES,
 
-  latency: 500 // 500 mS latency
+  latency: 500 // 500 ms latency
 });
 </javascript>
-This simulates a remote response with 500 milliseconds round trip latency.  Tweak the value to match the performance of your network and servers.
+This simulates a remote response with 500 milliseconds round trip latency. Tweak the value to match the performance of your network and servers.
 
 Next, point your store to the new fixtures data source.
-<javascript filename="in apps/my_app/core.js">
-MyApp = SC.Application.create({
-  // ...
 
-  store: SC.Store.create().from('MyApp.MyAppsFixturesDataSource')
-
-  // ...
+<javascript filename="in apps/app/core.js">
+App = SC.Application.create({
+  store: SC.Store.create().from('App.AppsFixturesDataSource')
 });
 </javascript>
 
-TIP:  Notice the quotes around the data source name?  +MyApp.MyAppsFixturesDataSource+ doesn't exist until its instantiated during the loading process.
+TIP: Notice the quotes around the data source name?  +App.AppsFixturesDataSource+ doesn't exist until its instantiated during the loading process.
 
 h3. Changelog
 

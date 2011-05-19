@@ -13,7 +13,7 @@ h3. Introduction
 
 After you've created your first SproutCore project, you'll notice the file +main_page.js+ in your resources folder. This is the main page that your app appends to the DOM in your +main+ function. Let's start by looking at what every SproutCore project starts with as its main page:
 
-INFO: The file +main_page.js+ is included into the application's resources folder when using <code>sc-init</code> without the <code>--template</cpde> param.
+INFO: The file +main_page.js+ is included into the application's resources folder when using <code>sc-init</code> without the <code>--template</code> param.
 
 <javascript filename="apps/app/resources/main_page.js">
 App.mainPage = SC.Page.design({
@@ -149,13 +149,13 @@ Because we are only going to be working with one object at a time, +allowsMultip
 
 And then an +SC.ObjectController+ that proxies individual contact objects:
 
-<javascript filename="apps/my_app/controllers/contact.js">
-MyApp.contactController = SC.ObjectController.create({
-  contentBinding: 'MyApp.contactsController.selection'
+<javascript filename="apps/app/controllers/contact.js">
+App.contactController = SC.ObjectController.create({
+  contentBinding: 'App.contactsController.selection'
 });
 </javascript>
 
-NOTE: An object controller will automatically detect if you have a single selection and will automatically set it's content to the only item in the selection set. If you are in the rare case of needing to force a single selection, you can use +SC.Binding.single('MyApp.contactsController.selection')+.
+NOTE: An object controller will automatically detect if you have a single selection and will automatically set it's content to the only item in the selection set. If you are in the rare case of needing to force a single selection, you can use +SC.Binding.single('App.contactsController.selection')+.
 
 Now we can bind our source list to the +SC.ArrayController+ to get a dynamic list of contacts and individual contact selection support:
 
