@@ -12,13 +12,15 @@ endprologue.
 
 h3. Models, Records and the Store
 
-In SproutCore the model layer is the lowest application layer and holds all your data as well as the business logic of your application. The controller layer calls into the model layer to modify data and retrieves data from the model layer mostly using bindings. 
+In SproutCore the model layer is the lowest application layer and holds all your data as well as the business logic of your application. The controller layer calls into the model layer to modify data and retrieves data from the model layer. Generally, controllers use bindings to perform these functions. 
 
 The model layer is also responsible for talking to your server, fetching and committing data when necessary. The server communication aspect of the model layer is not covered in this guide, but in the guide about using data sources.
 
-Models are a blueprint for your data, they define the data schema of your application. This data schema is mostly very similar to the data schema of your backend. In SproutCore models are defined by subclassing +SC.Record+. When you actually want to create a data record from one of your blueprints, you use +SC.Store+ to create an instance of a +SC.Record+ class. The store manages the lifecycle and the data of your records in a central place. When you retrieve or update a property from a record, the record actually uses the store to access the underlying data hash.
+Models are a blueprint for your data, defining the data schema of your application. This data schema is generally similar to the data schema of your back-end application. 
 
-All the classes of SproutCore's model layer are located in the *datastore* folder inside of the main sproutcore folder. Have a look at the source code there if you want to have more in-depth information. The code has plenty of inline documentation and can be a valuable resource to gain deeper insights in how the store works.
+In SproutCore, models are defined by subclassing +SC.Record+. When you actually want to create a data record from one of your blueprints, you use +SC.Store+ to create an instance of a +SC.Record+ class. Your application's store manages the lifecycle and the data of your records in a central place. When you retrieve or update a property from a record, the record actually uses the store to access the underlying data hash.
+
+All the classes of SproutCore's model layer are located in the *datastore* folder inside the main sproutcore folder. Have a look at the source code there if you want to have more in-depth information. The code has plenty of inline documentation and can be a valuable resource to gain deeper insights in how the store works.
 
 h3. Anatomy of Records
 
