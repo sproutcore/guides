@@ -31,17 +31,17 @@ A SproutCore record consists of four main components:
 * Status
 * Data hash
 
-Each record has a unique store key which is assigned when the record is created. The store key is a unique record identifier in the whole store and is used internally to relate IDs, statuses and data hashes to each other in an unambiguous way. The store key is the only one of the four components which is actually a property of +SC.Record+. The other three components are stored centrally in the store and mapped to the individual records using the store key.
+Each record has a unique _store key_ which is assigned when the record is created. The store key is a unique record identifier in the whole store and is used internally to relate IDs, statuses and data hashes to each other in an unambiguous way. The store key is the only one of the four components which is actually a property of +SC.Record+. The other three components are stored centrally in the store and mapped to the individual records using the store key.
 
 <div style='text-align: center;'>
 !images/records/record_anatomy.png!
 </div>
 
-All records of a given type have a unique ID, as usual in relational database systems. In fact the IDs of SproutCore records usually are the same as the primary keys of your data in the backend. Therefore, unlike the store key, the ID is not automatically created but it is your responsibility to assign a unique ID when creating or loading records.
+All records of a given type have a unique _ID_, as usual in relational database systems. In fact the IDs of SproutCore records usually are the same as the primary keys of your data in the backend. Therefore, unlike the store key, the ID is not automatically created. Instead, it is your responsibility to assign a unique ID when creating or loading records.
 
-The status of a record represents its current state with respect to the corresponding record on the server. The store uses the status property to determine which operations can be performed on the record, for instance, if a record can be edited safely and which records need to be commited back to the server. 
+The _status_ of a record represents its current state with respect to the corresponding record on the server. The store uses the status property to determine which operations can be performed on the record, for instance, if a record can be edited safely and which records need to be committed back to the server. 
 
-Last but not least, the actual data of a record is stored in a plain "JSON":http://www.json.org data hash. When you get or set a property on a record, the value of this property is read from or written to the data hash. 
+Last but not least, the actual _data_ of a record is stored in a plain "JSON":http://www.json.org data hash. When you get or set a property on a record, the value of this property is read from or written to the data hash. 
 
 h4. Primary Record States
 
@@ -52,9 +52,9 @@ There are five primary record status codes in SproutCore:
 * +SC.Record.DESTROYED+
 * +SC.Record.ERROR+
 
-The names of these states are pretty self explanatory: EMPTY indicates a non existing record. READY indicates that the record can be safely edited. BUSY indicates that the record is currently locked for write operations, mostly because of an ongoing commmunication with the server. Finally DESTROYED is the state of destroyed records and ERROR indicates that something went wrong while processing this record.
+The names of these states are pretty self explanatory: +EMPTY+ indicates a non-existent record. +READY+ indicates that the record can be safely edited. +BUSY+ indicates that the record is currently locked for write operations, mostly because of an ongoing communication with the server. Finally +DESTROYED+ is the state of destroyed records and +ERROR+ indicates that something went wrong while processing this record.
 
-The three main states READY, BUSY and DESTROYED have several substates. You will learn more about these substates below when you actually start working with records. You can also refer to the complete overview of record states in the last section of this guide.
+The three main states +READY+, +BUSY+ and +DESTROYED+ have several sub-states. You will learn more about these sub-states below when you actually start working with records. You can also refer to the complete overview of record states in the last section of this guide.
 
 h3. Defining Your Models
 
@@ -149,7 +149,7 @@ It is a best practice to never include the ID in the data hash, because then you
 
 h4. Relations
 
-Often models don't exist completely independent of each other but are related to other models. For example one or more addresses could belong to the +Contact+ model we created above. So let's define the +Address+ model first:
+Often models don't exist completely independently of each other but are related to other models. For example one or more addresses could belong to the +Contact+ model we created above. So let's define the +Address+ model first:
 
 <javascript filename="apps/app/models/address.js">
 App.Address = SC.Record.extend({
@@ -302,7 +302,7 @@ contact = App.store.createRecord(
 );
 </javascript>
 
-NOTE: Ids are not limited to numbers, but can also be strings.
+NOTE: IDs are not limited to numbers, but can also be strings.
 
 When you create a record its status will be +READY_NEW+, indicating that the record is editable and does not exist on the server yet.
 
@@ -601,17 +601,17 @@ h4. READY Substates
 
 h4. BUSY Substates
 
-+SC.Record.BUSY_LOADING+: When you first get a record from the store, it will usually be in the BUSY_LOADING state.  This means that the record did not exist in the store and the server has not yet returned any data. All properties will be empty at this point. When data is loaded for this record, it will transition to READY_CLEAN.
++SC.Record.BUSY_LOADING+: When you first get a record from the store, it will usually be in the +BUSY_LOADING+ state.  This means that the record did not exist in the store and the server has not yet returned any data. All properties will be empty at this point. When data is loaded for this record, it will transition to +READY_CLEAN+.
 
-+SC.Record.BUSY_CREATING+: A record in this state was newly created in the store. We are now waiting on the data source to confirm that it has been created in the server as well. Once this completes, the record will become READY_CLEAN. If the create fails, the record will return to READY_NEW.
++SC.Record.BUSY_CREATING+: A record in this state was newly created in the store. We are now waiting on the data source to confirm that it has been created in the server as well. Once this completes, the record will become +READY_CLEAN+. If the create fails, the record will return to +READY_NEW+.
 
-+SC.Record.BUSY_COMMITTING+: A record in this state was modified in the store and it is waiting on the data source to confirm the change is saved on the server as well. Once this completes, the record will become READY_CLEAN.
++SC.Record.BUSY_COMMITTING+: A record in this state was modified in the store and it is waiting on the data source to confirm the change is saved on the server as well. Once this completes, the record will become +READY_CLEAN+.
 
-+SC.Record.BUSY_REFRESH_DIRTY+: A record in this state has local changes but you asked the data source to reload the data from the server anyway. When the server updates, it will replace any local changes with a fresh copy from the server. If the refresh fails, the record will return to its READY_DIRTY state.
++SC.Record.BUSY_REFRESH_DIRTY+: A record in this state has local changes but you asked the data source to reload the data from the server anyway. When the server updates, it will replace any local changes with a fresh copy from the server. If the refresh fails, the record will return to its +READY_DIRTY+ state.
 
-+SC.Record.BUSY_REFRESH_CLEAN+: A record in this state has no local changes but you asked it to reload the data from the server anyway.  When the server finished, success or failure, this record will return to the READY_CLEAN state (unless there is an error).
++SC.Record.BUSY_REFRESH_CLEAN+: A record in this state has no local changes but you asked it to reload the data from the server anyway.  When the server finished, success or failure, this record will return to the +READY_CLEAN+ state (unless there is an error).
 
-+SC.Record.BUSY_DESTROYING+: A record in this state was destroyed in the store and now is being destroyed on the server as well.  Once the destroy has completed, the record will become DESTROYED_CLEAN. If the destroy fails (without an error), it will become DESTROYED_DIRTY again.
++SC.Record.BUSY_DESTROYING+: A record in this state was destroyed in the store and now is being destroyed on the server as well.  Once the destroy has completed, the record will become +DESTROYED_CLEAN+. If the destroy fails (without an error), it will become +DESTROYED_DIRTY+ again.
 
 !images/records/busy_substates.png!
 
