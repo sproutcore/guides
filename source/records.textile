@@ -272,7 +272,7 @@ App = SC.Application.create({
 });
 </javascript>
 
-The example above shows creating the store with fixtures as data source. You can read more about fixtures and using other data sources in the respective guides.
+In this example, we create the store with fixtures as data source. You can read more about "fixtures":fixtures.html and other data sources in the respective guides.
 
 h4. Creating Records
 
