@@ -88,7 +88,7 @@ App.Contact = SC.Record.extend({
 });
 </javascript>
 
-Whenever you specify a +defaultValue+ option on an attribute it will return this default value if it's  +null+ or +undefined+.
+Whenever you specify a +defaultValue+ option on an attribute, it will return this default value if that attribute is  +null+ or +undefined+ for a given instance.
 
 NOTE: The +defaultValue+ will not be written to the underlying data hash and therefore not committed back to the server. 
 
@@ -180,7 +180,7 @@ App.Address = SC.Record.extend({
 });
 </javascript>
 
-Notice the +isMaster+ and +inverse+ options used with the +toOne+ helper. The +isMaster: YES+ option on the +address+ attribute makes sure, that the +Contact+ record actually gets marked as changed when you assign a different +Address+ record to it. You should always set the +isMaster+ option to +YES+ on one side of the relation and to +NO+ on the other to control which record is committed back to the server when you alter the relation. 
+Notice the +isMaster+ and +inverse+ options used with the +toOne+ helper. The +isMaster: YES+ option on the +address+ attribute ensures that the +Contact+ record actually gets marked as changed when you assign a different +Address+ record to it. You should always set the +isMaster+ option to +YES+ on one side of the relation and to +NO+ on the other to control which record is committed back to the server when you alter the relation. 
 
 The +inverse+ option specifies the property name of the inverse relation on the associated model and should be set on the side of the relation where +isMaster+ is set to +YES+.
 
@@ -292,7 +292,7 @@ contact = App.store.createRecord(
 );
 </javascript>
 
-Usually you will not specify an ID like this, because either you get the record ID from the server, or you want to use some kind of temporary ID on new records until they get comitted to the server, which then can return the ID of the persisted record. So let's use a temporary ID:
+Usually you will not specify an ID like this, because either you get the record ID from the server, or you want to use some kind of temporary ID on new records until they get committed to the server, which then can return a persistent ID. So let's use a temporary ID:
 
 <javascript>
 contact = App.store.createRecord(
@@ -343,7 +343,7 @@ To delete a certain record, just call the +destroy+ method on it:
 contact.destroy();
 </javascript>
 
-Equally to updating a record, the record has to be in a +READY+ state to be able to be destroyed. If you destroy a newly created record (which was not yet committed to the server) the status will transition from +READY_NEW+ to +DESTROYED_CLEAN+, indicating that there is no need to tell the server about the destroy, since it never knew about this record in the first place. If you destroy a record loaded from the server, then the state will transition from +READY_CLEAN+  (or +READY_DIRTY+ if you changed it before) to +DESTROYED_DIRTY+, indicating that the server needs to be notified about this destroy action.
+Just as when updating a record, the record has to be in a +READY+ state to be able to be destroyed. If you destroy a newly created record (which was not yet committed to the server) the status will transition from +READY_NEW+ to +DESTROYED_CLEAN+, indicating that there is no need to tell the server about the destroy, since it never knew about this record in the first place. If you destroy a record loaded from the server, then the state will transition from +READY_CLEAN+  (or +READY_DIRTY+ if you changed it before) to +DESTROYED_DIRTY+, indicating that the server needs to be notified about this destroy action.
 
 h4. Getting Information about Records
 
@@ -391,7 +391,7 @@ WARNING: When +find+ is called with a record type and an ID as arguments, it onl
 
 h4. Finding All Records of a Certain Type
 
-To find all records of one record type, just pass it to the +find+ method:
+To find all records of one record type, just pass that type to the +find+ method:
 
 <javascript>
 contacts = App.store.find(App.Contact);
@@ -413,12 +413,13 @@ allRecords = App.store.find(SC.Record);
 
 The above statement returns all records in your application, because we are asking for all records of type +SC.Record+, which is SproutCore's base model class.
 
-Internally +find+ converts the specified record types to a query, it's just a convenient method to save some characters of typing required to create the query yourself. Read on in the next section how to do this and to learn more about the return type of +find+.
-
+Internally +find+ converts the specified record types to a query. +find+ is just a convenient method to save some characters of typing required to create the query yourself. Read on in the next section how to do this and to learn more about the return type of +find+.
 
 h4. Using Queries
 
-SproutCore features a SQL-like query language to facilitate more complex queries to the store. However, let us first translate the +find+ calls of the previous section to using queries, like +find+ does internally. To build a query which looks for all records of a certain type, you just call +SC.Query.local+ with this record type as argument and pass this query to +find+:
+SproutCore features a SQL-like query language to facilitate more complex queries to the store. To demonstrate, let us first translate the +find+ calls of the previous section to using queries, as +find+ does internally. 
+
+To build a query which looks for all records of a certain type, you just call +SC.Query.local+ with this record type as argument and pass this query to +find+:
 
 <javascript>
 query = SC.Query.local(App.Contact);
@@ -435,7 +436,7 @@ query = SC.Query.local(SC.Record);
 allRecords = App.store.find(query);
 </javascript>
 
-Whenever you call +SC.Store+'s +find+ method with a query (or using one of the convenient ways from the previous section) it returns a +SC.RecordArray+. As the name already indicates +SC.RecordArray+ implements +SC.Array+ and therefore you can use it like a normal read-only array. For example:
+Whenever you call +SC.Store+'s +find+ method with a query (or using one of the convenient ways from the previous section) it returns a +SC.RecordArray+. As the name indicates, +SC.RecordArray+ implements +SC.Array+ and therefore you can use it like a normal read-only array. For example:
 
 <javascript>
 contacts.firstObject(); // returns first result
@@ -447,7 +448,7 @@ Please refer to the "documentation of SC.Array":http://docs.sproutcore.com/symbo
 
 NOTE: If the query was not yet fetched from the server, the store automatically forwards it to the data source to load the data from the server.
 
-NOTE: +SC.RecordArray+ objects automatically get updated by the store when you add or remove records to or from the store which match the corresponding query.
+NOTE: Objects in an +SC.RecordArray+ are automatically updated by the store when you add or remove records to or from the store which match the corresponding query.
 
 h5. Conditions
 
@@ -473,9 +474,9 @@ query = SC.Query.local(App.Contacts, {
 });
 </javascript>
 
-However, you will want to not only hard-code the query conditions, but to make use of variables containing the desired values. For this you can use query parameters.
+However, you will not want to hard-code the query conditions, but to make use of variables containing the desired values. For this you can use query parameters.
 
-SproutCore handles two different types of query parameters: sequential and named parameters. Lets rephrase the above query using sequential parameters:
+SproutCore handles two different types of query parameters: sequential and named parameters. Let's rephrase the above query using sequential parameters:
 
 <javascript>
 query = SC.Query.local(App.Contacts, { 
@@ -558,13 +559,13 @@ h5. Local vs. Remote Queries
 
 You will have noticed the keyword +local+ in the +SC.Query.local+ call we used until now to create the queries. Actually the keyword +local+ is somewhat confusing, because local queries do not act exclusively on the in-memory store but also call the data source to fetch records from the server. The main characteristic of local queries is that the store automatically updates their results whenever the contents of the local in-memory store change.
 
-Remote queries (build with +SC.Query.remote+), on the other hand, return a +SC.RecordArray+ which is not updated automatically. However, "remote" doesn't mean necessarily that the results have to be fetched from a remote server. They could also be loaded from a local browser storage. It's admittedly a bad choice of names.
+Remote queries (build with +SC.Query.remote+), on the other hand, return a +SC.RecordArray+ which is not updated automatically. "Remote" doesn't mean necessarily that the results have to be fetched from a remote server. They could also be loaded from a local browser storage. It's admittedly a bad choice of names.
 
 WARNING: You should use local queries in almost all cases unless you know what you're doing.
 
 h4. Extending SproutCore's Query Language
 
-If SproutCore's built-in query operators are not sufficient for your use case, you can easily extend the query language. For example by default there are no bit-wise operators, so lets implement a +BITAND+ operator which evaluates to +true+ if the bit-wise and of the two arguments is unequal to zero:
+If SproutCore's built-in query operators are not sufficient for your use case, you can easily extend the query language. For example, by default there are no bit-wise operators, so let's implement a +BITAND+ operator which evaluates to +true+ if the bit-wise and of the two arguments is unequal to zero:
 
 <javascript>
 SC.Query.registerQueryExtension('BITAND', {
