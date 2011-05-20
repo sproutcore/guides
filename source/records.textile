@@ -76,9 +76,9 @@ App.Contact = SC.Record.extend({
 });
 </javascript>
 
-WARNING: Property names defined on +SC.Record+ itself are reserved names, meaning they cannot be used for custom record attribtutes. Please refer to the "documentation of SC.Record":http://docs.sproutcore.com/symbols/SC.Record.html for a list of all reserved names.
+WARNING: Property names defined on +SC.Record+ itself are reserved names, meaning they cannot be used for custom record attributes. Please refer to the "documentation of SC.Record":http://docs.sproutcore.com/symbols/SC.Record.html for a list of all reserved names.
 
-We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+ and +age+ attributes with the type of each attribute as first argument. The optional second argument of +SC.Record.attr+ is an option hash. E.g. we can add some default values to our attribtues:
+We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+ and +age+ attributes with the type of each attribute as first argument. The optional second argument of +SC.Record.attr+ is an option hash. E.g. we can add some default values to our attributes:
 
 <javascript filename="apps/app/models/contact.js">
 App.Contact = SC.Record.extend({
@@ -120,7 +120,7 @@ App.Contact = SC.Record.extend({
 });
 </javascript>
 
-For a reference of how to specify your custom date format check the documentation of  "SC.DateTime#toFormatedString":http://docs.sproutcore.com/symbols/SC.DateTime.html#toFormattedString.
+For a reference of how to specify your custom date format check the documentation of  "SC.DateTime#toFormattedString":http://docs.sproutcore.com/symbols/SC.DateTime.html#toFormattedString.
 
 h4. Record Ids
 
