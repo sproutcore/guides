@@ -27,17 +27,17 @@ h3. Anatomy of Records
 A SproutCore record consists of four main components:
 
 * Store key
-* Id
+* ID
 * Status
 * Data hash
 
-Each record has a unique store key which is assigned when the record is created. The store key is a unique record identifier in the whole store and is mainly used internally to relate ids, statuses and data hashes to each other in an unambiguous way. The store key is the only one of the four components which is actually a property of +SC.Record+. The other three components are stored centrally in the store and mapped to the individual records using the store key.
+Each record has a unique store key which is assigned when the record is created. The store key is a unique record identifier in the whole store and is used internally to relate IDs, statuses and data hashes to each other in an unambiguous way. The store key is the only one of the four components which is actually a property of +SC.Record+. The other three components are stored centrally in the store and mapped to the individual records using the store key.
 
 <div style='text-align: center;'>
 !images/records/record_anatomy.png!
 </div>
 
-All records of a certain type have a unique id as usual in relational database systems. In fact the ids of SproutCore records usually are the same as the primary keys of your data in the backend. Therefore, unlike the store key, the id is not automatically created but it is your responsibility to assign a unique id when creating or loading records.
+All records of a given type have a unique ID, as usual in relational database systems. In fact the IDs of SproutCore records usually are the same as the primary keys of your data in the backend. Therefore, unlike the store key, the ID is not automatically created but it is your responsibility to assign a unique ID when creating or loading records.
 
 The status of a record represents its current state with respect to the corresponding record on the server. The store uses the status property to determine which operations can be performed on the record, for instance, if a record can be edited safely and which records need to be commited back to the server. 
 
@@ -124,7 +124,7 @@ For a reference of how to specify your custom date format check the documentatio
 
 h4. Record Ids
 
-In SproutCore you don't define the primary key property of your models explicitly like you defined your custom attributes above. The records' primary keys are managed by the store, so every record inherently has an id property. However, you can specify the identifier of this id property. This is where it can become a bit confusing at first... but let's clear it up step by step.
+In SproutCore you don't define the primary key property of your models explicitly like you defined your custom attributes above. The records' primary keys are managed by the store, so every record inherently has an ID property. However, you can specify the identifier of this ID property. This is where it can become a bit confusing at first... but let's clear it up step by step.
 
 First of all, by default SproutCore uses the identifier "guid" for the primary key. You can change this identifier by defining a +primaryKey+ property in your model:
 
@@ -134,18 +134,18 @@ App.Contact = SC.Record.extend({
 });
 </javascript>
 
-NOTE: If you want to use your custom id identifier in all your models, you can make your life a bit easier and your code more maintainable by defining a custom record base class, where you define the +primaryKey+ property. Then you can subclass this custom base class to create your models.
+NOTE: If you want to use your custom ID identifier in all your models, you can make your life a bit easier and your code more maintainable by defining a custom record base class, where you define the +primaryKey+ property. Then you can subclass this custom base class to create your models.
 
-However, this primary key identifier is only used to identify the id property in the underlying data hash, but not to get or set the id on a record. For example if you create a record and pass a hash with initial values, then SproutCore will now look for a property called "uid" in the hash when you don't explicitly specify an id. If you want to get or set the id of a record though, you always use +id+ independent of the +primaryKey+'s value:
+However, this primary key identifier is only used to identify the ID property in the underlying data hash, but not to get or set the ID on a record. For example if you create a record and pass a hash with initial values, then SproutCore will now look for a property called "uid" in the hash when you don't explicitly specify an ID. If you want to get or set the ID of a record though, you always use +id+ independent of the +primaryKey+'s value:
 
 <javascript>
 myRecord.get('id'); // note: NOT 'uid'
 myRecord.set('id', 1);
 </javascript>
 
-WARNING: You should never change the id of an existing record using +set()+ like above unless you know what you are doing.
+WARNING: You should never change the ID of an existing record using +set()+ like above unless you know what you are doing.
 
-It is a best practice to never include the id in the data hash, because then you end up with two ids: the id property in the data hash and the id managed by the store. If you receive a JSON data hash from the server (where the id is necessarily included) then you should extract and delete the id from this hash before using it to load the record into the store.
+It is a best practice to never include the ID in the data hash, because then you end up with two IDs: the ID property in the data hash and the ID managed by the store. If you receive a JSON data hash from the server (where the ID is necessarily included) then you should extract and delete the ID from this hash before using it to load the record into the store.
 
 h4. Relations
 
@@ -184,7 +184,7 @@ Notice the +isMaster+ and +inverse+ options used with the +toOne+ helper. The +i
 
 The +inverse+ option specifies the property name of the inverse relation on the associated model and should be set on the side of the relation where +isMaster+ is set to +YES+.
 
-In the underlying data hash a +toOne+ relation is simply represented as the id of the associated record.
+In the underlying data hash a +toOne+ relation is simply represented as the ID of the associated record.
 
 NOTE: It is not mandatory to define both directions of the relation if you don't need it.
 
@@ -212,7 +212,7 @@ App.Address = SC.Record.extend({
 
 The only thing that changed compared to the one-to-one example above is the +toMany+ keyword in the +Contact+ model. The +isMaster+ and +inverse+ options apply to +toMany+ relations in the same way as they do to +toOne+ relations.
 
-In the underlying data hash a +toMany+ relation is represented as an array of ids of the the associated records.
+In the underlying data hash a +toMany+ relation is represented as an array of IDs of the the associated records.
 
 NOTE: It is not mandatory to define both directions of the relation if you don't need it.
 
@@ -240,7 +240,7 @@ App.Address = SC.Record.extend({
 
 Again the only thing that changed compared to the one-to-many example from above is the use of the +toMany+ helper in the +Address+ model.
 
-Since a many-to-many relation effectively is constructed by using +toMany+ on both sides, it is represented in the underlying data hashes of both sides of the relation as an array of record ids.
+Since a many-to-many relation effectively is constructed by using +toMany+ on both sides, it is represented in the underlying data hashes of both sides of the relation as an array of record IDs.
 
 NOTE: It is not mandatory to define both directions of the relation if you don't need it.
 
@@ -282,7 +282,7 @@ You can create records of a previously defined record type like this:
 contact = App.store.createRecord(App.Contact, {});
 </javascript>
 
-The first argument of the store's +createRecord+ method is the record type. The second argument is a hash with optional initial values. Furthermore you can specify the record id as third argument:
+The first argument of the store's +createRecord+ method is the record type. The second argument is a hash with optional initial values. Furthermore you can specify the record ID as third argument:
 
 <javascript>
 contact = App.store.createRecord(
@@ -292,7 +292,7 @@ contact = App.store.createRecord(
 );
 </javascript>
 
-Usually you will not specify an id like this, because either you get the record id from the server, or you want to use some kind of temporary id on new records until they get comitted to the server, which then can return the id of the persisted record. So let's use a temporary id:
+Usually you will not specify an ID like this, because either you get the record ID from the server, or you want to use some kind of temporary ID on new records until they get comitted to the server, which then can return the ID of the persisted record. So let's use a temporary ID:
 
 <javascript>
 contact = App.store.createRecord(
@@ -347,7 +347,7 @@ Equally to updating a record, the record has to be in a +READY+ state to be able
 
 h4. Getting Information about Records
 
-You can get the id, the store key and the status of a record by calling the +get+ method on the respective properties:
+You can get the ID, the store key and the status of a record by calling the +get+ method on the respective properties:
 
 <javascript>
 id = contact.get('id');
@@ -375,19 +375,19 @@ NOTE: For a complete list of record state constants see the "documentation of th
 
 h3. Finding Records in the Store
 
-Because the store manages all records in memory, you can query it for records of a certain type, records with a certain id or more complex search criteria.
+Because the store manages all records in memory, you can query it for records of a certain type, records with a certain ID or more complex search criteria.
 
-h4. Finding a Specific Record by Id
+h4. Finding a Specific Record by ID
 
-If you know the type and the id of the record you want to retrieve, you can just hand these two parameters to the store's +find+ method:
+If you know the type and the ID of the record you want to retrieve, you can just hand these two parameters to the store's +find+ method:
 
 <javascript>
 contact = App.store.find(App.Contact, 1);
 </javascript>
 
-This statement returns the record of type +App.Contact+ with the id 1. If the record does not exist, then the return value will be +null+. 
+This statement returns the record of type +App.Contact+ with the ID 1. If the record does not exist, then the return value will be +null+. 
 
-WARNING: When +find+ is called with a record type and an id as arguments, it only looks for records of exactly this type. It will not return records which type is a subclass of the specified record type.
+WARNING: When +find+ is called with a record type and an ID as arguments, it only looks for records of exactly this type. It will not return records which type is a subclass of the specified record type.
 
 h4. Finding All Records of a Certain Type
 
