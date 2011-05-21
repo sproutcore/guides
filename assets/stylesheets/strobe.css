@@ -223,6 +223,10 @@ body > footer a:visited {
   font-size: inherit;
 }
 
+body > footer a:hover {
+  color: #6c8191;
+}
+
 body > footer ul {
   overflow: hidden;
   margin-bottom: 24px;
