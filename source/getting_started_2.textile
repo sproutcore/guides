@@ -101,7 +101,7 @@ SC.ready(function() {
 
 Now refresh the page and you should see that all of the todos from fixtures are displayed in the view.
 
-The last piece is making sure that the store knows about new records. Update the controller's +createTodo+ method to use <code>SC.Store</code>'s +createRecord+ method:
+Next, we need to make sure that the store knows about new records. Update the controller's +createTodo+ method to use <code>SC.Store</code>'s +createRecord+ method:
 
 <javascript filename="apps/todos/todos.js">
   createTodo: function(title) {
@@ -109,7 +109,28 @@ The last piece is making sure that the store knows about new records. Update the
   },
 </javascript>
 
-Try reloading a page and adding a new todo. It should automatically place new one at the bottom of the list. All of the other operations that you perform on records should also work seamlessly, because we use standard +get()+ and +set()+ functions that work for every type of objects in SproutCore.
+Last, our +clearCompletedTodos+ function needs to be updated to utilize the +destroy+ method available on +SC.Record+:
+
+<javascript filename="apps/todos/todos.js">
+
+  // updating existing code
+
+  Todos.todoListController = SC.ArrayController.create({
+
+    // ...
+
+    clearCompletedTodos: function(){
+      this.filterProperty('isDone', true).forEach( function(item) {
+        item.destroy();
+      });
+    },
+
+    // ...
+
+  )};
+</javascript>
+
+Try reloading a page and adding a new todo, marking a few as done and clicking the "Clear Completed Todos" button. It should automatically place new one at the bottom of the list and clear any completed when you click the button. All of the other operations that you perform on records should also work seamlessly, because we use standard +get()+ and +set()+ functions that work for every type of objects in SproutCore.
 
 h3. Changelog
 
