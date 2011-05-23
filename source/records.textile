@@ -268,7 +268,7 @@ Now that we have defined our +Contact+ and +Address+ models it's time to actuall
 
 <javascript filename="in apps/app/core.js">
 App = SC.Application.create({
-  store: SC.Store.create().from(SC.Record.fixtures())
+  store: SC.Store.create().from(SC.Record.fixtures)
 });
 </javascript>
 
