@@ -88,9 +88,11 @@ index:
     - title: "Getting Started: Part 2"
       url: getting_started_2
       text: "Connect the application you wrote in Part 1 to SproutCore's data store, and learn how to test with fixture data."
+      construction: true
     - title: Core Concepts
       url: core_concepts
       text: "In this guide, we will touch on many of the core concepts of SproutCore like bindings and the run loop. We'll cover just enough to get you going with out getting bogged down in the details. If you want to learn more, take a look at the detailed overviews of these concepts in the \"Digging Deeper\" section."
+      construction: true
     - title: Enumerables
       url: enumerables
       text: "To simplify working with various kinds of lists, SproutCore provides a unified Enumerable interface. This guide explores which SproutCore objects are Enumerable, and how to use the Enumerable API."
@@ -101,6 +103,7 @@ index:
     - title: Core View Concepts
       url: views
       text: "In this guide, we will cover the basics of SproutCore views, and show you how to customize the built-in SproutCore views for your own use."
+      construction: true
     - title: Building Your Own Views
       url: custom_views
       text: "Most applications will quickly go beyond the built-in SproutCore views. In this guide, we will cover how to build and style your own views."
@@ -113,6 +116,7 @@ index:
     - title: SproutCore Records
       url: records
       text: "The SproutCore data framework is a full-featured ORM-like framework for working with data in SproutCore. Learn about the SproutCore data framework and how you can use it to interact with your data sources."
+      construction: true
     - title: Hooking Up to a Backend
       url: connect_server
       text: "This guide covers how to create a SproutCore data source, which will retrieve data from your servers and make them available to the SproutCore Records you designed in the previous guide."
@@ -124,13 +128,16 @@ index:
     - title: Using Fixtures
       url: fixtures
       text: "In order to facilitate rapid development, SproutCore provides a facility for using pre-set fixture data as your data source. This guide covers how to set up your fixtures, and how to replace them with your real server once you're ready to get going."
+      construction: true
   Theming:
     - title: "Using Chance, SproutCore's CSS Framework"
       url: chance
       text: "Chance is SproutCore's CSS preprocessor. In this guide, you will learn how to use the CSS extensions that come with Chance to streamline your styling workflow."
+      construction: true
     - title: Theming Your App
       url: theming_app
       text: "In this guide, we'll cover how to change the style of SproutCore controls in your app. As an example, we'll re-theme an SC.ButtonView."
+      construction: true
     - title: Writing Themeable Controls
       url: themeable_controls
       text: "In this guide, we'll go over to how to develop a control that can be themed. This can be useful if you want to have different visual displays in your application (like a regular and overlay theme) or when distributing a theme for wider use."
@@ -139,15 +146,19 @@ index:
     - title: "Unit Testing"
       url: unit_test_framework
       text: "SproutCore has an easy-to-learn unit test facility that can be used to drive SproutCore test-driven development.  This guide describes the basic SproutCore test commands."
+      construction: true
     - title: "Adding a Unit Test"
       url: adding_unit_test
       text: "Adding a unit test automatically or manually."
+      construction: true
     - title: "Writing Unit Tests"
       url: writing_unit_tests
       text: "Describes how to write unit tests using module and test functions"
+      construction: true
     - title: "Running Unit Tests"
       url: running_unit_tests
       text: "How tests are loaded and executed by the test runner."
+      construction: true
     - title: "Testing Guidelines in SproutCore"
       url: testing_guidelines
       text: "Developing a SproutCore application using test-driven development (TDD)."
@@ -155,6 +166,7 @@ index:
     - title: "SproutCore Development Using TDD"
       url: todos_tdd
       text: "Show implementing the TODOs project using TDD."
+      construction: true
   Contributing to SproutCore:
     - title: "Javascript Style Guide"
       url: "style_guide"

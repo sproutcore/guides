@@ -3,6 +3,10 @@ body {
   background: #fff;
 }
 
+strong {
+  font-weight: bold;
+}
+
 dd img {
   float: left;
   height: 36px;
@@ -323,24 +327,32 @@ div.code_container div.filename {
   margin-right: 10px;
 }
 
-#subCol p {
-  clear: left;
+#subCol div {
   margin-bottom: 3em;
-	font-size: 14px;
-	line-height: 20px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+#subCol div p {
+  margin-left: 55px;
+  clear: right;
 }
 
 #subCol ul.links li {
   line-height: 2em;
 }
 
-#subCol p img {
+#subCol p img, #subCol div img {
   float: left;
   margin: 0.3em 1em 2em 0;
 }
 
-#subCol p.getInvolved a {
+#subCol .getInvolved a {
   font-weight: bold;
+}
+
+#subCol .getInvolved strong {
+  color: #044ea7;
 }
 
 #mainCol a, #subCol a, #feature a, a, a:link, a:visited {
