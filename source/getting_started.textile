@@ -141,7 +141,7 @@ Todos.CreateTodoView = SC.TextField.extend({
 });
 </javascript>
 
-Since <code>CreateTodoView</code> will handle events for a text field, we create a subclass of <code>SC.TextField</code>, which provides several conveniences for working with these input controls. For example, you can access the +value+ property and respond to higher level events, such as +insertNewline+, when the user presses <code>return</code>.
+Since <code>CreateTodoView</code> will handle events for a text field, we create a subclass of <code>SC.TextField</code>, which provides several conveniences for working with these input controls. For example, you can access the +value+ property and respond to higher level events, such as +insertNewline+, when the user presses <code>enter</code>.
 
 Now that we have defined our view, let's update the template to use our new view subclass.  Switch back to +index.html+ and update the view helper to say +Todos.CreateTodoView+ instead of +SC.TextField+.
 
@@ -206,9 +206,9 @@ itemClassBinding="content.isDone"}}
 {{/collection}}
 </javascript>
 
-This property defines a binding on each of the item views. Each item will get the class +is-done+ if its associated content object's +isDone+ property is <code>true</code>. SproutCore will automatically dasherize property names into class names.
+This property sets up a binding on each of the item views. Each item will get the class +is-done+ if its associated content object's +isDone+ property is <code>true</code>. SproutCore will automatically dasherize property names into class names.
 
-NOTE: All views have a number of properties, including +id+, +class+, and +classBinding+. The +collection+ helper allows you to prefix any of those properties with +item+, which will then apply them to each of the child item views. For instance, if you use the +itemClass+ property on a collection, each item will get that class.
+NOTE: All views have a number of properties, including +id+, +class+, and +classBinding+. The +collection+ helper allows you to prefix any of those properties with +item+, which will then apply to each of the child item views. For instance, if you use the +itemClass+ property on a collection, each item will get that class name.
 
 Now reload your application in the browser and try it out. As soon as you click a todo's checkbox, the text will become crossed out. Keep in mind you didn't need to update any views when marking the <code>Todo</code> as done; bindings did it for you. If a different part of the app changes the <code>Todo</code> item's +isDone+ property, your list item would automatically update without any more work on your part.
 
@@ -223,7 +223,7 @@ We can now create todos and mark them as being complete. While 76% of all statis
 {{/view}}
 </html>
 
-Handlebars expressions, like +{{remainingString}}+, allows us to automatically update the DOM when a property on our view changes. In this case, we're saying that the content of the <code>Todos.StatsView</code> should be bound to the value of the view's +remainingString+ property.  As with the other bindings, this will be updated for us automatically whenever the value changes.
+Handlebars expressions, like +{{remainingString}}+, allows us to automatically update the DOM when a property on our view changes. In this case, we're saying that <code>Todos.StatsView</code> should always display the most up-to-date value to the view's +remainingString+ property.  As with the other bindings, this will be updated for us automatically whenever the value changes.
 
 Let's go ahead and implement that view in +app.js+ now:
 
@@ -240,7 +240,7 @@ Todos.StatsView = SC.View.extend({
 
 +remainingString+ contains a pluralized string, based on the number of remaining todos.  Here is another core piece of SproutCore in action, this one called a *computed property*. Computed properties are properties whose value is determined by running a function. For example, if +remaining+ equals <code>1</code>, +remainingString+ will contain the string <code>"1 item"</code>.
 
-We say that +remainingString+ *depends on* <code>remaining</code> because it requires another value to generate its own value. We list these *dependent keys* inside the +property()+ declaration.
+We say that +remainingString+ *depends on* +remaining+ because it requires another value to generate its own value. We list these *dependent keys* inside the +property()+ declaration.
 
 We've also bound the view's +remaining+ property to the <code>todosController</code>'s +remaining+ property. This means that, because of the dependency chain we've described, if <code>Todos.todosController.remaining</code> changes, +remainingString+ will automatically update.
 
@@ -298,8 +298,8 @@ Next, let's add a button to our template. Open +index.html+ and add a button ins
 <!-- Insert into existing StatsView -->
 
 {{#view Todos.StatsView id="stats"}}
-  {{#view SC.Button classBinding="isActive" ¬
-    target="Todos.todosController" ¬
+  {{#view SC.Button classBinding="isActive"
+    target="Todos.todosController"
     action="clearCompletedTodos"}}
     Clear Completed Todos
   {{/view}}
@@ -341,8 +341,8 @@ Next, we'll create a checkbox view to mark all items complete and bind its value
 <html filename="index.html">
 <!-- directly below the Todos.StatsView -->
 
-{{view SC.Checkbox class="mark-all-done" ¬
-  title="Mark All as Done" ¬
+{{view SC.Checkbox class="mark-all-done"
+  title="Mark All as Done"
   valueBinding="Todos.todosController.allAreDone"}}
 </html>
 
@@ -377,12 +377,6 @@ Reload the app and add some todos. Click "Mark All as Done". Wow! Each of the in
 
 INFO: When you use SproutCore, as you scale your UI, you never need to wonder whether a new feature will work consistently with parts of the UI you already implemented. Since you build your view layer to simply reflect the state of your models, you can make changes however you want and see them update automatically.
 
-h3. Mobile Specific Styles
-
-At this point, we actually have the app fully functional on all modern mobile devices.  Let's optimize the experience for all of the different screen sizes we might encounter. Download the "CSS for mobile":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos_mobile.css and save it as +apps/todos/resources/stylesheets/todos_mobile.css+.  Now load your app on a mobile device and you should see the same app, but styled properly for mobile devices and responding to touch events.
-
-NOTE: The SproutCore development server will be available on your local network at your machine's IP address. For example, you might visit http://192.168.1.1:4020/todos.
-
 h3. Resources
 
 Now that you have finished the first part of the Getting Started tutorial, you will want to acquaint yourself with the resources available to the SproutCore community.
@@ -404,3 +398,4 @@ h3. Changelog
 * April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
 * May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
 * May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
+* May 25, 2011: Modified for SproutCore 2.0 by "Tom Dale":credits.html#tomdale and Majd Taby*
