@@ -237,6 +237,7 @@ div.code_container div.filename {
 
 #mainCol div.warning, #subCol dd.warning {
 	background: #f9d9d8 url(../images/strobe/tab-warning.png) no-repeat left top;
+  padding: 1em 1em 0.25em 48px;
 }
 
 
