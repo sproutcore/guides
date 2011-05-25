@@ -203,7 +203,7 @@ Now that we have an interface to create new todos, let's create the interface to
 {{/collection}}
 </html>
 
-NOTE: We are using a continuation character (¬) to indicate that the lines should be entered unbroken.
+WARNING: We are using a continuation character (¬) to indicate that the lines should be entered unbroken.
 
 Notice that we've also told the collection to bind its +content+ property to our <code>todoListController</code>. For every item in the array controller, the collection view will create a new child view that renders the +{{content.title}}+ template.
 
