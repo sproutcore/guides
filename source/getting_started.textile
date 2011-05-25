@@ -12,11 +12,11 @@ endprologue.
 
 h3. Following Along
 
-You can see the finished source code for this application on "Github":https://github.com/sproutcore/Todos-Example/. To see it in action, click "here":http://getting-started.strobeapp.com.
+You can see the finished source code for this application on "Github":https://github.com/sproutcore/todos/. To see it in action, click "here":http://getting-started.strobeapp.com.
 
 h3. Installing SproutCore
 
-Download the SproutCore Starter Kit if you haven't already. Unzip and it open the directory in your favorite text editor.
+Download the "SproutCore Starter Kit":https://github.com/sproutcore/starter-kit/zipball/master if you haven't already. Unzip and it open the directory in your favorite text editor.
 
 h3. Core Concepts
 
@@ -59,10 +59,10 @@ We've now defined a class with two properties: +title+, a String, and +isDone+, 
 
 h3. Managing the Model Using a Controller
 
-Now that we know what our data looks like, let's create a controller to manage it. Since we want to maintain an ordered list of todos, we'll use an instance of <code>SC.ArrayController</code>.
+Now that we know what our data looks like, let's create a controller to manage it. Since we want to maintain an ordered list of todos, we'll use an instance of <code>SC.ArrayProxy</code>.
 
 <javascript filename="js/app.js">
-Todos.todoListController = SC.ArrayController.create({
+Todos.todosController = SC.ArrayProxy.create({
   // Initialize the array controller with an empty array.
   content: []
 });
@@ -75,7 +75,7 @@ Now we have an array controller with no content. Let's add a method to create a 
 <javascript filename="js/app.js">
 // updating previous code
 
-Todos.todoListController = SC.ArrayController.create({
+Todos.todosController = SC.ArrayProxy.create({
   // Initialize the array controller with an empty array.
   content: [],
 
@@ -88,19 +88,29 @@ Todos.todoListController = SC.ArrayController.create({
 });
 </javascript>
 
-NOTE: <code>SC.ArrayController</code> acts as a proxy onto its +content+ Array. SproutCore will propagate any modifications made to the <code>ArrayController</code> to the +content+ Array.
+NOTE: <code>SC.ArrayProxy</code> acts as a proxy onto its +content+ Array. SproutCore will propagate any modifications made to the <code>ArrayProxy</code> to the +content+ Array.
+
+h3. Doing It with Style
+
+We've provided a simple stylesheet to give the application some style.  Download the "CSS file":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos.css, add it to your project's +css+ directory, then include it in your +index.html+ +<head>+ tag:
+
+<html filename="index.html">
+<link rel="stylesheet" href="css/todos.css">
+</html>
 
 h3. Creating New Todos with a Text Field
 
-NOTE: We've provided a simple stylesheet to give the application some style.  At this point, you should download the "CSS":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos.css, add it to your project, then include it in your page:
-
-<html>
-<link rel="stylesheet" href="css/app.css">
-</html>
-
 We've got our model and controller set up, so let's move on to the fun part: creating the interface for our users. The first step is to create a text field into which the user types the name of their todo.  SproutCore uses Handlebars templates to quickly define the application's interface.  While Handlebars makes it easy to markup HTML quickly, you'll see that it also has been extended to automatically take advantage of SproutCore's bindings.
 
-To start building our views, let's open +index.html+.  You'll see that the starter kit includes a default Handlebars template. Remove it and replace it with the following:
+To start building our views, let's open +index.html+.
+
+First, add an +<h1>+ tag with the name of the application:
+  
+<html>
+<h1>Todos</h1>
+</html>
+
+You'll also see that the starter kit includes a default Handlebars template. Remove it and replace it with the following Handlebars template, which emits a text field for our users to type in:
 
 <html filename="index.html">
 <script type="text/html">
@@ -108,17 +118,7 @@ To start building our views, let's open +index.html+.  You'll see that the start
 </script>
 </html>
 
-Let's also add a header right above the template:
-
-<html>
-<h1>Todos</h1>
-</html>
-
-Finally, add a unique +id+ attribute to the +body+ tag so we can style with CSS:
-
-<html>
-<body id="todos">
-</html>
+Here we've specified a text field, with a unique +id+ attribute (so it can be styled via CSS), as well as a +placeholder+ attribute that will be displayed in modern HTML5 browsers.
 
 NOTE: For more information about using Handlebars, visit the "Handlebars website":http://www.handlebarsjs.com/. To learn more about using Handlebars with SproutCore, make sure to check out the "Using Handlebars Templates":/using_handlebars.html guide.
 
@@ -134,14 +134,14 @@ Todos.CreateTodoView = SC.TextField.extend({
     var value = this.get('value');
 
     if (value) {
-      Todos.todoListController.createTodo(value);
+      Todos.todosController.createTodo(value);
       this.set('value', '');
     }
   }
 });
 </javascript>
 
-Since <code>CreateTodoView</code> contains a text field, we create a subclass of <code>SC.TextField</code>, which provides several conveniences for working with text fields. For example, you can access the +value+ property and respond to higher level events such as +insertNewline+, when the user presses <code>return</code>.
+Since <code>CreateTodoView</code> will handle events for a text field, we create a subclass of <code>SC.TextField</code>, which provides several conveniences for working with these input controls. For example, you can access the +value+ property and respond to higher level events, such as +insertNewline+, when the user presses <code>return</code>.
 
 Now that we have defined our view, let's update the template to use our new view subclass.  Switch back to +index.html+ and update the view helper to say +Todos.CreateTodoView+ instead of +SC.TextField+.
 
@@ -154,14 +154,14 @@ Now that we have defined our view, let's update the template to use our new view
 Now that we have UI to create new todos, let's create the code to display them.  We'll use the Handlebars +#collection+ helper to display a list of items. +#collection+ will create an instance of <code>SC.CollectionView</code> that renders every item in its underlying Array using the enclosed HTML.
 
 <html filename="index.html">
-{{#collection contentBinding="Todos.todoListController" tagName="ul"}}
+{{#collection contentBinding="Todos.todosController" tagName="ul"}}
   {{content.title}}
 {{/collection}}
 </html>
 
-Notice that we've also told the collection to bind its +content+ property to our <code>todoListController</code>. For every item in the array controller, the collection view will create a new child view that renders the +{{content.title}}+ template.
+Notice that we've also told the collection to bind its +content+ property to our <code>todosController</code>. For every item in the array controller, the collection view will create a new child view that renders the +{{content.title}}+ template.
 
-NOTE: You set up bindings by creating a property whose name ends in +Binding+. In this case, we bind +Todos.todoListController+ to the collection view's +content+ property. When one end of a binding changes, SproutCore will automatically update the other end.
+NOTE: You set up bindings by creating a property whose name ends in +Binding+. In this case, we bind +Todos.todosController+ to the collection view's +content+ property. When one end of a binding changes, SproutCore will automatically update the other end.
 
 This is a good time to open +index.html+ again (or reload if you still have it loaded in your browser). It should look the same as before. Type a todo into the text field and hit return.
 
@@ -182,7 +182,7 @@ The first thing we need to do is add a checkbox to each todo list item. As was m
 <script type="text/html">
 {{view Todos.CreateTodoView id="new-todo" placeholder="What needs to be done?"}}
 
-{{#collection contentBinding="Todos.todoListController" tagName="ul"}}
+{{#collection contentBinding="Todos.todosController" tagName="ul"}}
 {{view SC.Checkbox titleBinding="parentView.content.title"
     valueBinding="parentView.content.isDone"}}
 {{/collection}}
@@ -199,7 +199,7 @@ We'll use a property on the collection helper to set up this binding:
 
 <javascript filename="index.html">
 <!-- replacing the previous code -->
-{#collection contentBinding="Todos.todoListController" tagName="ul"
+{#collection contentBinding="Todos.todosController" tagName="ul"
 itemClassBinding="content.isDone"}}
 {{view SC.Checkbox titleBinding="parentView.content.title"
     valueBinding="parentView.content.isDone"}}
@@ -229,7 +229,7 @@ Let's go ahead and implement that view in +app.js+ now:
 
 <javascript filename="js/app.js">
 Todos.StatsView = SC.View.extend({
-  remainingBinding: 'Todos.todoListController.remaining',
+  remainingBinding: 'Todos.todosController.remaining',
 
   remainingString: function() {
     var remaining = this.get('remaining');
@@ -242,14 +242,14 @@ Todos.StatsView = SC.View.extend({
 
 We say that +remainingString+ *depends on* <code>remaining</code> because it requires another value to generate its own value. We list these *dependent keys* inside the +property()+ declaration.
 
-We've also bound the view's +remaining+ property to the <code>todoListController</code>'s +remaining+ property. This means that, because of the dependency chain we've described, if <code>Todos.todoListController.remaining</code> changes, +remainingString+ will automatically update.
+We've also bound the view's +remaining+ property to the <code>todosController</code>'s +remaining+ property. This means that, because of the dependency chain we've described, if <code>Todos.todosController.remaining</code> changes, +remainingString+ will automatically update.
 
-When we have information that views need but is based on aggregate information about our models, the array controller is a good place to put it. Let's add a new computed property to <code>todoListController</code> in <code>todos.js</code>:
+When we have information that views need but is based on aggregate information about our models, the array controller is a good place to put it. Let's add a new computed property to <code>todosController</code> in <code>todos.js</code>:
 
 <javascript filename="js/app.js">
 // updating previous code
 
-Todos.todoListController = SC.ArrayController.create({
+Todos.todosController = SC.ArrayProxy.create({
 
   // ...
 
@@ -263,7 +263,7 @@ Here, we specify our dependent key using +@each+. This allows us to depend on pr
 
 NOTE: The +@each+ property also updates when an item is added or removed.
 
-It's important to declare dependent keys because SproutCore uses this information to know when to update bindings. In our case, our <code>StatsView</code> updates any time <code>todoListController</code>'s <code>remaining</code> property changes.
+It's important to declare dependent keys because SproutCore uses this information to know when to update bindings. In our case, our <code>StatsView</code> updates any time <code>todosController</code>'s <code>remaining</code> property changes.
 
 Here's how it all fits together:
 
@@ -275,14 +275,14 @@ INFO: As we build up our application, we create *declarative* links between obje
 
 h3. Clearing Completed Todos
 
-As we populate our list with todos, we may want to periodically clear out those we've completed. As you have learned, we will want to make that change to the +todoListController+, and let SproutCore automatically propagate those changes to the DOM.
+As we populate our list with todos, we may want to periodically clear out those we've completed. As you have learned, we will want to make that change to the +todosController+, and let SproutCore automatically propagate those changes to the DOM.
 
 Let's add a new +clearCompletedTodos+ method to the controller.
 
 <javascript filename="js/app.js">
 // updating existing code
 
-Todos.todoListController = SC.ArrayController.create({
+Todos.todosController = SC.ArrayProxy.create({
 
   // ...
 
@@ -299,7 +299,7 @@ Next, let's add a button to our template. Open +index.html+ and add a button ins
 
 {{#view Todos.StatsView id="stats"}}
   {{#view SC.Button classBinding="isActive" ¬
-    target="Todos.todoListController" ¬
+    target="Todos.todosController" ¬
     action="clearCompletedTodos"}}
     Clear Completed Todos
   {{/view}}
@@ -307,11 +307,11 @@ Next, let's add a button to our template. Open +index.html+ and add a button ins
 {{/view}}
 </html>
 
-We've defined an instance of <code>SC.Button</code>, which calls a method on an object when it is clicked. In this case we've told the button to call the +clearCompletedTodos+ method (its action) on the +Todos.todoListController+ object (its target).
+We've defined an instance of <code>SC.Button</code>, which calls a method on an object when it is clicked. In this case we've told the button to call the +clearCompletedTodos+ method (its action) on the +Todos.todosController+ object (its target).
 
 We've also told it to add an +is-active+ class to the view when it is clicked or tapped. Every <code>SC.Button</code> has an +isActive+ property that will be true when it is in the process of being clicked. This allows us to display a visual cue to the user that they have hit the right target.
 
-Go back to your browser and try it out. Add some todos, then mark them done and clear them.  Because we previously bound the visual list to the <code>todoListController</code>, making a change through new means has the expected effect.
+Go back to your browser and try it out. Add some todos, then mark them done and clear them.  Because we previously bound the visual list to the <code>todosController</code>, making a change through new means has the expected effect.
 
 h3. Marking All as Done
 
@@ -324,7 +324,7 @@ Let's first create a new computed property on our controller that describes whet
 <javascript filename="js/app.js">
 // updating existing code
 
-Todos.todoListController = SC.ArrayController.create({
+Todos.todosController = SC.ArrayProxy.create({
 
   // ...
 
@@ -343,7 +343,7 @@ Next, we'll create a checkbox view to mark all items complete and bind its value
 
 {{view SC.Checkbox class="mark-all-done" ¬
   title="Mark All as Done" ¬
-  valueBinding="Todos.todoListController.allAreDone"}}
+  valueBinding="Todos.todosController.allAreDone"}}
 </html>
 
 If you were to reload your browser and use the app now, you'd notice that clicking all of the checkboxes of your todos will cause the "Mark All as Done" checkbox to become checked. However, it doesn't work in the other direction: clicking "Mark All as Done" has no effect.
@@ -353,7 +353,7 @@ So far, our computed properties have described how to calculate a value from dep
 <javascript filename="js/app.js">
 // updating existing code
 
-Todos.todoListController = SC.ArrayController.create({
+Todos.todosController = SC.ArrayProxy.create({
 
   // ...
 
