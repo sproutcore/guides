@@ -199,7 +199,7 @@ We'll use a property on the collection helper to set up this binding:
 
 <javascript filename="index.html">
 <!-- replacing the previous code -->
-{#collection contentBinding="Todos.todosController" tagName="ul"
+{{#collection contentBinding="Todos.todosController" tagName="ul"
 itemClassBinding="content.isDone"}}
 {{view SC.Checkbox titleBinding="parentView.content.title"
     valueBinding="parentView.content.isDone"}}
