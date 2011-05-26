@@ -149,8 +149,10 @@ Now that we have defined our view, let's update the template to use our new view
 
 <html filename="index.html">
 <h1>Todos</h1>
+<script type="text/html">
 {{view Todos.CreateTodoView id="new-todo"
   placeholder="What needs to be done?"}}
+</script>
 </html>
 
 Now that we have UI to create new todos, let's create the code to display them.  We'll use the Handlebars +#collection+ helper to display a list of items. +#collection+ will create an instance of <code>SC.CollectionView</code> that renders every item in its underlying Array using the enclosed HTML.
