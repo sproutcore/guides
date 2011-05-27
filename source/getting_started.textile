@@ -16,7 +16,7 @@ You can see the finished source code for this application on "Github":https://gi
 
 h3. Installing SproutCore
 
-Download the "SproutCore Starter Kit":https://github.com/sproutcore/starter-kit/zipball/master if you haven't already. Unzip and it open the directory in your favorite text editor.
+Download the "SproutCore Starter Kit":https://github.com/downloads/sproutcore/starter-kit/sproutcore-starter-kit-REL-2.0.a.2-0-g3cadc75.zip if you haven't already. Unzip and it open the directory in your favorite text editor.
 
 h3. Core Concepts
 
@@ -389,10 +389,6 @@ Now that you have finished the first part of the Getting Started tutorial, you w
 * Follow "@sproutcore":http://twitter.com/sproutcore on Twitter
 * Visit the "#sproutcore":irc://irc.freenode.net/sproutcore IRC channel to get real-time help
 * Bookmark the "SproutCore API Documentation":http://docs.sproutcore.com and the "SproutCore Guides":http://guides.sproutcore.com
-
-h3. Continue On
-
-Now that you've built a basic SproutCore app, continue on to "the next part of this tutorial":getting_started_2.html to learn about working with SproutCore's model layer.
 
 h3. Changelog
 
