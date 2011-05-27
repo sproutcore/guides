@@ -45,7 +45,7 @@ AddressBook.contactsController = SC.ArrayController.create({
 
 h4. Create vs Extend and Design
 
-You may have noticed that the first two examples use +.create()+ and the third uses +.extend()+. When should you use one of the other?
+You may have noticed that two of the above examples use +.create()+ while another uses +.extend()+. When should you use one of the other?
 
 When you use +.create()+, you are creating an instance of a class. It is similar to using the new operator. On the other hand, when you use +.extend()+, the resulting object is created as a new a subclass, where the properties and functions from the base class are added in addition to the things that you define on your own.
 
