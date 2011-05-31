@@ -114,7 +114,7 @@ index:
       url: records
       text: "The SproutCore data framework is a full-featured ORM-like framework for working with data in SproutCore. Learn about the SproutCore data framework and how you can use it to interact with your data sources."
     - title: Hooking Up to a Backend
-      url: connect_server
+      url: data_source
       text: "This guide covers how to create a SproutCore data source, which will retrieve data from your servers and make them available to the SproutCore Records you designed in the previous guide."
       construction: true
     - title: Transactions Using Nested Stores
