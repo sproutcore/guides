@@ -118,6 +118,8 @@ You'll also see that the starter kit includes a default Handlebars template. Rem
 </script>
 </html>
 
+NOTE: Make sure you remove the stub template in index.html that is included in the starter kit.
+
 Here we've specified a text field, with a unique +id+ attribute (so it can be styled via CSS), as well as a +placeholder+ attribute that will be displayed in modern HTML5 browsers.
 
 NOTE: For more information about using Handlebars, visit the "Handlebars website":http://www.handlebarsjs.com/. To learn more about using Handlebars with SproutCore, make sure to check out the "Using Handlebars Templates":/using_handlebars.html guide.
