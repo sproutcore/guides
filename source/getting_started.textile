@@ -92,7 +92,7 @@ NOTE: <code>SC.ArrayProxy</code> acts as a proxy onto its +content+ Array. Sprou
 
 h3. Doing It with Style
 
-We've provided a simple stylesheet to give the application some style.  Download the "CSS file":https://github.com/sproutcore/todos/raw/master/apps/todos/resources/stylesheets/todos.css, add it to your project's +css+ directory, then include it in your +index.html+ +<head>+ tag:
+We've provided a simple stylesheet to give the application some style.  Download the "CSS file":https://raw.github.com/sproutcore/todos/master/css/todos.css, add it to your project's +css+ directory, then include it in your +index.html+ +<head>+ tag:
 
 <html filename="index.html">
 <link rel="stylesheet" href="css/todos.css">
