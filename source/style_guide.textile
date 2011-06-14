@@ -1,10 +1,10 @@
 h2. JavaScript Style Guide
 
-Coding and naming convention style guidelines make your code clearer, easier to read and, they can also actually improve performance.  
+Coding and naming convention style guidelines make your code clearer, easier to read and, they can also actually improve performance.
 
 Although you can use any convention that makes sense for you, the guidelines described here are based on years of experience from SproutCore developers in writing understandable and maintainable code.
- 
-The SproutCore coding and naming convention style guidelines are based on the Cocoa style guide from "CocoaDevCentral":http://cocoadevcentral.com/. 
+
+The SproutCore coding and naming convention style guidelines are based on the Cocoa style guide from "CocoaDevCentral":http://cocoadevcentral.com/.
 
 endprologue.
 
@@ -15,7 +15,7 @@ Although JavaScript is a prototype-based language, SproutCore overlays the some 
 
 h4. Defining Classes
 
-Just as with Objective-C, JavaScript and thus, SproutCore, is not natively name spaced. Therefore, it is very important to be careful to use a consistent prefix when naming your classes. When you create a SproutCore application using the build tools, it will automatically set up a name space variable for you in core.js in your project. 
+Just as with Objective-C, JavaScript and thus, SproutCore, is not natively name spaced. Therefore, it is very important to be careful to use a consistent prefix when naming your classes. When you create a SproutCore application using the build tools, it will automatically set up a name space variable for you in core.js in your project.
 
 For example, if you are writing an application called "AddressBook", the build tools will create the following:
 
@@ -54,9 +54,9 @@ When you use +.create()+, you are creating an instance of a class. It is similar
 
 h3. Properties and Variables
 
-Descriptive property and variable names are strongly encouraged in SproutCore. Since most deployed applications will deliver the JavaScript compressed to the user, using terse names will not significantly reduce the amount sent over the wire. Also, if any obfuscation is used as part of the build process, it will optimize the names for you. Therefore, naming your variables or properties as descriptive as you need will make the life of the developer a lot better and not degrade performance or the user experience. 
- 
-All properties and variable names are camel case with the first letter lower case. The name should describe what the variable or property contains. It is not necessary to indicate the type of a variable in the name. For example, you don't need to name a variable meant to store a string +myString+ or an array variable +myArray+, but it is useful to name them in such a way that it is obvious anyway. 
+Descriptive property and variable names are strongly encouraged in SproutCore. Since most deployed applications will deliver the JavaScript compressed to the user, using terse names will not significantly reduce the amount sent over the wire. Also, if any obfuscation is used as part of the build process, it will optimize the names for you. Therefore, naming your variables or properties as descriptive as you need will make the life of the developer a lot better and not degrade performance or the user experience.
+
+All properties and variable names are camel case with the first letter lower case. The name should describe what the variable or property contains. It is not necessary to indicate the type of a variable in the name. For example, you don't need to name a variable meant to store a string +myString+ or an array variable +myArray+, but it is useful to name them in such a way that it is obvious anyway.
 
 The only exceptions are *booleans*. When naming a boolean, it is recommended prefix them with +is+ or +isNot+. Therefore, it is easy to determine in which manner they are to be used.
 
@@ -68,14 +68,14 @@ enabled: true // This is possibly confusing.
 
 h4. Properties
 
-A property is a variable that is directly defined on an object or class. These properties can be either public or private. Since JavaScript has no actual concept of private properties,  the concept is merely to help developers. A private property name is prefixed with a underscore. In the following example of the +contactController+, there are two properties, first there is property called +contactsList+ that is a public array containing the list of contacts, and then there is a private property called +_contactsCount+ for internal book keeping. No matter if the property is static or if it is a computed property (which is actually a function), the naming convention is the same. 
+A property is a variable that is directly defined on an object or class. These properties can be either public or private. Since JavaScript has no actual concept of private properties,  the concept is merely to help developers. A private property name is prefixed with a underscore. In the following example of the +contactController+, there are two properties, first there is property called +contactsList+ that is a public array containing the list of contacts, and then there is a private property called +_contactsCount+ for internal book keeping. No matter if the property is static or if it is a computed property (which is actually a function), the naming convention is the same.
 
 <javascript>
 AddressBook.contactsController = SC.ArrayController.create({
 
   _contactsCount: 0, // This is a private variable.
 
-  // This is a public variable.  Access using get() and set() 
+  // This is a public variable.  Access using get() and set()
   contactsList: []
 });
 </javascript>
@@ -85,12 +85,12 @@ NOTE: To access or modify public properties inside or outside the object, *alway
 h4. Variables
 
 Variables are internal to a function only. Since it is local to that function, it is not encouraged to use an underscore as a prefix.
- 
+
 JavaScript will allow you to reference any variable name, even if you have not declared it before.  If you reference a variable without declaring it first, however, the variable will be treated as a "global" variable, accessible to every function in your application.  Since SproutCore applications are often very complex, it is important that you always use the +var+ statement to declare your local variables first.  Otherwise you may introduce bugs inadvertently. Mistakenly defining something outside of its scope is a typical error that can be very difficult to debug.
 
 
 In addition, local variables are the fastest way of storing data in JavaScript.  Making extensive use of local variables will get the best performance out of your code.
- 
+
 For example, in this function, +count+ is a local variable:
 
 <javascript>
@@ -109,7 +109,7 @@ countContacts: function(){
 
 h5. Optimizing the use of variables
 
-When you access a property defined on an object multiple times, it is encouraged to store it locally inside the function. For instance, if you have a function that gets content of a view, collects some information from the record and then returns a string with all of the values combined.  The first example is not efficient because there are many unnecessary function calls. Not only that, it is also hard to read! The second example pulls the content object into a local variable, +contact+ and constructs the string with far fewer function calls and with far superior readability to boot. 
+When you access a property defined on an object multiple times, it is encouraged to store it locally inside the function. For instance, if you have a function that gets content of a view, collects some information from the record and then returns a string with all of the values combined.  The first example is not efficient because there are many unnecessary function calls. Not only that, it is also hard to read! The second example pulls the content object into a local variable, +contact+ and constructs the string with far fewer function calls and with far superior readability to boot.
 
 
 This is confusing and inefficient:
@@ -149,17 +149,17 @@ constructName: function(){
 }
 </javascript>
 
-Another suggestion declare all local variables at the beginning of your method. The YUI compressor recommends declaring all variables on one line i.e., 
+Another suggestion declare all local variables at the beginning of your method. The YUI compressor recommends declaring all variables on one line i.e.,
 
 <javascript>
-  var a, b, x, obj;   
+  var a, b, x, obj;
 </javascript>
 
 h3. Functions
 
-This is perhaps where the naming and coding style guidelines for SproutCore deviate the most from Objective-C. The reason is that the syntactic sugar is very different between Objective-C and JavaScript. 
- 
-For SproutCore applications, the naming conventions more or less the same as how to name properties. Just as with properties, private functions on objects are prefixed with an underscore. The name of a function should be descriptive and give a sense of what purpose it is intended to perform. This, however, is not a blank check to make a function name a full sentence. Naming a function +constructContactFullNameWithPrefixAndSuffixString+ is not helping anyone, especially you, the developer. The specifics can be captured in the documentation. Instead, naming the function +constructName+ gives a hint at what the function does and is not exceedingly verbose.
+This is perhaps where the naming and coding style guidelines for SproutCore deviate the most from Objective-C. The reason is that the syntactic sugar is very different between Objective-C and JavaScript.
+
+For SproutCore applications, the naming conventions are more or less the same as those used to name properties. Just as with properties, private functions on objects are prefixed with an underscore. The name of a function should be descriptive and give a sense of what purpose it is intended to perform. This, however, is not a blank check to make a function name a full sentence. Naming a function +constructContactFullNameWithPrefixAndSuffixString+ is not helping anyone, especially you, the developer. The specifics can be captured in the documentation. Instead, naming the function +constructName+ gives a hint at what the function does and is not exceedingly verbose.
 
 h4. Observers
 
@@ -190,7 +190,7 @@ Bindings are special properties that will connect together the values of two obj
 h3. Constants
 
 A constant is a value that will not change throughout your application.  Constant values can make your code both easier to read and help it to perform better.  Instead of using the same string or number to represent some state, define constants on your application or classes instead.
- 
+
 Constants should always be named using all upper case, separating words with underscores.  You should always define constants in your application namespace or on a class.  Never define a global constant that is not prefixed by a namespace as it may conflict with other libraries you load.
 
 <javascript>
@@ -202,7 +202,7 @@ CONTACT_FIELDS = ['firstName', 'lastName']; // Bad - no globals!
 
 h3. Other Coding Style Guidelines
 
-SproutCore does not have a lot of specific coding style guidelines but the ones that it does have help a SproutCore application to be readable, maintainable, and easily extended. 
+SproutCore does not have a lot of specific coding style guidelines but the ones that it does have help a SproutCore application to be readable, maintainable, and easily extended.
 
 
 h4. Two Space Soft tabs!
@@ -225,7 +225,7 @@ if (isReady)
  readyCount = oldReadCount + newReadyCount; // not OK!
 
 if (isReady) {
-  readyCount = oldReadyCount + newReadyCount ; 
+  readyCount = oldReadyCount + newReadyCount ;
 } // OK - multi-line but wrapped in curly-Qs.
 </javascript>
 
@@ -235,19 +235,19 @@ While some style guidelines just make for more readable code, the suggestions in
 
 h4. Always use ===
 
-You should always use *===* and *!==* when comparing objects.  This special form of equality is both faster and performs fewer transforms on the values you are comparing.  It will behave more like you would expect compare to other languages than *==* or *!=*.  If you want to see if a value is either +null+ OR +undefined+, use +SC.none(foo)+.  
+You should always use *===* and *!==* when comparing objects.  This special form of equality is both faster and performs fewer transforms on the values you are comparing.  It will behave more like you would expect compare to other languages than *==* or *!=*.  If you want to see if a value is either +null+ OR +undefined+, use +SC.none(foo)+.
 
 h4. Cache Length in For Loops
 
 When writing +for()+ loops, first capture the length you want to iterate through like so:
 
 <javascript>
-for(var idx=0,len= items.length;idx<len;idx++) { 
+for(var idx=0,len= items.length;idx<len;idx++) {
   item = items[idx]; //do stuff...
 }
 </javascript>
 
-Better yet, if the order you iterate does not matter, use a +while+ loop like so since it is faster than using a for loop: 
+Better yet, if the order you iterate does not matter, use a +while+ loop like so since it is faster than using a for loop:
 <javascript>
 var idx = items.length;
 while(--idx) {
@@ -263,13 +263,13 @@ Instead of using iterators like +forEach()+ that require a closure, use simple +
 
 <javascript>
 // Bad - this function creates a closure function
-// to iterate over the array, AND creates a closure 
+// to iterate over the array, AND creates a closure
 // function to pass as a callback to addObserver().
 //
 // (This method also recreates the 'keys' array each
 // time it is called)
 setupObservers: function() {
-  var keys = ['firstName', 'lastName']; 
+  var keys = ['firstName', 'lastName'];
   keys.forEach(function(key) {
     this.addObserver(key, function() {
       console.log('%@ did change!'.fmt(key)) ;
@@ -291,7 +291,7 @@ keyDidChange: function(target, key) {
 setupObservers: function() {
   var keys = this.OBSERVER_KEYS, len = keys.length, idx;
   for(idx=0;idx<len;idx++) {
-    this.addObserver(keys[idx], this, this.keyDidChange); 
+    this.addObserver(keys[idx], this, this.keyDidChange);
   }
 }
 </javascript>
@@ -307,7 +307,7 @@ enqueItems: function() {
  var cur = [] ; // we'll reuse this one
 
   for(idx=0;idx<len;idx++) {
-    var item = items[idx]; 
+    var item = items[idx];
     cur[0] = item.target ;
     cur[1] = item.method;
     this.enqueue(cur);

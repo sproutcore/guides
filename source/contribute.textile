@@ -8,7 +8,7 @@ h3. How to Contribute?
 
 First, you will need to fork the SproutCore guides repository from Github.
 
-Go to +https://github.com/sproutcore/sproutguides+ and fork it. Then, check your forked copy out onto your local machine.
+Go to "https://github.com/sproutcore/sproutguides":https://github.com/sproutcore/sproutguides and fork it. then, check your forked copy out onto your local machine.
 
 <shell>
 $ git clone git@github.com:<yourname>/sproutguides.git
