@@ -58,6 +58,7 @@ body {
 .container {
   width: 960px;
   margin: 0 auto;
+  position: relative;
 }
 
 /* Inputs */
@@ -299,4 +300,37 @@ body > footer .social li:nth-child(4) {
   background: -webkit-gradient(linear, left top, left bottom, from(#161616), to(#333));
   background: -webkit-linear-gradient(top, #161616, #333);
   background: linear-gradient(top, #161616, #333);
+}
+
+/* Back to top */
+
+body > footer .top:link,
+body > footer .top:visited {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  padding: 0 20px 0 43px;
+  border: 1px solid #2a2a2a;
+  border: 1px solid rgba(0, 0, 0, 0.33);
+  border-top: 0;
+  color: #ececec;
+  font-weight: bold;
+  font-size: 9px;
+  line-height: 30px;
+  text-transform: uppercase;
+  background: #222 url(../images/footer/top.png) no-repeat 20px 7px;
+  background-color: rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+  -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+body > footer .top:hover {
+  border-color: #151515;
+  border-color: rgba(0, 0, 0, 0.6);
+  background-color: #1f1f1f;
+  background-color: rgba(0, 0, 0, 0.4);
 }
