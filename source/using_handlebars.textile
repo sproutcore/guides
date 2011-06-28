@@ -82,7 +82,7 @@ If you want to avoid your property output getting wrapped in these markers, use 
 My new car is {{raw color}}.
 </html>
 
-Your output will be free of markers:
+Your output will be free of markers, but be careful, because the output won't be automatically updated!
 
 <html>
 My new car is blue.
