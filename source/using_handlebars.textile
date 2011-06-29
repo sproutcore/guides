@@ -474,7 +474,7 @@ This will print a list like this:
 </ul>
 </html>
 
-h4. SC.SC.CollectionView
+h4. SC.CollectionView
 
 Sometimes you will need each item in your list to handle events. In that case, you will need more sophistication than what +{{#each}}+ can provide. You can use the +{{#collection}}+ helper to create a new <code>SC.CollectionView</code>. You can bind the instance of <code>SC.CollectionView</code> to an array, and it will create a new <code>SC.View</code> for each item.
 
@@ -525,6 +525,33 @@ What if you want to set the class name of every child view, though? If you prepe
 <html>
 {{collection App.MyCollectionView itemClass="collection-item"}}
 </html>
+
+h3. Writing Custom Helpers
+
+Sometimes, you may use the same HTML in your application multiple times. In those case, you can register a custom helper that can be invoked from any Handlebars template.
+
+For example, imagine you are frequently wrapping certain values in a +<span>+ tag with a custom class. You can register a helper from your JavaScript like this:
+  
+<javascript>
+Handlebars.registerHelper('highlight', function(property) {
+  var value = SC.getPath(this, property);
+  return '<span class="highlight">"+value+'</span>';
+});
+</javascript>
+
+Anywhere in your Handlebars templates, you can now invoke this helper:
+
+<html>
+{{highlight name}}
+</html>
+
+and it will output the following:
+
+<html>
+<span class="highlight">Peter</span>
+</html>
+
+NOTE: Parameters to helper functions are passed as names, not their current values. This allows you to optionally set up observers on the values. To get the current value of the parameter, use SC.getPath, as shown above.
 
 h3. Changelog
 
