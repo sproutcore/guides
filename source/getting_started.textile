@@ -16,7 +16,7 @@ You can see the finished source code for this application on "Github":https://gi
 
 h3. Installing SproutCore
 
-Download the "SproutCore Starter Kit":https://github.com/downloads/sproutcore/starter-kit/sproutcore-starter-kit-REL-2.0.a.2-0-g3cadc75.zip if you haven't already. Unzip and it open the directory in your favorite text editor.
+Download the "SproutCore Starter Kit":https://github.com/sproutcore/starter-kit/downloads if you haven't already. Unzip and it open the directory in your favorite text editor.
 
 h3. Core Concepts
 
