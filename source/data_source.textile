@@ -126,7 +126,7 @@ The first thing that your app will likely do is to fetch a bunch of data. This i
 
 NOTE: Our DataSource will be written assuming that "local queries":records.html#local-vs-remote-queries are being used. Local queries are what you will be using most of the time. Remote queries will be covered in a separate guide.
 
-When you call +App.store.find(MyApp.QUERY_ALL_TODOS)+, the store will return a "RecordArray":http://docs.sproutcore.com/symbols/SC.RecordArray.html containing matching records (or an empty recordArray, if nothing matches). This RecordArray is linked to the query so that it will automatically update any time the query conditions match a new record. After it has returned, the store will call 'fetch' on its attached DataSource. 
+When you call +App.store.find(MyApp.QUERY_ALL_TODOS)+, the store will return a "RecordArray":http://docs.sproutcore20.com/symbols/SC.RecordArray.html containing matching records (or an empty recordArray, if nothing matches). This RecordArray is linked to the query so that it will automatically update any time the query conditions match a new record. After it has returned, the store will call 'fetch' on its attached DataSource. 
 
 This is when we get to take action. The generated DataSource will already contain the following code:
 
@@ -172,30 +172,30 @@ fetchDidComplete: function(response, store, query) {
 
 Our +Fetch+ function is pretty simple. For now, we are constructing an +Request+ to send to the server.
 
-"SC.Request":http://docs.sproutcore.com/symbols/SC.Request.html is SproutCore's simple wrapper around an Ajax call.
+"SC.Request":http://docs.sproutcore20.com/symbols/SC.Request.html is SproutCore's simple wrapper around an Ajax call.
 
 NOTE: You are not restricted to using an SC.Request inside of a DataSource, but it is advised that you don't go making calls to your server from just anywhere in your app.
 
-".getUrl":http://docs.sproutcore.com/symbols/SC.Request.html#.getUrl tells our request that we want to use the GET method to contact the given url. You can also use the following
-* "putUrl":http://docs.sproutcore.com/symbols/SC.Request.html#.putUrl
-* "postUrl":http://docs.sproutcore.com/symbols/SC.Request.html#.postUrl
-* "deleteUrl":http://docs.sproutcore.com/symbols/SC.Request.html#.deleteUrl
+".getUrl":http://docs.sproutcore20.com/symbols/SC.Request.html#.getUrl tells our request that we want to use the GET method to contact the given url. You can also use the following
+* "putUrl":http://docs.sproutcore20.com/symbols/SC.Request.html#.putUrl
+* "postUrl":http://docs.sproutcore20.com/symbols/SC.Request.html#.postUrl
+* "deleteUrl":http://docs.sproutcore20.com/symbols/SC.Request.html#.deleteUrl
 
-".json":http://docs.sproutcore.com/symbols/SC.Request.html#json lets the request know that we are expecting the server to send back JSON, so it will automatically parse it for us. Without this, the return value would be a string. We could also have called +.xml()+ if your server talks XML.
+".json":http://docs.sproutcore20.com/symbols/SC.Request.html#json lets the request know that we are expecting the server to send back JSON, so it will automatically parse it for us. Without this, the return value would be a string. We could also have called +.xml()+ if your server talks XML.
 
-".notify":http://docs.sproutcore.com/symbols/SC.Request.html#notify sets the callback method. By default SC.Requests are asynchronous, so the app can keep running while waiting for the server. The parameters used here are:
+".notify":http://docs.sproutcore20.com/symbols/SC.Request.html#notify sets the callback method. By default SC.Requests are asynchronous, so the app can keep running while waiting for the server. The parameters used here are:
   # +this+ {Object} The target object that the action will run on
   # +'fetchDidComplete'+ {String} The name of the function that is located on `target` that will get called
   # +store, query+ {Any Objects} All following parameters will get passed into the call back
 
-".send":http://docs.sproutcore.com/symbols/SC.Request.html#send will now actually send the built up request and return immediately (as we have kept the default async behaviour), without waiting for the server. 
+".send":http://docs.sproutcore20.com/symbols/SC.Request.html#send will now actually send the built up request and return immediately (as we have kept the default async behaviour), without waiting for the server. 
 
 NOTE: +.send()+ also takes a +String+ parameter for the +POST+ and +PUT+ methods to send as the body of the request.
 
 When the server responds to the request, our callback method +fetchDidComplete+ will get called. The first parameter is the SC.Response related to the Request we just sent. Any following parameters are the ones we passed into +.notify()+: +store+ and +query+.
 
 First thing we do when the response comes back is check to see if there was an error or not.
-"SC.ok":http://docs.sproutcore.com/symbols/SC.html#.ok will do this for us.
+"SC.ok":http://docs.sproutcore20.com/symbols/SC.html#.ok will do this for us.
 
 If all is good, we can now load the records into the store. First we need to get the RecordType that is stored in the query so we can inform the store. For us, it will be +MyApp.Todo+.
 
@@ -223,15 +223,15 @@ var body = response.get('body')
 </javascript>
 NOTE: Note how we didn't use +.get('records')+, this is because the JSON is converted into plain JS, not +SC.Object+'s.
 
-Now we call "loadRecords":http://docs.sproutcore.com/symbols/SC.Store.html#loadRecords on the store to actually put our data into the store. The first parameter is the Record Type of the objects you are going to load. The second is an array of plain JS object hashes containing your records data.
+Now we call "loadRecords":http://docs.sproutcore20.com/symbols/SC.Store.html#loadRecords on the store to actually put our data into the store. The first parameter is the Record Type of the objects you are going to load. The second is an array of plain JS object hashes containing your records data.
 
 WARNING: You need to make sure that your data hashes have their "primary key":records.html#record-ids properties, in this case '+id+'.
 
 NOTE: This is the usual way of calling +loadRecords+, but it can be called with a few different signatures. This allows for quite complex behaviour, such as loading multiple record types at once. These will be covered by other guides.
 
-Finally, we call ".dataSourceDidFetchQuery":http://docs.sproutcore.com/symbols/SC.Store.html#dataSourceDidFetchQuery to let the store know that we have finished loading records, and it is now time to update the passed in query. The query that we passed in is the one that was given to us by +fetch+.  It was passed in through to the callback.
+Finally, we call ".dataSourceDidFetchQuery":http://docs.sproutcore20.com/symbols/SC.Store.html#dataSourceDidFetchQuery to let the store know that we have finished loading records, and it is now time to update the passed in query. The query that we passed in is the one that was given to us by +fetch+.  It was passed in through to the callback.
 
-If the server returned an error, such as +404+ Not Found, or the +500+ series of server errors, then we'll let the store know with ".dataSourceDidErrorQuery":http://docs.sproutcore.com/symbols/SC.Store.html#dataSourceDidErrorQuery. This sets the query into an error state, for which you can later check and deal with.
+If the server returned an error, such as +404+ Not Found, or the +500+ series of server errors, then we'll let the store know with ".dataSourceDidErrorQuery":http://docs.sproutcore20.com/symbols/SC.Store.html#dataSourceDidErrorQuery. This sets the query into an error state, for which you can later check and deal with.
 
 h4. Gaining Flexibility
 
@@ -269,7 +269,7 @@ fetch: function(store, query) {
 
 The fetch method will now use a dynamic URL for each record type.  
 
-NOTE: The "fmt":http://docs.sproutcore.com/symbols/String.html#String#fmt function outputs a formatted string.
+NOTE: The "fmt":http://docs.sproutcore20.com/symbols/String.html#String#fmt function outputs a formatted string.
 
 h4. Change of Mind
 

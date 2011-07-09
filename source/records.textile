@@ -76,7 +76,7 @@ App.Contact = SC.Record.extend({
 });
 </javascript>
 
-WARNING: Property names defined on +SC.Record+ itself are reserved names, meaning they cannot be used for custom record attributes. Please refer to the "documentation of SC.Record":http://docs.sproutcore.com/symbols/SC.Record.html for a list of all reserved names.
+WARNING: Property names defined on +SC.Record+ itself are reserved names, meaning they cannot be used for custom record attributes. Please refer to the "documentation of SC.Record":http://docs.sproutcore20.com/symbols/SC.Record.html for a list of all reserved names.
 
 We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+ and +age+ attributes with the type of each attribute as first argument. The optional second argument of +SC.Record.attr+ is an option hash. E.g. we can add some default values to our attributes:
 
@@ -120,7 +120,7 @@ App.Contact = SC.Record.extend({
 });
 </javascript>
 
-For a reference of how to specify your custom date format check the documentation of  "SC.DateTime#toFormattedString":http://docs.sproutcore.com/symbols/SC.DateTime.html#toFormattedString.
+For a reference of how to specify your custom date format check the documentation of  "SC.DateTime#toFormattedString":http://docs.sproutcore20.com/symbols/SC.DateTime.html#toFormattedString.
 
 h4. Record Ids
 
@@ -371,7 +371,7 @@ if (status === SC.Record.READY_NEW) {
 }
 </javascript>
 
-NOTE: For a complete list of record state constants see the "documentation of the SC.Record class":http://docs.sproutcore.com/symbols/SC.Record.html.
+NOTE: For a complete list of record state constants see the "documentation of the SC.Record class":http://docs.sproutcore20.com/symbols/SC.Record.html.
 
 h3. Finding Records in the Store
 
@@ -444,7 +444,7 @@ contacts.objectAt(3); // returns fourth result
 contacts.lastObject(); // returns last result
 </javascript>
 
-Please refer to the "documentation of SC.Array":http://docs.sproutcore.com/symbols/SC.Array.html to learn more about the array access methods.
+Please refer to the "documentation of SC.Array":http://docs.sproutcore20.com/symbols/SC.Array.html to learn more about the array access methods.
 
 NOTE: If the query was not yet fetched from the server, the store automatically forwards it to the data source to load the data from the server.
 
@@ -531,7 +531,7 @@ query = SC.Query.local(App.Contacts, {
 
 In this case the results are sorted in an ascending order, first by last name and second by first name. If you omit the +ASC+ keyword, the results are by default sorted in an ascending order. To sort them in descending order, put the keyword +DESC+ after the name of the property.
 
-NOTE: If you need a custom sorting order, you can register your own comparison operator for a specific model attribute using +SC.Query.registerComparison+. Please refer to the "documentation":http://docs.sproutcore.com/symbols/SC.Query.html#.registerComparison for further details.
+NOTE: If you need a custom sorting order, you can register your own comparison operator for a specific model attribute using +SC.Query.registerComparison+. Please refer to the "documentation":http://docs.sproutcore20.com/symbols/SC.Query.html#.registerComparison for further details.
 
 h5. Scoped Queries
 

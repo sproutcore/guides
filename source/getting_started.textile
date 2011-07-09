@@ -388,7 +388,7 @@ Now that you have finished the first part of the Getting Started tutorial, you w
 * Sign up for the "SproutCore Mailing List":http://groups.google.com/group/sproutcore
 * Follow "@sproutcore":http://twitter.com/sproutcore on Twitter
 * Visit the "#sproutcore":irc://irc.freenode.net/sproutcore IRC channel to get real-time help
-* Bookmark the "SproutCore API Documentation":http://docs.sproutcore.com and the "SproutCore Guides":http://guides.sproutcore.com
+* Bookmark the "SproutCore API Documentation":http://docs.sproutcore20.com and the "SproutCore Guides":http://guides.sproutcore20.com
 
 h3. Changelog
 

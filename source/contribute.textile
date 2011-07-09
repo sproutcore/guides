@@ -138,7 +138,7 @@ h3. Some Guidelines
 * For now, follow the "Rails Guides Conventions":https://github.com/lifo/docrails/wiki/rails-guides-conventions.
 * Assets are stored in the +assets+ directory.
 * Sample format: "Fixtures":http://github.com/sproutcore/sproutguides/blob/master/source/fixtures.textile.
-* Sample output: "Fixtures":http://guides.sproutcore.com/fixtures.html.
+* Sample output: "Fixtures":http://guides.sproutcore20.com/fixtures.html.
 
 h3. What to Contribute?
 
