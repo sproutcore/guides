@@ -96,6 +96,19 @@ Because all Handlebars expressions are wrapped in these markers, make sure each 
 <div {{#if isUrgent}}class="urgent"{{/if}}>
 </html>
 
+If you want to avoid your property output getting wrapped in these markers, use the +raw+ helper:
+
+<html>
+My new car is {{raw color}}.
+</html>
+
+Your output will be free of markers, but be careful, because the output won't be automatically updated!
+
+<html>
+My new car is blue.
+</html>
+
+
 h4. {{#if}}, {{else}}, and {{#unless}}
 
 Sometimes you may only want to display part of your template if a property exists. For example, let's say we have a view with a +person+ property that contains an object with +firstName+ and +lastName+ fields:
