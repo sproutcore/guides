@@ -17,17 +17,19 @@ To immediately insert a template into your document, place it inside a +<script>
   
 <html>
   <body>
-    <script type="text/x-handlebars">
+    <script type="text/html">
       Hello, <b>{{MyApp.name}}</b>
     </script>
   </body>
 </html>
 
-To make a template available to be used later, give the +<script>+ tag a name attribute:
+NOTE: You can add an attribute data-view to your +<script>+ tag to link it to a view.
+
+To make a template available to be used later, give the +<script>+ tag a data-template-name attribute and put it in the +<head>+ tag:
   
 <html>
   <head>
-    <script type="text/x-handlebars" data-template-name="say-hello">
+    <script type="text/html" data-template-name="say-hello">
       Hello, <b>{{MyApp.name}}</b>
     </script>
   </head>
@@ -41,7 +43,7 @@ To tell the view which template to use, set its +templateName+ property. For exa
 
 <html>
   <head>
-    <script type="text/x-handlebars" data-template-name="say-hello">
+    <script type="text/html" data-template-name="say-hello">
       Hello, <b>{{name}}</b>
     </script>
   </head>
