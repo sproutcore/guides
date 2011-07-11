@@ -52,7 +52,7 @@ To tell the view which template to use, set its +templateName+ property. For exa
 I would set the +templateName+ property to +"say-hello"+.
 
 <javascript>
-var view = SC.TemplateView.create({
+var view = SC.View.create({
   templateName: 'say-hello',
   name: "Bob"
 });
@@ -68,7 +68,7 @@ As you've already seen, you can print the value of a property by enclosing it in
 My new car is {{color}}.
 </html>
 
-This will look up and print the TemplateView's +color+ property. For example, if your view looks like this:
+This will look up and print the View's +color+ property. For example, if your view looks like this:
 
 <javascript>
 App.CarView = SC.View.extend({
@@ -376,17 +376,13 @@ So far in our examples, we have been setting static values directly on the views
 Let's set up a controller to represent our user data:
 
 <javascript>
-App.userController = SC.ObjectController.create({
-  content: SC.Object.create({
-    firstName: "Albert",
-    lastName: "Hofmann",
-    posts: 25,
-    hobbies: "Riding bicycles"
-  })
+App.userController = SC.Object.create({
+  firstName: "Albert",
+  lastName: "Hofmann",
+  posts: 25,
+  hobbies: "Riding bicycles"
 });
 </javascript>
-
-INFO: An <code>SC.ObjectController</code> is a controller that serves as a proxy to another object, contained in the controller's +content+ property. If you want to change the object that your views are displaying, just set the +content+ property to the new object. Since your views are all bound to the controller, they will update automatically without having to reconfigure their bindings.
 
 Now let's update <code>App.UserView</code> to bind to <code>App.userController</code>:
 
