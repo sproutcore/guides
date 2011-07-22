@@ -96,10 +96,10 @@ Because all Handlebars expressions are wrapped in these markers, make sure each 
 <div {{#if isUrgent}}class="urgent"{{/if}}>
 </html>
 
-If you want to avoid your property output getting wrapped in these markers, use the +raw+ helper:
+If you want to avoid your property output getting wrapped in these markers, use the +unbound+ helper:
 
 <html>
-My new car is {{raw color}}.
+My new car is {{unbound color}}.
 </html>
 
 Your output will be free of markers, but be careful, because the output won't be automatically updated!
@@ -374,7 +374,7 @@ So far in our examples, we have been setting static values directly on the views
 Let's set up a controller to represent our user data:
 
 <javascript>
-App.userController = SC.ObjectController.create({
+App.userController = SC.Object.create({
   content: SC.Object.create({
     firstName: "Albert",
     lastName: "Hofmann",
@@ -384,16 +384,14 @@ App.userController = SC.ObjectController.create({
 });
 </javascript>
 
-INFO: An <code>SC.ObjectController</code> is a controller that serves as a proxy to another object, contained in the controller's +content+ property. If you want to change the object that your views are displaying, just set the +content+ property to the new object. Since your views are all bound to the controller, they will update automatically without having to reconfigure their bindings.
-
 Now let's update <code>App.UserView</code> to bind to <code>App.userController</code>:
 
 <javascript>
 App.UserView = SC.View.extend({
   templateName: 'user',
 
-  firstNameBinding: 'App.userController.firstName',
-  lastNameBinding: 'App.userController.lastName'
+  firstNameBinding: 'App.userController.content.firstName',
+  lastNameBinding: 'App.userController.content.lastName'
 });
 </javascript>
 
@@ -401,8 +399,8 @@ When we only have a few bindings to configure, like with <code>App.InfoView</cod
 
 <html filename="user.handlebars">
 User: {{firstName}} {{lastName}}
-{{#view App.InfoView postsBinding="App.userController.posts"
-        hobbiesBinding="App.userController.hobbies"}}
+{{#view App.InfoView postsBinding="App.userController.content.posts"
+        hobbiesBinding="App.userController.content.hobbies"}}
   <b>Posts:</b> {{posts}}
   <br>
   <b>Hobbies:</b> {{hobbies}}
@@ -491,10 +489,10 @@ h4. SC.CollectionView
 
 Sometimes you will need each item in your list to handle events. In that case, you will need more sophistication than what +{{#each}}+ can provide. You can use the +{{#collection}}+ helper to create a new <code>SC.CollectionView</code>. You can bind the instance of <code>SC.CollectionView</code> to an array, and it will create a new <code>SC.View</code> for each item.
 
-Usually, you will bind the collection to an <code>SC.ArrayController</code>, like this:
+Usually, you will bind the collection to an <code>SC.ArrayProxy</code>, like this:
 
 <javascript>
-App.peopleController = SC.ArrayController.create({
+App.peopleController = SC.ArrayProxy.create({
   content: ['Steph', 'Tom', 'Ryan', 'Chris', 'Jill']
 });
 </javascript>
@@ -511,7 +509,7 @@ Remember that under the hood, <code>SC.CollectionView</code> creates a new view 
 
 <javascript>
 App.PeopleCollectionView = SC.CollectionView.extend({
-  itemView: SC.View.extend({
+  itemViewClass: SC.View.extend({
     mouseDown: function(evt) {
       window.alert('You clicked on ' + this.get('content'));
     }
@@ -569,3 +567,4 @@ NOTE: Parameters to helper functions are passed as names, not their current valu
 h3. Changelog
 
 * May 5, 2011: Initial version by "Tom Dale":credits.html#tomdale
+* July 21, 2011: Corrections made for SC2 by "Erik Bryn":credits.html#ebryn
