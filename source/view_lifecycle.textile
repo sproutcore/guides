@@ -55,9 +55,9 @@ Once all of the views have finished writing to their render buffers, the buffers
 
 h3. Templates
 
-Most views are backed by a Handlebars template. A template starts life as a string of Handlebars markup, which is compiled to a function. This function is saved to the view, and invoked whenever the view needs to render (or re-render).
+Most views are backed by a Handlebars template. A template starts life as a string of Handlebars markup, which is compiled to a function. This function is saved to the view and invoked whenever the view needs to render (or re-render).
 
-A template function writes a combination of HTML and JavaScript properties to a render buff in order to create a fully-formed view. As it renders, it may also create and add new child views to the parent view.
+A template function writes a combination of HTML and JavaScript properties to a render buffer in order to create a fully-formed view. As it renders, it may also create and add new child views to the parent view.
 
 For example, imagine Handlebars markup like this:
 
