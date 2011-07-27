@@ -124,6 +124,10 @@ index:
     - title: Using Fixtures
       url: fixtures
       text: "In order to facilitate rapid development, SproutCore provides a facility for using pre-set fixture data as your data source. This guide covers how to set up your fixtures, and how to replace them with your real server once you're ready to get going."
+    - title: Understanding the Record Lifecycle
+      url: record_lifecycle
+      text: "Records in SproutCore travel through a series of simple statuses. Understanding these statuses can help you to build better, less buggy Sproutcore apps. This guide walks you through a description of the details of the lifecycle of a record."
+      construction: true
   Theming:
     - title: "Using Chance, SproutCore's CSS Framework"
       url: chance

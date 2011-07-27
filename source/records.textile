@@ -586,43 +586,6 @@ We call +SC.Query.registerQueryExtension+ to register the new operator with the 
 
 NOTE: Look at the "source of SC.Query":https://github.com/sproutcore/sproutcore/blob/master/frameworks/datastore/system/query.js for more examples of how to implement query operators.
 
-h3. In-Depth Information about Record States
-
-We have covered the primary record states and the occurrence of some of the possible substates above. If you want to gain a complete understanding of what record states exist and what they mean, you will find a short description of all states below as well as complete state transition diagrams. 
-
-h4. READY Substates
-
-+SC.Record.READY_NEW+: A record in this state was created in memory but has not yet been committed back to the server.  If you commit changes on your store, this record will be sent to the data source automatically. Likewise if you destroy this record it will simply be removed from memory without notifying the server. The data source also cannot modify records while they are in this state since they have local changes that would be lost.
-
-+SC.Record.READY_CLEAN+: This is the default state of a record once it has been loaded from the server or its changes were committed. A record in this state exists on the server and has not been modified locally. If you commit changes on your store, this record will NOT be included. Likewise, if your data source receives a notification from the server that this record has changed, it can modify this record without any kind of error since no changes would be lost.
-
-+SC.Record.READY_DIRTY+: This is the state of a record that exists on the server but has since been modified in your SproutCore application. It has pending changes that will be sent to the server when you commit changes in your store. If your data source tries to modify this record, it will throw an error since local changes would be lost.
-
-!images/records/ready_substates.png!
-
-h4. BUSY Substates
-
-+SC.Record.BUSY_LOADING+: When you first get a record from the store, it will usually be in the +BUSY_LOADING+ state.  This means that the record did not exist in the store and the server has not yet returned any data. All properties will be empty at this point. When data is loaded for this record, it will transition to +READY_CLEAN+.
-
-+SC.Record.BUSY_CREATING+: A record in this state was newly created in the store. We are now waiting on the data source to confirm that it has been created in the server as well. Once this completes, the record will become +READY_CLEAN+. If the create fails, the record will return to +READY_NEW+.
-
-+SC.Record.BUSY_COMMITTING+: A record in this state was modified in the store and it is waiting on the data source to confirm the change is saved on the server as well. Once this completes, the record will become +READY_CLEAN+.
-
-+SC.Record.BUSY_REFRESH_DIRTY+: A record in this state has local changes but you asked the data source to reload the data from the server anyway. When the server updates, it will replace any local changes with a fresh copy from the server. If the refresh fails, the record will return to its +READY_DIRTY+ state.
-
-+SC.Record.BUSY_REFRESH_CLEAN+: A record in this state has no local changes but you asked it to reload the data from the server anyway.  When the server finished, success or failure, this record will return to the +READY_CLEAN+ state (unless there is an error).
-
-+SC.Record.BUSY_DESTROYING+: A record in this state was destroyed in the store and now is being destroyed on the server as well.  Once the destroy has completed, the record will become +DESTROYED_CLEAN+. If the destroy fails (without an error), it will become +DESTROYED_DIRTY+ again.
-
-!images/records/busy_substates.png!
-
-h4. DESTROYED Substates
-
-+SC.Record.DESTROYED_CLEAN+: A record in this state has been destroyed both in the store and on the server. A record enters this state, for example, if your data source destroys the record or if you destroy the record in memory then commit that change successfully to the server.
-
-+SC.Record.DESTROYED_DIRTY+: A record in this state was destroyed in the store by the application, but it has not yet been destroyed on the server.  A record in this state cannot accept changes from the server unless the server also puts it into a destroyed state. Committing changes on your store will ask the data source to send this destroy to the server.
- 
-!images/records/destroyed_substates.png!
 
 h3. Changelog
 

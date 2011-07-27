@@ -21,7 +21,7 @@ Creation of an +SC.Object+ instance is straightforward.
 var obj = SC.Object.create()
 </javascript>
 
-In most cases you will want to create your +SC.Object+ with some pre-set properties. You accomplish this by providing the properties in a hash.
+In most cases you will want to create your SC.Object with some pre-set properties. You accomplish this by providing the properties in a hash.
 
 <javascript>
 var person = SC.Object.create({
@@ -231,7 +231,7 @@ cap.set('capitalizedValue', 'abc'); // Calls capitalizedValue with value set to 
 cap.get('capitalizedValue'); // Calls capitalizedValue with value set to undefined. Returns ABC.
 </javascript>
 
-NOTE: In most cases you will find you can just ignore the +key+ parameter. Also, when the function is called via +get+, +value+ will be +undefined+.
+NOTE: In most cases you will find you can just ignore the +keyName+ parameter.
 
 h4. Property Paths
 
