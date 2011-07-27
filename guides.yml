@@ -169,6 +169,11 @@ index:
       url: todos_tdd
       text: "Show implementing the TODOs project using TDD."
       construction: true
+  Internals:
+    - title: "View Lifecycle"
+      url: view_lifecycle
+      text: "An advanced guide to the lifecycle of SC.Views"
+      construction: true
   Contributing to SproutCore:
     - title: "Javascript Style Guide"
       url: "style_guide"
