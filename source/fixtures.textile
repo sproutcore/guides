@@ -75,7 +75,7 @@ App.Employee = SC.Record.extend({
   firstName: SC.Record.attr(String),
   lastName:  SC.Record.attr(String),
   company:   SC.Record.toOne("App.Company", {
-     inverse: "contacts",
+     inverse: "employees",
      isMaster: NO
   })
 });
@@ -83,7 +83,7 @@ App.Employee = SC.Record.extend({
 App.Company = SC.Record.extend({
   name:      SC.Record.attr(String),
   employees: SC.Record.toMany("App.Employee", {
-    inverse: "group",
+    inverse: "company",
     isMaster: YES
   })
 });
@@ -166,3 +166,4 @@ h3. Changelog
 
 * January 11, 2011: initial version by "Peter Wagenet":credits.html#pwagenet
 * March    2, 2011: added filenames and fixed code formatting by "Topher Fangio":credits.html#topherfangio
+* July    17, 2011: minor changes by William Estoque
