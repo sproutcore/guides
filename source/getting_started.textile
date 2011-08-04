@@ -12,7 +12,7 @@ endprologue.
 
 h3. Following Along
 
-You can see the finished source code for this application on "Github":https://github.com/sproutcore/todos/. To see it in action, click "here":http://getting-started.strobeapp.com.
+You can see the finished source code for this application on "Github":https://github.com/sproutcore/todos/. To see it in action, click "here":http://todos20.strobeapp.com.
 
 h3. Installing SproutCore
 
@@ -399,3 +399,4 @@ h3. Changelog
 * May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
 * May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
 * May 25, 2011: Modified for SproutCore 2.0 by "Tom Dale":credits.html#tomdale and Majd Taby*
+* Aug 4, 2011: fixed wrong link to todos example app, reported by Chad Lung, fixed by Clemens Müller
