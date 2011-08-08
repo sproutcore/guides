@@ -18,9 +18,7 @@ There is also a screencast available on "Vimeo":http://vimeo.com/23527342.
 
 h3. Installing SproutCore
 
-This guide assumes you have already installed SproutCore. If you have not, please <a href="http://www.sproutcore.com/install/?redirect=1" onclick="_gaq.push(['_trackEvent', 'Download', 'Guides']);">install it now</a>.
-
-WARNING: This tutorial requires the 1.6.0 beta. The Windows and Mac installers are both for the beta version, but if you install via RubyGems, you'll need to use <code>gem install sproutcore --pre</code> to get the beta.
+This guide assumes you have already installed SproutCore 1.6. If you have not, please <a href="http://www.sproutcore.com/install/?redirect=1" onclick="_gaq.push(['_trackEvent', 'Download', 'Guides']);">install it now</a>.
 
 h3. Generate Your New Application
 
