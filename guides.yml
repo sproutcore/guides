@@ -81,6 +81,8 @@ authors:
       description: Devin has worked with SproutCore since 2009 and has developed more SproutCore applications than he can remember. He continues to explore opportunities to utilize SproutCore and HTML5 technologies in new and exciting ways. You can read his blog at <a href="http://devintorres.com/">devintorres.com</a> or follow him on Twitter <a href="http://twitter.com/devinus">@devinus</a>.
     - name: Erik Bryn
       nick: ebryn
+    - name: James A. Rosen
+      nick: jamesarosen
 
 index:
   Start Here:
@@ -98,6 +100,9 @@ index:
     - title: Enumerables
       url: enumerables
       text: "To simplify working with various kinds of lists, SproutCore provides a unified Enumerable interface. This guide explores which SproutCore objects are Enumerable, and how to use the Enumerable API."
+    - title: Advanced Properties
+      url: advanced_properties
+      text: "Supercharge your models, controllers, and views with default values, lazy loading, asynchronous properties and property setters."
   Views:
     - title: Using Handlebars Templates
       url: using_handlebars
