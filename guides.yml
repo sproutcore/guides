@@ -100,6 +100,9 @@ index:
     - title: Enumerables
       url: enumerables
       text: "To simplify working with various kinds of lists, SproutCore provides a unified Enumerable interface. This guide explores which SproutCore objects are Enumerable, and how to use the Enumerable API."
+    - title: Advanced Properties
+      url: advanced_properties
+      text: "Supercharge your models, controllers, and views with default values, lazy loading, asynchronous properties and property setters."
   Views:
     - title: Using Handlebars Templates
       url: using_handlebars
