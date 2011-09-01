@@ -45,7 +45,7 @@ test("value of 'string' is 'Hello World', function() {
 });
 </javascript>
 
-See "Writing a Unit Test Case":/writing_unit_test.html for more information on this process.
+See "Writing a Unit Test Case":/writing_unit_tests.html for more information on this process.
 
 h4. Running Unit Test Cases
 
