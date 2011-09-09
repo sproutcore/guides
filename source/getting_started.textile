@@ -187,8 +187,8 @@ The first thing we need to do is add a checkbox to each todo list item. As was m
 {{view Todos.CreateTodoView id="new-todo" placeholder="What needs to be done?"}}
 
 {{#collection contentBinding="Todos.todosController" tagName="ul"}}
-{{view SC.Checkbox titleBinding="parentView.content.title"
-    valueBinding="parentView.content.isDone"}}
+{{view SC.Checkbox titleBinding="content.title"
+    valueBinding="content.isDone"}}
 {{/collection}}
 </script>
 </html>
