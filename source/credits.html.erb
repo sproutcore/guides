@@ -25,7 +25,7 @@
   <% authors.each do |author| %>
     <% img = author["image"] || "strobe/dude.png" %>
     <%= author(author["name"], author["nick"], img) do %>
-      <%= author["description"].html_safe %>
+      <%= author["description"].html_safe if author["description"] %>
     <% end %>
   <% end %>
 <% end %>
