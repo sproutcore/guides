@@ -42,7 +42,7 @@ The easiest way to get started with the guides is to download and install the [g
 
 #### If You're a Ruby Developer
 
-h5. Normal gem install
+##### Normal gem install
 
 To install the guides gem, just use:
 
@@ -50,7 +50,7 @@ To install the guides gem, just use:
 $ gem install guides
 </shell>
 
-h5. Installing with bundler
+##### Installing with bundler
 
 Alternatively you can use the normal bundler workflow to develop the guides.
 This has the benefit of making sure you are using the correct version of the guides gem for development.

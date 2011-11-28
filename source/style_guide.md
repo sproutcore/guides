@@ -107,7 +107,7 @@ countContacts: function(){
 }
 </javascript>
 
-h5. Optimizing the use of variables
+##### Optimizing the use of variables
 
 When you access a property defined on an object multiple times, it is encouraged to store it locally inside the function. For instance, if you have a function that gets content of a view, collects some information from the record and then returns a string with all of the values combined.  The first example is not efficient because there are many unnecessary function calls. Not only that, it is also hard to read! The second example pulls the content object into a local variable, `contact` and constructs the string with far fewer function calls and with far superior readability to boot. 
 
