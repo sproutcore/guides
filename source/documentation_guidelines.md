@@ -1,23 +1,23 @@
-h2. SproutCore Documentation Guidelines
+## SproutCore Documentation Guidelines
 
 This guide will walk you through writing documentation for your SproutCore classes in a format that is friendly to jsdoc-toolkit, the library used for generating documentation from code.
 
 endprologue.
 
-h3. Overview
+### Overview
 
-SproutCore uses the "jsdoc-toolkit":http://code.google.com/p/jsdoc-toolkit/ to generate its documentation. As such, your SproutCore classes should follow strict code-documenting formatting guidelines in order to properly generate your HTML documentation. This document outlines the proper format you should use.
+SproutCore uses the [jsdoc-toolkit](http://code.google.com/p/jsdoc-toolkit/) to generate its documentation. As such, your SproutCore classes should follow strict code-documenting formatting guidelines in order to properly generate your HTML documentation. This document outlines the proper format you should use.
 
-h3. Classes
+### Classes
 
-Classes must always start with an +@class+ directive, followed by optional the class description. You can use "Markdown":http://daringfireball.net/projects/markdown/ to style your description (add headings, paragraphs, code, etc.)
+Classes must always start with an `@class` directive, followed by optional the class description. You can use [Markdown](http://daringfireball.net/projects/markdown/) to style your description (add headings, paragraphs, code, etc.)
 JsDoc Toolkit also supports tags in your comments to add metadata about your class. For example, you can specify who the author of the class is, what classes it inherits from,  what classes are related, and what version of the frameworks it’s been available since.
 
-h4. Common and supported Markdown syntax:
+#### Common and supported Markdown syntax:
 
  * For code samples, make sure you indent the code block further than the other text
- * For headers, add three dashes (+---+) for 2nd level headers, and three (+===+) for 1st level headers. These go on the subsequent line
- * For list, prefix each line with a dash (+-+)
+ * For headers, add three dashes (`---`) for 2nd level headers, and three (`===`) for 1st level headers. These go on the subsequent line
+ * For list, prefix each line with a dash (`-`)
 
 <javascript filename="Sample Class Documentation">
 /**
@@ -51,13 +51,13 @@ SC.Request = SC.Object.extend(
 });
 </javascript>
 
-The +@scope+ definition is mandatory, and it defines what class/namespace the proceeding code documents.
+The `@scope` definition is mandatory, and it defines what class/namespace the proceeding code documents.
 
-You can define multiple +@see+/+extends+/+author+ directives for each class, as you see fit.
+You can define multiple `@see`/`extends`/`author` directives for each class, as you see fit.
 
 *Note*: you cannot put any javascript between your documentation and the class it’s documenting. Otherwise, JsDoc will get confused by what you’re trying to document.
 
-h4. Instance Methods
+#### Instance Methods
 
 Documenting methods follows the same general structure as a class, but with a different set of required/optional directives. You start off by describing the method’s functionality, followed by the parameters, and then the return types.
 
@@ -79,9 +79,9 @@ In the example below, the response property is marked as optional by wrapping th
 didSend: function(request, response) {},
 </javascript>
 
-h4. Class Methods
+#### Class Methods
 
-Class methods are usually implemented by mixing-in extra methods to an existing class. For these methods/properties to show up in the same location in the generated output, you need to add a +@scope+ declaration just as you did with the class.
+Class methods are usually implemented by mixing-in extra methods to an existing class. For these methods/properties to show up in the same location in the generated output, you need to add a `@scope` declaration just as you did with the class.
 
 
 <javascript filename="Sample Class Method Documentation">
@@ -95,7 +95,7 @@ SC.Store = SC.Object.extend(/** @scope SC.Store.prototype */{...});
 SC.Store.mixin(/** @scope SC.Store.prototype */{...})
 </javascript>
 
-h4. Properties
+#### Properties
 
 Properties are arguably the simplest entity to document. You simply need to write a description of what the property represents, and what type it is. You can optionally provide a default value.
 
@@ -109,11 +109,11 @@ Properties are arguably the simplest entity to document. You simply need to writ
 isAsynchronous: YES,
 </javascript>
 
-*Note*: Constants are documented using +@constant+ but they don’t need a default value.
+*Note*: Constants are documented using `@constant` but they don’t need a default value.
 
-h4. Computed Properties
+#### Computed Properties
 
-Computed Properties are documented just like regular properties but they add the +@field+ property.
+Computed Properties are documented just like regular properties but they add the `@field` property.
 
 <javascript filename="Sample Computed Property Documentation">
 /**
@@ -126,16 +126,16 @@ Computed Properties are documented just like regular properties but they add the
 isAsynchronous: function(){...
 </javascript>
 
-h3. Testing and viewing your documentation during development
+### Testing and viewing your documentation during development
 
-If, during development, you would like to test your documentation and see how it looks once it's generated, then you can use the SproutCore TextMate bundle available on "github":https://github.com/sproutcore/sproutcore-tmbundle which includes a Command to generate documentation for the current file you are viewing. To activate it, go to a jsdoc-documented javascript file, and click CMD + CTRL + G.
+If, during development, you would like to test your documentation and see how it looks once it's generated, then you can use the SproutCore TextMate bundle available on [github](https://github.com/sproutcore/sproutcore-tmbundle), which includes a Command to generate documentation for the current file you are viewing. To activate it, go to a jsdoc-documented javascript file, and click CMD + CTRL + G.
 
 *Note*: Generating documentation in TextMate requires the Web Sharing feature of Mac OS X to be enabled since it uses apache to display your files.
 
-h4. References
+#### References
 
-* "JSDoc Tag Reference":http://code.google.com/p/jsdoc-toolkit/wiki/TagReference
+ * [JSDoc Tag Reference](http://code.google.com/p/jsdoc-toolkit/wiki/TagReference)
 
-h3. Changelog
+### Changelog
 
-* March 22, 2011: initial version by "Majd Taby":credits.html#mtaby
+ * March 22, 2011: initial version by [Majd Taby](credits.html#mtaby)
