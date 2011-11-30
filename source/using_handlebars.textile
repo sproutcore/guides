@@ -518,6 +518,7 @@ App.mainPage = SC.Page.design({
     scrollView: SC.ScrollView.design({
       contentView: SC.TemplateView.design({
         templateName: 'main_page'
+      })
     })
   })
 });
