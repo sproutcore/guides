@@ -36,7 +36,7 @@ don't call `goToState` directly.
 
     // Bad
     Blogg.postController.set('post', aPost);
-    Blogg.States.goToState('editing');
+    Blogg.States.goToState('post.editing');
 
 #### Avoid `set`
 
@@ -69,7 +69,7 @@ state and bind to it using `currentState`:
       })
     });
 
-    {{#view classBinding="Blogg.EditPostStates.currentState.isDraft"}}
+    {{#view classBinding="Blogg.States.currentState.isDraft"}}
       ...
       <aside class="draft-notice">This post is a draft.</aside>
     {{/view}}
@@ -79,5 +79,6 @@ state and bind to it using `currentState`:
     .is-draft .draft-notice { display: block; }
 
 Whenever `Blogg.States` is in the `post.edit.draft` state, that view
-will have the `is-draft` class, which you can use to change the color or
-display a note
+will have the `is-draft` class, meaning the `aside` will show up and the
+`div` will have a yellow background.
+
