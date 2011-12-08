@@ -1,32 +1,32 @@
-## Storyboards
+## State Charts
 
-After reading this guide, you will be able to use storyboards to cleanly
+After reading this guide, you will be able to use state charts to cleanly
 manage state in your application.
 
 endprologue.
 
 ### Terminology
 
- * `SC.Storyboard` -- a state machine containing any number of
+ * `SC.StateManager` -- a state machine containing any number of
    mutually-exclusive states.
- * `SC.State` -- a state within a storyboard
- * `SC.Sheet` -- a subclass of `State` that is attached to a view and
+ * `SC.State` -- a state within a state manager
+ * `SC.ViewState` -- a subclass of `State` that is attached to a view and
    automatically renders the view on enter and removes it on exit
 
 ### Best Practices
 
-While Storyboards and States are `SC.Object`s, it is best to be very
+While state managers and states are `SC.Object`s, it is best to be very
 restrictive in the ways you interact with them from outside. Obeying the
 following rules will make it easier to keep states consistent and to
 refactor and change states as your business logic changes.
 
 #### Use Actions
 
-Make *actions* (functions) on the storyboard and call those from the outside;
-don't call `goToState` directly.
+Make *actions* (functions) on the state manager and call those from the
+outside; don't call `goToState` directly.
 
     // Good
-    Blogg.States = SC.Storyboard.create({
+    Blogg.States = SC.StateManager.create({
       editPost: function(post) {
         Blogg.postController.set('post', post);
         this.goToState('post.editing');
@@ -40,15 +40,15 @@ don't call `goToState` directly.
 
 #### Avoid `set`
 
-Avoid setting properties on storyboards and states, especially from
-outside the storyboard. Setting objects (like the `currentPost`) makes
+Avoid setting properties on state managers and states, especially from
+outside the state manager. Setting objects (like the `currentPost`) makes
 states harder keep consistent. Instead, pass the object into an action
 and have the state machine set it on some controller.
 
-#### Call Actions only on the Storyboard
+#### Call Actions only on the State Manager
 
 The outside world (routes, controllers, etc.) should call actions only
-on the storyboard. The storyboard can delegate that action to its states
+on the state manager. The state manager can delegate that action to its states
 if the logic is complex.
 
 ### Patterns
@@ -59,7 +59,7 @@ This pattern is useful when you want to change the appearance of some UI
 element depending on the current state. To do so, add a property to a
 state and bind to it using `currentState`:
 
-    Blogg.States = SC.Storyboard.create({
+    Blogg.States = SC.StateManager.create({
       post: SC.State.create({
         edit: SC.State.create({
           draft: SC.State.create({
