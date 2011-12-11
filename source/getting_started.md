@@ -113,7 +113,7 @@ First, add an `<h1>` tag with the name of the application:
 You'll also see that the starter kit includes a default Handlebars template. Remove it and replace it with the following Handlebars template, which emits a text field for our users to type in:
 
 <html filename="index.html">
-<script type="text/html">
+<script type="text/x-handlebars">
 {{view SC.TextField id="new-todo" placeholder="What needs to be done?"}}
 </script>
 </html>
@@ -149,7 +149,7 @@ Now that we have defined our view, let's update the template to use our new view
 
 <html filename="index.html">
 <h1>Todos</h1>
-<script type="text/html">
+<script type="text/x-handlebars">
 {{view Todos.CreateTodoView id="new-todo"
   placeholder="What needs to be done?"}}
 </script>
@@ -183,7 +183,7 @@ The first thing we need to do is add a checkbox to each todo list item. As was m
 
 <html filename="index.html">
 <!-- replacing the previous code -->
-<script type="text/html">
+<script type="text/x-handlebars">
 {{view Todos.CreateTodoView id="new-todo" placeholder="What needs to be done?"}}
 
 {{#collection contentBinding="Todos.todosController" tagName="ul"}}
