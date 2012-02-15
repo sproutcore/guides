@@ -12,7 +12,7 @@ endprologue.
 
 h3. Following Along
 
-You can see the finished source code for this application on "Github":https://github.com/sproutcore/Todos-Example/. To see it in action, click "here":http://getting-started.strobeapp.com.
+You can see the finished source code for this application on "Github":https://github.com/sproutcore/Todos-Example/.
 
 There is also a screencast available on "Vimeo":http://vimeo.com/23527342.
 
@@ -141,7 +141,7 @@ Go ahead and replace that with:
        placeholder="What needs to be done?" >
 </html>
 
-NOTE: For more information about using Handlebars, visit the "Handlebars website":http://www.handlebarsjs.com/. To learn more about using Handlebars with SproutCore, make sure to check out the "Using Handlebars Template":http://guides-redesign.strobeapp.com/using_handlebars.html guide.
+NOTE: For more information about using Handlebars, visit the "Handlebars website":http://www.handlebarsjs.com/.
 
 Now that we've got model, view, and controller represented, it's time to open the app in our browser and see how it looks.
 

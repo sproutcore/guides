@@ -10,7 +10,22 @@ Go to [SproutCore Guides](http://guides.sproutcore.com) homepage and check it ou
 In order to start contributing, follow these steps:
 
 - git clone git://github.com/sproutcore/sproutguides.git
-- install the [Guides package](http://guides-pkg.strobeapp.com/Guides.pkg)
+
+- Normal gem install
+
+To install the guides gem, just use:
+
+    $ gem install guides
+
+- Installing with bundler
+
+Alternatively you can use the normal bundler workflow to develop the guides. This has the benefit of making sure you are using the correct version of the guides gem for development.
+
+To install with bundler:
+
+    $ gem install bundler
+    $ cd sproutguides
+    $ bundle install --binstubs
 
 Once you've completed these steps, you're ready to start working with
 SproutCore Guides. You'll do most of your work inside the source/ directory. To see
