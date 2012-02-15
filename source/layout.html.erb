@@ -7,7 +7,7 @@
   <!-- guides styles -->
   <link rel="stylesheet" type="text/css" href="stylesheets/style.css" />
   <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
-  <link rel="stylesheet" type="text/css" href="stylesheets/strobe.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/guides.css" />
   <link rel="stylesheet" type="text/css" href="stylesheets/overrides.style.css" />
   <link rel="stylesheet" type="text/css" href="stylesheets/overrides.print.css" media="print" />
   <!--[if lt IE 9]>
@@ -16,7 +16,7 @@
 
   <!-- syntax highlighting styles -->
   <link rel="stylesheet" type="text/css" href="stylesheets/syntaxhighlighter/shCore.css" />
-  <link rel="stylesheet" type="text/css" href="stylesheets/shThemeStrobeGuides.css" />
+  <link rel="stylesheet" type="text/css" href="stylesheets/shThemeGuides.css" />
 </head>
 <body class="guide">
   <% if @edge %>
@@ -46,7 +46,7 @@
       <% if page_header = yield(:page_header).presence %>
         <%= page_header %>
       <% else %>
-        <a href="/"><img src="images/strobe/guides.png"></a>
+        <a href="/"><img src="images/graphics/guides.png"></a>
         <h2><a href="/"><%= Guides.meta["title"] %></a></h2>
         <p><%= Guides.meta["description"] %></p>
       <% end %>
@@ -78,7 +78,7 @@
       </div>
       <% if index_items = yield(:index_items).presence %>
         <div id="subCol">
-          <h3 class="chapter"><img src="images/strobe/chapters.png" alt="" />Chapters</h3>
+          <h3 class="chapter"><img src="images/graphics/chapters.png" alt="" />Chapters</h3>
           <ol class="chapters">
             <%= index_items %>
           </ol>
@@ -97,8 +97,6 @@
 	      <div class="col">
 	        <a href="index.html"><img src="images/footer/sc_logo_medium.png" alt="SproutCore" /></a>
 	        <p id="license">
-	          Copyright 2011 <a href="http://www.strobecorp.com">Strobe Inc</a>.
-	          <br />
 	          SproutCore framework is under MIT License.
 	        </p>
 	      </div>

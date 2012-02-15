@@ -103,7 +103,7 @@ _TODO: Here we can have a developer grab an existing application from git and ad
 
 h4. Example animation one: animating buttons on a navigation menu
 
-_TODO: Here we will focus only on the animations part of our application and could have a link to the demo (hosted on strobe of course).  The code example shown in the guides will only be the animations._
+_TODO: Here we will focus only on the animations part of our application.  The code example shown in the guides will only be the animations._
 
 h4. Example animation two:  animating views for touch enabled devices
 

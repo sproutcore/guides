@@ -11,7 +11,7 @@ endprologue.
 
 h3. Handlebars
 
-SproutCore comes bundled with "Handlebars":http://handlebars.strobeapp.com, a semantic templating language. These templates look like regular HTML, with embedded handlebars expressions:
+SproutCore comes bundled with Handlebars, a semantic templating language. These templates look like regular HTML, with embedded handlebars expressions:
 
 <html>
 Hello, <b>{{name}}</b>!

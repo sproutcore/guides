@@ -3,7 +3,7 @@
 <% end %>
 
 <% content_for :page_header do %>
-<img src="images/strobe/credits.png">
+<img src="images/graphics/credits.png">
 <h2>
 	<a href="#">Credits</a></h2>
 <p>We'd like to thank the following people for their tireless efforts.</p>
@@ -23,7 +23,7 @@
 <% Guides.meta["authors"].each do |group, authors| %>
   <h3 class="section"><%= group %></h3>
   <% authors.each do |author| %>
-    <% img = author["image"] || "strobe/dude.png" %>
+    <% img = author["image"] || "graphics/dude.png" %>
     <%= author(author["name"], author["nick"], img) do %>
       <%= author["description"].html_safe %>
     <% end %>
