@@ -10,7 +10,6 @@ Go to [SproutCore Guides](http://guides.sproutcore.com) homepage and check it ou
 In order to start contributing, follow these steps:
 
 - git clone git://github.com/sproutcore/sproutguides.git
-- install the [Guides package](http://guides-pkg.strobeapp.com/Guides.pkg)
 
 Once you've completed these steps, you're ready to start working with
 SproutCore Guides. You'll do most of your work inside the source/ directory. To see

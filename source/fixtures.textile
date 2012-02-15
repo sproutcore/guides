@@ -94,24 +94,24 @@ You would set up your fixtures like:
 <javascript filename="apps/app/fixtures/employee.js">
 App.Employee.FIXTURES = [
   { guid: 1,
-    firstName: "Peter",
-    lastName:  "Wagenet",
-    company: 1 }, // Strobe, Inc.
+    firstName: "John",
+    lastName:  "Smith",
+    company: 1 }, // SomeCompany, Inc.
 
   { guid: 2,
-    firstName: "Charles",
-    lastName:  "Jolley",
-    company: 1 }, // Strobe, Inc.
+    firstName: "Sally",
+    lastName:  "Washington",
+    company: 1 }, // SomeCompany, Inc.
 
   { guid: 3,
-    firstName: "Juan",
-    lastName:  "Pinzon",
-    company: 2 } // Apple, Inc.
+    firstName: "Bernard",
+    lastName:  "Peterson",
+    company: 2 } // AnotherCompany, Inc.
 ];
 
 App.Company.FIXTURES = [
-  { guid: 1, name: "Strobe, Inc.", employees: [1,2] },
-  { guid: 2, name: "Apple, Inc.", employees: [3] }
+  { guid: 1, name: "SomeComany, Inc.", employees: [1,2] },
+  { guid: 2, name: "AnotherCompany, Inc.", employees: [3] }
 ];
 </javascript>
 
