@@ -361,5 +361,7 @@ Generally, since I tend to think of the binding to the description and the value
 h3. Changelog
 
 
-* February 15, 2011: initial version by "Scott Smith":credits.html#ssmith and "Vibul Imtarnasan":credits.html#veebs
+* January 10, 2010: initial "blog post":http://gmoeck.github.com/2010/01/10/bdd-in-sproutcore-part-1.html by "Greg Moeck":credits.html#gmoeck
+* February 15, 2011: initial guides adaptation by "Scott Smith":credits.html#ssmith and "Vibul Imtarnasan":credits.html#veebs
 * March     2, 2011: added filenames and added error wrappers by "Topher Fangio":credits.html#topherfangio
+* February 17, 2012: added attribution for Greg Moeck in the changelog by "Topher Fangio":credits.html#topherfangio

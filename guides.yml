@@ -79,6 +79,9 @@ authors:
       nick: dtorres
       image: credits/dtorres.jpg
       description: Devin Torres
+    - name: Greg Moeck
+      nick: gmoeck
+      description: Greg Moeck
 
 index:
   Start Here:
