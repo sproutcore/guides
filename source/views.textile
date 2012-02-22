@@ -357,7 +357,7 @@ TIP: For a more detailed overview of theming see "Theming Your App":theming_app.
 
 h3. View Events
 
-A SproutCore view hierarchy can be viewed like a pond, if the water is touched it ripples outwards affecting all the water around it, or in our case, all the parent views. +SC.View+ extends +SC.Responder+, inheriting the ability to react to DOM events such as +mouseDown+ and +mouseEntered+. Let's highlight the contact name when it's being hovered over and take the user to the contact's website if it's clicked:
+Events bubble up to parent views in a SproutCore view hierarchy. +SC.View+ extends +SC.Responder+, inheriting the ability to react to DOM events such as +mouseDown+ and +mouseEntered+. Let's highlight the contact name when it's being hovered over and take the user to the contact's website if it's clicked:
 
 <javascript filename="apps/addressbook/views/contact_name_view.js">
 AddressBook.ContactNameView = SC.View.extend({
