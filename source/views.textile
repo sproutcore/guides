@@ -401,3 +401,4 @@ h3. Changelog
 * March 2, 2011: added filenames and small code example changes by "Topher Fangio":credits.html#topherfangio
 * March 2, 2011: some corrections to section on render delegates by "Peter Wagenet":credits.html#pwagenet
 * March 4, 2011: corrected the title and added a few more filenames by "Devin Torres":credits.html#dtorres
+* February 22, 2012: sample code changes and a few edits by "Jeff Pittman":credits.html#geojeff
