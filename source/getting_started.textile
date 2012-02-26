@@ -352,7 +352,7 @@ $ rm ready_state.js
 
 Files to add in the apps/todos/states directory are:
 
-|_. starting.js |_. loggin_in.js |_. loading_app.js |_. showing_app.js |
+|_. starting.js |_. logging_in.js |_. loading_app.js |_. showing_app.js |
 
 h5. STARTING State
 
