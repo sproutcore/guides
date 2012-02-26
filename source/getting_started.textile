@@ -637,8 +637,6 @@ The todosList view follows the SproutCore idiom for wrapping an SC.ListView in a
 
 h5. _theme.css (resources directory)
 
-The underscore starting the name of this file is a dead giveaway that it must apply to the theming system. It defines $theme to be our Ace-derived theme, ace.todos. You'll see $theme used in individual content CSS files, so now you know where it is defined.
-
 <css filename="in apps/todos/resources/_theme.css">
 /*
   This defines the global $theme variable for use inside your CSS.
@@ -659,6 +657,8 @@ The underscore starting the name of this file is a dead giveaway that it must ap
 */
 $theme: '.ace.todos';
 </css>
+
+The underscore starting the name of _theme.css is a dead giveaway that it must apply in some special way to the theming system. It defines $theme to be our Ace-derived theme, ace.todos. You'll see $theme used in individual content CSS files.
 
 h5. Content CSS files
 
