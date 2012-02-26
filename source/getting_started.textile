@@ -61,7 +61,7 @@ This will be the directory structure for the Todos app:
 **** *states/*
 ***** *starting.js*
 ***** *logging_in.js*
-***** *loading_app.js*
+***** *loading_data.js*
 ***** *showing_app.js*
 **** *resources/*
 ***** *loading.rhtml*
@@ -97,7 +97,7 @@ Here is that directory structure again, with descriptions for each item:
 **** *states/*
 ***** *starting.js*        | _A single state, the STARTING state, which plugs in to the app's statechart_
 ***** *logging_in.js*      | _The LOGGING_IN state (not used in Todos, but there for illustration)_
-***** *loading_app.js*     | _The LOADING_APP state, where data is loaded, and the UI configured_
+***** *loading_data.js*     | _The LOADING_DATA state, where data is loaded, and the UI configured_
 ***** *showing_app.js*     | _The SHOWING_APP state, the general state for responding to user actions_
 **** *resources/*
 ***** *loading.rhtml*      | _A short html file to show when the app is loading_
@@ -292,7 +292,7 @@ main.js for Todos is very simple, with only a line to initialize the statechart.
 
 h5. statechart.js (app root directory)
 
-<javascript filename="in apps/todos/main.js">
+<javascript filename="in apps/todos/statechart.js">
 // ==========================================================================
 // Project:   Todos
 // Copyright: @201X My Company, Inc.
@@ -304,23 +304,13 @@ Todos.statechart = SC.Statechart.create({
   rootState: SC.State.design({
     initialSubstate: "STARTING",
  
-    // For the Todos app, control will immediately go to the LOADING_APP state.
-    //
     STARTING: SC.State.plugin('Todos.STARTING'),
- 
+      
     // The LOGGING_IN state is not used in todos. It is here for future reference.
-    //
     LOGGING_IN: SC.State.plugin('Todos.LOGGING_IN'),
- 
-    // For SproutCore apps, any manner of loading tasks or manipulation of initial 
-    // system settings can be done in a LOADING_APP state. For the Todos app, there 
-    // data is set into controllers and the mainPage view is shown.
-    //
-    LOADING_APP: SC.State.plugin('Todos.LOADING_APP'),
-     
-    // The mainPage view is now showing, after being appended in the LOADING_APP state.
-    // So now we are in the SHOWING_APP state, waiting for and responding to user actions.
-    //
+      
+    LOADING_DATA: SC.State.plugin('Todos.LOADING_DATA'),
+      
     SHOWING_APP: SC.State.plugin('Todos.SHOWING_APP')
 
     // More states would go here in a bigger app.
@@ -330,7 +320,7 @@ Todos.statechart = SC.Statechart.create({
 
 The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the transitions between them allow a clean and simple design. In the Todos app statechart, the initial state is STARTING, a not-so-imaginative name! 
 
-There are four states in the Todos statechart: STARTING, LOGGING_IN, LOADING_APP, and SHOWING_APP. These are defined in individual files in the states directory.
+There are four states in the Todos statechart: STARTING, LOGGING_IN, LOADING_DATA, and SHOWING_APP. These are defined in individual files in the states directory.
 
 h4. The States Directory
 
@@ -354,7 +344,7 @@ $ rm ready_state.js
 
 Files to add in the apps/todos/states directory are:
 
-|_. starting.js |_. logging_in.js |_. loading_app.js |_. showing_app.js |
+|_. starting.js |_. logging_in.js |_. loading_data.js |_. showing_app.js |
 
 h5. STARTING State
 
@@ -366,14 +356,14 @@ h5. STARTING State
 /*globals Todos */
  
 // For the Todos app, storeType will be 'FromFixtures', so we will
-// go directly to the LOADING_APP state, to prepare for showing the app.
+// go directly to the LOADING_DATA state, to prepare for showing the app.
 //
 Todos.STARTING = SC.State.design({
   enterState: function() {
     if (Todos.get('storeType') === 'FromSomeBackendDatasource') {
       this.gotoState('LOGGING_IN');
     } else if (Todos.get('storeType') === 'FromFixtures') {
-      this.gotoState('LOADING_APP');
+      this.gotoState('LOADING_DATA');
     }
   },
  
@@ -383,7 +373,7 @@ Todos.STARTING = SC.State.design({
 });
 </javascript>
 
-When the statechart is initialized from Todos.main(), program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the storeType. storeType was set to be 'FromFixtures' in core.js, where the data store is instantiated. (Recall that using fixtures data as the datasource is a way to simulate a connection to a real database). You see in the if-else block of STARTING/enterState() that, because storeType === 'FromFixtures', the gotoState() call moves control directly to the LOADING_APP state, not the LOGGING_IN state, which we won't use in the Todos app. 
+When the statechart is initialized from Todos.main(), program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the storeType. storeType was set to be 'FromFixtures' in core.js, where the data store is instantiated. (Recall that using fixtures data as the datasource is a way to simulate a connection to a real database). You see in the if-else block of STARTING/enterState() that, because storeType === 'FromFixtures', the gotoState() call moves control directly to the LOADING_DATA state, not the LOGGING_IN state, which we won't use in the Todos app. 
 
 There are different conventions for naming states. The style used here is proven, and the formatting makes the state names prominent. Some people like to camel-case the state names names.
   
@@ -425,29 +415,18 @@ Todos.LOGGING_IN = SC.State.design({
 
 We won't use the LOGGING_IN state in Todos, but have it here for illustration.
 
-h5. LOADING_APP State
+h5. LOADING_DATA State
 
-<javascript filename="in apps/todos/states/loading_app.js">
+<javascript filename="in apps/todos/states/loading_data.js">
 // ==========================================================================
 // Project:   Todos
 // Copyright: @201X My Company, Inc.
 // ==========================================================================
 /*globals Todos */
  
-// For the Todos app, simply show the mainPage. In a more complicated app, you might
-// need to do any manner of loading tasks or manipulation of initial system settings.
-//
-Todos.LOADING_APP = SC.State.design({
+Todos.LOADING_DATA = SC.State.design({
   enterState: function() {
-    // Step 1: Instantiate Views
-    //
-    // The default code here will make the mainPane for your application visible
-    // on screen.  If your app gets any level of complexity, you will probably 
-    // create multiple pages and panes, but the main page usually will show first.  
-    //
-    Todos.getPath('mainPage.mainPane').append() ;
-
-    // Step 2. Set the content property on your primary controller.
+    // Set the content property on controllers.
     //
     Todos.todosController.set('content',
       Todos.store.find(SC.Query.local(Todos.Todo, { orderBy: 'timestamp DESC' })));
@@ -455,10 +434,6 @@ Todos.LOADING_APP = SC.State.design({
     Todos.completedTodosController.set('content',
       Todos.store.find(SC.Query.local(Todos.Todo, 'isCompleted = true')));
  
-    // Step 3. Once the page comes up, put keyboard focus on the new todos item.
-    //
-    Todos.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
-
     // Done with loading and initialization steps. Move to SHOWING_APP.
     this.gotoState('SHOWING_APP');
   },
@@ -469,11 +444,7 @@ Todos.LOADING_APP = SC.State.design({
 });
 </javascript>
 
-Find the LOADING_APP/enterState() function, where the comments mark three steps:
-
-* *Step 1*: Append the mainPage view, which we'll be adding next. Appending a view effectively causes the view to be shown.
-* *Step 2*: Set the content property of the todosController, an SC.ArrayController that holds the main todos data. Recall that the store was initialized from fixtures. We are now loading data from that store and setting it into the todos array controller. In a SproutCore app, the wiring diagram provided by javascript code to set up bindings between views and controllers and the statechart makes the action happen. Simply by setting content of the todosController, because it is wired to the todo item list view by a binding, the initial todos data loaded from the store (and behind that, from fixtures) will show automatically. If this Todos app were to be used in a real-world setting, you would simply need to set the store up to pull from a REST datasource on the web instead of from static fixtures data.
-* *Step 3*: Place keyboard focus on the new todos item text field, so there is a blinking cursor cueing the user to type a todo.
+Data content of the two array controllers in the Todos app are set by issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the Todos app. We search for todos, referencing the Todos.Todo model (an SC.Record instance). For the primary controller, todosController, we search for all the todos, ordering them by their timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is true. Then we call gotoState() to move to the SHOWING_APP state.
 
 h5. SHOWING_APP State
 
@@ -484,15 +455,15 @@ h5. SHOWING_APP State
 // ==========================================================================
 /*globals Todos */
  
-// The mainPage view is now showing, after being appended in the LOADING_APP state.
-// So now we are in the SHOWING_APP state, waiting for and responding to user actions.
-//
 Todos.SHOWING_APP = SC.State.design({
   enterState: function() {
-    // There could be a user interface update for ready status after loading,
-    // such as a status indicator that turns from a yellow to green light, but
-    // we don't have anything fancy like that. So, nothing to worry about. Just
-    // stand at the ready.
+    // Show the mainPage view by appending it.
+    //
+    Todos.getPath('mainPage.mainPane').append();
+
+    // Put keyboard focus on the new todos item.
+    //
+    Todos.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
   },
 
   exitState: function() {
