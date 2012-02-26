@@ -1,458 +1,1076 @@
 h2. Getting Started
 
-After reading this guide, you will be able to:
+In this guide, you will create a simple SproutCore "to-do" app called Todos, learning the following:
 
-* Use SproutCore's templating support to describe the appearance of your application.
-* Delegate handling of user events with views.
-* Use bindings to update views when your models change.
-
-You will learn all of this by building a real Todo list application from the ground up using SproutCore.
+* how to install SproutCore,
+* how to create a SproutCore app,
+* how to run the local SproutCore system for development, viewing apps in a browser locally,
+* how an app is organized into views, controllers, a statechart, and models,
+* how views are created by writing javascript code that specifies layout and presents content,
+* how bindings and actions coordinate views with a controller system, which includes a statechart,
+* how the controller system ties to models,
+* how SproutCore contains powerful programming constructs.
 
 endprologue.
 
 h3. Following Along
 
-You can see the finished source code for this application on "Github":https://github.com/sproutcore/Todos-Example/.
+You will benefit from carefully following the instructions in this guide, to create directories, to type in code (or to copy and paste it), because it will register in your mind more solidly. However, you can access the finished source code for this application on "Github":https://github.com/sproutcore/Todos-Example/. To see it in action, click "here":http://github/sproutcore/sproutcore. [TODO] need a demo app url [ATTN: tce]
 
-There is also a screencast available on "Vimeo":http://vimeo.com/23527342.
+There is a screencast available on "Vimeo":http://vimeo.com. [TODO] [ATTN: geojeff, who will use ScreenFlow to make a new one]
 
 h3. Installing SproutCore
 
-This guide assumes you have already installed SproutCore 1.6. If you have not, please <a href="http://www.sproutcore.com/install/?redirect=1" onclick="_gaq.push(['_trackEvent', 'Download', 'Guides']);">install it now</a>.
+This guide assumes you have successfully installed SproutCore 1.8 with the Mac OS X installer or the Windows installer <a href="http://www.sproutcore.com/install/?redirect=1" onclick="_gaq.push(['_trackEvent', 'Download', 'Guides']);">(Installers)</a>. Or, to install on Linux, try this <link>script</link>. [TODO] Add link to unicolet's Linux script.
 
-h3. Generate Your New Application
+h3. Creating A New SproutCore Application
 
-First, generate your new HTML-based application.
+First, in some area of your hard drive where you develop software, make a sproutcore directory: ~/somewhere/sproutcore. This directory can be your place for all things SproutCore. Change directory to ~/somewhere/sproutcore, then create a SproutCore project:
 
 <shell>
-$ sc-init todos --template
+$ pwd 
+    ~/somewhere/
+$ sc-gen project learning_sc
+
+ ~ Created directory at learning_sc
+ ~ Created file at learning_sc/Buildfile
+ ~ Created file at learning_sc/README
+
+$ cd learning_sc
 </shell>
 
-This will create several files needed for your application, inside the *+apps/todos+* directory.
+Now you have a learning_sc project directory, ~/somewhere/sproutcore/learning_sc. We will build several SproutCore apps in this project space.
 
-* *apps/*
-** *todos/*
-*** *todos.js* - The JavaScript file that will define your models, views, and controllers.
-*** *resources/*
-**** *templates/* - Place all Handlebars templates here.
-***** *todos.handlebars* - The main template for the application.
-**** *images/* - Place all images here.
-**** *stylesheets/* - Place all stylesheets here.
-***** *todos.css* - The main stylesheet for the application.
-*** *tests/*
-* *Buildfile* - Tells SproutCore how your application should be built. Usually, you can just use the defaults provided.
-* *README* - The description for the project.
+The first app we will make is called Todos. Here is a screen capture of the completed application: [TODO] need Todos screen capture image here.
 
-Go ahead and open <code>todos.js</code> now. You should see the following code:
+The Todos app looks simple. It has toolbars at the top and bottom. It has a text field near the top, where a user types in a new todo. It has a list of already added todos. Even such a simple-looking app like this involves the use of intelligent SproutCore programming.
 
-<javascript filename="apps/todos/todos.js">
-Todos = SC.Application.create();
+We can describe these intelligent aspects, generally, as the "system of connections" or, in the manner an electrician would use, as the "wiring diagram." SproutCore apps have _bindings_ between properties of various components of the user interface and those of underlying machinery. You see the components of the user interface: checkboxes, buttons, text fields, list views, etc. We'll be looking at the underlying machinery. SproutCore apps have another type of intelligence: they have _states_ that divide the action. We'll cover _bindings_ and _states_ in more detail. Register these words as centrally important.
 
-SC.ready(function() {
-  Todos.mainPane = SC.TemplatePane.append({
-    layerId: "todos",
-    templateName: "todos"
-  });
-});
-</javascript>
+This will be the directory structure for the Todos app:
 
-This code creates a namespace for your application (called <code>Todos</code>), then appends a new pane. A pane is responsible for event delegation and placing your templates into the DOM, but you'll learn more about that later.
+* *learning_sc/* - The project directory, for holding several apps.
+** *Buildfile*
+** *README.md*
+** *apps/*
+*** *todos/*
+**** *core.js*
+**** *main.js*
+**** *theme.js*
+**** *statechart.js*
+**** *states/*
+***** *starting.js*
+***** *logging_in.js*
+***** *loading_app.js*
+***** *showing_app.js*
+**** *resources/*
+***** *loading.rhtml*
+***** *main_page.js*
+***** *_theme.css*
+***** *body.css*
+***** *header.css*
+***** *new_todo.css*
+***** *todo_item.css*
+**** *views/*
+***** *todo_item.js*
+**** *controllers/*
+***** *todos.js*
+***** *completed_todos.js*
+**** *models/*
+***** *todo.js*
+**** *en/*
+***** *strings.js*
+****** *fixtures/*
+******* *todo.js*
 
-h3. Defining Your Model
+Here is that directory structure again, with descriptions for each item:
 
-In this tutorial, we want to create a list for managing todos. Users should be able to create a new todo with a specific task, then check it off once it's done.
+* *learning_sc/*
+** *Buildfile*             | _Configuration for apps_
+** *README.md*             | _Describes your app and how to use it_
+** *apps/*
+*** *todos/*
+**** *core.js*             | _Todos app creation code_
+**** *main.js*             | _Adds a data store, and calls the Todos.mainPage view_
+**** *theme.js*            | _Adds a Todos.Theme based on the SproutCore Ace theme_
+**** *statechart.js*       | _Contains main app states and substates_
+**** *states/*
+***** *starting.js*        | _A single state, the STARTING state, which plugs in to the app's statechart_
+***** *logging_in.js*      | _The LOGGING_IN state (not used in Todos, but there for illustration)_
+***** *loading_app.js*     | _The LOADING_APP state, where data is loaded, and the UI configured_
+***** *showing_app.js*     | _The SHOWING_APP state, the general state for responding to user actions_
+**** *resources/*
+***** *loading.rhtml*      | _A short html file to show when the app is loading_
+***** *main_page.js*       | _The Todos.mainPage view_
+***** *_theme.css*         | _Contains per directory theme setup_
+***** *body.css*           | _Defines css for default page content_
+***** *header.css*         | _Defines css for the top toolbar_
+***** *new_todo.css*       | _Defines css for the new todo title text field_
+***** *todo_item.css*      | _Defines css for todo items in the main list view_
+**** *views/*
+***** *todo_item.js*       | _TodoItem code for a checkbox and a title_
+**** *controllers/*
+***** *todos.js*           | _Todos.todosController, an SC.ArrayController to hold todo items_
+***** *completed_todos.js* | _Todos.completedTodosController, another SC.ArrayController_
+**** *models/*
+***** *todo.js*            | _Todos.Todo, the definition of the Todo SC.Record type for the app_
+**** *en/*                 | _An English language data directory_
+***** *strings.js*         | _Definitions of user interface words in English_
+****** *fixtures/* 
+******* *todo.js*          | _Fixtures data (for testing the app without hooking to a database_
 
-Let's define our model as a new subclass of <code>SC.Object</code>:
+You see that SproutCore is a powerful system, challenging to master. We'll take it one step at a time.
 
-<javascript filename="apps/todos/todos.js">
-Todos = SC.Application.create();
-
-Todos.Todo = SC.Object.extend({
-  title: null,
-  isDone: false
-});
-
-SC.ready(function() {
-  Todos.mainPane = SC.TemplatePane.append({
-    layerId: 'todos',
-    templateName: 'todos'
-  });
-});
-</javascript>
-
-NOTE: Make sure you insert the new code after the <code>Todos</code> object is created.
-
-We've now defined a class with two properties: +title+, a String, and +isDone+, a Boolean.
-
-h3. Managing the Model Using a Controller
-
-Now that we know what our data looks like, let's create a controller to manage it. Since we want to maintain an ordered list of todos, we'll use an instance of <code>SC.ArrayController</code>.
-
-<javascript filename="in apps/todos/todos.js">
-// at the end of the file
-
-Todos.todoListController = SC.ArrayController.create({
-  // Initialize the array controller with an empty array.
-  content: []
-});
-</javascript>
-
-INFO: In MVC frameworks, like SproutCore, the controller layer bridges the model layer, which is only concerned with a pure-data representation of objects, and the view layer, which is only concerned with representing those objects.
-
-Now we have an array controller with no content. Let's add a method to create a new todo:
-
-<javascript filename="in apps/todos/todos.js">
-// updating previous code
-
-Todos.todoListController = SC.ArrayController.create({
-  // Initialize the array controller with an empty array.
-  content: [],
-
-  // Creates a new todo with the passed title, then adds it
-  // to the array.
-  createTodo: function(title) {
-    var todo = Todos.Todo.create({ title: title });
-    this.pushObject(todo);
-  }
-});
-</javascript>
-
-NOTE: <code>SC.ArrayController</code> acts as a proxy onto its +content+ Array. SproutCore will propagate any modifications made to the <code>ArrayController</code> to the +content+ Array.
-
-h3. Creating New Todos with a Text Field
-
-NOTE: We've provided a simple stylesheet to give the application some style.  At this point, you should download the "CSS":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos.css and replace the empty file that sc-init generated for us at +apps/todos/resources/stylesheets/todos.css+.
-
-We've got our model and controller set up, so let's move on to the fun part: creating the interface for our users. The first step is to create a text field into which the user types the name of their todo.  SproutCore's TemplateView uses Handlebars templates to quickly define the application's interface.  While Handlebars makes it easier to markup HTML quickly, you'll see that it has been extended to take advantage of SproutCore with very little additional effort.
-
-To start building our views, let's open +resources/templates/todos.handlebars+.  You'll see that the initialization pre-populated the file with a snippet of HTML:
-
-<html filename="apps/todos/resources/templates/todos.handlebars">
-<h1>Welcome to SproutCore!</h1>
-</html>
-
-Go ahead and replace that with:
-
-<html filename="apps/todos/resources/templates/todos.handlebars">
-<h1>Todos</h1>
-<input id="new-todo" type="text"
-       placeholder="What needs to be done?" >
-</html>
-
-NOTE: For more information about using Handlebars, visit the "Handlebars website":http://www.handlebarsjs.com/.
-
-Now that we've got model, view, and controller represented, it's time to open the app in our browser and see how it looks.
-
-During the development process, +sc-server+ makes it easy to test your application. Just run the following inside of your project directory:
+We can use the sc-gen command again, to create part of the directory structure shown above for our Todos app:
 
 <shell>
+$ pwd 
+    ~/somewhere/learning_sc
+
+$ sc-gen statechart_app Todos
+
+ ~ Created directory at apps
+ ~ Created directory at apps/todos
+ ~ Created file at apps/todos/Buildfile
+ ~ Created file at apps/todos/core.js
+ ~ Created file at apps/todos/main.js
+ ~ Created directory at apps/todos/resources
+ ~ Created file at apps/todos/resources/_theme.css
+ ~ Created file at apps/todos/resources/loading.rhtml
+ ~ Created file at apps/todos/resources/main_page.js
+ ~ Created file at apps/todos/statechart.js
+ ~ Created directory at apps/todos/states
+ ~ Created file at apps/todos/states/ready_state.js
+ ~ Created file at apps/todos/theme.js
+
+Your application target is now ready to use!
+
+</shell>
+
+[TODO] USAGE doc for sc-gen has the use of --statechart switch wrong -- you don't need it, because you use statechart_app instead.
+
+h4. Running sc-server to View an App
+
+To take a look at the "Hello World" stage of the Todos app produced by sc-gen, let's learn how to run the sc-server command to view our new app.
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc
+
 $ sc-server
-
-Starting server at http://0.0.0.0:4020 in debug mode
-To quit sc-server, press Control-C
->> Thin web server (v1.2.1 codename Bat-Shit Crazy)
->> Maximum connections set to 1024
->> Listening on 0.0.0.0:4020, CTRL+C to stop
+    SproutCore v1.8 Development Server
+    Allowing access only from IPs: 127.0.0.1. Use --allow-from-ips='*.*.*.*' to allow all
+    Starting server at http://0.0.0.0:4020 in debug mode
+    To quit sc-server, press Control-C
+    >> Thin web server (v1.2.11 codename Bat-Shit Crazy)
+    >> Maximum connections set to 1024
+    >> Listening on 0.0.0.0:4020, CTRL+C to stop
+    ^C>> Stopping ...
 </shell>
 
-Open your web browser and navigate to "http://localhost:4020/todos":http://localhost:4020/todos. You should see your application load. Once you've verified that the application is up and running, it's time to tell SproutCore how to handle events for your <code><input></code> tag. When the user types in the field and presses +return+, we will create a new Todo and have it inserted into the content of the array controller.
+Now hit the following url with your favorite modern browser: localhost:4020/todos
 
-NOTE: In SproutCore, view objects are responsible for updating the DOM and handling events. Among other things, this allows us to buffer changes to the DOM for maximum performance and to support generic cross-platform event handling.  Whenever you want to display dynamic content or handle events, you will use a view object.
+You should see a main page the fills the browser window and a single label in the center that says 'Welcome to SproutCore!'.
 
-<javascript filename="in apps/todos/todos.js">
-// before SC.ready
+Stop sc-server with control-C:
 
-Todos.CreateTodoView = SC.TextField.extend({
-  insertNewline: function() {
-    var value = this.get('value');
+<shell>
+    ^C>> Stopping ...
+</shell>
 
-    if (value) {
-      Todos.todoListController.createTodo(value);
-      this.set('value', '');
+h4. Buildfiles
+
+There is a project Buildfile in the project directory (~/somewhere/learning_sc) and the Todos app has its own Buildfile in the root app directory (~/somewhere/learning_sc/apps/todos/). Examine the Todos Buildfile and you will see only one configuration line:
+
+    config :todos, :required => :sproutcore
+
+This is Ruby syntax, if you've never seen it. You don't have to know Ruby to do SproutCore development -- it is easy to follow the simple pattern, without having to look up the syntax. This line sets the sproutcore framework reference (:sproutcore) as a configuration dependency for todos. As you work on more complicated apps, you might have other javascript frameworks or special components to require like this. Of course there are many more options that could be set in the Buildfile, but those are for another time.
+
+h4. The App Root Directory and its Files
+
+There are four .js files in the Todos app root directory (~/somewhere/learning_sc/apps/todos/):
+
+|_. theme.js |_. core.js |_. main.js |_. statechart.js |
+
+
+Edit these files to assure their content matches that given in the following sections:
+
+h5. theme.js (app root directory)
+
+<javascript filename="in apps/todos/theme.js">
+// ==========================================================================
+// Project:   Todos
+// Copyright: @2012 My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+
+// This is the theme that defines how your app renders.
+//
+// Your app is given its own theme so it is easier and less
+// messy for you to override specific things just for your
+// app.
+//
+// You don't have to create the whole theme on your own, though:
+// your app's theme is based on SproutCore's Ace theme.
+//
+// NOTE: if you want to change the theme this one is based on, don't
+// forget to change the :css_theme property in your buildfile.
+Todos.Theme = SC.AceTheme.create({
+  name: 'todos'
+});
+
+// SproutCore needs to know that your app's theme exists
+SC.Theme.addTheme(Todos.Theme);
+
+// Setting it as the default theme makes every pane SproutCore
+// creates default to this theme unless otherwise specified.
+SC.defaultTheme = 'todos';
+</javascript>
+
+Todos.Theme is a derivative of SC.AceTheme, a very nice professional theme. You can override parts of the Ace theme as you wish, or switch it out entirely. Todos.Theme is registered with the system, and a default 'todos' namespace is created.
+
+h5. core.js (app root directory)
+
+<javascript filename="in apps/todos/core.js">
+// ==========================================================================
+// Project:   Todos
+// Copyright: @201X My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+ 
+/** @namespace
+ 
+  A little todos app.
+   
+  @extends SC.Object
+*/
+Todos = SC.Application.create(
+  /** @scope Todos.prototype */ {
+ 
+  NAMESPACE: 'Todos',
+  VERSION: '0.1.0',
+ 
+  // This is your application store.  You will use this store to access all
+  // of your model data.  You can also set a data source on this store to
+  // connect to a backend server.  The default setup below connects the store
+  // to any fixtures you define.
+  store: SC.Store.create().from(SC.Record.fixtures),
+  storeType: 'FromFixtures'
+ 
+  // TODO: Add global constants or singleton objects needed by your app here.
+ 
+});
+</javascript>
+
+The code in core.js sets up Todos as an instance of SC.Application.
+
+The Todos namespace is Todos: Todos.mainPage, Todos.todosController, etc.
+
+A data store is created from SC.Record.fixtures, which is a way to simulate a real database through reading data given in a fixtures javascript file, which we'll add in a later step. 
+
+The storeType property is set to 'FromFixtures'.
+
+h5. main.js (app root directory)
+
+<javascript filename="in apps/todos/main.js">
+// ==========================================================================
+// Project:   Todos
+// Copyright: @201X My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+ 
+Todos.main = function main() {
+  Todos.statechart.initStatechart();
+};
+ 
+function main() { Todos.main(); }
+</javascript>
+
+[TODO] sc-gen for statechart creates a main.js with:  SC.RootResponder.responder.set('defaultResponder', statechart); -- do we need this?
+
+h5. statechart.js (app root directory)
+
+<javascript filename="in apps/todos/main.js">
+// ==========================================================================
+// Project:   Todos
+// Copyright: @201X My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+ 
+Todos.statechart = SC.Statechart.create({
+ 
+  rootState: SC.State.design({
+    initialSubstate: "STARTING",
+ 
+    // For the Todos app, storeType will be 'FromFixtures', so we will
+    // go directly to the LOADING_APP state, and simple show the app.
+    //
+    STARTING: SC.State.plugin('Todos.STARTING'),
+ 
+    // The LOGGING_IN state is not used in todos. It is here for future reference.
+    //
+    LOGGING_IN: SC.State.plugin('Todos.LOGGING_IN'),
+ 
+    // For the Todos app, simply show the mainPage. In a more complicated app, you might
+    // need to do any manner of loading tasks or manipulation of initial system settings.
+    //
+    LOADING_APP: SC.State.plugin('Todos.LOADING_APP'),
+     
+    // The mainPage view is now showing, after being appended in the LOADING_APP state.
+    // So now we are in the SHOWING_APP state, waiting for and responding to user actions.
+    //
+    SHOWING_APP: SC.State.plugin('Todos.SHOWING_APP')
+
+    // More states would go here in a bigger app.
+  })
+});
+</javascript>
+
+The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the transitions between them allow a clean and simple design. In the Todos app statechart, the initial state is STARTING, a not-so-imaginative name! 
+
+There are four states in the Todos statechart: STARTING, LOGGING_IN, LOADING_APP, and SHOWING_APP. These are defined in individual files in the states directory.
+
+h4. The States Directory
+
+Code for individual states is held in a states directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/
+$ cd states
+</shell> 
+
+sc-gen created a file called ready_state.js in the states directory. We aren't going to use it for the Todos app, because we'll need several states.
+
+Delete ready_state.js in the apps/todos/states:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/states
+$ rm ready_state.js
+</shell> 
+
+Files to add in the apps/todos/states directory are:
+
+|_. starting.js |_. loggin_in.js |_. loading_app.js |_. showing_app.js |
+
+h5. STARTING State
+
+<javascript filename="in apps/todos/states/starting.js">
+// ==========================================================================
+// Project:   Todos
+// Copyright: @201X My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+ 
+// For the Todos app, storeType will be 'FromFixtures', so we will
+// go directly to the LOADING_APP state, to prepare for showing the app.
+//
+Todos.STARTING = SC.State.design({
+  enterState: function() {
+    if (Todos.get('storeType') === 'SomeBackendDatasource') {
+      this.gotoState('LOGGING_IN');
+    } else if (Todos.get('storeType') === 'FromFixtures') {
+      this.gotoState('LOADING_APP');
     }
+  },
+ 
+  exitState: function() {
+    // Nothing to worry about here.
   }
 });
 </javascript>
 
-Since <code>CreateTodoView</code> contains a text field, we create a subclass of <code>SC.TextField</code>, which provides several conveniences for working with text fields. For example, you can access the +value+ property and respond to higher level events such as +insertNewline+, when the user presses <code>return</code>.
+When the statechart is initialized from Todos.main(), program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the storeType. storeType was set to be 'FromFixtures' in core.js, where the data store is instantiated. (Recall that using fixtures data as the data store is a way to simulate a connection to a real database). You see in the if-else block of STARTING/enterState() that, because storeType === 'FromFixtures', the gotoState() call moves control directly to the LOADING_APP state, not the LOGGING_IN state, which we won't use in the Todos app. 
 
-Now that we have defined our view, we need to attach it to HTML in our Handlebars template.  Wrap the <code><input></code> like so:
+There are different conventions for naming states. The style used here is proven, and the formatting makes the state names prominent. Some people like to camel-case the state names names.
+  
+h5. LOGGING_IN State
 
-<html filename="apps/todos/resources/templates/todos.handlebars">
-<h1>Todos</h1>
-{{#view Todos.CreateTodoView}}
-<input id="new-todo" type="text"
-       placeholder="What needs to be done?" />
-{{/view}}
-</html>
-
-+#view+ is a Handlebars block helper that assigns a <code>SC.TemplateView</code> to a section of HTML. This means that the behavior described in the specified view, such as event handling, will get associated with the HTML inside the block.
-
-Now that we have an interface to create new todos, let's create the interface to display them.  We'll use the Handlebars +#collection+ helper to display a list of items. +#collection+ will create an instance of <code>SC.TemplateCollectionView</code> that renders every item in its underlying Array using the enclosed HTML.
-
-<html filename="in apps/todos/resources/templates/todos.handlebars">
-<!-- at the end of the file -->
-
-{{#collection SC.TemplateCollectionView ¬
-  contentBinding="Todos.todoListController"}}
-  {{content.title}}
-{{/collection}}
-</html>
-
-WARNING: We are using a continuation character (¬) to indicate that the lines should be entered unbroken.
-
-Notice that we've also told the collection to bind its +content+ property to our <code>todoListController</code>. For every item in the array controller, the collection view will create a new child view that renders the +{{content.title}}+ template.
-
-NOTE: You set up bindings by creating a property whose name ends in +Binding+. In this case, we bind +Todos.todoListController+ to the collection view's +content+ property. When one end of a binding changes, SproutCore will automatically update the other end.
-
-This is a good time to visit "http://localhost:4020/todos":http://localhost:4020/todos in your browser (or reload if you still have it open). It should look the same as before. Type a todo into the text field and hit return.
-
-Look at that! As soon as we create a new todo and insert it into the array controller, the view updates automatically.
-
-You've now seen a little bit of the power of SproutCore. By using SproutCore's bindings to describe the relationship between your data and your views, you were able to change the data layer and let SproutCore do the hard work of updating the view layer for you.
-
-INFO: This is actually a core concept in SproutCore, not just something that demos well.  SproutCore's binding system is designed with the view system in mind, which makes it easy to work directly with your data and not need to worry about manually keeping your view layer in sync. You will see this concept over and over again in the rest of this tutorial and in other guides.
-
-h3. Getting Things Done
-
-We now have the ability to add todos, but no way to mark them as done. Before the frustration of a never-ending todo list gets the better of us, let's add the ability to mark todos complete.
-
-The first thing we need to do is add a checkbox to each todo list item. As was mentioned earlier, if we want to handle events, such as user input, we need a view to manage that portion of HTML. In this case, we are adding a checkbox and want to be notified whenever the value of the checkbox is changed by the user. Remember that we can assign views using the +#view+ helper and provide the HTML content for the assigned view in our template.  However, we can also reference views that provide their own HTML content using the +view+ helper &mdash; notice the lack of the #.  For instance, we may want to create a complex view that will be used repeatedly and don't want to have to update all the templates whenever it needs to be updated.  Here's what the todo list looks like after updating it in +todos.handlebars+:
-
-<html filename="in apps/todos/resources/templates/todos.handlebars">
-<!-- replacing the previous code -->
-
-{{#collection SC.TemplateCollectionView ¬
-  contentBinding="Todos.todoListController"}}
-  {{view Todos.MarkDoneView}}
-{{/collection}}
-</html>
-
-Now let's implement the <code>Todos.MarkDoneView</code>, which we just referenced. Since our view implements a checkbox, we will subclass the <code>SC.Checkbox</code> control. This gives the view a +value+ property that reflects the value in the DOM, as well as a +title+ property that displays a label for the checkbox.
-
-INFO: Under the hood, SproutCore binds an event handler to the +change+ event and updates +value+ when the event occurs. This may change as needed for browser compatibility, but working with a SproutCore property insulates you from those concerns.
-
-For every item in its underlying <code>Array</code>, <code>SC.TemplateCollectionView</code> will create a new child view whose +content+ property contains the object the view should represent. In our case, there will be a child view for each todo, and each will have a +content+ property set to a corresponding <code>Todo</code> object.
-
-This makes it easy to bind the properties of the checkbox to the properties of the <code>Todo</code> object we're representing. In this case, we bind +value+ to +isDone+ and +title+ to +title+, so that when one changes, the other changes automatically. Let's tie it all together:
-
-<javascript filename="in apps/todos/todos.js">
-// before SC.ready
-
-Todos.MarkDoneView = SC.Checkbox.extend({
-  titleBinding: '.parentView.content.title',
-  valueBinding: '.parentView.content.isDone'
+<javascript filename="in apps/todos/states/logging_in.js">
+// ==========================================================================
+// Project:   Todos
+// Copyright: @201X My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+ 
+// The LOGGING_IN state is not used in todos. It is here for future reference.
+//
+Todos.LOGGING_IN = SC.State.design({             
+  initialSubstate: "SHOWING_LOGIN",
+ 
+  SHOWING_LOGIN: SC.State.design({
+ 
+    enterState: function() {
+      // A login panel would be shown now. It would update username and password
+      // in a loginController.
+    },
+ 
+    exitState: function() {
+      // The login panel would be taken down now.
+    },
+ 
+    authenticate: function() {
+      // The login panel would fire here, and we would call gotoState() to go to
+      // another state to do the authentication.
+    }
+  })
+ 
+  // More states would go here in an app that does authentication.
+       
 });
 </javascript>
 
-Before you reload the browser to see the new checkbox todo list items, the stylesheet we provided includes a CSS class meant to give completed todos a unique look, so lets also bind the class of each item to the object's +isDone+ property.
+We won't use the LOGGING_IN state in Todos, but have it here for illustration.
 
-We'll use a property on the collection helper to set up this binding:
+h5. LOADING_APP State
 
-<javascript filename="in apps/todos/resources/templates/todos.handlebars">
-<!-- replacing the previous code -->
+<javascript filename="in apps/todos/states/loading_app.js">
+// ==========================================================================
+// Project:   Todos
+// Copyright: @201X My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+ 
+// For the Todos app, simply show the mainPage. In a more complicated app, you might
+// need to do any manner of loading tasks or manipulation of initial system settings.
+//
+Todos.LOADING_APP = SC.State.design({
+  enterState: function() {
+    // Step 1: Instantiate Views
+    //
+    // The default code here will make the mainPane for your application visible
+    // on screen.  If your app gets any level of complexity, you will probably 
+    // create multiple pages and panes, but the main page usually will show first.  
+    //
+    Todos.getPath('mainPage.mainPane').append() ;
 
-{{#collection SC.TemplateCollectionView ¬
-  contentBinding="Todos.todoListController" ¬
-  itemClassBinding="content.isDone"}}
-  {{view Todos.MarkDoneView}}
-{{/collection}}
-</javascript>
+    // Step 2. Set the content property on your primary controller.
+    //
+    Todos.todosController.set('content',
+      Todos.store.find(SC.Query.local(Todos.Todo, { orderBy: 'timestamp DESC' })));
+ 
+    Todos.completedTodosController.set('content',
+      Todos.store.find(SC.Query.local(Todos.Todo, 'isCompleted = true')));
+ 
+    // Step 3. Once the page comes up, put keyboard focus on the new todos item.
+    //
+    Todos.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
 
-This property defines a binding on each of the item views. Each item will get the class +is-done+ if its associated content object's +isDone+ property is <code>true</code>. SproutCore will automatically dasherize property names into class names.
-
-NOTE: All views have a number of properties, including +id+, +class+, and +classBinding+. The +collection+ helper allows you to prefix any of those properties with +item+, which will then apply them to each of the child item views. For instance, if you use the +itemClass+ property on a collection, each item will get that class.
-
-Now reload your application in the browser and try it out. As soon as you click a todo's checkbox, the text will become crossed out. Keep in mind you didn't need to update any views when marking the <code>Todo</code> as done, bindings did it for you. If a different part of the app changes the <code>Todo</code> item's +isDone+ property, your list item would automatically update without any more work on your part.
-
-h3. The More You Know
-
-We can now create todos and mark them as being complete. While 76% of all statistics are made up, let's see if we can display more accurate information from the data we have.  At the top of our list, let's display the number of todos remaining. Open +todos.handlebars+ and insert this new view:
-
-<html filename="in apps/todos/resources/templates/todos.handlebars">
-<!-- after the Todos.CreateTodoView -->
-
-{{#view Todos.StatsView id="stats"}}
-  {{displayRemaining}} remaining
-{{/view}}
-</html>
-
-Handlebars expressions, like {{displayRemaining}}, allows us to automatically update the DOM when a property on our view changes. In this case, we're saying that the content of the <code>Todos.StatsView</code> should be bound to the value of the view's +displayRemaining+ property.  As with the other bindings, this will be updated for us automatically whenever the value changes.
-
-Let's go ahead and implement that view in +todos.js+ now:
-
-<javascript filename="in apps/todos/todos.js">
-// before SC.ready
-
-Todos.StatsView = SC.TemplateView.extend({
-  remainingBinding: 'Todos.todoListController.remaining',
-
-  displayRemaining: function() {
-    var remaining = this.get('remaining');
-    return remaining + (remaining === 1 ? " item" : " items");
-  }.property('remaining')
-});
-</javascript>
-
-+displayRemaining+ contains a pluralized string, based on the number of remaining todos.  Here is another core piece of SproutCore in action, this one called a *computed property*. Computed properties are properties whose value is determined by running a function. For example, if +remaining+ equals <code>1</code>, +displayRemaining+ will contain the string <code>"1 item"</code>.
-
-We say that +displayRemaining+ *depends on* <code>remaining</code> because it requires another value to generate its own value. We list these *dependent keys* inside the +property()+ declaration.
-
-We've also bound the view's +remaining+ property to the <code>todoListController</code>'s +remaining+ property. This means that, because of the dependency chain we've described, if <code>Todos.todoListController.remaining</code> changes, +displayRemaining+ will automatically update.
-
-When we have information that views need but is based on aggregate information about our models, the array controller is a good place to put it. Let's add a new computed property to <code>todoListController</code> in <code>todos.js</code>:
-
-<javascript filename="in apps/todos/todos.js">
-// updating previous code
-
-Todos.todoListController = SC.ArrayController.create({
-
-  // ...
-
-  remaining: function() {
-    return this.filterProperty('isDone', false).get('length');
-  }.property('@each.isDone')
-});
-</javascript>
-
-Here, we specify our dependent key using +@each+. This allows us to depend on properties of the array's items. In this case, we want to update the <code>remaining</code> property any time +isDone+ changes on a <code>Todo</code>.
-
-NOTE: The +@each+ property also updates when an item is added or removed.
-
-It's important to declare dependent keys because SproutCore uses this information to know when to update bindings. In our case, our <code>StatsView</code> updates any time <code>todoListController</code>'s <code>remaining</code> property changes.
-
-Here's how it all fits together:
-
-<div style='text-align: center'>
-  !images/html_based/bindings.png!
-</div>
-
-INFO: As we build up our application, we create *declarative* links between objects. These links describe how application state flows from the model layer to the HTML in the presentation layer.
-
-h3. Clearing Completed Todos
-
-As we populate our list with todos, we may want to periodically clear out those we've completed. As you have learned, we will want to make that change to the +todoListController+, and let SproutCore automatically propagate those changes to the DOM.
-
-Let's add a new +clearCompletedTodos+ method to the controller.
-
-<javascript filename="in apps/todos/todos.js">
-// updating existing code
-
-Todos.todoListController = SC.ArrayController.create({
-
-  // ...
-
-  clearCompletedTodos: function() {
-    this.filterProperty('isDone', true).forEach(this.removeObject, this);
+    // Done with loading and initialization steps. Move to SHOWING_APP.
+    this.gotoState('SHOWING_APP');
+  },
+ 
+  exitState: function() {
+    // Nothing to worry about in this context.
   }
 });
 </javascript>
 
-Next, let's add a button to our template. Open +todos.handlebars+ and add a button inside the HTML for <code>StatsView</code> as shown here:
+Find the LOADING_APP/enterState() function, where the comments mark three steps:
 
-<html filename="in apps/todos/resources/templates/todos.handlebars">
-<!-- updating existing code -->
+* *Step 1*: Append the mainPage view, which we'll be adding next. Appending a view effectively causes the view to be shown.
+* *Step 2*: Set the content property of the todosController, an SC.ArrayController that holds the main todos data. Recall that the store was initialized from fixtures. We are now loading data from that store and setting it into the todos array controller. In a SproutCore app, the wiring diagram provided by javascript code to set up bindings between views and controllers and the statechart makes the action happen. Simply by setting content of the todosController, because it is wired to the todo item list view by a binding, the initial todos data loaded from the store (and behind that, from fixtures) will show automatically. If this Todos app were to be used in a real-world setting, you would simply need to set the store up to pull from a REST datasource on the web instead of from static fixtures data.
+* *Step 3*: Place keyboard focus on the new todos item text field, so there is a blinking cursor cueing the user to type a todo.
 
-{{#view Todos.StatsView id="stats"}}
-  {{#view SC.Button classBinding="isActive" ¬
-    target="Todos.todoListController" ¬
-    action="clearCompletedTodos"}}
-    Clear Completed Todos
-  {{/view}}
-  {{displayRemaining}} remaining.
-{{/view}}
-</html>
+h5. SHOWING_APP State
 
-We've defined an instance of <code>SC.Button</code>, which calls a method on an object when it is clicked. In this case we've told the button to call the +clearCompletedTodos+ method (its action) on the +Todos.todoListController+ object (its target).
+<javascript filename="in apps/todos/states/showing_app.js">
+// ==========================================================================
+// Project:   Todos
+// Copyright: @201X My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+ 
+// The mainPage view is now showing, after being appended in the LOADING_APP state.
+// So now we are in the SHOWING_APP state, waiting for and responding to user actions.
+//
+Todos.SHOWING_APP = SC.State.design({
+  enterState: function() {
+    // There could be a user interface update for ready status after loading,
+    // such as a status indicator that turns from a yellow to green light, but
+    // we don't have anything fancy like that. So, nothing to worry about. Just
+    // stand at the ready.
+  },
 
-We've also told it to add an +is-active+ class to the view when it is clicked or tapped. Every <code>SC.Button</code> has an +isActive+ property that will be true when it is in the process of being clicked. This allows us to display a visual cue to the user that they have hit the right target.
+  exitState: function() {
+    // In a larger app, we would do tear-down tasks here.
+  },
 
-Go back to your browser and try it out. Add some todos, then mark them done and clear them.  Because we previously bound the visual list to the <code>todoListController</code>, making a change through new means has the expected effect.
-
-h3. Marking All as Done
-
-Let's say you've decided to actually get all of your work done. Wouldn't it be nice to have a way to easily mark every todo as complete?
-
-It turns out that, due to our application's declarative nature, all the hard work is already done. We just need a way to mark every <code>Todo</code> complete.
-
-Let's first create a new computed property on our controller that describes whether or not every todo is done. It might look something like this:
-
-<javascript filename="in apps/todos/todos.js">
-// updating existing code
-
-Todos.todoListController = SC.ArrayController.create({
-
-  // ...
-
-  allAreDone: function() {
-    return this.get('length') && this.everyProperty('isDone', true);
-  }.property('@each.isDone')
-});
-</javascript>
-
-INFO: SproutCore has many enumerable helpers. +everyProperty('isDone', true)+ returns true if every item in the array has an +isDone+ property that evaluates to +true+. You can find out more in the "Enumerables guide.":/enumerables.html
-
-Next, we'll create a checkbox view to mark all items complete and bind its value to the controller's property:
-
-<html filename="in apps/todos/resources/templates/todos.handlebars">
-<!-- directly below the Todos.StatsView -->
-
-{{view SC.Checkbox class="mark-all-done" ¬
-  title="Mark All as Done" ¬
-  valueBinding="Todos.todoListController.allAreDone"}}
-</html>
-
-If you were to reload your browser and use the app now, you'd notice that clicking all of the checkboxes of your todos will cause the "Mark All as Done" checkbox to become checked. However, it doesn't work in the other direction: clicking "Mark All as Done" has no effect.
-
-So far, our computed properties have described how to calculate a value from dependent properties. However, in this case, we want to accept a new value, and update dependent properties to reflect it.  Lets update our +allAreDone+ computed property to also accept a value.
-
-<javascript filename="in apps/todos/todos.js">
-// updating existing code
-
-Todos.todoListController = SC.ArrayController.create({
-
-  // ...
-
-  allAreDone: function(key, value) {
-    if (value !== undefined) {
-      this.setEach('isDone', value);
-
-      return value;
-    } else {
-      return this.get('length') && this.everyProperty('isDone', true);
+  // Functions like addTodo are called actions. Their names are used to set the
+  // action property of user interface elements such as buttons. In this case,
+  // the mainPage view has a newTodoField view that contains a text field and
+  // a submit button. The action property of the submit button is set to 'addTodo'.
+  // When clicked, this addTodo function will be called.
+  //
+  // If the user entered some text, which is grabbed from the value property of
+  // the associated view of the caller (a text field), addTodo uses this and the
+  // current time in a call to store.createRecord() to add a new todo.
+  //
+  // As the last step, the associated view's value is set to '', so the text
+  // field is blank and ready for the next todo.
+  //
+  addTodo: function (view) {
+    var todo = (view.get('value') || '').trim();
+    if (todo !== '') {
+      Todos.store.createRecord(Todos.Todo, {
+        title: todo,
+        timestamp: SC.DateTime.create()
+      });
+      view.set('value', '');
     }
-  }.property('@each.isDone')
+  },
+
+  // Destroys all todo items that are completed.
+  //
+  // This action method is tied to a button in the mainPage view's bottom
+  // toolbar. This button has its action property set to 'clearCompletedTodos',
+  // so when the user clicks it, this function is called.
+  //
+  clearCompletedTodos: function () {
+    Todos.completedTodosController.invoke('destroy');
+  }
 });
 </javascript>
 
-When you set a computed property, your computed property function is called with the property key as the first parameter and the new value as the second. To determine if SproutCore is asking for the value or trying to set it, we examine the +value+ parameter. If it is defined, we iterate through each <code>Todo</code> and set its +isDone+ property to the new value.
+The SHOWING_APP state is equivalent to the "ready" state created by sc-gen for a Hello World app. This state handles two actions, addTodo and clearCompletedTodos. There are references to parts of the view code that will become clear after we add the resources directory, with the mainPage view and associated files, and other view and system components. Look back to the statechart code as we move through the rest of the guide.
 
-Because bindings are bi-directional, SproutCore will set +allAreDone+ to <code>true</code> when the user clicks the "Mark All as Done" checkbox. Conversely, unchecking it will make SproutCore set +allAreDone+ to <code>false</code>, unchecking all todos.
+h4. The Resources Directory
 
-Reload the app and add some todos. Click "Mark All as Done". Wow! Each of the individual check boxes gets checked off. If you uncheck one of them, the "Mark All as Done" checkbox un-checks itself.
+We've covered the highest-level parts of the app defined in the statechart. Now let's add the rest. 
 
-INFO: When you use SproutCore, as you scale your UI, you never need to wonder whether a new feature will work consistently with parts of the UI you already implemented. Since you build your view layer to simply reflect the state of your models, you can make changes however you want and see them update automatically.
+The mainPage view, CSS files, a theme file, and an html page live in a directory called resources.  Go to that directory now:
 
-h3. Mobile Specific Styles
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/
+$ cd resources
+</shell> 
 
-At this point, we actually have the app fully functional on all modern mobile devices.  Let's optimize the experience for all of the different screen sizes we might encounter. Download the "CSS for mobile":https://github.com/sproutcore/Todos-Example/raw/master/apps/todos/resources/stylesheets/todos_mobile.css and save it as +apps/todos/resources/stylesheets/todos_mobile.css+.  Now load your app on a mobile device and you should see the same app, but styled properly for mobile devices and responding to touch events.
+Files to add in the apps/todos/resources directory are:
 
-NOTE: The SproutCore development server will be available on your local network at your machine's IP address. For example, you might visit http://192.168.1.1:4020/todos.
+|_. main_page.js |_. header.css |_. body.css |_. new_todo.css |_. todo_item.css |_. _theme.css |_. loading.rhtml |
 
-h3. Resources
+h5. main_page.js (resources directory)
 
-Now that you have finished the first part of the Getting Started tutorial, you will want to acquaint yourself with the resources available to the SproutCore community.
+<javascript filename="in apps/todos/resources/main_page.js">
+// ==========================================================================
+// Project:   Todos - mainPage
+// Copyright: @2012 My Company, Inc.
+// ==========================================================================
+/*globals Todos */
+require('views/todo_item');
 
-* Sign up for the "SproutCore Mailing List":http://groups.google.com/group/sproutcore
-* Follow "@sproutcore":http://twitter.com/sproutcore on Twitter
-* Visit the "#sproutcore":irc://irc.freenode.net/sproutcore IRC channel to get real-time help
-* Bookmark the "SproutCore API Documentation":http://docs.sproutcore.com and the "SproutCore Guides":http://guides.sproutcore.com
+// This page describes the main user interface for your application.  
+Todos.mainPage = SC.Page.design({
 
-h3. Continue On
+  // The main pane is made visible on screen as soon as your app is loaded.
+  // Add childViews to this pane for views to display immediately on page 
+  // load.
+  mainPane: SC.MainPane.design({
+    childViews: ['header', 'newTodoField', 'todosList', 'footer'],
+    defaultResponder: "Todos.statechart", 
 
-Now that you've built a basic SproutCore app, continue on to "the next part of this tutorial":getting_started_2.html to learn about working with SproutCore's model layer.
+    header: SC.ToolbarView.design({
+      layout: { centerX: 0, width: 500, top: 0, height: 36 },
 
-h3. Changelog
+      childViews: ['title', 'completeAll'],
+
+      completeAll: SC.CheckboxView.design(SC.AutoResize, {
+        autoResizePadding: { width: 47 },
+        localize: YES,
+        title: '_Mark all as done',
+        valueBinding: 'Todos.completedTodosController.areAllCompleted'
+      }),
+
+      title: SC.LabelView.design({
+        layout: { left: 0, right: 0, top: 0, bottom: 0 },
+
+        totalTodoBinding: SC.Binding.oneWay('Todos.todosController.length'),
+        completedTodosBinding: SC.Binding.oneWay('Todos.completedTodosController.length'),
+
+        value: function () {
+          var leftTodo = this.get('totalTodo') - this.get('completedTodos');
+          return 'Todos (%@)'.loc(leftTodo);
+        }.property('totalTodo', 'completedTodos').cacheable()
+      })
+    }),
+
+    newTodoField: SC.View.design({
+      classNames: ['new-todo'],
+      layout: { centerX: 0, width: 500, top: 36, height: 36 },
+      childViews: ['field', 'submit'],
+
+      field: SC.TextFieldView.design({
+        localize: YES,
+        hint: '_What needs to be done?'
+      }),
+
+      submit: SC.ButtonView.design(SC.AutoResize, {
+        controlSize: SC.HUGE_CONTROL_SIZE,
+        layout: { right: 12, height: 30, centerY: 0, zIndex: 100 },
+        localize: YES,
+        title: '_Add',
+        action: 'addTodo',
+        valueBinding: '.parentView.field.value',
+        isDefaultBinding: '.parentView.field*focused'
+      })
+    }),
+    
+    todosList: SC.ScrollView.design({
+      layout: { centerX: 0, width: 500, top: 72, bottom: 36 },
+      contentView: SC.ListView.design({
+        contentBinding: SC.Binding.oneWay('Todos.todosController'),
+        rowHeight: 36,
+        exampleView: Todos.TodoItemView
+      })
+    }),
+        
+    footer: SC.ToolbarView.design({
+      layout: { centerX: 0, width: 500, bottom: 0, height: 36 },
+
+      childViews: ['clearCompletedTodos'],
+      clearCompletedTodos: SC.ButtonView.design(SC.AutoResize, {
+        controlSize: SC.HUGE_CONTROL_SIZE,
+        layout: { left: 14, height: 30, centerY: 0 },
+        isEnabledBinding: SC.Binding.oneWay('Todos.completedTodosController.length').bool(),
+        localize: YES,
+        title: '_Clear completed todos',
+        action: 'clearCompletedTodos'
+      })
+    })
+  })
+
+});
+</javascript>
+
+There are four parts to the Todos mainPage view: a header and footer, and between them are a newTodoField and a todosList. A user types a new todo in the newTodoField, and when they click the submit button, labeled 'Add', the new todo is added by means of the todosController's addTodo() function. The new todo will, in turn, show up in the todosList. How does this happen? Look at the lines that have Binding in the property names. When you write user interface element code, you "wire up" these connections with such binding instructions. 
+
+h6. Toolbars in header and footer
+
+The header view is an SC.ToolbarView with two child views: a completeAll checkbox view and a title label view. The valueBinding property of the checkbox is tied to an areAllCompleted() function in the completedTodosController, which answers that question -- if yes, then the completeAll checkbox will show as checked. This is a two-way binding, so it works in reverse. If the user clicks the completeAll checkbox, then areAllCompleted() will set isCompleted to true for all todos. Yes, that makes areAllCompleted() a very special type of function, called a computed property. As you'll see, computed properties give this power in more than one context.
+
+The footer view has a single child view, clearCompletedTodos, a button whose action is tied to the clearCompletedTodos() function in the completedTodosController. The isEnabledBinding property has a one-way binding (faster, if you don't need two-way, reciprocal updating) to the length of the completedTodosController, which is an SC.ArrayController. If its length is 0, then isEnabled is false and the button will not be active (If there aren't any todos, there is nothing to clear).
+
+h6. newTodoField
+
+The newTodoField view contains a text field called field and a submit button. The submit button has two properties that are bound to the associated text field. The valueBinding property is bound to field.value, which of course is the text the user enters. Note the use of .parentView in the valueBinding definition. In this context, parentView refers to the newTodoField view, which has the field and submit child views. The isDefaultBinding property works in similar fashion, but you note an asterisk in front of a reference to 'focused', which is one of the boolean properties available for a text field. The asterisk is a convention that means what an asterisk often means -- if the text field has any type of focus at all, keyboard or mouse, then 'focused' will be true. 
+ 
+h6. todosList
+
+The todosList view follows the SproutCore idiom for wrapping an SC.ListView in an SC.ScrollView. The contentBinding property of the list is set to Todos.todosController. The exampleView property introduces a concept very important for SproutCore: views can be defined in separate javascript files, often held in a views directory, and included where they are needed. exampleView is set to Todos.TodoItemView, which necessitates a require statement at the top of the file: require('views/todo_item');. TodoItemView has a checkbox and label. We'll add it after we add the views directory later.
+
+h5. _theme.css (resources directory)
+
+The underscore starting the name of this file is a dead giveaway that it must apply to the theming system. It defines $theme to be our Ace-derived theme, ace.todos. You'll see $theme used in individual content CSS files, so now you know where it is defined.
+
+<css filename="in apps/todos/resources/_theme.css">
+/*
+  This defines the global $theme variable for use inside your CSS.
+  The $theme variable holds the CSS class names for your theme.
+  
+  You can then theme your app by using CSS like this:
+
+      $theme.button {
+        color: blue;
+        @include slices('white-button.png', $left: 3, $right: 3);
+      }
+  
+  Any _theme.css file is prepended to all files inside its directory,
+  and any subdirectories that don't define their own _theme.css file.
+  
+  This allows you to give different directories different values for
+  $theme if you wish.
+*/
+$theme: '.ace.todos';
+</css>
+
+h5. Content CSS files
+
+You can add a single CSS file in your resources directory, or you can add many small ones. For the Todos app, we'll choose the many-small-ones approach. In these CSS files, where you see something like $theme.sc-text-field-view, the sc- prefix indicates an override of the sc- CSS definitions in the Ace theme. 
+
+CSS is an art unto itself, an important side of doing SproutCore development and building views.
+
+Names of the files indicate their applicability: header.css, body.css, new_todo.css, and todo_item.css.
+
+h6. header.css (resources directory)
+
+<css filename="in apps/todos/resources/header.css">
+$theme.toolbar {
+  .checkbox {
+    .button {
+      left: 13px;
+      top: 50%;
+      margin-top: -8px;
+    }
+
+    .label {
+      left: 47px;
+      line-height: 36px;
+    }
+  }
+
+  .sc-label-view {
+    text-align: right;
+    line-height: 36px;
+    font-weight: bold;
+    font-size: 18px;
+    padding-right: 12px;
+  }
+}
+</css>
+
+h6. body.css (resources directory)
+
+<css filename="in apps/todos/resources/body.css">
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+}
+
+.sc-pane {
+  -webkit-transform: none;
+}
+</css>
+
+h6. new_todo.css (resources directory)
+
+<css filename="in apps/todos/resources/new_todo.css">
+$theme.new-todo {
+  background-color: #FFF;
+}
+
+$theme.sc-text-field-view {
+  background-color: transparent;
+  font-size: 14px;
+
+  .padding {
+    left: 14px;
+  }
+}
+</css>
+
+h6. todo_item.css (resources directory)
+
+<css filename="in apps/todos/resources/todo_item.css">
+$theme.todo-item {
+  .button {
+    left: 13px;
+    top: 50%;
+    margin-top: -8px;
+  }
+
+  .label {
+    left: 47px;
+    line-height: 36px;
+  }
+
+  &.sel {
+    background-color: white;
+    color: #AAA;
+    text-decoration: line-through;
+  }
+}
+</css>
+
+h5. loading.rhtml (resources directory)
+
+SproutCore apps can weigh in north of the welterweight class, so while the app is loading we may need to show a loading indicator. For todos we don't have to worry, but in larger apps, this file could need some attention.
+
+<html filename="in apps/todos/resources/loading.rhtml">
+<% content_for :loading do %>
+<% # Any HTML in this file will be visible on screen while your page loads
+   # its application JavaScript.  SproutCore applications are optimized for 
+   # caching and startup very fast, so your users will often only see this 
+   # content for a brief moment on their first app load, if at all.
+%>
+<p class="loading">Loading...<p>
+
+<% end %>
+</html>
+
+h4. The Views Directory
+
+sc-gen doesn't make a views directory, so we'll need to make one.
+
+Before adding the views directory, some navigation is needed. We are still in the resources directory, so move back up to the todos app root directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/resources/
+$ cd ..
+</shell>
+
+Make a views directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/
+$ mkdir views
+$ cd views
+</shell>
+
+The views directory will contain one file: 
+
+|_. todo_item.js |
+
+h5. todo_item.js (views directory)
+
+<javascript filename="in apps/todos/views/todo_item.js">
+Todos.TodoItemView = SC.CheckboxView.design({
+  // The CSS class names to apply to this view
+  classNames: ['todo-item'],
+
+  valueBinding: '.content.isCompleted',
+
+  titleBinding: SC.Binding.oneWay('.content.title')
+});
+</javascript>
+
+TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an array of CSS class names. valueBinding has a reference to .content.isCompleted, prompting an explanation of the context for this view. We know that this view is defined as the exampleView property of the todos list above. The term example here means "the view to use for each list item." List items for the todos list are todos, which are defined in the Todos.Todo model. So, .content used in the TodoItemView definition refers to a single todo item in the list. The value of this checkbox is thus the isCompleted property of the todo associated with the given list item. Likewise, titleBinding is tied to the title property of the list item todo.
+
+So, you really have to think about where this view is used to understand it, but that comes with the territory of having separate views in files in a views directory. It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
+
+h4. The Models Directory
+
+sc-gen does not make a models directory, so we'll need to make it.
+
+Move up to the app root directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/resources/views/
+$ cd ..
+</shell>
+
+Make a models directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/
+$ mkdir models
+$ cd models
+</shell>
+
+SproutCore models are based on SC.Record, which offers a substantial set of data definition and processing functionality.
+
+The models directory will contain one file:
+
+|_. todo.js |
+
+h5. todo.js (models directory)
+
+<javascript filename="in apps/todos/models/todo.js">
+require('core');
+
+// A simple SproutCore model that describes
+// the semantics of something that needs to be done.
+Todos.Todo = SC.Record.extend({
+
+  // When was this Todo created?
+  timestamp: SC.Record.attr(SC.DateTime),
+
+  // Is the Todo item completed?
+  isCompleted: SC.Record.attr(Boolean),
+
+  // What is it that needs to be done?
+  title: SC.Record.attr(String)
+
+});
+</javascript>
+
+The Todo model has three properties: timestamp, isCompleted, and title. All are defined using the SC.Record.attr() helper (convenience) function, where builtin javascript types and Sproutcore types may be specified. There is much more that could be done in these property definitions, but for Todos, the basic types and their defaults will suffice.
+
+h4. The Controllers Directory
+
+sc-gen does not make a controllers directory, so we'll make it.
+
+Move up to the todos app root directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/models
+$ cd ..
+</shell>
+
+Make a controllers directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/
+$ mkdir controllers
+$ cd controllers
+</shell>
+
+Controllers tied to models mediate communication with views. We'll need a couple in the Todos app.
+
+The controllers directory will contain two files: 
+
+|_. todos.js |_. completed_todos.js |
+
+h5. todos.js (controllers directory)
+
+<javascript filename="in apps/todos/controllers/todos.js">
+require('core');
+ 
+// A controller that will provide a list of all of the todos.
+Todos.todosController = SC.ArrayController.create({
+});
+</javascript>
+
+h5. completed_todos.js (controllers directory)
+
+<javascript filename="in apps/todos/controllers/completed_todos.js">
+require('controllers/todos');
+
+// The todo manager is a list of all todo items that have `isCompleted` set to `YES`.
+Todos.completedTodosController = SC.ArrayController.create({
+
+  // The total number of Todos
+  totalTodosBinding: SC.Binding.oneWay('Todos.todosController.length'),
+
+  // Whether all items in the Todo list are completed
+  areAllCompleted: function (k, v) {
+    if (v !== undefined) {
+      Todos.todosController.setEach('isCompleted', v);
+    }
+    return this.get('length') === this.get('totalTodos');
+  }.property('length', 'totalTodos').cacheable()
+
+});
+</javascript>
+
+The todosController has the simplest default definition as an SC.ArrayController. An array controller has a default _content_ reference to the data: you don't see a content property defined here, but take note, because you'll see prevalent use of the content property in all things controller.
+
+The completeTodosController is another array controller with a property, totalTodosBinding, and a function, areAllCompleted(). 
+
+totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", we don't care about pushing back) to the length of the todosController array controller. We need a local reference to this length, because we are about to do something slick, in part based on it.
+
+areAllCompleted() is a function, but a very special type of function, called a computed property. Note the .property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as parameters, then tacks on .cacheable(). First, the parameters, which are references to local properties for this context, which is the array controller body. We know we have a 'length' property -- this is an array controller. But what gives with the use of the 'totalTodos' reference, isn't the property called totalTodosBinding? Ah, the answer is that anytime Binding is appended to a property name, you have a kind of dual-property arrangement. The actual property is, in fact, totalTodos. In defining totalTodosBinding, we essentially say, get the value of totalTodos from this other source. That covers the background on mechanics of property names, now to address what .property('length', 'totalTodos').cacheable() accomplishes. It means:
+
+  "Base this computed property on the length and totalTodos properties, and update it if either of them change, and, oh, by the way, please cache the values while you are at it, so unnecessary updates aren't performed." 
+
+Wow! That was a lot to grok, but think of the power here! It really is slick. 
+
+There is more to explain about the working of this computed property. What are the k and v parameters, and what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the totalTodos value is being changed. This is a mandate to try to mark all todos as completed by this value. That's the name of the function/computed property: areAllCompleted. If a call is made to set it, then the body of the function needs to update the data accordingly. If v evaluates to true, then isCompleted for each todo item will be set and all the checkboxes will be checked in the list. That explains what the if block does. 
+
+Notice the return at the end of the areAllCompleted computed property function. We return the result of a test comparing the length of completed todos array (the local 'length') to the length of the todos array (the local 'totalTodos', which is bound to an external source, the full todosController array). If these lengths are the same, then all todos have been marked as completed, otherwise no. 
+
+So, a computed property used in this way is both a setter and a getter. Complicated, but useful. Once you get the hang of making these you realize the benefit: the automatic updating gain is worth the learning pain.
+
+h4. The En Directory
+
+sc-gen does not make an en directory, nor its fixtures directory. We'll make these.
+
+Move up to the todos app root directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/controllers/
+$ cd ..
+</shell>
+
+Make an en directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/
+$ mkdir en
+$ cd en
+</shell>
+
+h5. strings.js (en directory)
+
+The en directory will contain one file: 
+
+|_. strings.js |
+
+<javascript filename="in apps/todos/en/strings.js">
+// ==========================================================================
+// Project:   Todos Strings
+// Copyright: ©2011 SproutCore
+// ==========================================================================
+/*globals Todos */
+
+// Place strings you want to localize here.  In your app, use the key and
+// localize it using "key string".loc().  HINT: For your key names, use the
+// english string with an underscore in front.  This way you can still see
+// how your UI will look and you'll notice right away when something needs a
+// localized string added to this file!
+//
+SC.stringsFor('en', {
+  '_Mark all as done': 'Mark all as done',
+  '_Todos (%@)': 'Todos (%@)',
+  '_Clear completed todos': 'Clear completed Todos',
+  '_Add': 'Add',
+  '_What needs to be done?': 'What needs to be done?'
+});
+</javascript>
+
+h5. The Fixtures Directory
+
+While still in the en directory, make a fixtures directory:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/en/
+$ mkdir fixtures
+$ cd fixtures
+</shell>
+
+The fixtures directory will contain one file: 
+
+|_. todo.js |
+
+h6. todo.js (fixtures directory)
+
+<javascript filename="in apps/todos/en/fixtures/todo.js">
+require('models/todo');
+
+Todos.Todo.FIXTURES = [
+ {
+   guid: 0,
+   isCompleted: YES,
+   title: 'Add a SHOWING_APP state'
+ },
+ {
+   guid: 1,
+   isCompleted: YES,
+   title: 'Edit the buildfile'
+ },
+ {
+   guid: 2,
+   isCompleted: YES,
+   title: 'Add a todos app'
+ },
+ {
+   guid: 3,
+   isCompleted: YES,
+   title: 'Install SproutCore'
+ }
+];
+</javascript>
+
+h4. Running the App
+
+Now we can run the app, which we should do from the project root directory, where the Buildfile lives:
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/apps/todos/en/fixtures
+$ cd ../../../..
+</shell>
+
+And run it!
+
+<shell>
+$ pwd 
+    ~/somewhere/learning_sc/
+$ sc-server
+</shell>
+
+Visit http://localhost:4020/ in your favorite modern browser and you should see a list of apps, including Todos. 
+
 
 * March 1, 2011: initial version by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
 * March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio and "Peter Wagenet":credits.html#pwagenet
@@ -460,3 +1078,5 @@ h3. Changelog
 * April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
 * May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
 * May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
+* February 27, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who worked on this task: "Tim Evans":credits.html#tce, "Jeff Pittman":credits.html#geojeff, and others [TODO] Add 'em!
+
