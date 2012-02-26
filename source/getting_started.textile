@@ -506,7 +506,9 @@ Todos.SHOWING_APP = SC.State.design({
 });
 </javascript>
 
-The SHOWING_APP state is equivalent to the "ready" state created by sc-gen for a Hello World app. This state handles two actions, addTodo and clearCompletedTodos. There are references to parts of the view code that will become clear after we add the resources directory, with the mainPage view and associated files, and other view and system components. Look back to the statechart code as we move through the rest of the guide.
+The SHOWING_APP state is equivalent to the "ready" state created by sc-gen for a Hello World app. In the enterState() function the mainPage view is appended, which causes it to show in the browser. We want a blinking cursor in the new todo text field. This is accomplished by setting this field to become first responder in the events system.
+
+This state handles two actions, addTodo and clearCompletedTodos. There are references to parts of the view code that will become clear after we add the resources directory, with the mainPage view and associated files, and other view and system components. Look back to the state and statechart code as we move through the rest of the guide.
 
 h4. The Resources Directory
 
