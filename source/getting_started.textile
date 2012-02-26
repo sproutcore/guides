@@ -288,6 +288,8 @@ function main() { Todos.main(); }
 
 [TODO] sc-gen for statechart creates a main.js with:  SC.RootResponder.responder.set('defaultResponder', statechart); -- do we need this?
 
+main.js for Todos is very simple, with only a line to initialize the statechart. In a larger app, there might be global singleton objects and utility functions generally needed by an app.
+
 h5. statechart.js (app root directory)
 
 <javascript filename="in apps/todos/main.js">
