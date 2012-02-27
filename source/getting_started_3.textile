@@ -308,7 +308,7 @@ TodosThree.LOADING_DATA = SC.State.design({
 });
 </javascript>
 
-Data content of the two array controllers in the TodosThree app is set by issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the primary controller, todosController, we search for all the todos, ordering them by their timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is true. Then we call gotoState() to move to the SHOWING_APP state.
+Data content of the two array controllers is set by issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the primary controller, todosController, we search for all the todos, ordering them by their timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is true. Then we call gotoState() to move to the SHOWING_APP state.
 
 h5. SHOWING_APP State
 
