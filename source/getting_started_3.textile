@@ -86,7 +86,7 @@ Here is that directory structure again, with descriptions for each item:
 **** *statechart.js*       | _Contains main app states and substates_
 **** *states/*
 ***** *starting.js*        | _A single state, the STARTING state, which plugs in to the app's statechart_
-***** *logging_in.js*      | _The LOGGING_IN state (not used in Todos, but there for illustration)_
+***** *logging_in.js*      | _The LOGGING_IN state (not used in TodosThree, but there for illustration)_
 ***** *loading_data.js*     | _The LOADING_DATA state, where data is loaded, and the UI configured_
 ***** *showing_app.js*     | _The SHOWING_APP state, the general state for responding to user actions_
 **** *resources/*
@@ -287,7 +287,7 @@ TodosThree.LOGGING_IN = SC.State.design({
 });
 </javascript>
 
-INFO: We won't use the LOGGING_IN state in Todos, but have it here for illustration.
+INFO: We won't use the LOGGING_IN state in TodosThree, but have it here for illustration.
 
 h5. LOADING_DATA State
 
@@ -632,7 +632,7 @@ NOTE: It helps to name such views as SomethingItemView, because the Item part in
 
 h4. The Models Directory
 
-sc-gen does not make a models directory, so we'll need to make it.
+sc-gen does not make a models directory, so we'll make it.
 
 Move up to the app root directory:
 
@@ -669,7 +669,7 @@ TodosThree.Todo = SC.Record.extend({
 });
 </javascript>
 
-The Todo model has three properties: timestamp, isCompleted, and title. All are defined using the SC.Record.attr() helper (convenience) function, where builtin javascript types and Sproutcore types may be specified. There is much more that could be done in these property definitions, but for Todos, the basic types and their defaults will suffice.
+The Todo model has three properties: timestamp, isCompleted, and title. All are defined using the SC.Record.attr() helper (convenience) function, where builtin javascript types and Sproutcore types may be specified. There is much more that could be done in these property definitions, but for TodosThree, the basic types and their defaults will suffice.
 
 h4. The Controllers Directory
 
