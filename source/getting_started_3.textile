@@ -1,12 +1,8 @@
-h2. Getting Started
+h2. Getting Started: Part 3
 
-In this guide, you will create a simple SproutCore "to-do" app called Todos, learning the following:
+In this guide, you will create a SproutCore "to-do" app called TodosThree, learning the following:
 
-* how to install SproutCore,
-* how to create a SproutCore app,
-* how to run the local SproutCore system for development, viewing apps in a browser locally,
 * how an app is organized into views, controllers, a statechart, and models,
-* how views are created by writing javascript code that specifies layout and presents content,
 * how bindings and actions coordinate views with a controller system, which includes a statechart,
 * how the controller system ties to models,
 * how SproutCore contains powerful programming constructs.
@@ -15,52 +11,37 @@ endprologue.
 
 h3. Following Along
 
-You would benefit from carefully following the instructions in this guide, to create directories, to type in code (or to copy and paste it), because it will register in your mind more solidly. However, if you don't have the time or inclination for that, you can access the finished source code for this application on "Github":https://github.com/sproutcore/Todos-Example/, and following along as if you were creating the app manually.
+You have learned in previous guides how to use sc-gen to make a project directory (~/development/sproutcore/getting_started) and to produce apps (in ~/development/sproutcore/getting_started/apps/). You have learned how to run sc-server in the project directory, and how to view apps in a local browser at localhost:4020/. You have learned about SproutCore app concepts, including the use of a buildfile and of views and a statechart. We will build on that foundation to produced a TodosThree app with the full complement of components of a best-practices SproutCore app.
 
-To see Todos in action, click "here":http://github/sproutcore/sproutcore. [TODO] need a demo app url [ATTN: tce]
+You would benefit from carefully following the instructions in this guide to create directories, to type in code (or to copy and paste it), because it will register in your mind solidly. The presentation is written as if you would add the app in this manual fashion, although you surely might prefer the following options instead:
+
+* download a compressed file and explode it in your project's apps/ directory. [TODO] link
+
+* access the finished source code for this application on "Github":https://github.com/sproutcore/, and clone it into your project's apps/ directory. [TODO] link
+
+To see TodosThree in action, click "here":http://github/sproutcore/sproutcore. [TODO] link to TodosThree
 
 There is a screencast available on "Vimeo":http://vimeo.com. [TODO] [ATTN: geojeff, who will use ScreenFlow to make a new one]
 
-INFO: Todos is written using a best practices approach. This guide attempts to strike a matter-of-fact tone that doesn't sugar-coat complexity too much, but doesn't attempt to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references to the numeric heading number for relevant sections of this guide page.
+INFO: This guide attempts to strike a matter-of-fact tone that doesn't sugar-coat complexity too much, but tries not to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references to the numeric heading number for relevant sections of this guide page.
 
-h3. Installing SproutCore
+h3. Creating A TodosThree Application
 
-This guide assumes you have successfully installed SproutCore 1.8 or later, with the Mac OS X installer or the Windows installer <a href="http://www.sproutcore.com/install/?redirect=1" onclick="_gaq.push(['_trackEvent', 'Download', 'Guides']);">(Installers)</a>. Or, to install on Linux, try this <link>script</link>. [TODO] Add link to unicolet's Linux script.
+Here is a screen capture of the completed application: [TODO] need TodosThree screen capture image here.
 
-h3. Creating A New SproutCore Application
-
-First, in some area of your hard drive where you develop software, make a sproutcore directory: ~/somewhere/sproutcore. This directory can be your place for all things SproutCore. Change directory to ~/somewhere/sproutcore, then create a SproutCore project:
-
-<shell>
-$ pwd 
-    ~/somewhere/
-
-$ sc-gen project getting_started
-
- ~ Created directory at getting_started
- ~ Created file at getting_started/Buildfile
- ~ Created file at getting_started/README
-
-$ cd getting_started
-</shell>
-
-Now you have a getting_started project directory, ~/somewhere/sproutcore/getting_started. We will build several SproutCore apps in this project space.
-
-The first app we will make is called Todos. Here is a screen capture of the completed application: [TODO] need Todos screen capture image here.
-
-The Todos app looks simple. It has toolbars at the top and bottom. It has a text field near the top, where a user types in a new todo. It has a list of already added todos. Even such a simple-looking app like this involves the use of intelligent SproutCore programming.
+The TodosThree app looks simple. It has toolbars at the top and bottom. It has a text field near the top, where a user types in a new todo. It has a list of already added todos. Even such a simple-looking app like this involves the use of intelligent SproutCore programming.
 
 We can describe these intelligent aspects, generally, as the "system of connections" or, in the manner an electrician would use, as the "wiring diagram." SproutCore apps have _bindings_ and between properties of various components of the user interface and those of underlying machinery, and _actions_ coordinated with _states_. 
 
 You see the components of the user interface: checkboxes, buttons, text fields, list views, etc. We'll be looking at the underlying machinery.
 
-This will be the directory structure for the Todos app:
+This will be the directory structure for the TodosThree app:
 
 * *getting_started/* - The project directory, for holding several apps.
 ** *Buildfile*
 ** *README.md*
 ** *apps/*
-*** *todos/*
+*** *todos_three/*
 **** *Buildfile*
 **** *core.js*
 **** *main.js*
@@ -97,11 +78,11 @@ Here is that directory structure again, with descriptions for each item:
 ** *Buildfile*             | _Configuration for the project_ 
 ** *README.md*             | _Describes your app and how to use it_
 ** *apps/*
-*** *todos/*
-**** *Buildfile*           | _Configuration for the Todos app_
-**** *core.js*             | _Todos app creation code_
-**** *main.js*             | _Adds a data store, and calls the Todos.mainPage view_
-**** *theme.js*            | _Adds a Todos.Theme based on the SproutCore Ace theme_
+*** *todos_three/*
+**** *Buildfile*           | _Configuration for the TodosThree app_
+**** *core.js*             | _TodosThree app creation code_
+**** *main.js*             | _Adds a data store, and calls the TodosThree.mainPage view_
+**** *theme.js*            | _Adds a TodosThree.Theme based on the SproutCore Ace theme_
 **** *statechart.js*       | _Contains main app states and substates_
 **** *states/*
 ***** *starting.js*        | _A single state, the STARTING state, which plugs in to the app's statechart_
@@ -110,7 +91,7 @@ Here is that directory structure again, with descriptions for each item:
 ***** *showing_app.js*     | _The SHOWING_APP state, the general state for responding to user actions_
 **** *resources/*
 ***** *loading.rhtml*      | _A short html file to show when the app is loading_
-***** *main_page.js*       | _The Todos.mainPage view_
+***** *main_page.js*       | _The TodosThree.mainPage view_
 ***** *_theme.css*         | _Contains per directory theme setup_
 ***** *body.css*           | _Defines css for default page content_
 ***** *header.css*         | _Defines css for the top toolbar_
@@ -119,10 +100,10 @@ Here is that directory structure again, with descriptions for each item:
 **** *views/*
 ***** *todo_item.js*       | _TodoItem code for a checkbox and a title_
 **** *controllers/*
-***** *todos.js*           | _Todos.todosController, an SC.ArrayController to hold todo items_
-***** *completed_todos.js* | _Todos.completedTodosController, another SC.ArrayController_
+***** *todos.js*           | _TodosThree.todosController, an SC.ArrayController to hold todo items_
+***** *completed_todos.js* | _TodosThree.completedTodosController, another SC.ArrayController_
 **** *models/*
-***** *todo.js*            | _Todos.Todo, the definition of the Todo SC.Record type for the app_
+***** *todo.js*            | _TodosThree.Todo, the definition of the Todo SC.Record type for the app_
 **** *en/*                 | _An English language data directory_
 ***** *strings.js*         | _Definitions of user interface words in English_
 ****** *fixtures/* 
@@ -130,80 +111,37 @@ Here is that directory structure again, with descriptions for each item:
 
 NOTE: You see that SproutCore is a powerful system, challenging to master, but not so difficult to learn, provided that we take it one step at a time.
 
-We can use the sc-gen command again, to create part of the directory structure shown above for our Todos app:
+We can use the sc-gen command again, to create part of the directory structure shown above for our TodosThree app:
 
 <shell>
-$ pwd 
-    ~/somewhere/getting_started
+$ pwd (This means "print working directory" -- it shows you where you are)
+    ~/development/getting_started
 
-$ sc-gen statechart_app Todos
+$ sc-gen statechart_app TodosThree
 
  ~ Created directory at apps
- ~ Created directory at apps/todos
- ~ Created file at apps/todos/Buildfile
- ~ Created file at apps/todos/core.js
- ~ Created file at apps/todos/main.js
- ~ Created directory at apps/todos/resources
- ~ Created file at apps/todos/resources/_theme.css
- ~ Created file at apps/todos/resources/loading.rhtml
- ~ Created file at apps/todos/resources/main_page.js
- ~ Created file at apps/todos/statechart.js
- ~ Created directory at apps/todos/states
- ~ Created file at apps/todos/states/ready_state.js
- ~ Created file at apps/todos/theme.js
+ ~ Created directory at apps/todos_three
+ ~ Created file at apps/todos_three/Buildfile
+ ~ Created file at apps/todos_three/core.js
+ ~ Created file at apps/todos_three/main.js
+ ~ Created directory at apps/todos_three/resources
+ ~ Created file at apps/todos_three/resources/_theme.css
+ ~ Created file at apps/todos_three/resources/loading.rhtml
+ ~ Created file at apps/todos_three/resources/main_page.js
+ ~ Created file at apps/todos_three/statechart.js
+ ~ Created directory at apps/todos_three/states
+ ~ Created file at apps/todos_three/states/ready_state.js
+ ~ Created file at apps/todos_three/theme.js
 
 Your application target is now ready to use!
 
 </shell>
 
-[TODO] USAGE doc for sc-gen has the use of --statechart switch wrong -- you don't need it, because you use statechart_app instead.
-
-INFO: After you learn SproutCore, to start a new project or app, you can just copy from an existing project, or you can use sc-gen in this manner to generate a boilerplate hello-world app.
-
-h4. Running sc-server to View an App
-
-To take a look at the "Hello World" stage of the Todos app produced by sc-gen, let's learn how to run the sc-server command to view our new app.
-
-<shell>
-$ pwd 
-    ~/somewhere/getting_started
-
-$ sc-server
-    SproutCore v1.8 Development Server
-    Allowing access only from IPs: 127.0.0.1. Use --allow-from-ips='*.*.*.*' to allow all
-    Starting server at http://0.0.0.0:4020 in debug mode
-    To quit sc-server, press Control-C
-    >> Thin web server (v1.2.11 codename Bat-Shit Crazy)
-    >> Maximum connections set to 1024
-    >> Listening on 0.0.0.0:4020, CTRL+C to stop
-    ^C>> Stopping ...
-</shell>
-
-Now hit the following url with your favorite modern browser: localhost:4020/todos
-
-You should see a main page the fills the browser window and a single label in the center that says 'Welcome to SproutCore!'.
-
-Stop sc-server with control-C:
-
-<shell>
-    ^C>> Stopping ...
-</shell>
-
-h4. Buildfiles
-
-There is a project Buildfile in the project directory (~/somewhere/getting_started) and the Todos app has its own Buildfile in the root app directory (~/somewhere/getting_started/apps/todos/). Examine the Todos Buildfile and you will see only one configuration line:
-
-<shell>
-config :todos, :required => :sproutcore
-</shell>
-
-This is Ruby syntax, if you've never seen it. You don't have to know Ruby to do SproutCore development -- it is easy to follow the simple pattern, without having to look up the syntax. This line sets the sproutcore framework reference (:sproutcore) as a configuration dependency for todos. As you work on more complicated apps, you might have other javascript frameworks or special components to require like this. Of course there are many more options that could be set in the Buildfile, but those are for another time.
-
-INFO: SproutCore is a javascript system. The language of the build tools is mostly irrelevant, especially because the build tools work well.
+Now, we work through the app, directory by directory, file by file to edit those files and add other needed directories and files. 
 
 h4. The App Root Directory
 
-There are four .js files in the Todos app root directory (~/somewhere/getting_started/apps/todos/):
+There are four .js files in the TodosThree app root directory (~/development/getting_started/apps/todos_three/):
 
 |_. theme.js |_. core.js |_. main.js |_. statechart.js |
 
@@ -212,23 +150,23 @@ Edit these files to assure their content matches that given in the following sec
 
 h5. theme.js (app root directory)
 
-<javascript filename="in apps/todos/theme.js">
-Todos.Theme = SC.AceTheme.create({
+<javascript filename="in apps/todos_three/theme.js">
+TodosThree.Theme = SC.AceTheme.create({
   name: 'todos'
 });
 
-SC.Theme.addTheme(Todos.Theme);
+SC.Theme.addTheme(TodosThree.Theme);
 
 SC.defaultTheme = 'todos';
 </javascript>
 
-Todos.Theme is a derivative of SC.AceTheme, a very nice professional theme. You can override parts of the Ace theme as you wish, or switch it out entirely. Todos.Theme is registered with the system, and a default 'todos' namespace is created.
+TodosThree.Theme is a derivative of SC.AceTheme, a very nice professional theme. You can override parts of the Ace theme as you wish, or switch it out entirely. TodosThree.Theme is registered with the system, and a default 'todos' namespace is created.
 
 h5. core.js (app root directory)
 
-<javascript filename="in apps/todos/core.js">
-Todos = SC.Application.create(
-  /** @scope Todos.prototype */ {
+<javascript filename="in apps/todos_three/core.js">
+TodosThree = SC.Application.create(
+  /** @scope TodosThree.prototype */ {
  
   NAMESPACE: 'Todos',
   VERSION: '0.1.0',
@@ -238,9 +176,9 @@ Todos = SC.Application.create(
 });
 </javascript>
 
-The code in core.js sets up Todos as an instance of SC.Application.
+The code in core.js sets up TodosThree as an instance of SC.Application.
 
-The Todos namespace is Todos: Todos.mainPage, Todos.todosController, etc.
+The TodosThree namespace is TodosThree: TodosThree.mainPage, TodosThree.todosController, etc.
 
 A data store is created from SC.Record.fixtures, which is a way to simulate a real database through reading data given in a fixtures javascript file, which we'll add in a later step. 
 
@@ -248,40 +186,40 @@ The storeType property is set to 'FromFixtures'.
 
 h5. main.js (app root directory)
 
-<javascript filename="in apps/todos/main.js">
-Todos.main = function main() {
-  Todos.statechart.initStatechart();
+<javascript filename="in apps/todos_three/main.js">
+TodosThree.main = function main() {
+  TodosThree.statechart.initStatechart();
 };
  
-function main() { Todos.main(); }
+function main() { TodosThree.main(); }
 </javascript>
 
 [TODO] sc-gen for statechart creates a main.js with:  SC.RootResponder.responder.set('defaultResponder', statechart); -- do we need this?
 
-main.js for Todos is very simple, with only a line to initialize the statechart. In a larger app, there might be global singleton objects and utility functions generally needed by an app.
+main.js for TodosThree is very simple, with only a line to initialize the statechart. In a larger app, there might be global singleton objects and utility functions generally needed by an app.
 
 h5. statechart.js (app root directory)
 
-<javascript filename="in apps/todos/statechart.js">
-Todos.statechart = SC.Statechart.create({
+<javascript filename="in apps/todos_three/statechart.js">
+TodosThree.statechart = SC.Statechart.create({
  
   rootState: SC.State.design({
     initialSubstate: "STARTING",
  
-    STARTING: SC.State.plugin('Todos.STARTING'),
+    STARTING: SC.State.plugin('TodosThree.STARTING'),
       
-    LOGGING_IN: SC.State.plugin('Todos.LOGGING_IN'),
+    LOGGING_IN: SC.State.plugin('TodosThree.LOGGING_IN'),
       
-    LOADING_DATA: SC.State.plugin('Todos.LOADING_DATA'),
+    LOADING_DATA: SC.State.plugin('TodosThree.LOADING_DATA'),
       
-    SHOWING_APP: SC.State.plugin('Todos.SHOWING_APP')
+    SHOWING_APP: SC.State.plugin('TodosThree.SHOWING_APP')
   })
 });
 </javascript>
 
-The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the transitions between them allow a clean and simple design. In the Todos app statechart, the initial state is STARTING, a not-so-imaginative name! 
+The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the transitions between them allow a clean and simple design. In the TodosThree app statechart, the initial state is STARTING, a not-so-imaginative name! 
 
-There are four states in the Todos statechart: STARTING, LOGGING_IN, LOADING_DATA, and SHOWING_APP. These are defined in individual files in the states directory.
+There are four states in the TodosThree statechart: STARTING, LOGGING_IN, LOADING_DATA, and SHOWING_APP. These are defined in individual files in the states directory.
 
 h4. The States Directory
 
@@ -289,32 +227,32 @@ Code for individual states is held in a states directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/
+    ~/development/getting_started/apps/todos_three/
 $ cd states
 </shell> 
 
-sc-gen created a file called ready_state.js in the states directory. We aren't going to use it for the Todos app, because we'll need several states.
+sc-gen created a file called ready_state.js in the states directory. We aren't going to use it for the TodosThree app, because we'll need several states.
 
-Delete ready_state.js in the apps/todos/states:
+Delete ready_state.js in the apps/todos_three/states directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/states
+    ~/development/getting_started/apps/todos_three/states
 $ rm ready_state.js
 </shell> 
 
-Files to add in the apps/todos/states directory are:
+Files to add in the apps/todos_three/states directory are:
 
 |_. starting.js |_. logging_in.js |_. loading_data.js |_. showing_app.js |
 
 h5. STARTING State
 
-<javascript filename="in apps/todos/states/starting.js">
-Todos.STARTING = SC.State.design({
+<javascript filename="in apps/todos_three/states/starting.js">
+TodosThree.STARTING = SC.State.design({
   enterState: function() {
-    if (Todos.get('storeType') === 'FromSomeBackendDatasource') {
+    if (TodosThree.get('storeType') === 'FromSomeBackendDatasource') {
       this.gotoState('LOGGING_IN');
-    } else if (Todos.get('storeType') === 'FromFixtures') {
+    } else if (TodosThree.get('storeType') === 'FromFixtures') {
       this.gotoState('LOADING_DATA');
     }
   },
@@ -327,12 +265,12 @@ Todos.STARTING = SC.State.design({
 
 NOTE: There are different conventions for naming states. The style used here makes the state names prominent. Some people like to camel-case the state names names.
 
-When the statechart is initialized from Todos.main(), program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the storeType. storeType was set to be 'FromFixtures' in core.js, where the data store is instantiated. (Recall that using fixtures data as the datasource is a way to simulate a connection to a real database). You see in the if-else block of STARTING/enterState() that, because storeType === 'FromFixtures', the gotoState() call moves control directly to the LOADING_DATA state, not the LOGGING_IN state, which we won't use in the Todos app. 
+When the statechart is initialized from TodosThree.main(), program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the storeType. storeType was set to be 'FromFixtures' in core.js, where the data store is instantiated. (Recall that using fixtures data as the datasource is a way to simulate a connection to a real database). You see in the if-else block of STARTING/enterState() that, because storeType === 'FromFixtures', the gotoState() call moves control directly to the LOADING_DATA state, not the LOGGING_IN state, which we won't use in the TodosThree app. 
 
 h5. LOGGING_IN State
 
-<javascript filename="in apps/todos/states/logging_in.js">
-Todos.LOGGING_IN = SC.State.design({             
+<javascript filename="in apps/todos_three/states/logging_in.js">
+TodosThree.LOGGING_IN = SC.State.design({             
   initialSubstate: "SHOWING_LOGIN",
  
   SHOWING_LOGIN: SC.State.design({
@@ -353,14 +291,14 @@ INFO: We won't use the LOGGING_IN state in Todos, but have it here for illustrat
 
 h5. LOADING_DATA State
 
-<javascript filename="in apps/todos/states/loading_data.js">
-Todos.LOADING_DATA = SC.State.design({
+<javascript filename="in apps/todos_three/states/loading_data.js">
+TodosThree.LOADING_DATA = SC.State.design({
   enterState: function() {
-    Todos.todosController.set('content',
-      Todos.store.find(SC.Query.local(Todos.Todo, { orderBy: 'timestamp DESC' })));
+    TodosThree.todosController.set('content',
+      TodosThree.store.find(SC.Query.local(TodosThree.Todo, { orderBy: 'timestamp DESC' })));
  
-    Todos.completedTodosController.set('content',
-      Todos.store.find(SC.Query.local(Todos.Todo, 'isCompleted = true')));
+    TodosThree.completedTodosController.set('content',
+      TodosThree.store.find(SC.Query.local(TodosThree.Todo, 'isCompleted = true')));
  
     this.gotoState('SHOWING_APP');
   },
@@ -370,16 +308,16 @@ Todos.LOADING_DATA = SC.State.design({
 });
 </javascript>
 
-Data content of the two array controllers in the Todos app are set by issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the Todos app. We search for todos, referencing the Todos.Todo model (an SC.Record instance). For the primary controller, todosController, we search for all the todos, ordering them by their timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is true. Then we call gotoState() to move to the SHOWING_APP state.
+Data content of the two array controllers in the TodosThree app are set by issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the primary controller, todosController, we search for all the todos, ordering them by their timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is true. Then we call gotoState() to move to the SHOWING_APP state.
 
 h5. SHOWING_APP State
 
-<javascript filename="in apps/todos/states/showing_app.js">
-Todos.SHOWING_APP = SC.State.design({
+<javascript filename="in apps/todos_three/states/showing_app.js">
+TodosThree.SHOWING_APP = SC.State.design({
   enterState: function() {
-    Todos.getPath('mainPage.mainPane').append();
+    TodosThree.getPath('mainPage.mainPane').append();
 
-    Todos.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
+    TodosThree.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
   },
 
   exitState: function() {
@@ -388,7 +326,7 @@ Todos.SHOWING_APP = SC.State.design({
   addTodo: function (view) {
     var todo = (view.get('value') || '').trim();
     if (todo !== '') {
-      Todos.store.createRecord(Todos.Todo, {
+      TodosThree.store.createRecord(TodosThree.Todo, {
         title: todo,
         timestamp: SC.DateTime.create()
       });
@@ -397,14 +335,14 @@ Todos.SHOWING_APP = SC.State.design({
   },
 
   clearCompletedTodos: function () {
-    Todos.completedTodosController.invoke('destroy');
+    TodosThree.completedTodosController.invoke('destroy');
   }
 });
 </javascript>
 
-The SHOWING_APP state is equivalent to the "ready" state created by sc-gen for a Hello World app. In the enterState() function the mainPage view is appended, which causes it to show in the browser. We want a blinking cursor in the new todo text field. This is accomplished by setting this field to become first responder in the events system.
+In the SHOWING_APP/enterState() function the mainPage view is appended, which causes it to show in the browser. We want a blinking cursor in the new todo text field. This is accomplished by setting this field to become first responder in the events system.
 
-This state handles two actions, addTodo and clearCompletedTodos. There are references to parts of the view code that will become clear after we add the resources directory, with the mainPage view and associated files, and other view and system components. Look back to the state and statechart code as we move through the rest of the guide.
+This state handles two actions, addTodo and clearCompletedTodosThree. There are references to parts of the view code that will become clear after we add the resources directory, with the mainPage view and associated files, and other view and system components. Look back to the state and statechart code as we move through the rest of the guide.
 
 h4. The Resources Directory
 
@@ -414,24 +352,24 @@ The mainPage view, CSS files, a theme file, and an html page live in a directory
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/
+    ~/development/getting_started/apps/todos_three/
 $ cd resources
 </shell> 
 
-Files to add in the apps/todos/resources directory are:
+Files to add in the apps/todos_three/resources directory are:
 
 |_. main_page.js |_. header.css |_. body.css |_. new_todo.css |_. todo_item.css |_. _theme.css |_. loading.rhtml |
 
 h5. main_page.js (resources directory)
 
-<javascript filename="in apps/todos/resources/main_page.js">
+<javascript filename="in apps/todos_three/resources/main_page.js">
 require('views/todo_item');
 
-Todos.mainPage = SC.Page.design({
+TodosThree.mainPage = SC.Page.design({
 
   mainPane: SC.MainPane.design({
     childViews: ['header', 'newTodoField', 'todosList', 'footer'],
-    defaultResponder: "Todos.statechart", 
+    defaultResponder: "TodosThree.statechart", 
 
     header: SC.ToolbarView.design({
       layout: { centerX: 0, width: 500, top: 0, height: 36 },
@@ -442,18 +380,18 @@ Todos.mainPage = SC.Page.design({
         autoResizePadding: { width: 47 },
         localize: YES,
         title: '_Mark all as done',
-        valueBinding: 'Todos.completedTodosController.areAllCompleted'
+        valueBinding: 'TodosThree.completedTodosController.areAllCompleted'
       }),
 
       title: SC.LabelView.design({
         layout: { left: 0, right: 0, top: 0, bottom: 0 },
 
-        totalTodoBinding: SC.Binding.oneWay('Todos.todosController.length'),
-        completedTodosBinding: SC.Binding.oneWay('Todos.completedTodosController.length'),
+        totalTodoBinding: SC.Binding.oneWay('TodosThree.todosController.length'),
+        completedTodosBinding: SC.Binding.oneWay('TodosThree.completedTodosController.length'),
 
         value: function () {
           var leftTodo = this.get('totalTodo') - this.get('completedTodos');
-          return 'Todos (%@)'.loc(leftTodo);
+          return 'TodosThree (%@)'.loc(leftTodo);
         }.property('totalTodo', 'completedTodos').cacheable()
       })
     }),
@@ -482,9 +420,9 @@ Todos.mainPage = SC.Page.design({
     todosList: SC.ScrollView.design({
       layout: { centerX: 0, width: 500, top: 72, bottom: 36 },
       contentView: SC.ListView.design({
-        contentBinding: SC.Binding.oneWay('Todos.todosController'),
+        contentBinding: SC.Binding.oneWay('TodosThree.todosController'),
         rowHeight: 36,
-        exampleView: Todos.TodoItemView
+        exampleView: TodosThree.TodoItemView
       })
     }),
         
@@ -495,7 +433,7 @@ Todos.mainPage = SC.Page.design({
       clearCompletedTodos: SC.ButtonView.design(SC.AutoResize, {
         controlSize: SC.HUGE_CONTROL_SIZE,
         layout: { left: 14, height: 30, centerY: 0 },
-        isEnabledBinding: SC.Binding.oneWay('Todos.completedTodosController.length').bool(),
+        isEnabledBinding: SC.Binding.oneWay('TodosThree.completedTodosController.length').bool(),
         localize: YES,
         title: '_Clear completed todos',
         action: 'clearCompletedTodos'
@@ -506,7 +444,7 @@ Todos.mainPage = SC.Page.design({
 });
 </javascript>
 
-There are four parts to the Todos mainPage view: a header and footer, and between them are a newTodoField and a todosList. A user types a new todo in the newTodoField, and when they click the submit button, labeled 'Add', the new todo is added by means of the todosController's addTodo() function. The new todo will, in turn, show up in the todosList. How does this happen? Look at the lines that have Binding in the property names. When you write user interface element code, you "wire up" these connections with such binding instructions. 
+There are four parts to the TodosThree mainPage view: a header and footer, and between them are a newTodoField and a todosList. A user types a new todo in the newTodoField, and when they click the submit button, labeled 'Add', the new todo is added by means of the todosController's addTodo() function. The new todo will, in turn, show up in the todosList. How does this happen? Look at the lines that have Binding in the property names. When you write user interface element code, you "wire up" these connections with such binding instructions. 
 
 h6. Toolbars in header and footer
 
@@ -520,11 +458,11 @@ The newTodoField view contains a text field called field and a submit button. Th
  
 h6. todosList
 
-The todosList view follows the SproutCore idiom for wrapping an SC.ListView in an SC.ScrollView. The contentBinding property of the list is set to Todos.todosController. The exampleView property introduces a concept very important for SproutCore: views can be defined in separate javascript files, often held in a views directory, and included where they are needed. exampleView is set to Todos.TodoItemView, which necessitates a require statement at the top of the file: require('views/todo_item');. TodoItemView has a checkbox and label. We'll add it after we add the views directory later.
+The todosList view follows the SproutCore idiom for wrapping an SC.ListView in an SC.ScrollView. The contentBinding property of the list is set to TodosThree.todosController. The exampleView property introduces a concept very important for SproutCore: views can be defined in separate javascript files, often held in a views directory, and included where they are needed. exampleView is set to TodosThree.TodoItemView, which necessitates a require statement at the top of the file: require('views/todo_item');. TodoItemView has a checkbox and label. We'll add it after we add the views directory later.
 
 h5. _theme.css (resources directory)
 
-<css filename="in apps/todos/resources/_theme.css">
+<css filename="in apps/todos_three/resources/_theme.css">
 /*
   This defines the global $theme variable for use inside your CSS.
   The $theme variable holds the CSS class names for your theme.
@@ -549,7 +487,7 @@ The underscore starting the name of _theme.css is a dead giveaway that it must a
 
 h5. Content CSS files
 
-You can add a single CSS file in your resources directory, or you can add many small ones. For the Todos app, we'll choose the many-small-ones approach. In these CSS files, where you see something like $theme.sc-text-field-view, the sc- prefix indicates an override of the sc- CSS definitions in the Ace theme. 
+You can add a single CSS file in your resources directory, or you can add many small ones. For the TodosThree app, we'll choose the many-small-ones approach. In these CSS files, where you see something like $theme.sc-text-field-view, the sc- prefix indicates an override of the sc- CSS definitions in the Ace theme. 
 
 NOTE: CSS is an art unto itself, an important side of doing SproutCore development and building views.
 
@@ -557,7 +495,7 @@ Names of the files indicate their applicability: header.css, body.css, new_todo.
 
 h6. header.css (resources directory)
 
-<css filename="in apps/todos/resources/header.css">
+<css filename="in apps/todos_three/resources/header.css">
 $theme.toolbar {
   .checkbox {
     .button {
@@ -584,7 +522,7 @@ $theme.toolbar {
 
 h6. body.css (resources directory)
 
-<css filename="in apps/todos/resources/body.css">
+<css filename="in apps/todos_three/resources/body.css">
 body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizelegibility;
@@ -597,7 +535,7 @@ body {
 
 h6. new_todo.css (resources directory)
 
-<css filename="in apps/todos/resources/new_todo.css">
+<css filename="in apps/todos_three/resources/new_todo.css">
 $theme.new-todo {
   background-color: #FFF;
 }
@@ -614,7 +552,7 @@ $theme.sc-text-field-view {
 
 h6. todo_item.css (resources directory)
 
-<css filename="in apps/todos/resources/todo_item.css">
+<css filename="in apps/todos_three/resources/todo_item.css">
 $theme.todo-item {
   .button {
     left: 13px;
@@ -637,9 +575,9 @@ $theme.todo-item {
 
 h5. loading.rhtml (resources directory)
 
-SproutCore apps can weigh in north of the welterweight class, so while the app is loading we may need to show a loading indicator. For todos we don't have to worry, but in larger apps, this file could need some attention.
+SproutCore apps can weigh in north of the welterweight class, so while the app is loading we may need to show a loading indicator. For TodosThree we don't have to worry, but in larger apps, this file could need some attention.
 
-<html filename="in apps/todos/resources/loading.rhtml">
+<html filename="in apps/todos_three/resources/loading.rhtml">
 <% content_for :loading do %>
 <% # Any HTML in this file will be visible on screen while your page loads
    # its application JavaScript.  SproutCore applications are optimized for 
@@ -655,11 +593,11 @@ h4. The Views Directory
 
 sc-gen doesn't make a views directory, so we'll need to make one.
 
-Before adding the views directory, some navigation is needed. We are still in the resources directory, so move back up to the todos app root directory:
+Before adding the views directory, some navigation is needed. We are still in the resources directory, so move back up to the TodosThree app root directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/resources/
+    ~/development/getting_started/apps/todos_three/resources/
 $ cd ..
 </shell>
 
@@ -667,7 +605,7 @@ Make a views directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/
+    ~/development/getting_started/apps/todos_three/
 $ mkdir views
 $ cd views
 </shell>
@@ -678,8 +616,8 @@ The views directory will contain one file:
 
 h5. todo_item.js (views directory)
 
-<javascript filename="in apps/todos/views/todo_item.js">
-Todos.TodoItemView = SC.CheckboxView.design({
+<javascript filename="in apps/todos_three/views/todo_item.js">
+TodosThree.TodoItemView = SC.CheckboxView.design({
   classNames: ['todo-item'],
 
   valueBinding: '.content.isCompleted',
@@ -688,7 +626,7 @@ Todos.TodoItemView = SC.CheckboxView.design({
 });
 </javascript>
 
-TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an array of CSS class names. valueBinding has a reference to .content.isCompleted, prompting an explanation of the context for this view. We know that this view is defined as the exampleView property of the todos list above. The term example here means "the view to use for each list item." List items for the todos list are todos, which are defined in the Todos.Todo model. So, .content used in the TodoItemView definition refers to a single todo item in the list. The value of this checkbox is thus the isCompleted property of the todo associated with the given list item. Likewise, titleBinding is tied to the title property of the list item todo.
+TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an array of CSS class names. valueBinding has a reference to .content.isCompleted, prompting an explanation of the context for this view. We know that this view is defined as the exampleView property of the todos list above. The term example here means "the view to use for each list item." List items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the TodoItemView definition refers to a single todo item in the list. The value of this checkbox is thus the isCompleted property of the todo associated with the given list item. Likewise, titleBinding is tied to the title property of the list item todo.
 
 So, you really have to think about where this view is used to understand it, but that comes with the territory of having separate views in files in a views directory. It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
 
@@ -700,7 +638,7 @@ Move up to the app root directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/resources/views/
+    ~/development/getting_started/apps/todos_three/resources/views/
 $ cd ..
 </shell>
 
@@ -708,7 +646,7 @@ Make a models directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/
+    ~/development/getting_started/apps/todos_three/
 $ mkdir models
 $ cd models
 </shell>
@@ -721,10 +659,10 @@ The models directory will contain one file:
 
 h5. todo.js (models directory)
 
-<javascript filename="in apps/todos/models/todo.js">
+<javascript filename="in apps/todos_three/models/todo.js">
 require('core');
 
-Todos.Todo = SC.Record.extend({
+TodosThree.Todo = SC.Record.extend({
   timestamp: SC.Record.attr(SC.DateTime),
   isCompleted: SC.Record.attr(Boolean),
   title: SC.Record.attr(String)
@@ -737,11 +675,11 @@ h4. The Controllers Directory
 
 sc-gen does not make a controllers directory, so we'll make it.
 
-Move up to the todos app root directory:
+Move up to the TodosThree app root directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/models
+    ~/development/getting_started/apps/todos_three/models
 $ cd ..
 </shell>
 
@@ -749,12 +687,12 @@ Make a controllers directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/
+    ~/development/getting_started/apps/todos_three/
 $ mkdir controllers
 $ cd controllers
 </shell>
 
-Controllers tied to models mediate communication with views. We'll need a couple in the Todos app.
+Controllers tied to models mediate communication with views. We'll need a couple in the TodosThree app.
 
 The controllers directory will contain two files: 
 
@@ -762,26 +700,26 @@ The controllers directory will contain two files:
 
 h5. todos.js (controllers directory)
 
-<javascript filename="in apps/todos/controllers/todos.js">
+<javascript filename="in apps/todos_three/controllers/todos.js">
 require('core');
  
 // A controller that will provide a list of all of the todos.
-Todos.todosController = SC.ArrayController.create({
+TodosThree.todosController = SC.ArrayController.create({
 });
 </javascript>
 
 h5. completed_todos.js (controllers directory)
 
-<javascript filename="in apps/todos/controllers/completed_todos.js">
+<javascript filename="in apps/todos_three/controllers/completed_todos.js">
 require('controllers/todos');
 
-Todos.completedTodosController = SC.ArrayController.create({
+TodosThree.completedTodosController = SC.ArrayController.create({
 
-  totalTodosBinding: SC.Binding.oneWay('Todos.todosController.length'),
+  totalTodosBinding: SC.Binding.oneWay('TodosThree.todosController.length'),
 
   areAllCompleted: function (k, v) {
     if (v !== undefined) {
-      Todos.todosController.setEach('isCompleted', v);
+      TodosThree.todosController.setEach('isCompleted', v);
     }
     return this.get('length') === this.get('totalTodos');
   }.property('length', 'totalTodos').cacheable()
@@ -794,11 +732,11 @@ The completeTodosController is another array controller with a property, totalTo
 
 totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", we don't care about pushing back) to the length of the todosController array controller. We need a local reference to this length, because we are about to do something impressive, in part based on it.
 
-areAllCompleted() is a function, but a very special type of function, called a computed property. Note the .property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as parameters, then tacks on .cacheable(). First, the parameters, which are references to local properties for this context, which is the array controller body. We know we have a 'length' property -- this is an array controller. But what gives with the use of the 'totalTodos' reference, isn't the property called totalTodosBinding? Ah, the answer is that anytime Binding is appended to a property name, you have a kind of dual-property arrangement. The actual property is, in fact, totalTodos. In defining totalTodosBinding, we essentially say, get the value of totalTodos from this other source. That covers the background on mechanics of property names, now to address what .property('length', 'totalTodos').cacheable() accomplishes. It means:
+areAllCompleted() is a function, but a very special type of function, called a computed property. Note the .property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as parameters, then tacks on .cacheable(). First, the parameters, which are references to local properties for this context, which is the array controller body. We know we have a 'length' property -- this is an array controller. But what gives with the use of the 'totalTodos' reference, isn't the property called totalTodosBinding? Ah, the answer is that anytime Binding is appended to a property name, you have a kind of dual-property arrangement. The actual property is, in fact, totalTodosThree. In defining totalTodosBinding, we essentially say, get the value of totalTodosThree from this other source. That covers the background on mechanics of property names, now to address what .property('length', 'totalTodos').cacheable() accomplishes. It means:
 
-  "Base this computed property on the length and totalTodos properties, and update it if either of them changes, and, oh, by the way, please cache the values while you are at it, so unnecessary updates aren't performed." 
+  "Base this computed property on the length and totalTodosThree properties, and update it if either of them changes, and, oh, by the way, please cache the values while you are at it, so unnecessary updates aren't performed." 
 
-There is more to explain about the working of this computed property. What are the k and v parameters, and what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the totalTodos value is being changed. This is a mandate to try to mark all todos as completed by this value. That's the name of the function/computed property: areAllCompleted. If a call is made to set it, then the body of the function needs to update the data accordingly. If v evaluates to true, then isCompleted for each todo item will be set and all the checkboxes will be checked in the list. That explains what the if block does. 
+There is more to explain about the working of this computed property. What are the k and v parameters, and what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the totalTodosThree value is being changed. This is a mandate to try to mark all todos as completed by this value. That's the name of the function/computed property: areAllCompleted. If a call is made to set it, then the body of the function needs to update the data accordingly. If v evaluates to true, then isCompleted for each todo item will be set and all the checkboxes will be checked in the list. That explains what the if block does. 
 
 Notice the return at the end of the areAllCompleted computed property function. We return the result of a test comparing the length of completed todos array (the local 'length') to the length of the todos array (the local 'totalTodos', which is bound to an external source, the full todosController array). If these lengths are the same, then all todos have been marked as completed, otherwise no. 
 
@@ -808,11 +746,11 @@ h4. The En Directory
 
 sc-gen does not make an en directory, nor its fixtures directory. We'll make these.
 
-Move up to the todos app root directory:
+Move up to the TodosThree app root directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/controllers/
+    ~/development/getting_started/apps/todos_three/controllers/
 $ cd ..
 </shell>
 
@@ -820,7 +758,7 @@ Make an en directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/
+    ~/development/getting_started/apps/todos_three/
 $ mkdir en
 $ cd en
 </shell>
@@ -831,12 +769,12 @@ The en directory will contain one file:
 
 |_. strings.js |
 
-<javascript filename="in apps/todos/en/strings.js">
+<javascript filename="in apps/todos_three/en/strings.js">
 // ==========================================================================
-// Project:   Todos Strings
+// Project:   TodosThree Strings
 // Copyright: ©2011 SproutCore
 // ==========================================================================
-/*globals Todos */
+/*globals TodosThree */
 
 // Place strings you want to localize here.  In your app, use the key and
 // localize it using "key string".loc().  HINT: For your key names, use the
@@ -846,7 +784,7 @@ The en directory will contain one file:
 //
 SC.stringsFor('en', {
   '_Mark all as done': 'Mark all as done',
-  '_Todos (%@)': 'Todos (%@)',
+  '_TodosThree (%@)': 'TodosThree (%@)',
   '_Clear completed todos': 'Clear completed Todos',
   '_Add': 'Add',
   '_What needs to be done?': 'What needs to be done?'
@@ -859,7 +797,7 @@ While still in the en directory, make a fixtures directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/en/
+    ~/development/getting_started/apps/todos_three/en/
 $ mkdir fixtures
 $ cd fixtures
 </shell>
@@ -870,10 +808,10 @@ The fixtures directory will contain one file:
 
 h6. todo.js (fixtures directory)
 
-<javascript filename="in apps/todos/en/fixtures/todo.js">
+<javascript filename="in apps/todos_three/en/fixtures/todo.js">
 require('models/todo');
 
-Todos.Todo.FIXTURES = [
+TodosThree.Todo.FIXTURES = [
  {
    guid: 0,
    isCompleted: YES,
@@ -887,7 +825,7 @@ Todos.Todo.FIXTURES = [
  {
    guid: 2,
    isCompleted: YES,
-   title: 'Add a todos app'
+   title: 'Add a TodosThree app'
  },
  {
    guid: 3,
@@ -899,11 +837,11 @@ Todos.Todo.FIXTURES = [
 
 h4. Running the App
 
-Now we can run the app, which we should do from the project root directory, where the Buildfile lives:
+Now we can run the app, which we should do from the project root directory, where the project Buildfile lives:
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/apps/todos/en/fixtures
+    ~/development/getting_started/apps/todos_three/en/fixtures
 $ cd ../../../..
 </shell>
 
@@ -911,11 +849,11 @@ And run it!
 
 <shell>
 $ pwd 
-    ~/somewhere/getting_started/
+    ~/development/getting_started/
 $ sc-server
 </shell>
 
-Visit http://localhost:4020/ in your favorite modern browser and you should see a list of apps, including Todos. 
+Visit http://localhost:4020/ in your favorite modern browser and you should see a list of apps, including TodosThree. 
 
 
 * March 1, 2011: initial version by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
