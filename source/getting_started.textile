@@ -196,7 +196,7 @@ This is Ruby syntax, if you've never seen it. You don't have to know Ruby to do 
 
 INFO: SproutCore is a javascript system. The language of the build tools is mostly irrelevant, especially because the build tools work well.
 
-h4. The App Root Directory and its Files
+h4. The App Root Directory
 
 There are four .js files in the Todos app root directory (~/somewhere/learning_sc/apps/todos/):
 
