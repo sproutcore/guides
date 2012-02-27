@@ -190,7 +190,9 @@ h4. Buildfiles
 
 There is a project Buildfile in the project directory (~/somewhere/learning_sc) and the Todos app has its own Buildfile in the root app directory (~/somewhere/learning_sc/apps/todos/). Examine the Todos Buildfile and you will see only one configuration line:
 
-    config :todos, :required => :sproutcore
+<shell>
+config :todos, :required => :sproutcore
+</shell>
 
 This is Ruby syntax, if you've never seen it. You don't have to know Ruby to do SproutCore development -- it is easy to follow the simple pattern, without having to look up the syntax. This line sets the sproutcore framework reference (:sproutcore) as a configuration dependency for todos. As you work on more complicated apps, you might have other javascript frameworks or special components to require like this. Of course there are many more options that could be set in the Buildfile, but those are for another time.
 
