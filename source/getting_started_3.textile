@@ -152,12 +152,12 @@ h5. theme.js (app root directory)
 
 <javascript filename="in apps/todos_three/theme.js">
 TodosThree.Theme = SC.AceTheme.create({
-  name: 'todos'
+  name: 'todos-three'
 });
 
 SC.Theme.addTheme(TodosThree.Theme);
 
-SC.defaultTheme = 'todos';
+SC.defaultTheme = 'todos-three';
 </javascript>
 
 TodosThree.Theme is a derivative of SC.AceTheme, a very nice professional theme. You can override parts of the Ace theme as you wish, or switch it out entirely. TodosThree.Theme is registered with the system, and a default 'todos' namespace is created.
@@ -168,7 +168,7 @@ h5. core.js (app root directory)
 TodosThree = SC.Application.create(
   /** @scope TodosThree.prototype */ {
  
-  NAMESPACE: 'Todos',
+  NAMESPACE: 'TodosThree',
   VERSION: '0.1.0',
  
   store: SC.Store.create().from(SC.Record.fixtures),
@@ -188,7 +188,7 @@ h5. main.js (app root directory)
 
 <javascript filename="in apps/todos_three/main.js">
 TodosThree.main = function main() {
-  var statechart = Todos.statechart;
+  var statechart = TodosThree.statechart;
   SC.RootResponder.responder.set('defaultResponder', statechart);
   TodosThree.statechart.initStatechart();
 };
@@ -482,10 +482,10 @@ h5. _theme.css (resources directory)
   This allows you to give different directories different values for
   $theme if you wish.
 */
-$theme: '.ace.todos';
+$theme: '.ace.todos-three';
 </css>
 
-The underscore starting the name of _theme.css is a dead giveaway that it must apply in some special way to the theming system. It defines $theme to be our Ace-derived theme, ace.todos. You'll see $theme used in individual content CSS files.
+The underscore starting the name of _theme.css is a dead giveaway that it must apply in some special way to the theming system. It defines $theme to be our Ace-derived theme, ace.todos-three. You'll see $theme used in individual content CSS files.
 
 h5. Content CSS files
 
