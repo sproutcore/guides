@@ -15,9 +15,13 @@ endprologue.
 
 h3. Following Along
 
-You will benefit from carefully following the instructions in this guide, to create directories, to type in code (or to copy and paste it), because it will register in your mind more solidly. However, you can access the finished source code for this application on "Github":https://github.com/sproutcore/Todos-Example/. To see it in action, click "here":http://github/sproutcore/sproutcore. [TODO] need a demo app url [ATTN: tce]
+You would benefit from carefully following the instructions in this guide, to create directories, to type in code (or to copy and paste it), because it will register in your mind more solidly. However, if you don't have the time or inclination for that, you can access the finished source code for this application on "Github":https://github.com/sproutcore/Todos-Example/, and following along as if you were creating the app manually.
+
+To see Todos in action, click "here":http://github/sproutcore/sproutcore. [TODO] need a demo app url [ATTN: tce]
 
 There is a screencast available on "Vimeo":http://vimeo.com. [TODO] [ATTN: geojeff, who will use ScreenFlow to make a new one]
+
+INFO: Todos is written using a best practices approach. This guide attempts to strike a matter-of-fact tone that doesn't sugar-coat complexity too much, but doesn't attempt to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references to the numeric heading number for relevant sections of this guide page.
 
 h3. Installing SproutCore
 
