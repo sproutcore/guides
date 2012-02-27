@@ -11,7 +11,7 @@ endprologue.
 
 h3. Following Along
 
-You have learned in previous guides how to use sc-gen to make a project directory (~/development/sproutcore/getting_started) and to produce apps (in ~/development/sproutcore/getting_started/apps/). You have learned how to run sc-server in the project directory, and how to view apps in a local browser at localhost:4020/. You have learned about SproutCore app concepts, including the use of a buildfile and of views and a statechart. We will build on that foundation to produced a TodosThree app with the full complement of components of a best-practices SproutCore app.
+You have learned in previous guides how to use sc-gen to make a project directory (~/development/sproutcore/getting_started) and to produce apps (in ~/development/sproutcore/getting_started/apps/). You have learned how to run sc-server in the project directory, and how to view apps in a local browser at localhost:4020/. You have learned about SproutCore app concepts, including the use of a buildfile and of views and a statechart. We will build on that foundation to produce a TodosThree app with components of a best-practices SproutCore app.
 
 You would benefit from carefully following the instructions in this guide to create directories, to type in code (or to copy and paste it), because it will register in your mind solidly. The presentation is written as if you would add the app in this manual fashion, although you surely might prefer the following options instead:
 
