@@ -852,5 +852,5 @@ Visit http://localhost:4020/ in your favorite modern browser and you should see 
 * April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
 * May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
 * May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
-* February 27, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who worked on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Tyler Keating":credits.html#publickeating, "Maurits Lamers":credits.html#mauritslamers, "Jeff Pittman":credits.html#geojeff
+* February 27, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who worked on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Tyler Keating":credits.html#publickeating, "Maurits Lamers":credits.html#mauritslamers, "Umberto Nicoletti":credits.html#nicolet, "Jeff Pittman":credits.html#geojeff
 
