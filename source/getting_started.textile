@@ -49,7 +49,9 @@ The first app we will make is called Todos. Here is a screen capture of the comp
 
 The Todos app looks simple. It has toolbars at the top and bottom. It has a text field near the top, where a user types in a new todo. It has a list of already added todos. Even such a simple-looking app like this involves the use of intelligent SproutCore programming.
 
-We can describe these intelligent aspects, generally, as the "system of connections" or, in the manner an electrician would use, as the "wiring diagram." SproutCore apps have _bindings_ between properties of various components of the user interface and those of underlying machinery. You see the components of the user interface: checkboxes, buttons, text fields, list views, etc. We'll be looking at the underlying machinery. SproutCore apps have another type of intelligence: they have _states_ that divide the action. We'll cover _bindings_ and _states_ in more detail. Register these words as centrally important.
+We can describe these intelligent aspects, generally, as the "system of connections" or, in the manner an electrician would use, as the "wiring diagram." SproutCore apps have _bindings_ and between properties of various components of the user interface and those of underlying machinery, and _actions_ coordinated with _states_. 
+
+You see the components of the user interface: checkboxes, buttons, text fields, list views, etc. We'll be looking at the underlying machinery.
 
 This will be the directory structure for the Todos app:
 
