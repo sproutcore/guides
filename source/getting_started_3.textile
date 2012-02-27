@@ -458,7 +458,7 @@ The newTodoField view contains a text field called field and a submit button. Th
  
 h6. todosList
 
-The todosList view follows the SproutCore idiom for wrapping an SC.ListView inside an SC.ScrollView. The contentBinding property of the list is set to TodosThree.todosController. The exampleView property introduces a concept very important for SproutCore: views can be defined in separate javascript files, often held in a views directory, and included where they are needed. exampleView is set to TodosThree.TodoItemView, which necessitates a require statement at the top of the file: require('views/todo_item');. TodoItemView has a checkbox and label. We'll add it after we add the views directory later.
+The todosList view follows the SproutCore idiom for wrapping an SC.ListView inside an SC.ScrollView. The contentBinding property of the list is set to TodosThree.todosController. The exampleView property introduces a concept very important for SproutCore: views can be defined in separate javascript files, often held in a views directory, and included where they are needed. exampleView is set to TodosThree.TodoItemView, which necessitates a require statement at the top of the file: require('views/todo_item');. TodoItemView has a checkbox and label. We'll add it when we add the views directory later.
 
 h5. _theme.css (resources directory)
 
@@ -619,16 +619,14 @@ h5. todo_item.js (views directory)
 <javascript filename="in apps/todos_three/views/todo_item.js">
 TodosThree.TodoItemView = SC.CheckboxView.design({
   classNames: ['todo-item'],
-
   valueBinding: '.content.isCompleted',
-
   titleBinding: SC.Binding.oneWay('.content.title')
 });
 </javascript>
 
-TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an array of CSS class names. valueBinding has a reference to .content.isCompleted, prompting an explanation of the context for this view. We know that this view is defined as the exampleView property of the todos list above. The term example here means "the view to use for each list item." List items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the TodoItemView definition refers to a single todo item in the list. The value of this checkbox is thus the isCompleted property of the todo associated with the given list item. Likewise, titleBinding is tied to the title property of the list item todo.
+TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an array of CSS class names that apply to this view. valueBinding has a reference to .content.isCompleted, prompting an explanation of the context for this view. We know that this view is defined as the exampleView property of the todos list. The term example here means "the view to use for each list item." List items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the TodoItemView definition refers to a single todo item in the list, so .content.isCompleted refers to this property of a todo item. Likewise, titleBinding is tied to the title property of a todo item.
 
-You really have to think about where this view is used to understand it, but that comes with the territory of having separate views in files in a views directory.
+You have to think about where this view is used to understand it, but that comes with the territory of having individual views declared in separate files for convenience.
 
 NOTE: It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
 
