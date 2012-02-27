@@ -263,7 +263,7 @@ TodosThree.STARTING = SC.State.design({
 });
 </javascript>
 
-NOTE: There are different conventions for naming states. The style used here makes the state names prominent. Some people like to camel-case the state names names.
+NOTE: There are different conventions for naming states. The style used here makes the state names prominent. Some people like to camel-case the state names.
 
 When the statechart is initialized from TodosThree.main(), program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the storeType. storeType was set to be 'FromFixtures' in core.js, where the data store is instantiated. (Recall that using fixtures data as the datasource is a way to simulate a connection to a real database). You see in the if-else block of STARTING/enterState() that, because storeType === 'FromFixtures', the gotoState() call moves control directly to the LOADING_DATA state, not the LOGGING_IN state, which we won't use in the TodosThree app. 
 
