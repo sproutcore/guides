@@ -58,8 +58,6 @@ SC.ready(function() {
 
 This code creates a namespace for your application (called <code>Todos</code>), then appends a new pane. A pane is responsible for event delegation and placing your templates into the DOM, but you'll learn more about that later.
 
-INFO: If you pass a camelcase name to +sc-init+, such as <code>ToDos</code> &mdash; notice the uppercase 'D' &mdash;, the namespace would instead be <code>ToDos</code> and the directories would be named with underscores (i.e. *+apps/to_dos+*)
-
 h3. Defining Your Model
 
 In this tutorial, we want to create a list for managing todos. Users should be able to create a new todo with a specific task, then check it off once it's done.
