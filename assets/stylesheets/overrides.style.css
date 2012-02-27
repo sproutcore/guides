@@ -207,6 +207,7 @@ dd img {
 }
 
 #mainCol p {
+  font-size: 110%;
   margin-bottom: 1em;
 }
 
@@ -227,8 +228,19 @@ div.code_container div.filename {
   background: #fff9d8 url(../images/graphics/tab-notes.png) no-repeat left top;
 }
 
+.note ins {
+  background-color: #eee9be;
+  border: 1px solid #eee9be;
+}
+
+
 .info {
   background: #e5cfec url(../images/graphics/tab-pin.png) no-repeat left top;
+}
+
+.info ins {
+  background-color: #d4bae0;
+  border: 1px solid #d4bae0;
 }
 
 #mainCol dd.work-in-progress, #subCol dd.work-in-progress {
@@ -345,7 +357,6 @@ div.code_container div.filename {
 }
 
 #mainCol a, #subCol a, #feature a, a, a:link, a:visited {
-  font-size: 110%;
   color: #047ed7;
 }
 
@@ -353,13 +364,17 @@ div.code_container div.filename {
   font-weight: normal;
 }
 
-.guide tt, .guide code {
+.guide tt, .guide code, .guide ins {
   font-family: "Monaco", "Anonymous Pro", "Inconsolata", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace !important;
+  font-size: 0.9em;
 }
 
-.guide tt {
+#mainCol tt {
   background-color: #deeac9;
   border: 1px solid #cad5b7;
+}
+
+#mainCol tt, #mainCol ins {
   padding: 1px 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
