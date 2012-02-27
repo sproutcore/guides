@@ -25,7 +25,7 @@ INFO: Todos is written using a best practices approach. This guide attempts to s
 
 h3. Installing SproutCore
 
-This guide assumes you have successfully installed SproutCore 1.8 with the Mac OS X installer or the Windows installer <a href="http://www.sproutcore.com/install/?redirect=1" onclick="_gaq.push(['_trackEvent', 'Download', 'Guides']);">(Installers)</a>. Or, to install on Linux, try this <link>script</link>. [TODO] Add link to unicolet's Linux script.
+This guide assumes you have successfully installed SproutCore with the Mac OS X installer or the Windows installer <a href="http://www.sproutcore.com/install/?redirect=1" onclick="_gaq.push(['_trackEvent', 'Download', 'Guides']);">(Installers)</a>. Or, to install on Linux, try this <link>script</link>. [TODO] Add link to unicolet's Linux script.
 
 h3. Creating A New SproutCore Application
 
