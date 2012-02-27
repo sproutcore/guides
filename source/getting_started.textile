@@ -54,6 +54,7 @@ This will be the directory structure for the Todos app:
 ** *README.md*
 ** *apps/*
 *** *todos/*
+**** *Buildfile*
 **** *core.js*
 **** *main.js*
 **** *theme.js*
@@ -86,10 +87,11 @@ This will be the directory structure for the Todos app:
 Here is that directory structure again, with descriptions for each item:
 
 * *learning_sc/*
-** *Buildfile*             | _Configuration for apps_
+** *Buildfile*             | _Configuration for the project_ 
 ** *README.md*             | _Describes your app and how to use it_
 ** *apps/*
 *** *todos/*
+**** *Buildfile*           | _Configuration for the Todos app_
 **** *core.js*             | _Todos app creation code_
 **** *main.js*             | _Adds a data store, and calls the Todos.mainPage view_
 **** *theme.js*            | _Adds a Todos.Theme based on the SproutCore Ace theme_
