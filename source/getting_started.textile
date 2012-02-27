@@ -127,7 +127,7 @@ Here is that directory structure again, with descriptions for each item:
 ****** *fixtures/* 
 ******* *todo.js*          | _Fixtures data (for testing the app without hooking to a database_
 
-You see that SproutCore is a powerful system, challenging to master. We'll take it one step at a time.
+NOTE: You see that SproutCore is a powerful system, challenging to master. We'll take it one step at a time.
 
 We can use the sc-gen command again, to create part of the directory structure shown above for our Todos app:
 
@@ -193,6 +193,8 @@ There is a project Buildfile in the project directory (~/somewhere/learning_sc) 
     config :todos, :required => :sproutcore
 
 This is Ruby syntax, if you've never seen it. You don't have to know Ruby to do SproutCore development -- it is easy to follow the simple pattern, without having to look up the syntax. This line sets the sproutcore framework reference (:sproutcore) as a configuration dependency for todos. As you work on more complicated apps, you might have other javascript frameworks or special components to require like this. Of course there are many more options that could be set in the Buildfile, but those are for another time.
+
+INFO: SproutCore is a javascript system. The language of the build tools is mostly irrelevant, especially because the build tools work well.
 
 h4. The App Root Directory and its Files
 
