@@ -35,16 +35,16 @@ First, in some area of your hard drive where you develop software, make a sprout
 $ pwd 
     ~/somewhere/
 
-$ sc-gen project learning_sc
+$ sc-gen project getting_started
 
- ~ Created directory at learning_sc
- ~ Created file at learning_sc/Buildfile
- ~ Created file at learning_sc/README
+ ~ Created directory at getting_started
+ ~ Created file at getting_started/Buildfile
+ ~ Created file at getting_started/README
 
-$ cd learning_sc
+$ cd getting_started
 </shell>
 
-Now you have a learning_sc project directory, ~/somewhere/sproutcore/learning_sc. We will build several SproutCore apps in this project space.
+Now you have a getting_started project directory, ~/somewhere/sproutcore/getting_started. We will build several SproutCore apps in this project space.
 
 The first app we will make is called Todos. Here is a screen capture of the completed application: [TODO] need Todos screen capture image here.
 
@@ -56,7 +56,7 @@ You see the components of the user interface: checkboxes, buttons, text fields, 
 
 This will be the directory structure for the Todos app:
 
-* *learning_sc/* - The project directory, for holding several apps.
+* *getting_started/* - The project directory, for holding several apps.
 ** *Buildfile*
 ** *README.md*
 ** *apps/*
@@ -93,7 +93,7 @@ This will be the directory structure for the Todos app:
 
 Here is that directory structure again, with descriptions for each item:
 
-* *learning_sc/*
+* *getting_started/*
 ** *Buildfile*             | _Configuration for the project_ 
 ** *README.md*             | _Describes your app and how to use it_
 ** *apps/*
@@ -134,7 +134,7 @@ We can use the sc-gen command again, to create part of the directory structure s
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc
+    ~/somewhere/getting_started
 
 $ sc-gen statechart_app Todos
 
@@ -166,7 +166,7 @@ To take a look at the "Hello World" stage of the Todos app produced by sc-gen, l
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc
+    ~/somewhere/getting_started
 
 $ sc-server
     SproutCore v1.8 Development Server
@@ -191,7 +191,7 @@ Stop sc-server with control-C:
 
 h4. Buildfiles
 
-There is a project Buildfile in the project directory (~/somewhere/learning_sc) and the Todos app has its own Buildfile in the root app directory (~/somewhere/learning_sc/apps/todos/). Examine the Todos Buildfile and you will see only one configuration line:
+There is a project Buildfile in the project directory (~/somewhere/getting_started) and the Todos app has its own Buildfile in the root app directory (~/somewhere/getting_started/apps/todos/). Examine the Todos Buildfile and you will see only one configuration line:
 
 <shell>
 config :todos, :required => :sproutcore
@@ -203,7 +203,7 @@ INFO: SproutCore is a javascript system. The language of the build tools is most
 
 h4. The App Root Directory
 
-There are four .js files in the Todos app root directory (~/somewhere/learning_sc/apps/todos/):
+There are four .js files in the Todos app root directory (~/somewhere/getting_started/apps/todos/):
 
 |_. theme.js |_. core.js |_. main.js |_. statechart.js |
 
@@ -289,7 +289,7 @@ Code for individual states is held in a states directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/
+    ~/somewhere/getting_started/apps/todos/
 $ cd states
 </shell> 
 
@@ -299,7 +299,7 @@ Delete ready_state.js in the apps/todos/states:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/states
+    ~/somewhere/getting_started/apps/todos/states
 $ rm ready_state.js
 </shell> 
 
@@ -414,7 +414,7 @@ The mainPage view, CSS files, a theme file, and an html page live in a directory
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/
+    ~/somewhere/getting_started/apps/todos/
 $ cd resources
 </shell> 
 
@@ -659,7 +659,7 @@ Before adding the views directory, some navigation is needed. We are still in th
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/resources/
+    ~/somewhere/getting_started/apps/todos/resources/
 $ cd ..
 </shell>
 
@@ -667,7 +667,7 @@ Make a views directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/
+    ~/somewhere/getting_started/apps/todos/
 $ mkdir views
 $ cd views
 </shell>
@@ -700,7 +700,7 @@ Move up to the app root directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/resources/views/
+    ~/somewhere/getting_started/apps/todos/resources/views/
 $ cd ..
 </shell>
 
@@ -708,7 +708,7 @@ Make a models directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/
+    ~/somewhere/getting_started/apps/todos/
 $ mkdir models
 $ cd models
 </shell>
@@ -741,7 +741,7 @@ Move up to the todos app root directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/models
+    ~/somewhere/getting_started/apps/todos/models
 $ cd ..
 </shell>
 
@@ -749,7 +749,7 @@ Make a controllers directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/
+    ~/somewhere/getting_started/apps/todos/
 $ mkdir controllers
 $ cd controllers
 </shell>
@@ -812,7 +812,7 @@ Move up to the todos app root directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/controllers/
+    ~/somewhere/getting_started/apps/todos/controllers/
 $ cd ..
 </shell>
 
@@ -820,7 +820,7 @@ Make an en directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/
+    ~/somewhere/getting_started/apps/todos/
 $ mkdir en
 $ cd en
 </shell>
@@ -859,7 +859,7 @@ While still in the en directory, make a fixtures directory:
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/en/
+    ~/somewhere/getting_started/apps/todos/en/
 $ mkdir fixtures
 $ cd fixtures
 </shell>
@@ -903,7 +903,7 @@ Now we can run the app, which we should do from the project root directory, wher
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/apps/todos/en/fixtures
+    ~/somewhere/getting_started/apps/todos/en/fixtures
 $ cd ../../../..
 </shell>
 
@@ -911,7 +911,7 @@ And run it!
 
 <shell>
 $ pwd 
-    ~/somewhere/learning_sc/
+    ~/somewhere/getting_started/
 $ sc-server
 </shell>
 
