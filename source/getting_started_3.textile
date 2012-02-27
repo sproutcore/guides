@@ -115,7 +115,7 @@ We can use the sc-gen command again, to create part of the directory structure s
 
 <shell>
 $ pwd (This means "print working directory" -- it shows you where you are)
-    ~/development/getting_started
+    ~/development/sproutcore/getting_started
 
 $ sc-gen statechart_app TodosThree
 
@@ -141,7 +141,7 @@ We work through the app, directory by directory, file by file to edit those file
 
 h4. The App Root Directory
 
-There are four .js files in the TodosThree app root directory (~/development/getting_started/apps/todos_three/):
+There are four .js files in the TodosThree app root directory (~/development/sproutcore/getting_started/apps/todos_three/):
 
 |_. theme.js |_. core.js |_. main.js |_. statechart.js |
 
@@ -227,7 +227,7 @@ Code for individual states is held in a states directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/
+    ~/development/sproutcore/getting_started/apps/todos_three/
 $ cd states
 </shell> 
 
@@ -237,7 +237,7 @@ Delete ready_state.js in the apps/todos_three/states directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/states
+    ~/development/sproutcore/getting_started/apps/todos_three/states
 $ rm ready_state.js
 </shell> 
 
@@ -352,7 +352,7 @@ The mainPage view, CSS files, a theme file, and an html page live in a directory
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/
+    ~/development/sproutcore/getting_started/apps/todos_three/
 $ cd resources
 </shell> 
 
@@ -597,7 +597,7 @@ Before adding the views directory, some navigation is needed. We are still in th
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/resources/
+    ~/development/sproutcore/getting_started/apps/todos_three/resources/
 $ cd ..
 </shell>
 
@@ -605,7 +605,7 @@ Make a views directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/
+    ~/development/sproutcore/getting_started/apps/todos_three/
 $ mkdir views
 $ cd views
 </shell>
@@ -638,7 +638,7 @@ Move up to the app root directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/resources/views/
+    ~/development/sproutcore/getting_started/apps/todos_three/resources/views/
 $ cd ..
 </shell>
 
@@ -646,7 +646,7 @@ Make a models directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/
+    ~/development/sproutcore/getting_started/apps/todos_three/
 $ mkdir models
 $ cd models
 </shell>
@@ -679,7 +679,7 @@ Move up to the TodosThree app root directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/models
+    ~/development/sproutcore/getting_started/apps/todos_three/models
 $ cd ..
 </shell>
 
@@ -687,7 +687,7 @@ Make a controllers directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/
+    ~/development/sproutcore/getting_started/apps/todos_three/
 $ mkdir controllers
 $ cd controllers
 </shell>
@@ -750,7 +750,7 @@ Move up to the TodosThree app root directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/controllers/
+    ~/development/sproutcore/getting_started/apps/todos_three/controllers/
 $ cd ..
 </shell>
 
@@ -758,7 +758,7 @@ Make an en directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/
+    ~/development/sproutcore/getting_started/apps/todos_three/
 $ mkdir en
 $ cd en
 </shell>
@@ -785,7 +785,7 @@ While still in the en directory, make a fixtures directory:
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/en/
+    ~/development/sproutcore/getting_started/apps/todos_three/en/
 $ mkdir fixtures
 $ cd fixtures
 </shell>
@@ -829,7 +829,7 @@ With all that work done (or if you downloaded the code or cloned it from git) we
 
 <shell>
 $ pwd 
-    ~/development/getting_started/apps/todos_three/en/fixtures
+    ~/development/sproutcore/getting_started/apps/todos_three/en/fixtures
 $ cd ../../../..
 </shell>
 
@@ -837,7 +837,7 @@ And run it!
 
 <shell>
 $ pwd 
-    ~/development/getting_started/
+    ~/development/sproutcore/getting_started/
 $ sc-server
 </shell>
 
