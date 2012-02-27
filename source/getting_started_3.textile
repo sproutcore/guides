@@ -628,7 +628,9 @@ TodosThree.TodoItemView = SC.CheckboxView.design({
 
 TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an array of CSS class names. valueBinding has a reference to .content.isCompleted, prompting an explanation of the context for this view. We know that this view is defined as the exampleView property of the todos list above. The term example here means "the view to use for each list item." List items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the TodoItemView definition refers to a single todo item in the list. The value of this checkbox is thus the isCompleted property of the todo associated with the given list item. Likewise, titleBinding is tied to the title property of the list item todo.
 
-So, you really have to think about where this view is used to understand it, but that comes with the territory of having separate views in files in a views directory. It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
+You really have to think about where this view is used to understand it, but that comes with the territory of having separate views in files in a views directory.
+
+NOTE: It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
 
 h4. The Models Directory
 
