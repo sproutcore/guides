@@ -137,7 +137,7 @@ Your application target is now ready to use!
 
 </shell>
 
-Now, we work through the app, directory by directory, file by file to edit those files and add other needed directories and files. 
+We work through the app, directory by directory, file by file to edit those files and add other needed directories and files. 
 
 h4. The App Root Directory
 
@@ -346,7 +346,7 @@ This state handles two actions, addTodo and clearCompletedTodosThree. There are 
 
 h4. The Resources Directory
 
-We've covered the highest-level parts of the app defined in the statechart. Now let's add the rest. 
+We've covered the highest-level parts of the app defined in the statechart. Let's add the rest. 
 
 The mainPage view, CSS files, a theme file, and an html page live in a directory called resources.  Go to that directory now:
 
@@ -827,7 +827,7 @@ TodosThree.Todo.FIXTURES = [
 
 h4. Running the App
 
-Now we can run the app, which we should do from the project root directory, where the project Buildfile lives:
+With all that work done (or if you downloaded the code or cloned it from git) we can run the app, which we should do from the project root directory, where the project Buildfile lives:
 
 <shell>
 $ pwd 
