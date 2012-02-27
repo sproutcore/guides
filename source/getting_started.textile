@@ -213,32 +213,12 @@ Edit these files to assure their content matches that given in the following sec
 h5. theme.js (app root directory)
 
 <javascript filename="in apps/todos/theme.js">
-// ==========================================================================
-// Project:   Todos
-// Copyright: @2012 My Company, Inc.
-// ==========================================================================
-/*globals Todos */
-
-// This is the theme that defines how your app renders.
-//
-// Your app is given its own theme so it is easier and less
-// messy for you to override specific things just for your
-// app.
-//
-// You don't have to create the whole theme on your own, though:
-// your app's theme is based on SproutCore's Ace theme.
-//
-// NOTE: if you want to change the theme this one is based on, don't
-// forget to change the :css_theme property in your buildfile.
 Todos.Theme = SC.AceTheme.create({
   name: 'todos'
 });
 
-// SproutCore needs to know that your app's theme exists
 SC.Theme.addTheme(Todos.Theme);
 
-// Setting it as the default theme makes every pane SproutCore
-// creates default to this theme unless otherwise specified.
 SC.defaultTheme = 'todos';
 </javascript>
 
@@ -247,33 +227,14 @@ Todos.Theme is a derivative of SC.AceTheme, a very nice professional theme. You 
 h5. core.js (app root directory)
 
 <javascript filename="in apps/todos/core.js">
-// ==========================================================================
-// Project:   Todos
-// Copyright: @201X My Company, Inc.
-// ==========================================================================
-/*globals Todos */
- 
-/** @namespace
- 
-  A little todos app.
-   
-  @extends SC.Object
-*/
 Todos = SC.Application.create(
   /** @scope Todos.prototype */ {
  
   NAMESPACE: 'Todos',
   VERSION: '0.1.0',
  
-  // This is your application store.  You will use this store to access all
-  // of your model data.  You can also set a data source on this store to
-  // connect to a backend server.  The default setup below connects the store
-  // to any fixtures you define.
   store: SC.Store.create().from(SC.Record.fixtures),
   storeType: 'FromFixtures'
- 
-  // TODO: Add global constants or singleton objects needed by your app here.
- 
 });
 </javascript>
 
@@ -288,12 +249,6 @@ The storeType property is set to 'FromFixtures'.
 h5. main.js (app root directory)
 
 <javascript filename="in apps/todos/main.js">
-// ==========================================================================
-// Project:   Todos
-// Copyright: @201X My Company, Inc.
-// ==========================================================================
-/*globals Todos */
- 
 Todos.main = function main() {
   Todos.statechart.initStatechart();
 };
@@ -308,12 +263,6 @@ main.js for Todos is very simple, with only a line to initialize the statechart.
 h5. statechart.js (app root directory)
 
 <javascript filename="in apps/todos/statechart.js">
-// ==========================================================================
-// Project:   Todos
-// Copyright: @201X My Company, Inc.
-// ==========================================================================
-/*globals Todos */
- 
 Todos.statechart = SC.Statechart.create({
  
   rootState: SC.State.design({
@@ -321,14 +270,11 @@ Todos.statechart = SC.Statechart.create({
  
     STARTING: SC.State.plugin('Todos.STARTING'),
       
-    // The LOGGING_IN state is not used in todos. It is here for future reference.
     LOGGING_IN: SC.State.plugin('Todos.LOGGING_IN'),
       
     LOADING_DATA: SC.State.plugin('Todos.LOADING_DATA'),
       
     SHOWING_APP: SC.State.plugin('Todos.SHOWING_APP')
-
-    // More states would go here in a bigger app.
   })
 });
 </javascript>
@@ -364,15 +310,6 @@ Files to add in the apps/todos/states directory are:
 h5. STARTING State
 
 <javascript filename="in apps/todos/states/starting.js">
-// ==========================================================================
-// Project:   Todos
-// Copyright: @201X My Company, Inc.
-// ==========================================================================
-/*globals Todos */
- 
-// For the Todos app, storeType will be 'FromFixtures', so we will
-// go directly to the LOADING_DATA state, to prepare for showing the app.
-//
 Todos.STARTING = SC.State.design({
   enterState: function() {
     if (Todos.get('storeType') === 'FromSomeBackendDatasource') {
@@ -395,36 +332,20 @@ When the statechart is initialized from Todos.main(), program control will go to
 h5. LOGGING_IN State
 
 <javascript filename="in apps/todos/states/logging_in.js">
-// ==========================================================================
-// Project:   Todos
-// Copyright: @201X My Company, Inc.
-// ==========================================================================
-/*globals Todos */
- 
-// The LOGGING_IN state is not used in todos. It is here for future reference.
-//
 Todos.LOGGING_IN = SC.State.design({             
   initialSubstate: "SHOWING_LOGIN",
  
   SHOWING_LOGIN: SC.State.design({
  
     enterState: function() {
-      // A login panel would be shown now. It would update username and password
-      // in a loginController.
     },
  
     exitState: function() {
-      // The login panel would be taken down now.
     },
  
     authenticate: function() {
-      // The login panel would fire here, and we would call gotoState() to go to
-      // another state to do the authentication.
     }
   })
- 
-  // More states would go here in an app that does authentication.
-       
 });
 </javascript>
 
@@ -433,28 +354,18 @@ INFO: We won't use the LOGGING_IN state in Todos, but have it here for illustrat
 h5. LOADING_DATA State
 
 <javascript filename="in apps/todos/states/loading_data.js">
-// ==========================================================================
-// Project:   Todos
-// Copyright: @201X My Company, Inc.
-// ==========================================================================
-/*globals Todos */
- 
 Todos.LOADING_DATA = SC.State.design({
   enterState: function() {
-    // Set the content property on controllers.
-    //
     Todos.todosController.set('content',
       Todos.store.find(SC.Query.local(Todos.Todo, { orderBy: 'timestamp DESC' })));
  
     Todos.completedTodosController.set('content',
       Todos.store.find(SC.Query.local(Todos.Todo, 'isCompleted = true')));
  
-    // Done with loading and initialization steps. Move to SHOWING_APP.
     this.gotoState('SHOWING_APP');
   },
  
   exitState: function() {
-    // Nothing to worry about in this context.
   }
 });
 </javascript>
@@ -464,40 +375,16 @@ Data content of the two array controllers in the Todos app are set by issuing da
 h5. SHOWING_APP State
 
 <javascript filename="in apps/todos/states/showing_app.js">
-// ==========================================================================
-// Project:   Todos
-// Copyright: @201X My Company, Inc.
-// ==========================================================================
-/*globals Todos */
- 
 Todos.SHOWING_APP = SC.State.design({
   enterState: function() {
-    // Show the mainPage view by appending it.
-    //
     Todos.getPath('mainPage.mainPane').append();
 
-    // Put keyboard focus on the new todos item.
-    //
     Todos.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
   },
 
   exitState: function() {
-    // In a larger app, we would do tear-down tasks here.
   },
 
-  // Functions like addTodo are called actions. Their names are used to set the
-  // action property of user interface elements such as buttons. In this case,
-  // the mainPage view has a newTodoField view that contains a text field and
-  // a submit button. The action property of the submit button is set to 'addTodo'.
-  // When clicked, this addTodo function will be called.
-  //
-  // If the user entered some text, which is grabbed from the value property of
-  // the associated view of the caller (a text field), addTodo uses this and the
-  // current time in a call to store.createRecord() to add a new todo.
-  //
-  // As the last step, the associated view's value is set to '', so the text
-  // field is blank and ready for the next todo.
-  //
   addTodo: function (view) {
     var todo = (view.get('value') || '').trim();
     if (todo !== '') {
@@ -509,12 +396,6 @@ Todos.SHOWING_APP = SC.State.design({
     }
   },
 
-  // Destroys all todo items that are completed.
-  //
-  // This action method is tied to a button in the mainPage view's bottom
-  // toolbar. This button has its action property set to 'clearCompletedTodos',
-  // so when the user clicks it, this function is called.
-  //
   clearCompletedTodos: function () {
     Todos.completedTodosController.invoke('destroy');
   }
@@ -544,19 +425,10 @@ Files to add in the apps/todos/resources directory are:
 h5. main_page.js (resources directory)
 
 <javascript filename="in apps/todos/resources/main_page.js">
-// ==========================================================================
-// Project:   Todos - mainPage
-// Copyright: @2012 My Company, Inc.
-// ==========================================================================
-/*globals Todos */
 require('views/todo_item');
 
-// This page describes the main user interface for your application.  
 Todos.mainPage = SC.Page.design({
 
-  // The main pane is made visible on screen as soon as your app is loaded.
-  // Add childViews to this pane for views to display immediately on page 
-  // load.
   mainPane: SC.MainPane.design({
     childViews: ['header', 'newTodoField', 'todosList', 'footer'],
     defaultResponder: "Todos.statechart", 
@@ -808,7 +680,6 @@ h5. todo_item.js (views directory)
 
 <javascript filename="in apps/todos/views/todo_item.js">
 Todos.TodoItemView = SC.CheckboxView.design({
-  // The CSS class names to apply to this view
   classNames: ['todo-item'],
 
   valueBinding: '.content.isCompleted',
@@ -853,19 +724,10 @@ h5. todo.js (models directory)
 <javascript filename="in apps/todos/models/todo.js">
 require('core');
 
-// A simple SproutCore model that describes
-// the semantics of something that needs to be done.
 Todos.Todo = SC.Record.extend({
-
-  // When was this Todo created?
   timestamp: SC.Record.attr(SC.DateTime),
-
-  // Is the Todo item completed?
   isCompleted: SC.Record.attr(Boolean),
-
-  // What is it that needs to be done?
   title: SC.Record.attr(String)
-
 });
 </javascript>
 
@@ -913,20 +775,16 @@ h5. completed_todos.js (controllers directory)
 <javascript filename="in apps/todos/controllers/completed_todos.js">
 require('controllers/todos');
 
-// The todo manager is a list of all todo items that have `isCompleted` set to `YES`.
 Todos.completedTodosController = SC.ArrayController.create({
 
-  // The total number of Todos
   totalTodosBinding: SC.Binding.oneWay('Todos.todosController.length'),
 
-  // Whether all items in the Todo list are completed
   areAllCompleted: function (k, v) {
     if (v !== undefined) {
       Todos.todosController.setEach('isCompleted', v);
     }
     return this.get('length') === this.get('totalTodos');
   }.property('length', 'totalTodos').cacheable()
-
 });
 </javascript>
 
