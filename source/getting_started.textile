@@ -127,7 +127,7 @@ Here is that directory structure again, with descriptions for each item:
 ****** *fixtures/* 
 ******* *todo.js*          | _Fixtures data (for testing the app without hooking to a database_
 
-NOTE: You see that SproutCore is a powerful system, challenging to master. We'll take it one step at a time.
+NOTE: You see that SproutCore is a powerful system, challenging to master, but not so difficult to learn, provided that we take it one step at a time.
 
 We can use the sc-gen command again, to create part of the directory structure shown above for our Todos app:
 
@@ -385,7 +385,7 @@ Todos.STARTING = SC.State.design({
 
 When the statechart is initialized from Todos.main(), program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the storeType. storeType was set to be 'FromFixtures' in core.js, where the data store is instantiated. (Recall that using fixtures data as the datasource is a way to simulate a connection to a real database). You see in the if-else block of STARTING/enterState() that, because storeType === 'FromFixtures', the gotoState() call moves control directly to the LOADING_DATA state, not the LOGGING_IN state, which we won't use in the Todos app. 
 
-There are different conventions for naming states. The style used here is proven, and the formatting makes the state names prominent. Some people like to camel-case the state names names.
+NOTE: There are different conventions for naming states. The style used here is proven, and the formatting makes the state names prominent. Some people like to camel-case the state names names.
   
 h5. LOGGING_IN State
 
@@ -423,7 +423,7 @@ Todos.LOGGING_IN = SC.State.design({
 });
 </javascript>
 
-We won't use the LOGGING_IN state in Todos, but have it here for illustration.
+INFO: We won't use the LOGGING_IN state in Todos, but have it here for illustration.
 
 h5. LOADING_DATA State
 
@@ -674,7 +674,7 @@ h5. Content CSS files
 
 You can add a single CSS file in your resources directory, or you can add many small ones. For the Todos app, we'll choose the many-small-ones approach. In these CSS files, where you see something like $theme.sc-text-field-view, the sc- prefix indicates an override of the sc- CSS definitions in the Ace theme. 
 
-CSS is an art unto itself, an important side of doing SproutCore development and building views.
+NOTE: CSS is an art unto itself, an important side of doing SproutCore development and building views.
 
 Names of the files indicate their applicability: header.css, body.css, new_todo.css, and todo_item.css.
 
@@ -929,19 +929,17 @@ The todosController has the simplest default definition as an SC.ArrayController
 
 The completeTodosController is another array controller with a property, totalTodosBinding, and a function, areAllCompleted(). 
 
-totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", we don't care about pushing back) to the length of the todosController array controller. We need a local reference to this length, because we are about to do something slick, in part based on it.
+totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", we don't care about pushing back) to the length of the todosController array controller. We need a local reference to this length, because we are about to do something impressive, in part based on it.
 
 areAllCompleted() is a function, but a very special type of function, called a computed property. Note the .property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as parameters, then tacks on .cacheable(). First, the parameters, which are references to local properties for this context, which is the array controller body. We know we have a 'length' property -- this is an array controller. But what gives with the use of the 'totalTodos' reference, isn't the property called totalTodosBinding? Ah, the answer is that anytime Binding is appended to a property name, you have a kind of dual-property arrangement. The actual property is, in fact, totalTodos. In defining totalTodosBinding, we essentially say, get the value of totalTodos from this other source. That covers the background on mechanics of property names, now to address what .property('length', 'totalTodos').cacheable() accomplishes. It means:
 
   "Base this computed property on the length and totalTodos properties, and update it if either of them changes, and, oh, by the way, please cache the values while you are at it, so unnecessary updates aren't performed." 
 
-Wow! That was a lot to grok, but think of the power here! It really is slick. 
-
 There is more to explain about the working of this computed property. What are the k and v parameters, and what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the totalTodos value is being changed. This is a mandate to try to mark all todos as completed by this value. That's the name of the function/computed property: areAllCompleted. If a call is made to set it, then the body of the function needs to update the data accordingly. If v evaluates to true, then isCompleted for each todo item will be set and all the checkboxes will be checked in the list. That explains what the if block does. 
 
 Notice the return at the end of the areAllCompleted computed property function. We return the result of a test comparing the length of completed todos array (the local 'length') to the length of the todos array (the local 'totalTodos', which is bound to an external source, the full todosController array). If these lengths are the same, then all todos have been marked as completed, otherwise no. 
 
-So, a computed property used in this way is both a setter and a getter. Complicated, but useful. Once you get the hang of making these you realize the benefit: the automatic updating gain is worth the learning pain.
+So, a computed property used in this way is both a setter and a getter. Once you get the hang of making these you realize the benefit: automatic updating and caching for efficiency.
 
 h4. The En Directory
 
