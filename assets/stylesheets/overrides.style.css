@@ -3,6 +3,14 @@ body {
   background: #fff;
 }
 
+strong {
+  font-weight: bold !important;
+}
+
+em,dfn {
+  font-style: italic !important;
+}
+
 dd img {
   float: left;
   height: 36px;
