@@ -925,7 +925,7 @@ totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", w
 
 areAllCompleted() is a function, but a very special type of function, called a computed property. Note the .property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as parameters, then tacks on .cacheable(). First, the parameters, which are references to local properties for this context, which is the array controller body. We know we have a 'length' property -- this is an array controller. But what gives with the use of the 'totalTodos' reference, isn't the property called totalTodosBinding? Ah, the answer is that anytime Binding is appended to a property name, you have a kind of dual-property arrangement. The actual property is, in fact, totalTodos. In defining totalTodosBinding, we essentially say, get the value of totalTodos from this other source. That covers the background on mechanics of property names, now to address what .property('length', 'totalTodos').cacheable() accomplishes. It means:
 
-  "Base this computed property on the length and totalTodos properties, and update it if either of them change, and, oh, by the way, please cache the values while you are at it, so unnecessary updates aren't performed." 
+  "Base this computed property on the length and totalTodos properties, and update it if either of them changes, and, oh, by the way, please cache the values while you are at it, so unnecessary updates aren't performed." 
 
 Wow! That was a lot to grok, but think of the power here! It really is slick. 
 
@@ -1055,5 +1055,5 @@ Visit http://localhost:4020/ in your favorite modern browser and you should see 
 * April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
 * May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
 * May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
-* February 27, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who worked on this task: "Tim Evans":credits.html#tce, "Jeff Pittman":credits.html#geojeff, and others [TODO] Add 'em!
+* February 27, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who worked on this task: "Tim Evans":credits.html#tce, "Tyler Keating":credits.html#publickeating, "Maurits Lamers":credits.html#mauritslamers, "Jeff Pittman":credits.html#geojeff
 
