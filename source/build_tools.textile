@@ -1,0 +1,290 @@
+h2. SproutCore's Build Tools
+
+After reading this guide, you will be able to:
+
+* Create a new SproutCore project skeletons using +sproutcore init+.
+* Add additional apps to a SproutCore project and additional views, controllers, models and unit tests to a SproutCore app using +sproutcore gen+.
+* Configure your apps using +Buildfiles+.
+* Use SproutCore's server and proxy, +sproutcore server+, for development and testing.
+* Build a SproutCore app for production deployment using +sproutcore build+.
+
+endprologue.
+
+h3. Introduction
+
+One of the least understood and, because of this, occasionally maligned components of SproutCore are the accompanying build tools.  Let's be clear, build tools are absolutely necessary for even the smallest project and to attempt to write an application without them from the start, simply means being forced to cobble together less effective processes later on.
+
+The reason for this is it quickly becomes too difficult and time consuming to manage multiple source files and assets and there are several important optimizations required for building and deploying top-of-class web experiences that are best left to automated scripts.
+
+For example, SproutCore's build tools do the following and more:
+
+* Automatically scans your source code and builds a manifest of how your code should be built into a final project.  This ensures that your JavaScript and CSS always load in the proper order.
+* Run CSS through the "Compass CSS Authoring Framework":http://compass-style.org/
+* Proxies XHR requests to avoid same-origin policy restrictions while developing.
+* Applies localization rules to automatically build different language variations of your project.
+* Inserts cache-friendly URLs on build for any assets (such as images) that you may want to load.
+* Builds your JavaScript files and stylesheets into a single JavaScript and a single CSS file and minifies the contents of each.  This makes your deployed app load much faster since multiple smaller requests are slower for the clients.
+* Automatically slices and sprites your images; a typically very time-consuming and error prone task.
+
+For a list of the available commands, type +sproutcore+ on the command line after installing the SproutCore gem:
+
+<shell>
+$ sproutcore
+
+SproutCore 1.8.0 Usage
+======================
+
+Tasks:
+  sproutcore build [TARGET..]                                                                   # Builds one or more targets
+  sproutcore build-number TARGET                                                                # Computes a build number for the target
+  sproutcore docs [TARGET..]                                                                    # Generates JSDoc's for specified targets.
+  sproutcore gen generator Namespace[.ClassName] [--target=TARGET_NAME] [--filename=FILE_NAME]  # Generates SproutCore components
+  sproutcore help                                                                               # How to use the sproutcore command
+  sproutcore help [TASK]                                                                        # Describe available tasks or one specific task
+  sproutcore init PROJECT [APP]                                                                 # Generates a SproutCore project with an initial appl...
+  sproutcore manifest [TARGET..]                                                                # Generates a manifest for the specified targets
+  sproutcore server                                                                             # Starts the development server
+  sproutcore version                                                                            # Show the SproutCore version number
+
+Options:
+      [--project=PROJECT]
+      [--mode=MODE]
+      [--logfile=LOGFILE]
+  -b, [--build=BUILD]
+      [--build-targets=BUILD-TARGETS]  # Targets to build (excluding their dependencies)
+      [--dont-minify]                  # Disables minification for the build.
+  -v, [--verbose]
+  -V, [--very-verbose]
+      [--help]
+</shell>
+
+h3. Generating a New SproutCore Project: +sproutcore init+
+
+To create a new basic SproutCore project simply use +sproutcore init+ or its short form equivalent, +sc-init+, and supply a project name and optional initial app name.  If you don't supply the AppName parameter, an app with the same name as the project will be created.  For example, to create a project "MediaTools" with the default app "VideoEditor" use the following:
+
+<shell>
+$ sproutcore init MediaTools VideoEditor
+ ~ Created directory at media_tools
+ ~ Created file at media_tools/Buildfile
+ ~ Created file at media_tools/README
+ ~ Created directory at apps
+ ~ Created directory at apps/video_editor
+ ~ Created file at apps/video_editor/Buildfile
+ ~ Created file at apps/video_editor/core.js
+ ~ Created file at apps/video_editor/main.js
+ ~ Created directory at apps/video_editor/resources
+ ~ Created file at apps/video_editor/resources/_theme.css
+ ~ Created file at apps/video_editor/resources/loading.rhtml
+ ~ Created file at apps/video_editor/resources/main_page.js
+ ~ Created file at apps/video_editor/theme.js
+Your new SproutCore project is ready!
+
+To get started, you can find your initial application in the "apps" directory.
+</shell>
+
+To create a project "Calculator" with an app of the same name, simply use:
+
+<shell>
+$ sproutcore init Calculator
+~ Created directory at calculator
+~ Created file at calculator/Buildfile
+...
+</shell>
+
+To create a project "BusyBee" with an app of the same name with a base statechart, simply use:
+
+<shell>
+$ sproutcore init BusyBee --statechart
+~ Created directory at busy_bee
+~ Created file at busy_bee/Buildfile
+...
+</shell>
+
+NOTE: Passing a camelcase app name to +sproutcore init+, such as <code>VideoEditor</code> &mdash; notice the uppercase 'E' &mdash;, creates a namespace <code>VideoEditor</code> and the directories are named using underscores (i.e. *+apps/video_editor+*)
+
+h3. Generating Additional SproutCore Files: +sproutcore gen+
+
+The command <code>sproutcore init</code> creates a few default files for you that form a typical starting point for a new project, but you will soon need other files and this is where the command +sproutcore gen+ or +sc-gen+, for short, can come in.  The following are the most commonly used commands with a brief description of each.
+
+h4. +sc-gen project ProjectName+
+
+Creates an empty SproutCore project.  You may use this instead of <code>sproutcore init</code>, if you don't want a default app to be created.
+
+h4. +sc-gen app AppName+
+
+When called from within a project, adds an app to the project with the namespace <code>AppName</code>.
+
+h4. +sc-gen statechart_app AppName+
+
+When called from within a project, adds an app with a basic SC.Statechart setup.
+
+NOTE: Similar to generating basic statechart files with <code>sproutcore init --statechart</code> you can achieve the same result with <code>sproutcore gen app --statechart</code>.
+
+h4. +sc-gen model AppName.ModelName+
+
+Adds a SC.Record subclass, 'AppName.ModelName', in the file <code>model_name_model.js</code> along with stub fixture and unit test files.
+
+h4. +sc-gen controller AppName.ControllerName+
+
+Adds a SC.ObjectController subclass instance, 'AppName.controllerName', in the file <code>controller_name_controller.js</code> and a stub unit test file.
+
+h4. +sc-gen view AppName.ViewName+
+
+Adds a SC.View subclass, 'AppName.ViewName', in the file <code>view_name_view.js</code> and a stub unit test file.
+
+h4. +sc-gen data-source AppName.DataSourceName+
+
+Adds a SC.DataSource subclass, 'AppName.DataSourceName', in the file <code>data_source_name.js</code>.
+
+h4. +sc-gen language AppName.Language+
+
+Adds a language file for 'Language', in the file <code>language.lproj</code>.  Here are some examples:
+
+<shell>
+$ sc-gen language MediaTools French
+ ~ Created directory at french.lproj
+ ~ Created file at french.lproj/strings.js
+
+$ sc-gen language MediaTools en-ca
+ ~ Created directory at en_ca.lproj
+ ~ Created file at en_ca.lproj/strings.js
+
+$ sc-gen language MediaTools Latin
+ ~ Created directory at Latin.lproj
+ ~ Created file at Latin.lproj/strings.js
+</shell>
+
+NOTE: Generally the provided 'Language' will result in the same named directory, 'Language.lproj', but as can be seen by the French example above, the build tools have a bit of an odd behavior of recognizing English, French, German, Italian, Spanish and Japanese as parameters and making the directory name the lowercase version.
+
+h4. +sc-gen framework FrameworkName+
+
+Creates a framework with namespace <code>FrameworkName</code> in the project's <code>frameworks</code> directory.  Read further to learn about including frameworks in your SproutCore apps.
+
+h3. Configuring SproutCore Applications: +Buildfile+
+
+The operations of the build tools are configured via the project, framework and app Buildfiles.  If you used the previous commands, you will find a Buildfile within your root project directory and a Buildfile in each of your app directories.  As it states in the default app Buildfiles, the settings in the app Buildfile will override the project Buildfile.
+
+Therefore, a recommended setup would configure properties shared between all your apps within a project in the project's Buildfile and to configure any properties specific to an app, in the app's Buildfile.  For simplicity state, the following examples will just use a single Buildfile in most cases.
+
+Before looking at each config setting in detail, there is one important statement, +mode+, that is valuable to understand.  Any configurations within a <code>mode #{name}</code> block will only apply to the named environment.  By default, <code>sproutcore build</code> uses the mode +production+ and <code>sproutcore server</code> uses the mode +debug+, but you may provide any custom mode by passing +--mode=my_mode+ to the command.
+
+The following list describes the most common Buildfile <code>config</code> properties.
+
+h4. +:build_number => {String}+
+
+By default, the build project assets will get cache friendly paths containing a unique build number.  This is necessary to ensure that the files are properly cached, but you can specify a custom build number with this setting.
+
+WARNING: Using a fixed build_number will cause cached assets to not be invalidated.  Use this setting with caution.
+
+h4. +:combine_javascript => {Boolean}+
+
+By default, the built project combines all the JavaScript files into a single file.  Setting <code>:combine_javascript</code> to <code>false</code> will prevent this from happening, which may be useful for debugging purposes.
+
+h4. +:combine_stylesheets => {Boolean}+
+
+By default, the built project combines all the CSS files into a single file.  Setting <code>:combine_stylesheets</code> to <code>false</code> will prevent this from happening, which may be useful for debugging purposes.
+
+h4. +:javascript_libs => {Array}+
+
+An array of JavaScript file URLs that will be inserted as the src attributes of &lt;script&gt; tags in the <code><head></code> element.
+
+Ex. Including the Google Maps API:
+<ruby filename="my_project/apps/my_app/Buildfile">
+  config :my_app,
+    :javascript_libs => [
+      'https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
+    ]
+</ruby>
+
+h4. +:layout => {String}+
+
+By default, SproutCore apps use the index.html template in the SproutCore framework at <code>lib/index.rhtml</code>.  You may copy the default index.rhtml file into your app and specify the path in your Buildfile.
+
+WARNING: Failing to update your copy of index.rhtml when SproutCore is updated, may cause conflicts with the build tools.  Therefore it is recommended to use the config parameters to modify the generated index.html, rather than modifying the template directly.
+
+h4. +:load_debug => {Boolean}+
+
+By default, directories named <code>debug</code> are not included in the built project.  Set <code>:load_debug</code> to <code>true</code> to have them included.
+
+h4. +:load_fixtures => {Boolean}+
+
+By default, fixtures are excluded in the built project.  Set <code>:load_fixtures</code> to <code>true</code> to have them included.
+
+h4. +:load_protocols => {Boolean}+
+
+By default, files in directories named <code>protocols</code> are excluded in the built project.  Set <code>:load_protocols</code> to <code>true</code> to have them included.
+
+h4. +:minify => {Boolean}+
+
+By default, the HTML, JavaScript and CSS is minified when built.  Set this to <code>false</code> to prevent minification, which may be useful for debugging.  You can also be more specific by using either +:minify_javascript+, +:minify_css+ or +:minify_html+.
+
+NOTE: If minify is <code>false</code>, <code>sc-build</code> will throw a security exception unless <code>--allow-commented-js</code> is set, because all comments will be visible in the built product.
+
+h4. +:required => {Array}+
+
+This defines the frameworks in the order that the app requires them and is initially set by default to <code>:sproutcore</code>.  Since frameworks can be nested and can define their own requirements, the <code>:sproutcore</code> framework is actually just a wrapper framework that includes several of its sub-frameworks each of which have their own requirements as well.  New developers should not generally concern themselves with stripping away
+
+Ex. The most basic Buildfile:
+<ruby filename="my_project/Buildfile">
+  config :all, :required => :sproutcore
+</ruby>
+
+Ex. Including a framework, DataHelpers, from the project's frameworks directory for all apps within the project:
+<ruby filename="my_project/Buildfile">
+  config :all, :required => [:sproutcore, :data_helpers]
+</ruby>
+
+Ex. Including different frameworks for different apps:
+<ruby filename="my_project/Buildfile">
+  config :all, :required => [:sproutcore]
+
+  config :my_app, :required => [:client_views]
+
+  config :my_admin_app, :required => [:admin_tools]
+</ruby>
+
+Ex. Including different frameworks for different apps using app specific Buildfiles:
+<ruby filename="my_project/Buildfile">
+  config :all, :required => [:sproutcore]
+</ruby>
+
+<ruby filename="my_project/apps/my_app/Buildfile">
+  config :my_app, :required => [:client_views]
+
+<ruby filename="my_project/apps/my_admin_app/Buildfile">
+  config :my_admin_app, :required => [:admin_tools]
+</ruby>
+
+INFO: For advanced manipulation of the included SproutCore frameworks, refer to the SproutCore "Buildfile":https://github.com/sproutcore/sproutcore/blob/master/Buildfile.
+
+h4. +:theme => {String}+
+
+The framework or theme that contains the app's theme.  See the guide on "Theming Your App":theming_app.html for more information.
+
+h4. +:theme-name => {String}+
+
+A class name to set on the <code><body></code> element.  If not specified, the body will have a class <code>sc-theme</code>.
+
+h4. +:title => {String}+
+
+The value of the HTML <code><title></code> element.
+
+Ex. Separate titles for different apps:
+<ruby filename="my_project/Buildfile">
+  config :all, :required => [:sproutcore]
+
+  config :my_app, :title => 'My App'
+
+  config :my_admin_app, :title => 'My App (Administration)'
+</ruby>
+
+INFO: For advanced Buildfile configuration, refer to the build tool's "Buildfile":https://github.com/sproutcore/abbot/blob/master/lib/Buildfile.
+
+h3. Developing with SproutCore: +sproutcore server+
+
+Incomplete - Feb. 27, 2012
+
+h3. Building a SproutCore Application: +sproutcore build+
+
+Incomplete - Feb. 27, 2012
+

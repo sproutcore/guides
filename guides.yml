@@ -91,12 +91,12 @@ index:
     - title: "Getting Started: Part 2"
       url: getting_started_2
       text: "Connect the application you wrote in Part 1 to SproutCore's data store, and learn how to test with fixture data."
+    - title: Build Tools
+      url: build_tools
+      text: "Discover the many deployment advantages and time saving development benefits of SproutCore's build tools."
     - title: Core Concepts
       url: core_concepts
       text: "In this guide, we will touch on many of the core concepts of SproutCore like bindings and the run loop. We'll cover just enough to get you going with out getting bogged down in the details. If you want to learn more, take a look at the detailed overviews of these concepts in the \"Digging Deeper\" section."
-    - title: Enumerables
-      url: enumerables
-      text: "To simplify working with various kinds of lists, SproutCore provides a unified Enumerable interface. This guide explores which SproutCore objects are Enumerable, and how to use the Enumerable API."
   Views:
     - title: Using Handlebars Templates
       url: using_handlebars
@@ -129,7 +129,7 @@ index:
       text: "In order to facilitate rapid development, SproutCore provides a facility for using pre-set fixture data as your data source. This guide covers how to set up your fixtures, and how to replace them with your real server once you're ready to get going."
     - title: Understanding the Record Lifecycle
       url: record_lifecycle
-      text: "Records in SproutCore travel through a series of simple statuses. Understanding these statuses can help you to build better, less buggy Sproutcore apps. This guide walks you through a description of the details of the lifecycle of a record."
+      text: "Records in SproutCore travel through a series of simple statuses. Understanding these statuses can help you to build better, less buggy SproutCore apps. This guide walks you through a description of the details of the lifecycle of a record."
       construction: true
   Theming:
     - title: "Using Chance, SproutCore's CSS Framework"
@@ -162,6 +162,10 @@ index:
     - title: "SproutCore Development Using TDD"
       url: todos_tdd
       text: "Show implementing the TODOs project using TDD."
+  Extras:
+    - title: Enumerables
+      url: enumerables
+      text: "To simplify working with various kinds of lists, SproutCore provides a unified Enumerable interface. This guide explores which SproutCore objects are Enumerable, and how to use the Enumerable API."
   Contributing to SproutCore:
     - title: "Javascript Style Guide"
       url: "style_guide"
