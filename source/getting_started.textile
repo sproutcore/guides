@@ -34,6 +34,7 @@ First, in some area of your hard drive where you develop software, make a sprout
 <shell>
 $ pwd 
     ~/somewhere/
+
 $ sc-gen project learning_sc
 
  ~ Created directory at learning_sc
@@ -156,6 +157,8 @@ Your application target is now ready to use!
 </shell>
 
 [TODO] USAGE doc for sc-gen has the use of --statechart switch wrong -- you don't need it, because you use statechart_app instead.
+
+INFO: After you learn SproutCore, to start a new project or app, you can just copy from an existing project, or you can use sc-gen in this manner to generate a boilerplate hello-world app.
 
 h4. Running sc-server to View an App
 
