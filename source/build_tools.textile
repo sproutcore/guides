@@ -14,7 +14,7 @@ h3. Introduction
 
 One of the least understood and, because of this, occasionally maligned components of SproutCore are the accompanying build tools.  Let's be clear, build tools are absolutely necessary for even the smallest project and to attempt to write an application without them from the start, simply means being forced to cobble together less effective processes later on.
 
-The reason for this is it quickly becomes too difficult and time consuming to manage multiple source files and assets and there are several important optimizations required for building and deploying top-of-class web experiences that are best left to automated scripts.
+The reason for this is it quickly becomes too difficult and time consuming to manage multiple source files and assets; there are several important optimizations required for deploying top-of-class web experiences that are best left to automated scripts.
 
 For example, SproutCore's build tools do the following and more:
 
