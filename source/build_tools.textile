@@ -19,7 +19,7 @@ The reason for this is it quickly becomes too difficult and time consuming to ma
 For example, SproutCore's build tools do the following and more:
 
 * Automatically scans your source code and builds a manifest of how your code should be built into a final project.  This ensures that your JavaScript and CSS always load in the proper order.
-* Run CSS through the "Compass CSS Authoring Framework":http://compass-style.org/
+* Run stylesheets through the "Compass CSS Authoring Framework":http://compass-style.org/ for simple and clean CSS.
 * Proxies XHR requests to avoid same-origin policy restrictions while developing.
 * Applies localization rules to automatically build different language variations of your project.
 * Inserts cache-friendly URLs on build for any assets (such as images) that you may want to load.
@@ -282,9 +282,92 @@ INFO: For advanced Buildfile configuration, refer to the build tool's "Buildfile
 
 h3. Developing with SproutCore: +sproutcore server+
 
-Incomplete - Feb. 27, 2012
+So that you can view and test your code in action immediately, the build tools also provide a local server and proxy.  As was mentioned in "Getting Started":/getting_started.html, you run the server by changing to your project's directory and running either +sproutcore server+ or +sc-server+ for short.  The server will monitor your files for changes and re-build them when they do change.  To keep the process fast and to allow you to debug your code while developing, the individual files aren't packed or minified in debug mode.  When your server is running, you can access your apps at +http://localhost:4020+ or a specific app at +http://localhost:4020/app_name+.
+
+The server also includes a proxy that is configurable within the project's Buildfile.  Without a proxy, XHR requests will fail since the origin of your test page, <code>http://localhost:4020</code> will not match the origin of your backend server (ex. <code>https://my-private-api.com:8080</code>) and the browser will consequently reject the request.  Therefore, if you want to load data from your backend from a URL like <code>https://my-private-api.com:8080/users/3</code>, your XHR request must be to <code>/users/3</code> and you will use the SproutCore server to proxy the request across.
+
+Here are some examples configuring the SproutCore server proxy:
+
+<ruby filename="my_project/Buildfile">
+  # Proxy all requests for '/news' to 'http://news.com/news'.
+  proxy "/news", :to => "news-server.com"
+
+  # Proxy all requests for '/session' to 'https://session-server.net/session'.
+  proxy "/session", :to => "session-server.com", :secure => true
+
+  # Proxy all requests for '/users' to 'https://our-app.com/people'.
+  #   ex. /users/23 => https://our-app.com/people/23
+  proxy "/users", :to => "our-app.com", :secure => true, :url => "/people"
+
+  # Proxy to a local server with a longer timeout to support long-polling requests.
+  #   ex. /socket.io => http://localhost:3443/socket.io
+  proxy '/socket.io', :to => 'localhost:3443', :timeout => 25
+
+  # An alternate configuration of the above.
+  proxy '/socket.io', :to => 'localhost:3443', :connect_timeout => 5, :inactivity_timeout => 30
+
+  # Disallow redirects
+  proxy '/originals', :to => 'some-api.org', :redirect => false
+</ruby>
 
 h3. Building a SproutCore Application: +sproutcore build+
 
-Incomplete - Feb. 27, 2012
+Finally, when your application is ready to be deployed to a real server, you will do a production build and move the files across to be hosted.  Depending on the options you set in your Buildfile, this will generate some variant of static deployable and cache-able content.
 
+Ex. Building all apps and required frameworks within a project.
+<shell>
+$ sproutcore build
+</shell>
+
+Ex. Building a specific app within a project, including it's required frameworks.
+<shell>
+$ sproutcore build my_app
+</shell>
+
+The following are some options that you may want to pass to +sproutcore build+ or +sc-build+.
+
+h4. +--allow-commented-js+
+
+You must set this if you have set <code>minify: false</code> in your Buildfile and you do want to build an un-minified product which includes all your comments.
+
+h4. +--build+
+
+Specify the build number manually to use.  This results in paths that won't cache properly, but may be useful for testing or embedding a SproutCore app.
+
+<shell>
+$ sproutcore build my_app --build=test_build
+</shell>
+
+h4. +--buildroot+
+
+Specify the path to the built product.
+
+<shell>
+$ sproutcore build my_app --buildroot=../builds
+</shell>
+
+h4. +--languages+
+
+Specify which languages to build.  By default, the build tool will build all languages in the project.
+
+<shell>
+$ sproutcore build my_app --languages=en,en-ca,zh
+</shell>
+
+h4. +--dont-minify+
+
+Disables minification for the build without throwing a Security exception as setting +minify: false+ within the Buildfile would do.
+
+WARNING: Be sure to remove any +debugger+ statements from your code, as they will cause the build to fail.
+
+h4. +--stageroot+
+
+Specify the path to the staging products.
+
+<shell>
+$ sproutcore build my_app --stageroot=../tmp/staging
+</shell>
+
+h4. +--verbose+ or +-v+
+
+Verbose output.
