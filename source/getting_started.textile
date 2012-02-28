@@ -73,10 +73,9 @@ Now you have a getting_started project directory, ~/development/sproutcore/getti
 several SproutCore apps in this project space, but for now, we'll just create a basic "Hello World" application
 to ensure that everything is installed and working properly.
 
-So, go ahead and create the app, first changing directory to the new getting_started project directory:
+So, go ahead and create the app in the getting_started project directory:
 
 <shell>
-$ cd getting_started
 $ sc-gen app TodosOne
    ~ Created directory at apps
    ~ Created directory at apps/todos_one
