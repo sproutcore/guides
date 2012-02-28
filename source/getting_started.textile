@@ -5,14 +5,14 @@ Welcome to SproutCore! This guide is deigned to get you up-and-running as quickl
 * Install SproutCore on your machine.
 * Use the SproutCore tools to generate a basic starting application.
 * Run the SproutCore development server to test your application.
-* Modify the application to ensure your changes are visisble.
+* Modify the application to ensure your changes are visible.
 
 endprologue.
 
 h3. Introduction
 
-This guide is designed to be as simple as possible and just ensure that you
-have the latest version of Sproutcore, installed and configured properly. If you
+This guide is designed to be as simple as possible. It will ensure that you
+have the latest version of Sproutcore installed and configured properly. If you
 run into any issues or bumps along the way, please reach out on the
 "mailing list":http://groups.google.com/group/sproutcore or find us on IRC at
 #sproutcore!
@@ -53,7 +53,7 @@ NOTE: The dollar sign ($) in the code above and below represents your command li
 be typed when executing the commands. Lines without a prompt generally show you the output of the previous
 command.
 
-This directory can be your place for all things SproutCore. Change directory to ~/development/sproutcore, then
+This directory can be your placed for all things SproutCore. Change directory to ~/development/sproutcore, then
 create a SproutCore project:
 
 <shell>
@@ -70,12 +70,13 @@ $ cd getting_started
 </shell>
 
 Now you have a getting_started project directory, ~/development/sproutcore/getting_started. We will build
-several SproutCore apps in this project space, but for now, we'll just create a basic Hello World application
+several SproutCore apps in this project space, but for now, we'll just create a basic "Hello World" application
 to ensure that everything is installed and working properly.
 
-So, go ahead and create the app:
+So, go ahead and create the app, first changing directory to your new getting_started project directory:
 
 <shell>
+$ cd getting_started
 $ sc-gen app TodosOne
    ~ Created directory at apps
    ~ Created directory at apps/todos_one
@@ -111,13 +112,13 @@ h3. Explanation
 
 When you are building your web application in SproutCore, it is common to have
 a multitude of mini-applications in order to separate out the logic into
-manageable chunks. For instance, Apple's MobileMe application has mini-apps for
+manageable parts. For instance, Apple's iCloud application has mini-apps for
 e-mail, contacts and finding your friends.
 
 This is why there is an *apps/* directory inside of your project directory. It
-allows you to easily separate distinct portions of your application.
+allows you to easily separate distinct applications.
 
-Inside of the *apps/* directory, you will find the Buildfile for your application.
+Inside of the *apps/todos_one* directory, you will find the Buildfile for your TodosOne application.
 Just like your project (getting_started) has a *Buildfile*, each application or
 framework that you create should also have a *Buildfile* which specifies it's
 requirements as well as any build-options that you may want to change, such as
@@ -128,10 +129,10 @@ application is defined. This is also where you usually define any global
 constants that your application might use (which should be very few), or any
 configuration that external libraries might require.
 
-The *main.js* file is usually very basic just starts your application. If you
+The *main.js* file is usually very basic. It just starts your application. If you
 are using the Statechart framework (which we will discuss in Part 2), *main.js*
 would simply initialize your statechart. If you open up *main.js* right now,
-you'll see that it simply appends your views to the screen.
+you'll see that it simply appends your main view to the screen.
 
 The resources folder contains things like images, stylesheets and views.
 
@@ -139,11 +140,11 @@ Inside the resources folder, the *_theme.css* file defines that directory's
 CSS theme. This allows you to define different themes for each directory. You
 can learn more about this in the theming guide (TODO link to theming guide).
 
-Next, your *loading.rhtml* file defines the HTML that your users see before
+The *resources/loading.rhtml* file defines the HTML that your users see before
 SproutCore has fully loaded and handed control over to your application. For
 now, it just displays a simple loading message.
 
-Lastly, the *main_page.js* file describes the actual user interface of your
+Lastly, the *resources/main_page.js* file describes the actual user interface of your
 application. Open this file now and take a look. Depending upon how complex
 your app becomes, you may decide to have just the mainPage and mainPane, or
 you may decide you want to break it out a bit more by having a loadingPane,
@@ -152,7 +153,7 @@ panes, and possibly a few pages.
 
 h3. Viewing Your Application
 
-So, we have our SproutCore application built, and we understand the basic
+So, we have our SproutCore TodosOne application built, and we understand the basic
 layout of the files. Let's see what it looks like in the browser!
 
 Inside your project directory type the following command:
@@ -168,7 +169,7 @@ port 4020.
 
 Load up your favorite web browser, and point it to
 "http://localhost:4020/todos_one":http://localhost:4020/todos_one. If all goes
-well, you should see "Welcome to Sproutcore!" in the middle of your screen!
+well, you should see "Welcome to Sproutcore!" in the middle of your screen.
 
 h3. Troubleshooting
 
