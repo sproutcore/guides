@@ -461,7 +461,9 @@ The newTodoField view contains a text field called field and a submit button. Th
  
 h6. todosList
 
-The todosList view follows the SproutCore idiom for wrapping an SC.ListView inside an SC.ScrollView. The contentBinding property of the list is set to TodosThree.todosController. The exampleView property introduces a concept very important for SproutCore: views can be defined in separate javascript files, often held in a views directory, and included where they are needed. exampleView is set to TodosThree.TodoItemView, which necessitates a require statement at the top of the file: require('views/todo_item');. TodoItemView has a checkbox and label. We'll add it when we add the views directory later.
+The todosList view follows the SproutCore idiom for wrapping an SC.ListView inside an SC.ScrollView. The contentBinding property of the list is set to TodosThree.todosController. The exampleView property introduces a concept very important for SproutCore: views can be defined in separate javascript files, often held in a views directory, and included where they are needed. exampleView is set to TodosThree.TodoItemView, which necessitates the require statement at the top of the file: require('views/todo_item');. TodoItemView has a checkbox and label. We'll add it when we add the views directory later.
+
+INFO: The use of require('views/todo_item'); forces a load order. You know that after building, the app will consist of all these various files pulled together, but in some cases you need to insure that contents of one file come before another. The directory hierarchy doesn't matter so much as the file names: the default load order is alphabetical by file name, unless modified by such require statements. You may see a console error to indicate a problem related to a dependency, and you will need to fix by adding such require statements.
 
 h5. _theme.css (resources directory)
 
@@ -674,6 +676,8 @@ TodosThree.Todo = SC.Record.extend({
 
 The Todo model has three properties: timestamp, isCompleted, and title. All are defined using the SC.Record.attr() helper (convenience) function, where builtin javascript types and Sproutcore types may be specified. There is much more that could be done in these property definitions, but for TodosThree, the basic types and their defaults will suffice.
 
+NOTE: Recall discussion of good habits regarding require. The use of require('core'); here is not mandatory, but it helps as a reminder of the loading order when abbot builds your application.
+
 h4. The Controllers Directory
 
 sc-gen does not make a controllers directory, so we'll make it.
@@ -704,9 +708,9 @@ The controllers directory will contain two files:
 h5. todos.js (controllers directory)
 
 <javascript filename="in apps/todos_three/controllers/todos.js">
-require('core');
- 
 // A controller that will provide a list of all of the todos.
+require('core');
+
 TodosThree.todosController = SC.ArrayController.create({
 });
 </javascript>
@@ -714,6 +718,7 @@ TodosThree.todosController = SC.ArrayController.create({
 h5. completed_todos.js (controllers directory)
 
 <javascript filename="in apps/todos_three/controllers/completed_todos.js">
+require('core');
 require('controllers/todos');
 
 TodosThree.completedTodosController = SC.ArrayController.create({
