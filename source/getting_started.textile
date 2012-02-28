@@ -1,4 +1,4 @@
-h2. Getting Started - Welcome to SproutCore
+h2. Getting Started : Part 1
 
 Welcome to SproutCore! This guide is deigned to get you up-and-running as quickly as possible with SproutCore. Today you will:
 
@@ -169,6 +169,13 @@ port 4020.
 Load up your favorite web browser, and point it to
 "http://localhost:4020/todos_one":http://localhost:4020/todos_one. If all goes
 well, you should see "Welcome to Sproutcore!" in the middle of the screen.
+
+h3. Making Changes
+
+Go ahead and open up resources/main_page.js and change the "Welcome to SproutCore!"
+line to say "SproutCore is Awesome!". Save the file and refresh the page in
+your web browser. If the message updates properly, you're ready to move on to
+"part two":/getting_started_2.html of the tutorial.
 
 h3. Troubleshooting
 
