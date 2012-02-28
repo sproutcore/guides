@@ -11,6 +11,11 @@ em,dfn {
   font-style: italic !important;
 }
 
+#mainCol ol {
+  list-style-type: decimal !important;
+  margin-left: 40px !important;
+}
+
 dd img {
   float: left;
   height: 36px;
@@ -182,6 +187,7 @@ dd img {
 #mainCol .headerSection h2 {
   font-size: 225%;
   font-weight: 200;
+  margin-bottom: 10px;
 }
 
 #mainCol .headerSection p {
@@ -234,6 +240,8 @@ div.code_container div.filename {
 
 .note {
   background: #fff9d8 url(../images/graphics/tab-notes.png) no-repeat left top;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .note ins {
@@ -243,7 +251,9 @@ div.code_container div.filename {
 
 
 .info {
-  background: #e5cfec url(../images/graphics/tab-pin.png) no-repeat left top;
+  background: #e5cfec url(../images/graphics/tab-pin.png) no-repeat left top;  
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .info ins {
