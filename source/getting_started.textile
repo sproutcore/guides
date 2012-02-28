@@ -5,7 +5,7 @@ Welcome to SproutCore! This guide is deigned to get you up-and-running as quickl
 * Install SproutCore on your machine.
 * Use the SproutCore tools to generate a basic starting application.
 * Run the SproutCore development server to test your application.
-* Modify the application to ensure your changes are visible.
+* Modify the application to ensure that changes are visible.
 
 endprologue.
 
@@ -49,11 +49,11 @@ sproutcore directory.
 $ mkdir -p ~/development/sproutcore
 </shell>
 
-NOTE: The dollar sign ($) in the code above and below represents your command line prompt and should not
+NOTE: The dollar sign ($) in the code above and below represents the command line prompt and should not
 be typed when executing the commands. Lines without a prompt generally show you the output of the previous
 command.
 
-This directory can be your placed for all things SproutCore. Change directory to ~/development/sproutcore, then
+This directory can serve as a place for all things SproutCore. Change directory to ~/development/sproutcore, then
 create a SproutCore project:
 
 <shell>
@@ -73,7 +73,7 @@ Now you have a getting_started project directory, ~/development/sproutcore/getti
 several SproutCore apps in this project space, but for now, we'll just create a basic "Hello World" application
 to ensure that everything is installed and working properly.
 
-So, go ahead and create the app, first changing directory to your new getting_started project directory:
+So, go ahead and create the app, first changing directory to the new getting_started project directory:
 
 <shell>
 $ cd getting_started
@@ -110,29 +110,29 @@ Your directory structure should now look like the following:
 
 h3. Explanation
 
-When you are building your web application in SproutCore, it is common to have
+When you are building a web application in SproutCore, it is common to have
 a multitude of mini-applications in order to separate out the logic into
 manageable parts. For instance, Apple's iCloud application has mini-apps for
 e-mail, contacts and finding your friends.
 
-This is why there is an *apps/* directory inside of your project directory. It
+This is why there is an *apps/* directory inside of the getting_started project directory. It
 allows you to easily separate distinct applications.
 
-Inside of the *apps/todos_one* directory, you will find the Buildfile for your TodosOne application.
-Just like your project (getting_started) has a *Buildfile*, each application or
+Inside of the *apps/todos_one* directory, you will find the Buildfile for the TodosOne application.
+Just like the project (getting_started) has a *Buildfile*, each application or
 framework that you create should also have a *Buildfile* which specifies it's
 requirements as well as any build-options that you may want to change, such as
 whether or not to minify and compact the code.
 
-Your *core.js* file is the first file that gets loaded, and is where your actual
+The *core.js* file is the first file that gets loaded, and is where the actual
 application is defined. This is also where you usually define any global
-constants that your application might use (which should be very few), or any
+constants that the application might use (which should be very few), or any
 configuration that external libraries might require.
 
-The *main.js* file is usually very basic. It just starts your application. If you
+The *main.js* file is usually very basic. It just starts the application. If you
 are using the Statechart framework (which we will discuss in Part 2), *main.js*
-would simply initialize your statechart. If you open up *main.js* right now,
-you'll see that it simply appends your main view to the screen.
+would simply initialize the statechart. If you open up *main.js* right now,
+you'll see that it simply appends the main view to the screen.
 
 The resources folder contains things like images, stylesheets and views.
 
@@ -141,12 +141,12 @@ CSS theme. This allows you to define different themes for each directory. You
 can learn more about this in the theming guide (TODO link to theming guide).
 
 The *resources/loading.rhtml* file defines the HTML that your users see before
-SproutCore has fully loaded and handed control over to your application. For
+SproutCore has fully loaded and handed control over to the application. For
 now, it just displays a simple loading message.
 
-Lastly, the *resources/main_page.js* file describes the actual user interface of your
+Lastly, the *resources/main_page.js* file describes the actual user interface of the
 application. Open this file now and take a look. Depending upon how complex
-your app becomes, you may decide to have just the mainPage and mainPane, or
+the app becomes, you may decide to have just the mainPage and mainPane, or
 you may decide you want to break it out a bit more by having a loadingPane,
 loggedInPane, loggedOutPane, etc. Most applications have at least a few
 panes, and possibly a few pages.
@@ -156,7 +156,7 @@ h3. Viewing Your Application
 So, we have our SproutCore TodosOne application built, and we understand the basic
 layout of the files. Let's see what it looks like in the browser!
 
-Inside your project directory type the following command:
+Inside the project directory type the following command:
 
 <shell>
 $ sc-server
@@ -169,7 +169,7 @@ port 4020.
 
 Load up your favorite web browser, and point it to
 "http://localhost:4020/todos_one":http://localhost:4020/todos_one. If all goes
-well, you should see "Welcome to Sproutcore!" in the middle of your screen.
+well, you should see "Welcome to Sproutcore!" in the middle of the screen.
 
 h3. Troubleshooting
 
@@ -182,7 +182,7 @@ html_builder could not find a layout file for sproutcore:lib/index.rhtml"_ -
 This error usually means that sc-server could not find SproutCore where it
 thought it should exist. Make sure that you've properly installed the latest
 version of SproutCore; and if you are using RubyGems, try closing and
-re-opening the terminal to ensure that your paths are properly set.
+re-opening the terminal to ensure that paths are properly set.
 
 * _"Browser says 'No matching target'"_ - This is generally caused if you
 misspelled the name of the application in the URL. Make sure that you properly
