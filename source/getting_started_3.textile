@@ -718,7 +718,6 @@ TodosThree.todosController = SC.ArrayController.create({
 h5. completed_todos.js (controllers directory)
 
 <javascript filename="in apps/todos_three/controllers/completed_todos.js">
-require('core');
 require('controllers/todos');
 
 TodosThree.completedTodosController = SC.ArrayController.create({
