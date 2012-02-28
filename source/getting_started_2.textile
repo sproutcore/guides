@@ -1,138 +1,104 @@
 h2. Getting Started: Part 2
 
-After reading this guide you will be able to:
 
-* Define your models using SC.Record.
-* Manage your models using SC.Store.
-* Load data into the store from fixture data.
-* Query your models using SC.Query.
+In Part 1, we walked through the basic pieces of a SproutCore app. In Part 2
+we introduce some of the guiding concepts behind a SproutCore application
+such as views, controllers, and statecharts.
+
+In Part 2, you'll:
+
+* Learn about statecharts and how they can improve your application.
+* Create a new statechart-based SproutCore application.
+* Learn about views and how they should handle events.
+* Learn how to pass those events to the application's statechart.
+* Learn the basics of organizing your statechart in SproutCore.
 
 endprologue.
 
-h3. Prepare the Application
+h3. Why Statecharts?
 
-In the "first part of this guide":getting_started.html, you learned how to build a basic Todo application. You now know how to define your models, views, and controllers, then describe how they interact via bindings. So far, however, you have had no way to persist the information between page refreshes.
+If you've ever built any sizable application, or even small ones for that matter, you've
+probably run into a bug that was caused by some piece of logic that didn't work quite as
+you intended.
 
-The best way to change that is to use SproutCore's Data Store framework to manage records. An instance of +SC.Store+ is responsible for managing the lifecycle of your records. Behind the scenes, the store uses an +SC.DataSource+ to translate retrieve data from your server and persist changes back.
+Perhaps it was an if statement with an invalid test, or some piece of code that changed
+a variable that you weren't expecting to be updated.
 
-If you still have your Todo application from the first part of this guide, use that. If not, you can get a "completed version":https://www.github.com/sproutcore/Todos-Example from GitHub.
+Whatever the sitatution, it was probably caused because you didn't know exactly how your
+app would react under a particular set of conditions. Statecharts aim to solve these issues by
+helping you remove the uncertainty, and by defining exactly what can, and cannot, happen
+within your application.
 
-Now that we'll be using the Data Store, we need to tell SproutCore to include it when your run your application. You can add this dependency in the Buildfile. Just change +config+ line to:
+h3. What is a Statechart?
 
-<ruby filename="Buildfile">
-config :all,¬
-  :required => ["sproutcore/core_foundation", "sproutcore/datastore"], ¬
-  :theme => "sproutcore/empty_theme"
-</ruby>
+A statechart is a simple, nested construct that helps you better organize your code into
+logical, and hierarchical segments called states. Your applications will have many states,
+and each state may have many substates underneath it. Each state can respond to a certain
+set of actions.
 
-h3. Defining the Model
+For instance, your application may have the following two top-level states with the
+following substates and actions:
 
-The first thing that we need to modify in code is +Todos.Todo+. Currently it's just a subclass of +SC.Object+. Let's change it to +SC.Record+:
+# LOADING
+#* _loadingFinishedAction_
+# LOADED
+##* _viewTermsOfServiceAction_
+##* _viewPrivacyPolicyAction_
+### LOGGED_OUT
+###* _loginAction_
+### LOGGED_IN
+###* _createTodoAction_
+###* _completeTodoAction_
+###* _clearTodosAction_
 
-<javascript filename="apps/todos/todos.js">
-Todos.Todo = SC.Record.extend({
-  title: SC.Record.attr(String),
-  isDone: SC.Record.attr(Boolean, { defaultValue: NO })
-});
-</javascript>
+NOTE: Throughout the Getting Started guides, you will see states in ALL_CAPS for the sake of continuity.
+However, the states are standard SC objects and can follow any naming convention you want.  Many developers
+prefer CamelCase (i.e.  MyApp.LoggedInState) while others prefer namespacing their states (i.e.
+MyApp.States.LoggedIn).  Whatever method you choose is fine, just be sure to be consistent so other developers
+can more easily follow your code.
 
-Now we are subclassing +SC.Record+ instead of +SC.Object+. We also add attributes definitions: +title+ always gets converted to a +String+, and +isDone+ becomes a +Boolean+. Additionally +isDone+ will default to +NO+ if you don't provide a different value when creating a new record. If you want to read more about how records work, check out the "records guide":records.html.
+h4. Decoding the Statechart
 
-h3. Creating Fixture Data
+Your application can either be in one of the two top level states: LOADING or LOADED. If it is in one, it
+cannot be in the other. When it's in the LOADING state, the only available action is the
+_loadingFinishedAction_ . The statechart/application should not respond to any other events. Once it moves into
+the LOADED state, it can be in two additional substates: LOGGED_OUT or LOGGED_IN. Again, it can only be in
+one, so when the user is "logged out", the only available action is _loginAction_.
 
-The easiest way to start development without having to connect to a backend server is to use fixtures. With fixtures, we provide an array of data hashes that represent each record. Let's create a few fixtures below the record definition:
+However, notice that the _viewTermsOfServiceAction_ and the _viewPrivacyPolicyAction_ are both available to
+the LOADED state. This means that regardless of whether the user is in the LOGGED_OUT state or the LOGGED_IN
+state, they should be allowed to view the terms of service, or the privacy policy.
 
-<javascript filename="apps/todos/todos.js">
-Todos.Todo.FIXTURES = [
+Once the user has authenticated and logged in, they have three new actions available: the _createTodoAction_,
+the _completeTodoAction_ and the _clearTodosAction_.
 
-    { "guid": "todo-1",
-      "title": "Build my first SproutCore app",
-      "isDone": false },
+h4. How Statecharts Help
 
-    { "guid": "todo-2",
-      "title": "Build a really awesome SproutCore app",
-      "isDone": false },
+As you can see, your application only responds to certain actions (or events) at certain times. This makes it
+much easier to verify that your app is working properly, by ensuring that you handle events exactly when they
+need to be handled, and that even if your user interface allows an action when it shouldn't (like creating a
+todo when you are logged out), the application itself will maintain a consistent state and continue to
+operate.
 
-    { "guid": "todo-3",
-      "title": "Next, the world!",
-      "isDone": false }
-];
-</javascript>
+Additionally, all states may define an _enterState()_ and an _exitState()_ function to help them prepare for
+the new state, or cleanup after themselves. These functions are generally where you show or hide user
+interface components, or set the content on your controllers.
 
-Now we have a model and some sample data, but if you run the application, nothing happens. What's wrong?
+h3. Creating the Statechart
 
-Remember that an instance of +SC.Store+ is responsible for loading records, and that includes fixture data. We will also need to tell the controller exactly which data we want to fetch from that store. Let's start by adding a store to Todos application:
+TODO: Create the statechart app.
 
-<javascript filename="apps/todos/todos.js">
-// add store property to previously created Todos object
-Todos = SC.Application.create({
-  store: SC.Store.create().from(SC.Record.fixtures)
-});
-</javascript>
+h3. Where Views Fit In
 
-We just created a new +SC.Store+ and told it to load its data from the fixtures we previously defined. Later in the development cycle, when you want to connect your application to a real server, you can just change the argument
-of the +from()+ method to something like "MyDataSource".
+TODO: Talk about views.
 
-Let's make sure that everything is working. If you haven't already, run +sc-server+ from your application directory, then open "http://localhost:4020/todos":http://localhost:4020/todos in your web browser. Open your browser's JavaScript console and type the following commands:
+h3. Organizing Your Statechart
 
-<javascript>
-records = Todos.store.find(Todos.Todo)
-records.objectAt(0).get('title')
-// => "Build my first SproutCore app"
-</javascript>
-
-We just used the store's +find()+ method to return all records of a certain type. This will return an instance of +SC.RecordArray+ that contains all of +Todos.Todo+ records the store knows about. If you create a new <code>Todo</code> record in the future, it will automatically be added to the record array. Conversely, if you were to ever destroy one of your <code>Todo</code> objects, it would be automatically removed.
-
-h3. Connecting the Pieces
-
-Now you're ready to bind your controller to the store. In order to do that, you'll need to set +content+ property of +Todos.todoListController+ to a record array that you will fetch with +SC.Store.find()+ function. You can do it in the +SC.ready+ callback, which is already defined at the end of your <code>todos.js</code> file:
-
-<javascript filename="apps/todos/todos.js">
-SC.ready(function() {
-  Todos.mainPane = SC.TemplatePane.append({
-    layerId: 'todos',
-    templateName: 'todos'
-  });
-
-  var todos = Todos.store.find(Todos.Todo);
-  Todos.todoListController.set('content', todos);
-});
-</javascript>
-
-Now refresh the page and you should see that all of the todos from fixtures are displayed in the view.
-
-Next, we need to make sure that the store knows about new records. Update the controller's +createTodo+ method to use <code>SC.Store</code>'s +createRecord+ method:
-
-<javascript filename="apps/todos/todos.js">
-  createTodo: function(title) {
-    Todos.store.createRecord(Todos.Todo, { title: title });
-  },
-</javascript>
-
-Last, our +clearCompletedTodos+ function needs to be updated to utilize the +destroy+ method available on +SC.Record+:
-
-<javascript filename="apps/todos/todos.js">
-
-  // updating existing code
-
-  Todos.todoListController = SC.ArrayController.create({
-
-    // ...
-
-    clearCompletedTodos: function(){
-      this.filterProperty('isDone', true).forEach( function(item) {
-        item.destroy();
-      });
-    },
-
-    // ...
-
-  )};
-</javascript>
-
-Try reloading a page and adding a new todo, marking a few as done and clicking the "Clear Completed Todos" button. It should automatically place new one at the bottom of the list and clear any completed when you click the button. All of the other operations that you perform on records should also work seamlessly, because we use standard +get()+ and +set()+ functions that work for every type of objects in SproutCore.
+TODO: Talk about organization.
 
 h3. Changelog
 
 * May 5, 2011: initial version by "Piotr Sarnacki":credits.html#drogus
 * May 9, 2011: Stylistic edits by "Tom Dale":credits.html#tomdale
+* February 27, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who worked on this task: "Tim Evans":credits.html#tce, "Tyler Keating":credits.html#publickeating, "Maurits Lamers":credits.html#mauritslamers, "Jeff Pittman":credits.html#geojeff, "Topher Fangio":credits.html#topherfangio
+
