@@ -2,7 +2,7 @@ h2. Getting Started: Part 3
 
 In this guide, you will create a SproutCore "to-do" app called TodosThree, learning the following:
 
-* How a more substantial, best-practices app takes shape.
+* How a more substantial, best-practices app takes shape,
 * How an app is organized into views, controllers, a statechart, and models,
 * How bindings and actions coordinate views with a controller system, which includes a statechart,
 * How the controller system ties to models,
