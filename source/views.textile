@@ -162,7 +162,7 @@ Now we can bind our source list to the +SC.ArrayController+ to get a dynamic lis
 <javascript filename="in apps/addressbook/resources/main_page.js">
 topLeftView: SC.SourceListView.design({
   contentValueKey: 'name',
-  contentBinding: 'AddressBook.contactsController.content',
+  contentBinding: 'AddressBook.contactsController.arrangedObjects',
   selectionBinding: 'AddressBook.contactsController.selection'
 })
 </javascript>
