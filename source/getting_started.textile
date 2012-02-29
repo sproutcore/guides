@@ -58,7 +58,7 @@ create a SproutCore project:
 
 <shell>
 $ cd ~/development/sproutcore
-$ sc-gen project getting_started
+$ sproutcore gen project getting_started
 
    ~ Created directory at getting_started
    ~ Created file at getting_started/Buildfile
@@ -73,10 +73,10 @@ Now you have a getting_started project directory, ~/development/sproutcore/getti
 several SproutCore apps in this project space, but for now, we'll just create a basic "Hello World" application
 to ensure that everything is installed and working properly.
 
-So, go ahead and create the app in the getting_started project directory:
+Create the app in the getting_started project directory:
 
 <shell>
-$ sc-gen app TodosOne
+$ sproutcore gen app TodosOne
    ~ Created directory at apps
    ~ Created directory at apps/todos_one
    ~ Created file at apps/todos_one/Buildfile
@@ -158,10 +158,10 @@ layout of the files. Let's see what it looks like in the browser!
 Inside the project directory type the following command:
 
 <shell>
-$ sc-server
+$ sproutcore server
 </shell>
 
-NOTE: If you are attempting to run multiple copies of sc-server at the same
+NOTE: If you are attempting to run multiple copies of *sproutcore server* at the same
 time, you will probably see an error about the port already being in use. If
 so, just re-run the command and add --port 4030 so it will not use the default
 port 4020.
@@ -172,7 +172,7 @@ well, you should see "Welcome to Sproutcore!" in the middle of the screen.
 
 h3. Making Changes
 
-Go ahead and open up resources/main_page.js and change the "Welcome to SproutCore!"
+Open up resources/main_page.js and change the "Welcome to SproutCore!"
 line to say "SproutCore is Awesome!". Save the file and refresh the page in
 your web browser. If the message updates properly, you're ready to move on to
 "Getting Started: Part Two":/getting_started_2.html of the tutorial.
@@ -185,7 +185,7 @@ solutions for getting past them.
 
 * _"RuntimeError at /todos_one
 html_builder could not find a layout file for sproutcore:lib/index.rhtml"_ -
-This error usually means that sc-server could not find SproutCore where it
+This error usually means that *sproutcore server* could not find SproutCore where it
 thought it should exist. Make sure that you've properly installed the latest
 version of SproutCore; and if you are using RubyGems, try closing and
 re-opening the terminal to ensure that paths are properly set.
