@@ -68,10 +68,8 @@ This will be the directory structure for the TodosThree app:
 ***** *completed_todos.js*
 **** *models/*
 ***** *todo.js*
-**** *en/*
-***** *strings.js*
-****** *fixtures/*
-******* *todo.js*
+**** *fixtures/*
+***** *todo.js*
 
 Here is that directory structure again, with descriptions for each item:
 
@@ -105,10 +103,8 @@ Here is that directory structure again, with descriptions for each item:
 ***** *completed_todos.js* | _TodosThree.completedTodosController, another SC.ArrayController_
 **** *models/*
 ***** *todo.js*            | _TodosThree.Todo, the definition of the Todo SC.Record type for the app_
-**** *en/*                 | _An English language data directory_
-***** *strings.js*         | _Definitions of user interface words in English_
-****** *fixtures/* 
-******* *todo.js*          | _Fixtures data (for testing the app without hooking to a database_
+**** *fixtures/* 
+***** *todo.js*            | _Fixtures data (for testing the app without hooking to a database)_
 
 NOTE: SproutCore is a powerful system, challenging to master, but not so difficult to learn, provided that we take it one step at a time.
 
@@ -190,7 +186,7 @@ h5. main.js (app root directory)
 <javascript filename="in apps/todos_three/main.js">
 TodosThree.main = function main() {
   var statechart = TodosThree.statechart;
-  SC.RootResponder.responder.set('defaultResponder', statechart);
+  TodosThree.mainPage.get('field').becomeFirstResponder();
   TodosThree.statechart.initStatechart();
 };
  
@@ -369,6 +365,7 @@ h5. main_page.js (resources directory)
 sc_require('views/todo_item');
 
 TodosThree.mainPage = SC.Page.design({
+  field: SC.outlet('mainPane.newTodoField.field'),
 
   mainPane: SC.MainPane.design({
     childViews: ['header', 'newTodoField', 'todosList', 'footer'],
@@ -756,9 +753,9 @@ Notice the return on the last line in areAllCompleted(). We return the result of
 
 INFO: A computed property used in this way is both a setter and a getter. Once you get the hang of making these you realize the benefit: automatic updating and caching for efficiency.
 
-h4. The En Directory
+h4. The Fixtures Directory
 
-*sproutcore gen* does not make an en directory, nor its fixtures directory. We'll make these.
+*sproutcore gen* does not make a fixtures directory. We'll make it.
 
 Move up to the TodosThree app root directory:
 
@@ -768,38 +765,11 @@ $ pwd
 $ cd ..
 </shell>
 
-Make an en directory:
+Make a fixtures directory:
 
 <shell>
 $ pwd 
     ~/development/sproutcore/getting_started/apps/todos_three/
-$ mkdir en
-$ cd en
-</shell>
-
-h5. strings.js (en directory)
-
-The en directory will contain one file: 
-
-|_. strings.js |
-
-<javascript filename="in apps/todos_three/en/strings.js">
-SC.stringsFor('en', {
-  '_Mark all as done': 'Mark all as done',
-  '_TodosThree (%@)': 'TodosThree (%@)',
-  '_Clear completed todos': 'Clear completed Todos',
-  '_Add': 'Add',
-  '_What needs to be done?': 'What needs to be done?'
-});
-</javascript>
-
-h5. The Fixtures Directory
-
-While still in the en directory, make a fixtures directory:
-
-<shell>
-$ pwd 
-    ~/development/sproutcore/getting_started/apps/todos_three/en/
 $ mkdir fixtures
 $ cd fixtures
 </shell>
@@ -808,7 +778,7 @@ The fixtures directory will contain one file:
 
 |_. todo.js |
 
-h6. todo.js (fixtures directory)
+h5. todo.js (fixtures directory)
 
 <javascript filename="in apps/todos_three/en/fixtures/todo.js">
 sc_require('models/todo');
