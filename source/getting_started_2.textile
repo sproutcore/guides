@@ -86,11 +86,221 @@ interface components, or set the content on your controllers.
 
 h3. Creating the Statechart
 
-TODO: Create the statechart app.
+So let's go ahead and create a statechart-based SproutCore app!
+
+<shell>
+$ cd ~/development/sproutcore/getting_started
+$ sc-gen statechart_app TodosTwo
+   ~ Created directory at apps/todos_two
+   ~ Created file at apps/todos_two/Buildfile
+   ~ Created file at apps/todos_two/core.js
+   ~ Created file at apps/todos_two/main.js
+   ~ Created directory at apps/todos_two/resources
+   ~ Created file at apps/todos_two/resources/_theme.css
+   ~ Created file at apps/todos_two/resources/loading.rhtml
+   ~ Created file at apps/todos_two/resources/main_page.js
+   ~ Created file at apps/todos_two/statechart.js
+   ~ Created directory at apps/todos_two/states
+   ~ Created file at apps/todos_two/states/ready_state.js
+   ~ Created file at apps/todos_two/theme.js
+
+  Your application target is now ready to use!
+</shell>
+
+Your directory structure should now be similar to the following:
+
+* *getting_started/*
+** *Buildfile*
+** *README.md*
+** *apps/*
+*** *todos_one/*
+**** *...*
+*** *todos_two/*
+**** *Buildfile*
+**** *core.js*
+**** *main.js*
+**** *_statechart.js_*
+**** *theme.js*
+**** *resources/*
+***** *_theme.css*
+***** *loading.rhtml*
+***** *main_page.js*
+**** *_states/_*
+***** *_ready_state.js_*
+
+This structure looks almost identical to the standard app, except that you should now see two new files:
+
+* _statechart.js_, and
+* _states/ready_state.js_
+
+The _statechart.js_ file describes your statechart and the initial state that should be entered when the
+statechart is first initialized. Go ahead and open it. You should see the following:
+
+<javascript filename="apps/todos_two/statechart.js">
+TodosTwo.statechart = SC.Statechart.create({
+
+  initialState: 'readyState',
+
+  readyState: SC.State.plugin('TodosTwo.ReadyState'),
+  // someOtherState: SC.State.plugin('TodosTwo.SomeOtherState')
+
+});
+</javascript>
+
+Notice the use of SC.Statechart.create() instead of SC.Statechart.extend().
+Views and models generally use .extend() when you are defining them.
+Controllers and the statechart use .create() because we want an actual object
+to work with. Also note the use of the SC.State.plugin() function. This allows
+you to put your states in a separate file and pull them in later.
+
+Speaking of states, go ahead and open _states/ready_state.js_ and take a look.
+
+<javascript filename="apps/todos_two/states/ready_state.js">
+TodosTwo.ReadyState = SC.State.extend({ 
+
+  enterState: function() {
+    TodosTwo.getPath('mainPage.mainPane').append();
+  },
+ 
+  exitState: function() {
+    TodosTwo.getPath('mainPage.mainPane').remove();
+  }
+
+});
+</javascript>
+
+The TodosTwo.ReadyState is the only state entered, so it just appends the main
+page's main pane. We'll talk about panes and views in just minute, but the key
+here to see is that the _exitState()_ function does the opposite of the
+_enterState()_ function.
 
 h3. Where Views Fit In
 
-TODO: Talk about views.
+So, we've talked about statecharts and you know a little bit about how they
+work. Now, let's talk about how statecharts can clean up your views and make
+your code super-clean.
+
+The _resources/main_page.js file defines the user interface of your application.
+As you build your app, you will modify this file to add your different views. Go
+ahead and edit the file to add a second child view like below:
+
+<javascript filename="apps/todos_two/resources/main_page.js">
+TodosTwo.mainPage = SC.Page.design({
+  
+  mainPane: SC.MainPane.design({
+    childViews: 'labelView labelView2'.w(),
+    
+    labelView: SC.LabelView.design({
+      layout: { centerX: 0, centerY: 0, width: 200, height: 18 },
+      textAlign: SC.ALIGN_CENTER,
+      tagName: "h1", 
+      value: "Welcome to SproutCore!"
+    }),
+    
+    labelView2: SC.LabelView.design({
+      layout: { centerX: 0, centerY: 15, width: 200, height: 18 },
+      textAlign: SC.ALIGN_CENTER,
+      tagName: "h1", 
+      value: "Now we're rolling!"
+    })
+  })
+
+});
+</javascript>
+
+INFO: Throughout the guides we have omitted the code comments for brevity.
+
+NOTE: Astute readers may have notied the use of the _.design()_ method instead of
+_.extend()_. Views generally use _.design()_ in order to work with the graphical
+designer that is being developed for SproutCore. TODO: Is this actually correct?
+
+If you load up "http://localhost:4020/todos_two/":http://localhost:4020/todos_two/
+you should see both labels now; the second one right below the first.
+
+h4. Separating Views
+
+Before we get into using views with statecharts, let's first talk about
+how to arrange your view files. Technically, you can shove all of it into
+<em>main_page.js</em>, but that will get impractical very fast. Instead you should
+separate each view into it's own file. This is easily accomplished by
+using the special _sc_require()_ function, so let's do this now.
+
+Create a new folder in your _apps/todos_two_ folder called 'views':
+
+<shell>
+$ cd ~/development/sproutcore/getting_started
+$ mkdir apps/todos_two/views
+</shell>
+
+Next, let's separate each view into it's own file inside the views directory.
+Make sure your files have the following content and are located in the proper
+directory:
+
+<javascript filename="apps/todos_two/resources/main_page.js">
+sc_require('views/welcome');
+sc_require('views/rolling');
+
+TodosTwo.mainPage = SC.Page.design({
+
+  mainPane: SC.MainPane.design({
+    childViews: 'welcomeView rollingView'.w(),
+    
+    welcomeView: TodosTwo.WelcomeView.design(),
+    rollingView: TodosTwo.RollingView.design()
+  })
+
+});
+</javascript>
+
+<javascript filename="apps/todos_two/views/welcome.js">
+TodosTwo.WelcomeView = SC.LabelView.design({
+  layout: { centerX: 0, centerY: 0, width: 200, height: 18 },
+  textAlign: SC.ALIGN_CENTER,
+  tagName: "h1", 
+  value: "Welcome to SproutCore!"
+});
+</javascript>
+
+<javascript filename="apps/todos_two/views/rolling.js">
+TodosTwo.RollingView = SC.LabelView.design({
+  layout: { centerX: 0, centerY: 15, width: 200, height: 18 },
+  textAlign: SC.ALIGN_CENTER,
+  tagName: "h1", 
+  value: "Now we're rolling!"
+});
+</javascript>
+
+Above, you'll notice a few things:
+
+# Since we reference TodosTwo.WelcomeView and TodosTwo.RollingView in the
+<em>main_page.js</em> file, we must use _sc_require()_ at the top to tell
+SproutCore that it should load those files first. This ensures that all
+of the files are included in the proper order.
+# The file path used in _sc_require()_ is relative to the application's
+directory, not where the file is located.
+
+If you refresh your page, everything should look exactly as it did before,
+except that your code is cleaner and more manageable.
+
+h4. Handling Events
+
+So, now that we have our files nicely separated, let's talk about handling
+events! Let's watch for the mouseDown event in our TodosTwo.RollingView:
+
+<javascript filename="apps/todos_two/views/rolling.js">
+TodosTwo.RollingView = SC.LabelView.design({
+  layout: { centerX: 0, centerY: 15, width: 200, height: 18 },
+  textAlign: SC.ALIGN_CENTER,
+  tagName: "h1", 
+  value: "Now we're rolling!",
+  
+  mouseDown: function(evt) {
+    var someParam = "Woot!";
+
+    TodosTwo.statechart.sendAction('doSomeFunAction', someParam);
+  }
+});
+</javascript>
 
 h3. Organizing Your Statechart
 
