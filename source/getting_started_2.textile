@@ -223,7 +223,7 @@ TodosTwo.mainPage = SC.Page.design({
 });
 </javascript>
 
-INFO: Throughout the guides we have omitted the code comments for brevity.
+INFO: Throughout the Getting Started guides we have minimized in-code comments for brevity.
 
 NOTE: You may have observed the use of the _.design()_ method instead of
 _.extend()_. Views generally use _.design()_ in order to work with the graphical
