@@ -169,7 +169,6 @@ TodosThree = SC.Application.create(
   VERSION: '0.1.0',
  
   store: SC.Store.create().from(SC.Record.fixtures),
-  storeType: 'FromFixtures'
 });
 </javascript>
 
@@ -178,8 +177,6 @@ The code in core.js sets up TodosThree as an instance of SC.Application.
 The TodosThree namespace is TodosThree: TodosThree.mainPage, TodosThree.todosController, etc.
 
 A data store is created from SC.Record.fixtures, which is a way to simulate a real database. This is done by reading JSON-formatted sample data given from a fixtures javascript file, which we'll add in a later step. 
-
-The storeType property is set to 'FromFixtures'.
 
 h5. main.js (app root directory)
 
@@ -247,10 +244,10 @@ h5. STARTING State
 <javascript filename="in apps/todos_three/states/starting.js">
 TodosThree.STARTING = SC.State.design({
   enterState: function() {
-    if (TodosThree.get('storeType') === 'FromSomeBackendDatasource') {
-      this.gotoState('LOGGING_IN');
-    } else if (TodosThree.get('storeType') === 'FromFixtures') {
+    if (SC.instanceOf(TodosThree.store.dataSource, SC.FixturesDataSource)) {
       this.gotoState('LOADING_DATA');
+    } else {
+      this.gotoState('LOGGING_IN');
     }
   },
  
@@ -262,7 +259,7 @@ TodosThree.STARTING = SC.State.design({
 
 NOTE: You have seen different conventions for naming states. The style used here makes the state names prominent. Some people like to camel-case the state names.
 
-When the statechart is initialized in the TodosThree.main() function, program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the storeType. storeType was set as 'FromFixtures' in core.js, where the data store is instantiated. You see in the if-else block of STARTING/enterState() that, because storeType === 'FromFixtures', the gotoState() call moves control directly to the LOADING_DATA state, not the LOGGING_IN state, which we won't use in the TodosThree app. 
+When the statechart is initialized in the TodosThree.main() function, program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the type of dataSource set on the store. Because it is an instance of FixturesDataSource, the gotoState() call moves control directly to the LOADING_DATA state, not the LOGGING_IN state, which we won't use in the TodosThree app. 
 
 h5. LOGGING_IN State
 
