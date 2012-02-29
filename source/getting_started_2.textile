@@ -56,7 +56,7 @@ Consider a statechart application with the following top-level states, substates
 
 In the list above, the states are in ALL-CAPS, the actions are in italics.
 
-NOTE: Through most of the Getting Started guides, you will see states in ALL_CAPS for the sake of continuity.
+INFO: Through most of the Getting Started guides, you will see states in ALL_CAPS for the sake of continuity.
 However, states are standard SC objects and can follow any naming convention you want.  Many developers
 prefer CamelCase (i.e., MyApp.LoggedInState) while others prefer namespacing their states (i.e.,
 MyApp.States.LoggedIn).  Some prefer to use verb-style, vs. noun-style state names. Whatever method you 
