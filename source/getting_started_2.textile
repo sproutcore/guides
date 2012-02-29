@@ -10,8 +10,8 @@ In Part 2, you'll:
 * Learn about statecharts and how they can improve your application.
 * Create a new statechart-based SproutCore application.
 * Learn about views and how they should handle events.
+* Learn how to separate your views with the use of _sc_require()_.
 * Learn how to pass those events to the application's statechart.
-* Learn the basics of organizing your statechart in SproutCore.
 
 endprologue.
 
@@ -180,7 +180,7 @@ So, we've talked about statecharts and you know a little bit about how they
 work. Now, let's talk about how statecharts can clean up your views and make
 your code super-clean.
 
-The _resources/main_page.js file defines the user interface of your application.
+The _resources/main_page.js_ file defines the user interface of your application.
 As you build your app, you will modify this file to add your different views. Go
 ahead and edit the file to add a second child view like below:
 
@@ -215,7 +215,7 @@ _.extend()_. Views generally use _.design()_ in order to work with the graphical
 designer that is being developed for SproutCore. TODO: Is this actually correct?
 
 If you load up "http://localhost:4020/todos_two/":http://localhost:4020/todos_two/
-you should see both labels now; the second one right below the first.
+in your browser, you should see both labels now; the second one right below the first.
 
 h4. Separating Views
 
@@ -302,9 +302,69 @@ TodosTwo.RollingView = SC.LabelView.design({
 });
 </javascript>
 
-h3. Organizing Your Statechart
+Next, we need to handle the action in the appropriate state.
 
-TODO: Talk about organization.
+When the statechart is attempting to handle an action, it will first ask the
+current state to handle the action. If the state cannot handle it, the
+statechart will ask the current state's parent state to handle the event.  It
+continues in the manner until it either finds an ancestore state which can
+handle the event, or it will log a warning to let the developer know that no
+state was able to handle it. You can see this warning, as well as other
+informational messages (such as state transitions) by turning on tracing on the
+statechart.
+
+Let's do that now:
+
+<javascript filename="apps/todos_two/statechart.js">
+TodosTwo.statechart = SC.Statechart.create({
+    
+  trace: YES,   // <-- Add this line
+    
+  initialState: 'readyState',
+    
+  readyState: SC.State.plugin('TodosTwo.ReadyState')
+  
+});
+</javascript>
+
+Finally, let's make our TodosTwo.ReadyState handle the _someFunAction_ action:
+
+<javascript filename="appps/todos_two/states/ready_state.js">
+TodosTwo.ReadyState = SC.State.extend({
+  
+  enterState: function() {
+    TodosTwo.getPath('mainPage.mainPane').append();
+  },
+    
+  exitState: function() {
+    TodosTwo.getPath('mainPage.mainPane').remove();
+  },
+  
+  someFunAction: function(someParam) {
+    alert(someParam);
+  }
+
+});
+</javascript>
+
+Save your files and refresh the page. When you click on the "Now we're rolling!"
+label, you should see an alert. If you look at the console output, you can also
+see the event being handled by the statechart, as well as the initialization and
+the transition to the readyState.
+
+h3. Moving Forward
+
+Now that you have a solid understanding of how an application should be structured
+to create maintainable code, you're ready to move on to creating a full-scale
+SproutCore app!
+
+"Part 3":/getting_started_3.html will introduce you to the full Todos application
+and walk you through the process of building it from scratch. You will learn about
+models, controllers and how they tie in with the statechart and views you already
+love.
+
+So go grab a hot cup of joe, and dive in to
+"Getting Started: Part 3":/getting_started_3.html.
 
 h3. Changelog
 

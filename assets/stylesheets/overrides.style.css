@@ -14,6 +14,7 @@ em,dfn {
 #mainCol ol {
   list-style-type: decimal !important;
   margin-left: 40px !important;
+  margin-bottom: 10px;
 }
 
 dd img {

@@ -175,7 +175,7 @@ h3. Making Changes
 Go ahead and open up resources/main_page.js and change the "Welcome to SproutCore!"
 line to say "SproutCore is Awesome!". Save the file and refresh the page in
 your web browser. If the message updates properly, you're ready to move on to
-"part two":/getting_started_2.html of the tutorial.
+"Getting Started: Part Two":/getting_started_2.html of the tutorial.
 
 h3. Troubleshooting
 

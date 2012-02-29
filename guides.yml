@@ -87,13 +87,13 @@ index:
   Start Here:
     - title: "Getting Started: Part 1"
       url: getting_started
-      text: "Learn how to build a robust web app using the power of SproutCore along with the technologies you already know, like HTML and CSS."
+      text: "Learn how to get your first SproutCore app up-and-running."
     - title: "Getting Started: Part 2"
       url: getting_started_2
-      text: "Connect the application you wrote in Part 1 to SproutCore's data store, and learn how to test with fixture data."
-    - title: Build Tools
-      url: build_tools
-      text: "Discover the many deployment advantages and time saving development benefits of SproutCore's build tools."
+      text: "Spring forward with the information you learned in Part 1 and learn about statecharts and views."
+    - title: "Getting Started: Part 3"
+      url: getting_started_3
+      text: "Expand upon your knowledge from the first two guides, and build a full-scale Todos application."
     - title: Core Concepts
       url: core_concepts
       text: "In this guide, we will touch on many of the core concepts of SproutCore like bindings and the run loop. We'll cover just enough to get you going with out getting bogged down in the details. If you want to learn more, take a look at the detailed overviews of these concepts in the \"Digging Deeper\" section."
