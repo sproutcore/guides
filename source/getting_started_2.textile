@@ -1,17 +1,17 @@
 h2. Getting Started: Part 2
 
 
-In Part 1, we walked through the basic pieces of a SproutCore app. In Part 2
+In Part 1, we walked through the basic elements of a SproutCore app. In Part 2
 we introduce some of the guiding concepts behind a SproutCore application
 such as views, controllers, and statecharts.
 
-In Part 2, you'll:
+In Part 2, you will:
 
 * Learn about statecharts and how they can improve your application.
 * Create a new statechart-based SproutCore application.
 * Learn about views and how they should handle events.
-* Learn how to separate your views with the use of _sc_require()_.
-* Learn how to pass those events to the application's statechart.
+* Learn how to separate views in individual files with the use of _sc_require()_.
+* Learn how to pass events to the application's statechart.
 
 endprologue.
 
@@ -21,68 +21,77 @@ If you've ever built any sizable application, or even small ones for that matter
 probably run into a bug that was caused by some piece of logic that didn't work quite as
 you intended.
 
-Perhaps it was an if statement with an invalid test, or some piece of code that changed
-a variable that you weren't expecting to be updated.
+Perhaps it was an if statement with an invalid test expression, or some piece of code that changed
+a variable that you weren't expecting to be updated. Some bugs happen because you don't understand
+how your app would react under a particular set of conditions.
 
-Whatever the sitatution, it was probably caused because you didn't know exactly how your
-app would react under a particular set of conditions. Statecharts aim to solve these issues by
-helping you remove the uncertainty, and by defining exactly what can, and cannot, happen
-within your application.
+Statecharts help reduce uncertainty, by defining more explicitly what can, and cannot, happen
+within your application. You think of discrete states, such as "showing login panel." You think
+of transitions between states -- for example, what should happen as the login panel is shown, what 
+could happen while it is showing, and what should happen when it is taken down.
 
 h3. What is a Statechart?
 
 A statechart is a simple, nested construct that helps you better organize your code into
-logical, and hierarchical segments called states. Your applications will have many states,
-and each state may have many substates underneath it. Each state can respond to a certain
-set of actions.
+logical, and hierarchical states. Your applications will have many states,
+and each state may have many substates within it. Each state can respond to a certain
+set of actions, the name for events associated with a statechart.
 
-For instance, your application may have the following two top-level states with the
-following substates and actions:
+NOTE: Semantics: action === "event," for a statechart. event, technically === mouseDown, etc. It can
+help to make that specific distinction for a SproutCore app. In discussions, clarify when needed.
+
+Consider a statechart application with the following top-level states, substates, and actions:
 
 # LOADING
-#* _loadingFinishedAction_
+#* _loadingFinished_
 # LOADED
-##* _viewTermsOfServiceAction_
-##* _viewPrivacyPolicyAction_
+##* _viewTermsOfService_
+##* _viewPrivacyPolicy_
 ### LOGGED_OUT
-###* _loginAction_
+###* _login_
 ### LOGGED_IN
-###* _createTodoAction_
-###* _completeTodoAction_
-###* _clearTodosAction_
+###* _createTodo_
+###* _completeTodo_
+###* _clearTodos_
 
-NOTE: Throughout the Getting Started guides, you will see states in ALL_CAPS for the sake of continuity.
-However, the states are standard SC objects and can follow any naming convention you want.  Many developers
-prefer CamelCase (i.e.  MyApp.LoggedInState) while others prefer namespacing their states (i.e.
-MyApp.States.LoggedIn).  Whatever method you choose is fine, just be sure to be consistent so other developers
-can more easily follow your code.
+In the list above, the states are in ALL-CAPS, the actions are in italics.
+
+NOTE: Through most of the Getting Started guides, you will see states in ALL_CAPS for the sake of continuity.
+However, states are standard SC objects and can follow any naming convention you want.  Many developers
+prefer CamelCase (i.e., MyApp.LoggedInState) while others prefer namespacing their states (i.e.,
+MyApp.States.LoggedIn).  Some prefer to use verb-style, vs. noun-style state names. Whatever method you 
+choose is fine, just be consistent, so you, and other developers, can more easily follow your code.
+
+NOTE: A state is a state is a state. A substate is a state. (You can always use the term state; when you
+use the term substate, the reference is relative to a parent state).
 
 h4. Decoding the Statechart
 
-Your application can either be in one of the two top level states: LOADING or LOADED. If it is in one, it
-cannot be in the other. When it's in the LOADING state, the only available action is the
-_loadingFinishedAction_ . The statechart/application should not respond to any other events. Once it moves into
-the LOADED state, it can be in two additional substates: LOGGED_OUT or LOGGED_IN. Again, it can only be in
-one, so when the user is "logged out", the only available action is _loginAction_.
+In our example here, the application can be in one of the two top level states: LOADING or LOADED. If it is in 
+one, it cannot be in the other. When it is in the LOADING state, the only available action is the 
+_loadingFinished_ action. The statechart/application should not respond to any other events. Once it moves into
+the LOADED state, it can be in two additional states, substates of the LOADED state: LOGGED_OUT or LOGGED_IN. 
+Again, it can only be in one at a given time, so when the user is "logged out", after the application has 
+loaded, the only available action is the _login_ action.
 
-However, notice that the _viewTermsOfServiceAction_ and the _viewPrivacyPolicyAction_ are both available to
+However, notice that the _viewTermsOfService_ action and the _viewPrivacyPolicy_ action are both available in
 the LOADED state. This means that regardless of whether the user is in the LOGGED_OUT state or the LOGGED_IN
-state, they should be allowed to view the terms of service, or the privacy policy.
+state, they should be allowed to view the terms of service or the privacy policy.
 
-Once the user has authenticated and logged in, they have three new actions available: the _createTodoAction_,
-the _completeTodoAction_ and the _clearTodosAction_.
+Once the user has authenticated and logged in, they have three actions available: the _createTodo_,
+_completeTodo_ and _clearTodos_ actions.
 
 h4. How Statecharts Help
 
-As you can see, your application only responds to certain actions (or events) at certain times. This makes it
-much easier to verify that your app is working properly, by ensuring that you handle events exactly when they
-need to be handled, and that even if your user interface allows an action when it shouldn't (like creating a
-todo when you are logged out), the application itself will maintain a consistent state and continue to
-operate.
+As you can see, your application only responds to certain actions at certain times. This makes it
+much easier to verify that your app is working properly, by ensuring that events are handled exactly when they
+need to be handled, and that even if, because of a bug in the design, your user interface allows an action when 
+it shouldn't (like creating a todo when you are logged out), the application itself will maintain a consistent 
+state and continue to operate.
 
 Additionally, all states may define an _enterState()_ and an _exitState()_ function to help them prepare for
-the new state, or cleanup after themselves. These functions are generally where you show or hide user
-interface components, or set the content on your controllers.
+the new state, and to clean up after themselves. Generally, these functions are where you show or hide user
+interface components, or set the content of controllers.
 
 h3. Creating the Statechart
 
@@ -90,7 +99,7 @@ So let's go ahead and create a statechart-based SproutCore app!
 
 <shell>
 $ cd ~/development/sproutcore/getting_started
-$ sc-gen statechart_app TodosTwo
+$ sproutcore gen statechart_app TodosTwo
    ~ Created directory at apps/todos_two
    ~ Created file at apps/todos_two/Buildfile
    ~ Created file at apps/todos_two/core.js
@@ -107,7 +116,7 @@ $ sc-gen statechart_app TodosTwo
   Your application target is now ready to use!
 </shell>
 
-Your directory structure should now be similar to the following:
+The directory structure is:
 
 * *getting_started/*
 ** *Buildfile*
@@ -128,13 +137,15 @@ Your directory structure should now be similar to the following:
 **** *_states/_*
 ***** *_ready_state.js_*
 
-This structure looks almost identical to the standard app, except that you should now see two new files:
+This structure looks almost identical to the standard app, except that you now see two new files,
+a _statechart.js_ file in the application root directory, and a new _states_ directory with one state file,
+_ready_state.js_:
 
 * _statechart.js_, and
 * _states/ready_state.js_
 
 The _statechart.js_ file describes your statechart and the initial state that should be entered when the
-statechart is first initialized. Go ahead and open it. You should see the following:
+statechart is first initialized. Open it, and you should see the following:
 
 <javascript filename="apps/todos_two/statechart.js">
 TodosTwo.statechart = SC.Statechart.create({
@@ -147,13 +158,16 @@ TodosTwo.statechart = SC.Statechart.create({
 });
 </javascript>
 
-Notice the use of SC.Statechart.create() instead of SC.Statechart.extend().
-Views and models generally use .extend() when you are defining them.
-Controllers and the statechart use .create() because we want an actual object
-to work with. Also note the use of the SC.State.plugin() function. This allows
-you to put your states in a separate file and pull them in later.
+NOTE: This example uses CamelCase state names.
 
-Speaking of states, go ahead and open _states/ready_state.js_ and take a look.
+Note the use of SC.Statechart.create(), instead of SC.Statechart.extend().  Views and models generally 
+use .extend() when you are defining them, because elsewhere in the system, instantiation of objects happens.
+Controllers and the statechart use .create() because we need to directly create objects to work with. 
+
+Also note the use of the SC.State.plugin() function. This allows you to put your states in separate files in a
+states directory.
+
+Open _states/ready_state.js_ and take a look:
 
 <javascript filename="apps/todos_two/states/ready_state.js">
 TodosTwo.ReadyState = SC.State.extend({ 
@@ -170,19 +184,20 @@ TodosTwo.ReadyState = SC.State.extend({
 </javascript>
 
 The TodosTwo.ReadyState is the only state entered, so it just appends the main
-page's main pane. We'll talk about panes and views in just minute, but the key
-here to see is that the _exitState()_ function does the opposite of the
-_enterState()_ function.
+page's main pane. We'll talk about panes and views in just a minute. The key
+here is to see that the _exitState()_ function does the opposite of the what the
+_enterState()_ function does.
 
 h3. Where Views Fit In
 
-So, we've talked about statecharts and you know a little bit about how they
-work. Now, let's talk about how statecharts can clean up your views and make
+We've talked about statecharts, so you know a little bit about how they
+work. Let's talk about how statecharts can clean up your views and make
 your code super-clean.
 
-The _resources/main_page.js_ file defines the user interface of your application.
-As you build your app, you will modify this file to add your different views. Go
-ahead and edit the file to add a second child view like below:
+The _resources/main_page.js_ file defines the main user interface of your application.
+As you build your app, you will modify this file to add different views. 
+
+Edit the file to add a second child view, labelView2:
 
 <javascript filename="apps/todos_two/resources/main_page.js">
 TodosTwo.mainPage = SC.Page.design({
@@ -210,7 +225,7 @@ TodosTwo.mainPage = SC.Page.design({
 
 INFO: Throughout the guides we have omitted the code comments for brevity.
 
-NOTE: Astute readers may have notied the use of the _.design()_ method instead of
+NOTE: You may have observed the use of the _.design()_ method instead of
 _.extend()_. Views generally use _.design()_ in order to work with the graphical
 designer that is being developed for SproutCore. TODO: Is this actually correct?
 
@@ -233,7 +248,7 @@ $ mkdir apps/todos_two/views
 </shell>
 
 Next, let's separate each view into it's own file inside the views directory.
-Make sure your files have the following content and are located in the proper
+Make sure the files have the following content and are located in the views
 directory:
 
 <javascript filename="apps/todos_two/resources/main_page.js">
@@ -278,14 +293,15 @@ SproutCore that it should load those files first. This ensures that all
 of the files are included in the proper order.
 # The file path used in _sc_require()_ is relative to the application's
 directory, not where the file is located.
+# The reference in _sc_require()_ has the filename sans the .js extension.
 
 If you refresh your page, everything should look exactly as it did before,
-except that your code is cleaner and more manageable.
+but now your code is cleaner and more manageable.
 
 h4. Handling Events
 
-So, now that we have our files nicely separated, let's talk about handling
-events! Let's watch for the mouseDown event in our TodosTwo.RollingView:
+Let's turn our attention to events! Here we add an event to watch for mouseDown 
+in our TodosTwo.RollingView:
 
 <javascript filename="apps/todos_two/views/rolling.js">
 TodosTwo.RollingView = SC.LabelView.design({
@@ -297,23 +313,23 @@ TodosTwo.RollingView = SC.LabelView.design({
   mouseDown: function(evt) {
     var someParam = "Woot!";
 
-    TodosTwo.statechart.sendAction('doSomeFunAction', someParam);
+    TodosTwo.statechart.sendAction('proveIt', someParam);
   }
 });
 </javascript>
 
-Next, we need to handle the action in the appropriate state.
+We associated a _proveIt_ action with the mouseDown event, and must handle this action 
+in the appropriate state.
 
-When the statechart is attempting to handle an action, it will first ask the
-current state to handle the action. If the state cannot handle it, the
-statechart will ask the current state's parent state to handle the event.  It
-continues in the manner until it either finds an ancestore state which can
-handle the event, or it will log a warning to let the developer know that no
-state was able to handle it. You can see this warning, as well as other
-informational messages (such as state transitions) by turning on tracing on the
-statechart.
+The statechart has a property for the _current_ state. When the statechart recieves an 
+action, it will first ask the current state to handle it. If the current state cannot 
+handle it, the statechart will ask the current state's parent state to handle the event.
+Attempts continue in this manner until either an ancestor state is found that can handle 
+the event, or it will log a warning for the developer.  You can see this warning, as well 
+as other informational messages (such as for state transitions), by turning on tracing on 
+the statechart.
 
-Let's do that now:
+Do that now:
 
 <javascript filename="apps/todos_two/statechart.js">
 TodosTwo.statechart = SC.Statechart.create({
@@ -327,7 +343,8 @@ TodosTwo.statechart = SC.Statechart.create({
 });
 </javascript>
 
-Finally, let's make our TodosTwo.ReadyState handle the _someFunAction_ action:
+Let's make our TodosTwo.ReadyState handle the _proveIt_ action that was defined on
+the mouseDown event in TodosTwo.RollingView above:
 
 <javascript filename="appps/todos_two/states/ready_state.js">
 TodosTwo.ReadyState = SC.State.extend({
@@ -340,7 +357,8 @@ TodosTwo.ReadyState = SC.State.extend({
     TodosTwo.getPath('mainPage.mainPane').remove();
   },
   
-  someFunAction: function(someParam) {
+  // Prove that we are rolling!
+  proveIt: function(someParam) {
     alert(someParam);
   }
 
@@ -349,26 +367,24 @@ TodosTwo.ReadyState = SC.State.extend({
 
 Save your files and refresh the page. When you click on the "Now we're rolling!"
 label, you should see an alert. If you look at the console output, you can also
-see the event being handled by the statechart, as well as the initialization and
-the transition to the readyState.
+see the tracing reports, with the event being handled by the statechart, as well 
+as the initialization and the transition to the readyState.
 
 h3. Moving Forward
 
-Now that you have a solid understanding of how an application should be structured
-to create maintainable code, you're ready to move on to creating a full-scale
-SproutCore app!
+You are now ready to move on to creating a full-scale SproutCore app!
 
-"Part 3":/getting_started_3.html will introduce you to the full Todos application
-and walk you through the process of building it from scratch. You will learn about
-models, controllers and how they tie in with the statechart and views you already
-love.
+"Part 3":/getting_started_3.html will introduce you to the full Todos application,
+called TodosThree, and walk you through the process of building it from scratch. 
+You will learn about models, controllers and how they tie in with the statechart 
+and views.
 
-So go grab a hot cup of joe, and dive in to
-"Getting Started: Part 3":/getting_started_3.html.
+So go grab a hot cup of joe, or something else to steel your resolve (Joking. You
+think?), and dive in to "Getting Started: Part 3":/getting_started_3.html.
 
 h3. Changelog
 
 * May 5, 2011: initial version by "Piotr Sarnacki":credits.html#drogus
 * May 9, 2011: Stylistic edits by "Tom Dale":credits.html#tomdale
-* February 27, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who worked on this task: "Tim Evans":credits.html#tce, "Tyler Keating":credits.html#publickeating, "Maurits Lamers":credits.html#mauritslamers, "Jeff Pittman":credits.html#geojeff, "Topher Fangio":credits.html#topherfangio
+* February 29, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who worked on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Tyler Keating":credits.html#publickeating, "Maurits Lamers":credits.html#mauritslamers, "Jeff Pittman":credits.html#geojeff
 
