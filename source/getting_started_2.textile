@@ -268,7 +268,7 @@ TodosTwo.mainPage = SC.Page.design({
 </javascript>
 
 <javascript filename="apps/todos_two/views/welcome.js">
-TodosTwo.WelcomeView = SC.LabelView.design({
+TodosTwo.WelcomeView = SC.LabelView.extend({
   layout: { centerX: 0, centerY: 0, width: 200, height: 18 },
   textAlign: SC.ALIGN_CENTER,
   tagName: "h1", 
@@ -277,7 +277,7 @@ TodosTwo.WelcomeView = SC.LabelView.design({
 </javascript>
 
 <javascript filename="apps/todos_two/views/rolling.js">
-TodosTwo.RollingView = SC.LabelView.design({
+TodosTwo.RollingView = SC.LabelView.extend({
   layout: { centerX: 0, centerY: 15, width: 200, height: 18 },
   textAlign: SC.ALIGN_CENTER,
   tagName: "h1", 
