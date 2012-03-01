@@ -12,9 +12,16 @@ endprologue.
 
 h3. Following Along
 
-You have learned in previous guides how to use *sproutcore gen* to make a project directory and to create apps in the project apps directory. You have learned how to run *sproutcore server* in the project directory, and how to view apps in a local browser at localhost:4020/. You have learned about SproutCore app concepts, including the use of a buildfile and of views and a statechart. We will build on that foundation to produce a TodosThree app with components of a best-practices SproutCore app.
+You have learned in previous guides how to use *sproutcore gen* to make a project directory and to create apps
+in the project apps directory. You have learned how to run *sproutcore server* in the project directory, and
+how to view apps in a local browser at localhost:4020/. You have learned about SproutCore app concepts,
+including the use of a buildfile and of views and a statechart. We will build on that foundation to produce a
+TodosThree app with components of a best-practices SproutCore app.
 
-You would benefit from carefully following the instructions in this guide to create directories, to type in code (or to copy and paste it), because it will register in your mind solidly. The presentation is written as if you would add the app in this manual fashion, although you surely might prefer instead the following options to get the finished source code:
+You would benefit from carefully following the instructions in this guide to create directories, to type in
+code (or to copy and paste it), because it will register in your mind solidly. The presentation is written as
+if you would add the app in this manual fashion, although you surely might prefer instead the following
+options to get the finished source code:
 
 * download a compressed file and explode it in your project's apps/ directory. [TODO] link
 
@@ -24,17 +31,25 @@ To see TodosThree in action, click "here":http://github/sproutcore/sproutcore. [
 
 There is a screencast available on "Vimeo":http://vimeo.com. [TODO] [ATTN: geojeff, who will use ScreenFlow to make a new one]
 
-INFO: This guide attempts to strike a matter-of-fact tone that doesn't sugar-coat complexity too much, but tries not to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references to the numeric heading number for relevant sections of this guide page.
+INFO: This guide attempts to strike a matter-of-fact tone that doesn't sugar-coat complexity too much, but
+tries not to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references
+to the numeric heading number for relevant sections of this guide page.
 
 h3. Creating A TodosThree Application
 
 Here is a screen capture of the completed application: [TODO] need TodosThree screen capture image here.
 
-The TodosThree app looks simple. It has toolbars at the top and bottom. It has a text field near the top, where a user types in a new todo. It has a list of already added todos. Even such a simple-looking app like this involves the use of intelligent SproutCore programming.
+The TodosThree app looks simple. It has toolbars at the top and bottom. It has a text field near the top,
+where a user types in a new todo. It has a list of already added todos. Even such a simple-looking app like
+this involves the use of intelligent SproutCore programming.
 
-We can describe these intelligent aspects, generally, as the "system of connections" or, in the manner an electrician would use, as the "wiring diagram." SproutCore apps have _bindings_ between various components of the user interface and those of underlying machinery, the normal complement of events in a web app, and _actions_ coordinated with _states_. 
+We can describe these intelligent aspects, generally, as the "system of connections" or, in the manner an
+electrician would use, as the "wiring diagram." SproutCore apps have _bindings_ between various components of
+the user interface and those of underlying machinery, the normal complement of events in a web app, and
+_actions_ coordinated with _states_. 
 
-You see the components of the user interface in the screen capture: checkboxes, buttons, text fields, list views, etc. We'll be looking at the underlying machinery.
+You see the components of the user interface in the screen capture: checkboxes, buttons, text fields, list
+views, etc. We'll be looking at the underlying machinery.
 
 This will be the directory structure for the TodosThree app:
 
@@ -87,7 +102,7 @@ Here is that directory structure again, with descriptions for each item:
 ***** *ready.js*                       | _A single state, the READY state, which plugs in to the app's statechart_
 ***** *logging_in.js*                  | _The LOGGING_IN state (not used in TodosThree, but there for illustration)_
 ***** *showing_app.js*                 | _The SHOWING_APP state, the general state for responding to user actions_
-***** *destroying_completed_todos.js*  | _The DESTROYING_COMPLETED_TODOS state_
+***** *showing_destroy_confirmation.js*| _The SHOWING_DESTROY_CONFIRMATION state_
 **** *resources/*
 ***** *loading.rhtml*                  | _A short html file to show when the app is loading_
 ***** *main_page.js*                   | _The TodosThree.mainPage view_
@@ -106,9 +121,11 @@ Here is that directory structure again, with descriptions for each item:
 **** *fixtures/* 
 ***** *todo.js*                        | _Fixtures data (for testing the app without hooking to a database)_
 
-NOTE: SproutCore is a powerful system, challenging to master, but not so difficult to learn, provided that we take it one step at a time.
+NOTE: SproutCore is a powerful system, challenging to master, but not so difficult to learn, provided that we
+take it one step at a time.
 
-We can use the *sproutcore gen* command again, to create part of the directory structure shown above for our TodosThree app:
+We can use the *sproutcore gen* command again, to create part of the directory structure shown above for our
+TodosThree app:
 
 <shell>
 $ pwd (This command means "print working directory" -- it shows you where you are)
@@ -134,16 +151,19 @@ Your application target is now ready to use!
 
 </shell>
 
-We will work through the app, directory by directory, file by file, to edit those files and to add other needed directories and files. 
+We will work through the app, directory by directory, file by file, to edit those files and to add other
+needed directories and files. 
 
 h4. The App Root Directory
 
-There are four .js files in the TodosThree app root directory (~/development/sproutcore/getting_started/apps/todos_three/):
+There are four .js files in the TodosThree app root directory
+(~/development/sproutcore/getting_started/apps/todos_three/):
 
 |_. theme.js |_. core.js |_. main.js |_. statechart.js |
 
 
-Edit these files to assure their content matches that given in the following sections (comments are not present in this document):
+Edit these files to assure their content matches that given in the following sections (comments are not
+present in this document):
 
 h5. theme.js (app root directory)
 
@@ -157,7 +177,9 @@ SC.Theme.addTheme(TodosThree.Theme);
 SC.defaultTheme = 'todos-three';
 </javascript>
 
-TodosThree.Theme is a derivative of SC.AceTheme, a very nice professional theme. You can override parts of the Ace theme as you wish, or switch it out entirely. In theme.js, TodosThree.Theme is registered with the system, and a default 'todos-three' namespace is created.
+TodosThree.Theme is a derivative of SC.AceTheme, a very nice professional theme. You can override parts of the
+Ace theme as you wish, or switch it out entirely. In theme.js, TodosThree.Theme is registered with the system,
+and a default 'todos-three' namespace is created.
 
 h5. core.js (app root directory)
 
@@ -176,21 +198,21 @@ The code in core.js sets up TodosThree as an instance of SC.Application.
 
 The TodosThree namespace is TodosThree: TodosThree.mainPage, TodosThree.todosController, etc.
 
-A data store is created from SC.Record.fixtures, which is a way to simulate a real database. This is done by reading JSON-formatted sample data given from a fixtures javascript file, which we'll add in a later step. 
+A data store is created from SC.Record.fixtures, which is a way to simulate a real database. This is done by
+reading JSON-formatted sample data given from a fixtures javascript file, which we'll add in a later step. 
 
 h5. main.js (app root directory)
 
 <javascript filename="in apps/todos_three/main.js">
 TodosThree.main = function main() {
-  var statechart = TodosThree.statechart;
-  TodosThree.mainPage.get('field').becomeFirstResponder();
   TodosThree.statechart.initStatechart();
 };
  
 function main() { TodosThree.main(); }
 </javascript>
 
-main.js for TodosThree is very simple. The statechart is set as the default responder, so it gets action events. Then the statechart, the brains of the outfit, is initialized.
+The main.js file for TodosThree is very simple; we just initialize our application's statechart and let it
+handle the complexity.
 
 h5. statechart.js (app root directory)
 
@@ -208,17 +230,18 @@ TodosThree.statechart = SC.Statechart.create({
 
     SHOWING_APP: SC.State.plugin('TodosThree.SHOWING_APP'),
 
-    SHOWING_DESTROY_CONFIRMATION: SC.State.plugin('TodosThree.SHOWING_DESTROY_CONFIRMATION'),
-
-    DESTROYING_COMPLETED_TODOS: SC.State.plugin('TodosThree.DESTROYING_COMPLETED_TODOS')
+    SHOWING_DESTROY_CONFIRMATION: SC.State.plugin('TodosThree.SHOWING_DESTROY_CONFIRMATION')
   })
 
 });
 </javascript>
 
-The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the transitions between them allow a clean and simple design. In the TodosThree app statechart, the initial state is READY.
+The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the
+transitions between them allow a clean and simple design. In the TodosThree app statechart, the initial state
+is READY.
 
-There are four states in the TodosThree statechart: READY, LOGGING_IN, SHOWING_APP, and DESTROYING_COMPLETED_TODOS. These are defined in individual files in the states directory.
+There are four states in the TodosThree statechart: READY, LOGGING_IN, SHOWING_APP, and
+SHOWING_DESTROY_CONFIRMATION. These are defined in individual files in the states directory.
 
 h4. The States Directory
 
@@ -230,7 +253,8 @@ $ pwd
 $ cd states
 </shell> 
 
-*sproutcore gen* created a file called ready_state.js in the states directory. We are going to use it for the TodosThree app, but to make it match our file naming pattern, rename it to ready.js:
+*sproutcore gen* created a file called ready_state.js in the states directory. We are going to use it for the
+TodosThree app, but to make it match our file naming pattern, rename it to ready.js:
 
 <shell>
 $ pwd 
@@ -240,7 +264,7 @@ $ mv ready_state.js ready.js
 
 Files to edit or add in the apps/todos_three/states directory are:
 
-|_. ready.js |_. logging_in.js |_. showing_app.js |_. destroying_completed_todos.js |
+|_. ready.js |_. logging_in.js |_. showing_app.js |_. showing_destroy_confirmation.js |
 
 h5. READY State (replace content of renamed ready.js)
 
@@ -253,6 +277,8 @@ TodosThree.READY = SC.State.design({
    
       TodosThree.completedTodosController.set('content',
         TodosThree.store.find(SC.Query.local(TodosThree.Todo, 'isCompleted = true')));
+
+      TodosThree.getPath('mainPage.mainPane').append();
    
       this.gotoState('SHOWING_APP');
     } else {
@@ -266,13 +292,26 @@ TodosThree.READY = SC.State.design({
 });
 </javascript>
 
-NOTE: You have seen different conventions for naming states. The style used here makes the state names prominent. Some people like to camel-case the state names.
+NOTE: You have seen different conventions for naming states. The style used here makes the state names
+prominent. Some people like to camel-case the state names.
 
-When the statechart is initialized in the TodosThree.main() function, program control will go to the READY state, specifically to its enterState() function, where there is a check for the type of dataSource set on the store. Because it is an instance of FixturesDataSource, there is initialization of the controllers, followed by the call to move directly to the SHOWING_APP state, not to the LOGGING_IN state, which we won't use in the TodosThree app. 
+When the statechart is initialized in the TodosThree.main() function, program control will go to the READY
+state, specifically to its enterState() function, where there is a check for the type of dataSource set on the
+store. Because it is an instance of FixturesDataSource, there is initialization of the controllers, appending
+of the main pane, followed by the call to move directly to the SHOWING_APP state, not to the LOGGING_IN state,
+which we won't use in the TodosThree app. 
 
-Before the state transition to the SHOWING_APP state, data content of the two array controllers is set by issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the primary controller, todosController, we search for all the todos, ordering them by their timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is true. Then we call gotoState() to move to the SHOWING_APP state.
+Before the state transition to the SHOWING_APP state, data content of the two array controllers is set by
+issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the
+data remotely in the TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record
+instance). For the primary controller, todosController, we search for all the todos, ordering them by their
+timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is
+true. Then we append the main pane which causes our user interface to be displayed in the browser, and call
+gotoState() to move to the SHOWING_APP state.
 
-INFO: These aren't one-time "searches." They are associations set between the 'content' property of a controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get part of their "automatic" and "always up-to-date" aspect.
+INFO: These aren't one-time "searches." They are associations set between the 'content' property of a
+controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get
+part of their "automatic" and "always up-to-date" aspect.
 
 h5. LOGGING_IN State
 
@@ -301,8 +340,6 @@ h5. SHOWING_APP State
 <javascript filename="in apps/todos_three/states/showing_app.js">
 TodosThree.SHOWING_APP = SC.State.design({
   enterState: function() {
-    TodosThree.getPath('mainPage.mainPane').append();
-
     TodosThree.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
   },
 
@@ -326,57 +363,70 @@ TodosThree.SHOWING_APP = SC.State.design({
 });
 </javascript>
 
-In the SHOWING_APP/enterState() function, the mainPage view is appended, which causes it to show in the browser. We want a blinking cursor in the new todo text field. This is accomplished by setting this field to become first responder in the events system.
+In the SHOWING_APP/enterState() function, we want a blinking cursor in the new todo text field. This is
+accomplished by setting this field to become first responder in the events system.
 
-This state handles two actions, addTodo and clearCompletedTodos. There are references to view code (view.) that will become clear after we add the resources directory, with the mainPage view and associated files, and other view and system components.
-
-h5. DESTROYING_COMPLETED_TODOS State
-
-<javascript filename="in apps/todos_three/states/destroying_completed_todos.js">
-TodosThree.DESTROYING_COMPLETED_TODOS = SC.State.design({
-  enterState: function() {
-  },
- 
-  clearCompletedTodos: function () {
-    TodosThree.completedTodosController.invoke('destroy');
-  },
-
-  cancelDestroyingCompletedTodos: function() {
-    this.gotoState('SHOWING_APP');
-  },
-
-  exitState: function() {
-  }
-});
-</javascript>
+This state handles two actions, addTodo and clearCompletedTodos. There are references to view code (view.)
+that will become clear after we add the resources directory, with the mainPage view and associated files, and
+other view and system components.
 
 h5. SHOWING_DESTROY_CONFIRMATION State
 
 <javascript filename="in apps/todos_three/states/showing_destroy_confirmation.js">
 TodosThree.SHOWING_DESTROY_CONFIRMATION = SC.State.design({
+  _panel: null,
+
+  todosBinding: 'TodosThree.completedTodosController.content',
+
   enterState: function() {
-    var panel = TodosThree.getPath('DestroyingConfirmationPane');
-    if (panel) {
-      panel.append();
-    }
+    var todos = this.get('todos');
+    var displayDescription = "Are you sure that you wish to clear the following tasks?<br /><br />";
+
+    displayDescription += "<ul>";
+    displayDescription += todos.map(function(t) { return "<li>%@</li>".fmt(t.get('title')) }).join('\n');
+    displayDescription += "</ul>";
+
+    this._panel = SC.AlertPane.warn({
+      layout: { centerX: 0, top: 80, width: 380, bottom: 80 },
+
+      defaultResponder: TodosThree.statechart,
+
+      message: "Clear Completed Todos",
+      displayDescription: displayDescription,
+
+      buttons: [
+        { title: 'Clear', action: 'confirm', default: NO },
+        { title: 'Cancel', action: 'cancel', default: YES }
+      ]
+    });
   },
  
   exitState: function() {
-    var panel = TodosThree.getPath('DestroyingConfirmationPane');
-    if (panel) {
-      panel.remove();
-    }
+    // No need to do anything here, the SC.AlertPane will remove itself.
+  },
+
+  confirm: function() {
+    TodosThree.completedTodosController.invoke('destroy');
+    this.gotoState('SHOWING_APP');
+  },
+
+  cancel: function() {
     this.gotoState('SHOWING_APP');
   }
 });
 </javascript>
 
+When we enter the SHOWING_DESTROY_CONFIRMATION state, we grab the current list of completed todos, format them
+nicely, and then create a warning pane to make sure that the user actually wants to delete their todos. If so,
+we tell the completedTodosController to destroy, or remove, the current completed todos. Then, we go back to
+the SHOWING_APP state so that we can enter more todos.
 
 h4. The Resources Directory
 
 We've covered the highest-level parts of the app defined in the statechart. Let's add the rest. 
 
-The mainPage view, CSS files, a theme file, and an html page live in a directory called resources.  Go to that directory:
+The mainPage view, CSS files, a theme file, and an html page live in a directory called resources.  Go to that
+directory:
 
 <shell>
 $ pwd 
@@ -473,29 +523,57 @@ TodosThree.mainPage = SC.Page.design({
 });
 </javascript>
 
-There are four parts to the TodosThree mainPage view: a header and footer, and between them are a newTodoField and a todosList. A user types a new todo in the newTodoField, and when they click the submit button, labeled 'Add', the new todo is added by means of the todosController's addTodo action. The new todo will show up in the todosList. How does this happen? Look at the lines that have Binding in the property names. When you write user interface element code, you "wire up" these connections with such binding instructions. 
+There are four parts to the TodosThree mainPage view: a header and footer, and between them are a newTodoField
+and a todosList. A user types a new todo in the newTodoField, and when they click the submit button, labeled
+'Add', the new todo is added by means of the todosController's addTodo action. The new todo will show up in
+the todosList. How does this happen? Look at the lines that have Binding in the property names. When you write
+user interface element code, you "wire up" these connections with such binding instructions. 
 
 h6. Toolbars in header and footer
 
-The header view is an SC.ToolbarView with two child views: a completeAll checkbox view and a title label view. The valueBinding property of the checkbox is tied to an areAllCompleted() function in the completedTodosController, which answers that question -- if yes, then the completeAll checkbox will show as checked. This is a two-way binding, so it works in reverse. If the user clicks the completeAll checkbox, then areAllCompleted() will set isCompleted to true for all todos. That makes areAllCompleted() a very special type of function, called a computed property.
+The header view is an SC.ToolbarView with two child views: a completeAll checkbox view and a title label view.
+The valueBinding property of the checkbox is tied to an areAllCompleted() function in the
+completedTodosController, which answers that question -- if yes, then the completeAll checkbox will show as
+checked. This is a two-way binding, so it works in reverse. If the user clicks the completeAll checkbox, then
+areAllCompleted() will set isCompleted to true for all todos. That makes areAllCompleted() a very special type
+of function, called a computed property.
 
 INFO: Computed properties are cool.
 
-The footer view has a single child view, clearCompletedTodos, which is a button whose action is the clearCompletedTodos action in the SHOWING_APP state. The isEnabledBinding property has a one-way binding (faster, if you don't need two-way, reciprocal updating) to the length of the completedTodosController array. If its length is 0, then isEnabled is false and the button will not be active -- if there aren't any todos, there is nothing to clear.
+The footer view has a single child view, clearCompletedTodos, which is a button whose action is the
+clearCompletedTodos action in the SHOWING_APP state. The isEnabledBinding property has a one-way binding
+(faster, if you don't need two-way, reciprocal updating) to the length of the completedTodosController array.
+If its length is 0, then isEnabled is false and the button will not be active -- if there aren't any todos,
+there is nothing to clear.
 
 h6. newTodoField
 
-The newTodoField view contains a text field called field and a submit button. The submit button has two properties that are bound to the associated text field. The valueBinding property is bound to field.value, which is the text the user enters. Note the use of .parentView in the valueBinding definition. In this context, parentView refers to the newTodoField view, which contains the field and submit child views. The isDefaultBinding property works in similar fashion, but you note an asterisk in front of a reference to 'focused', which is one of the boolean properties available for a text field. The asterisk is a convention that means what an asterisk often means -- if the text field has any type of focus at all, keyboard or mouse, then 'focused' will be true. 
+The newTodoField view contains a text field called field and a submit button. The submit button has two
+properties that are bound to the associated text field. The valueBinding property is bound to field.value,
+which is the text the user enters. Note the use of .parentView in the valueBinding definition. In this
+context, parentView refers to the newTodoField view, which contains the field and submit child views. The
+isDefaultBinding property works in similar fashion, but you note an asterisk in front of a reference to
+'focused', which is one of the boolean properties available for a text field. The asterisk is a convention
+that means what an asterisk often means -- if the text field has any type of focus at all, keyboard or mouse,
+then 'focused' will be true. 
 
-NOTE: Property path syntax -- e.g., the . and * in .parentView.field*focused -- is something you have to look up repeatedly until you are comfortable. There are nuances to learn.
+NOTE: Property path syntax -- e.g., the . and * in .parentView.field*focused -- is something you have to look
+up repeatedly until you are comfortable. There are nuances to learn.
  
 h6. todosList
 
-The todosList view follows the SproutCore idiom for wrapping an SC.ListView inside an SC.ScrollView. The contentBinding property of the list is set to TodosThree.todosController. 
+The todosList view follows the SproutCore idiom for wrapping an SC.ListView inside an SC.ScrollView. The
+contentBinding property of the list is set to TodosThree.todosController. 
 
-The exampleView property illustrates a concept very important for SproutCore, one that you learned in a previous guide: views can be defined in separate javascript files, often held in a views directory, and included where they are needed. exampleView is set to TodosThree.TodoItemView, which necessitates the sc_require statement at the top of the file: sc_require('views/todo_item');. TodoItemView has a checkbox and label. We'll add it when we add the views directory later.
+The exampleView property illustrates a concept very important for SproutCore, one that you learned in a
+previous guide: views can be defined in separate javascript files, often held in a views directory, and
+included where they are needed. exampleView is set to TodosThree.TodoItemView, which necessitates the
+sc_require statement at the top of the file: sc_require('views/todo_item');. TodoItemView has a checkbox and
+label. We'll add it when we add the views directory later.
 
-NOTE: The load order for javascript files will be alphabetical, unless otherwise controlled with sc_require(). Sometimes you get lucky on the default file loading order, if you omit a sc_require() statement. Sometimes you don't, and you will get a dependency error.
+NOTE: The load order for javascript files will be alphabetical, unless otherwise controlled with sc_require().
+Sometimes you get lucky on the default file loading order, if you omit a sc_require() statement. Sometimes you
+don't, and you will get a dependency error.
 
 h5. _theme.css (resources directory)
 
@@ -520,11 +598,18 @@ h5. _theme.css (resources directory)
 $theme: '.ace.todos-three';
 </css>
 
-The underscore starting the name of _theme.css is a dead giveaway that it must apply in some special way to the theming system. It defines $theme to be our Ace-derived theme, ace.todos-three. You'll see $theme used in individual content CSS files.
+The underscore starting the name of _theme.css is a dead giveaway that it must apply in some special way to
+the theming system. It defines $theme to be our Ace-derived theme, ace.todos-three. You'll see $theme used in
+individual content CSS files.
 
 h5. Content CSS files
 
-You can add a single CSS file in your resources directory, or you can add many small ones. For the TodosThree app, we'll choose the many-small-ones approach. In these CSS files, where you see something like $theme.sc-text-field-view, the sc- prefix indicates an override of the sc- CSS definitions in the Ace theme. Inspect your browser's elements listing, and you will see these references. In practice, you often need to dive into such an elements listing, and the fancy mouse-driven browser inspection tools, to diagnose CSS problems, such as the case of having bad math that results in one view obscuring another.
+You can add a single CSS file in your resources directory, or you can add many small ones. For the TodosThree
+app, we'll choose the many-small-ones approach. In these CSS files, where you see something like
+$theme.sc-text-field-view, the sc- prefix indicates an override of the sc- CSS definitions in the Ace theme.
+Inspect your browser's elements listing, and you will see these references. In practice, you often need to
+dive into such an elements listing, and the fancy mouse-driven browser inspection tools, to diagnose CSS
+problems, such as the case of having bad math that results in one view obscuring another.
 
 NOTE: CSS is an art unto itself, an important side of doing SproutCore development and building views.
 
@@ -612,7 +697,9 @@ $theme.todo-item {
 
 h5. loading.rhtml (resources directory)
 
-SproutCore apps can weigh in north of the welterweight class, so while the app is loading we may need to show a loading indicator. For TodosThree we don't have to worry, but in larger apps, this file could need some attention.
+SproutCore apps can weigh in north of the welterweight class, so while the app is loading we may need to show
+a loading indicator. For TodosThree we don't have to worry, but in larger apps, this file could need some
+attention.
 
 <html filename="in apps/todos_three/resources/loading.rhtml">
 <% content_for :loading do %>
@@ -630,7 +717,8 @@ h4. The Views Directory
 
 *sproutcore gen* doesn't make a views directory, so we'll need to make one.
 
-Before adding the views directory, some navigation is needed. We are still in the resources directory, so move back up to the TodosThree app root directory:
+Before adding the views directory, some navigation is needed. We are still in the resources directory, so move
+back up to the TodosThree app root directory:
 
 <shell>
 $ pwd 
@@ -661,76 +749,18 @@ TodosThree.TodoItemView = SC.CheckboxView.design({
 });
 </javascript>
 
-TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an array of CSS class names that are to be applied to this view. valueBinding has a reference to .content.isCompleted. What is the context for this reference? We know that this view is defined as the exampleView property of the todos list. The term example here means "the view to use for each list item." List items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the TodoItemView definition refers to a single todo item in the list. .content.isCompleted refers to this property of a todo item. Likewise, titleBinding is bound to the title property of a list todo item.
+TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an
+array of CSS class names that are to be applied to this view. valueBinding has a reference to
+.content.isCompleted. What is the context for this reference? We know that this view is defined as the
+exampleView property of the todos list. The term example here means "the view to use for each list item." List
+items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the
+TodoItemView definition refers to a single todo item in the list. .content.isCompleted refers to this property
+of a todo item. Likewise, titleBinding is bound to the title property of a list todo item.
 
-You have to think about where this view is used to understand it, but that comes with the territory of having individual views declared in separate files for convenience.
+You have to think about where this view is used to understand it, but that comes with the territory of having
+individual views declared in separate files for convenience.
 
 NOTE: It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
-
-h5. destroying_confirmation_pane.js (views directory)
-
-<javascript filename="in apps/todos_three/views/destroying_confirmation_pane.js">
-TodosThree.DestroyingConfirmationPane = SC.PanelPane.create({
-  layout: { centerX: 0, top: 80, width: 380, bottom: 80 },
-  theme: 'popover',
-  defaultResponder: TodosThree.statechart,
-
-  contentView: SC.WorkspaceView.design({
-    layout: { left: 0, right: 0, top: 0, bottom: 0 },
-
-    topToolbar: SC.ToolbarView.design({
-      layout: { top: 0, left: 0, right: 0, height: 50 },
-      childViews: "label".w(),
-
-      label: SC.LabelView.design(SC.AutoResize, {
-        layout: { centerX: 0, centerY: -5, height: 75 },
-        value: "Clear Completed Todos",
-        classNames: "embossed".w()
-      })
-    }),
-
-    contentView: SC.ScrollView.design({
-      layout: { left: 0, top: 20, right: 0, bottom: 0 },
-
-      backgroundColor: 'red',
-
-      contentView: SC.ListView.design({
-        contentValueKey: 'title',
-
-        todosBinding: 'TodosThree.todosController.content',
-        todosDidChange: function() {
-          var todos = this.get('todos');
-
-          console.log('todosDidChange: ', todos);
-
-          this.set('content', todos.filterProperty('isCompleted'));
-        }.observes('todos', '*todos', '*todos.@each.isCompleted')
-      })
-    }),
-
-    bottomToolbar: SC.ToolbarView.design({
-      layout: { bottom: 0, height: 40 },
-
-      childViews: 'confirmButton cancelButton'.w(),
-
-      confirmButton: SC.ButtonView.design({
-        layout: { right: 120, bottom: 10, width: 100, height: 24 },
-        title: 'Confirm',
-        action: 'clearCompletedTodos'
-      }),
-
-      cancelButton: SC.ButtonView.design({
-        layout: { right: 10, bottom: 10, width: 100, height: 24 },
-        title: 'Cancel',
-        action: 'cancelDestroyingCompletedTodos',
-        isDefault: YES
-      })
-    })
-  })
-});
-</javascript>
-
-The DestroyingConfirmationPane view presents the todos that are to be deleted, asking for confirmation. The completedTodos list presents a scrollable list of todos to be deleted. There are no actions associated with the list items. The confirm button has the action clearCompletedTodos, which lives in the DESTROYING_COMPLETED_TODOS state, the current state when this pane is showing on the screen. The cancel button has the action cancelDestroyingCompletedTodos, defined in the same state.
 
 h4. The Models Directory
 
@@ -753,7 +783,8 @@ $ mkdir models
 $ cd models
 </shell>
 
-NOTE: SproutCore models are based on SC.Record, which offers a substantial set of data definition and processing functionality.
+NOTE: SproutCore models are based on SC.Record, which offers a substantial set of data definition and
+processing functionality.
 
 The models directory will contain one file:
 
@@ -771,9 +802,13 @@ TodosThree.Todo = SC.Record.extend({
 });
 </javascript>
 
-The Todo model has three properties: timestamp, isCompleted, and title. All are defined using the SC.Record.attr() helper (convenience) function, where builtin javascript types and Sproutcore types may be specified. There is much more that could be done in these property definitions, but for TodosThree, the basic types and their defaults will suffice.
+The Todo model has three properties: timestamp, isCompleted, and title. All are defined using the
+SC.Record.attr() helper (convenience) function, where builtin javascript types and Sproutcore types may be
+specified. There is much more that could be done in these property definitions, but for TodosThree, the basic
+types and their defaults will suffice.
 
-NOTE: Recall discussion of good habits regarding sc_require. The use of sc_require('core'); here is not mandatory, but it is a good habit: TodosThree is defined in core.js.
+NOTE: Recall discussion of good habits regarding sc_require. The use of sc_require('core'); here is not
+mandatory, but it is a good habit: TodosThree is defined in core.js.
 
 h4. The Controllers Directory
 
@@ -829,23 +864,46 @@ TodosThree.completedTodosController = SC.ArrayController.create({
 });
 </javascript>
 
-The todosController has the simplest default definition as an SC.ArrayController. An array controller has a default _content_ reference to the data: you don't see a content property defined here, but take note, because you'll see prevalent use of the content property in most things controller.
+The todosController has the simplest default definition as an SC.ArrayController. An array controller has a
+default _content_ reference to the data: you don't see a content property defined here, but take note, because
+you'll see prevalent use of the content property in most things controller.
 
-The completedTodosController is another array controller. It has a property called totalTodosBinding, and a function called areAllCompleted(). 
+The completedTodosController is another array controller. It has a property called totalTodosBinding, and a
+function called areAllCompleted(). 
 
-totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", we don't care about pushing back) to the length of the todosController array controller. We need a local reference to this length, because we are about to do something impressive, in part based on it.
+totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", we don't care about pushing
+back) to the length of the todosController array controller. We need a local reference to this length, because
+we are about to do something impressive, in part based on it.
 
-areAllCompleted() is a function, but that very special type of function, the computed property. Note the .property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as parameters, then tacks on .cacheable(). First, look at the parameters, which are references to local properties for this context, the array controller itself. We know we have a 'length' property -- this is a built-in property of an array controller. But what gives with the use of the 'totalTodos' reference -- isn't the property called totalTodosBinding? Ah, the answer is that anytime Binding is seen at the end of a property name, you have a kind of dual-property arrangement. The "actual" property is, in fact, totalTodos. In defining totalTodosBinding, we essentially say to get the value of totalTodos from this other source. 
+areAllCompleted() is a function, but that very special type of function, the computed property. Note the
+.property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as
+parameters, then tacks on .cacheable(). First, look at the parameters, which are references to local
+properties for this context, the array controller itself. We know we have a 'length' property -- this is a
+built-in property of an array controller. But what gives with the use of the 'totalTodos' reference -- isn't
+the property called totalTodosBinding? Ah, the answer is that anytime Binding is seen at the end of a property
+name, you have a kind of dual-property arrangement. The "actual" property is, in fact, totalTodos. In defining
+totalTodosBinding, we essentially say to get the value of totalTodos from this other source. 
 
-That covers the background on mechanics of property names and bindings. Now to address what .property('length', 'totalTodos').cacheable() accomplishes:
+That covers the background on mechanics of property names and bindings. Now to address what
+.property('length', 'totalTodos').cacheable() accomplishes:
 
-  "Base this computed property on the length and totalTodos properties, and update it if either of them changes, and, also, cache the value so unnecessary updates are avoided." 
+  "Base this computed property on the length and totalTodos properties, and update it if either of them changes,
+and, also, cache the value so unnecessary updates are avoided." 
 
-There is more to explain about the working of this computed property. What are the k and v parameters, and what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the totalTodos value is being changed. This is a mandate to try to mark all todos as completed by this value. _The name of the computed property is *areAllCompleted*_. If a call is made to set it, then the body of the function needs to update the data accordingly. If v evaluates to true, then isCompleted for each todo item will be set and all the checkboxes will be checked in the list. That explains what the if block does. 
+There is more to explain about the working of this computed property. What are the k and v parameters, and
+what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the
+totalTodos value is being changed. This is a mandate to try to mark all todos as completed by this value. _The
+name of the computed property is *areAllCompleted*_. If a call is made to set it, then the body of the
+function needs to update the data accordingly. If v evaluates to true, then isCompleted for each todo item
+will be set and all the checkboxes will be checked in the list. That explains what the if block does. 
 
-Notice the return on the last line in areAllCompleted(). We return the result of a test comparing the length of the array (the local 'length') to the length of the todos array (the local 'totalTodos', which is bound to an external source, the full todosController array). If these lengths are the same, then all todos have been marked as completed, otherwise no. 
+Notice the return on the last line in areAllCompleted(). We return the result of a test comparing the length
+of the array (the local 'length') to the length of the todos array (the local 'totalTodos', which is bound to
+an external source, the full todosController array). If these lengths are the same, then all todos have been
+marked as completed, otherwise no. 
 
-INFO: A computed property used in this way is both a setter and a getter. Once you get the hang of making these you realize the benefit: automatic updating and caching for efficiency.
+INFO: A computed property used in this way is both a setter and a getter. Once you get the hang of making
+these you realize the benefit: automatic updating and caching for efficiency.
 
 h4. The Fixtures Directory
 
@@ -903,7 +961,8 @@ TodosThree.Todo.FIXTURES = [
 
 h4. Running the App
 
-With all that work done (or if you downloaded the code or cloned it from git) we can run the app, which we should do from the project root directory, where the project Buildfile lives:
+With all that work done (or if you downloaded the code or cloned it from git) we can run the app, which we
+should do from the project root directory, where the project Buildfile lives:
 
 <shell>
 $ pwd 
@@ -919,7 +978,8 @@ $ pwd
 $ sproutcore server
 </shell>
 
-Visit http://localhost:4020/ in your favorite modern browser and you should see a list of apps, including TodosThree. 
+Visit http://localhost:4020/ in your favorite modern browser and you should see a list of apps, including
+TodosThree. 
 
 
 * March 1, 2011: initial version by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
