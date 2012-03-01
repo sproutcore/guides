@@ -849,7 +849,7 @@ The fixtures directory will contain one file:
 
 h5. todo.js (fixtures directory)
 
-<javascript filename="in apps/todos_three/en/fixtures/todo.js">
+<javascript filename="in apps/todos_three/fixtures/todo.js">
 sc_require('models/todo');
 
 TodosThree.Todo.FIXTURES = [
@@ -882,8 +882,8 @@ With all that work done (or if you downloaded the code or cloned it from git) we
 
 <shell>
 $ pwd 
-    ~/development/sproutcore/getting_started/apps/todos_three/en/fixtures
-$ cd ../../../..
+    ~/development/sproutcore/getting_started/apps/todos_three/fixtures
+$ cd ../../..
 </shell>
 
 And run it!
