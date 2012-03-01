@@ -74,37 +74,37 @@ This will be the directory structure for the TodosThree app:
 Here is that directory structure again, with descriptions for each item:
 
 * *getting_started/*
-** *Buildfile*             | _Configuration for the project_ 
-** *README.md*             | _Describes your app and how to use it_
+** *Buildfile*                         | _Configuration for the project_ 
+** *README.md*                         | _Describes your app and how to use it_
 ** *apps/*
 *** *todos_three/*
-**** *Buildfile*           | _Configuration for the TodosThree app_
-**** *core.js*             | _TodosThree app creation code_
-**** *main.js*             | _Adds a data store, and calls the TodosThree.mainPage view_
-**** *theme.js*            | _Adds a TodosThree.Theme based on the SproutCore Ace theme_
-**** *statechart.js*       | _Contains main app states and substates_
+**** *Buildfile*                       | _Configuration for the TodosThree app_
+**** *core.js*                         | _TodosThree app creation code_
+**** *main.js*                         | _Adds a data store, and calls the TodosThree.mainPage view_
+**** *theme.js*                        | _Adds a TodosThree.Theme based on the SproutCore Ace theme_
+**** *statechart.js*                   | _Contains main app states and substates_
 **** *states/*
-***** *starting.js*        | _A single state, the STARTING state, which plugs in to the app's statechart_
-***** *logging_in.js*      | _The LOGGING_IN state (not used in TodosThree, but there for illustration)_
-***** *loading_data.js*    | _The LOADING_DATA state, where data is loaded, and the UI configured_
-***** *showing_app.js*     | _The SHOWING_APP state, the general state for responding to user actions_
+***** *ready.js*                       | _A single state, the READY state, which plugs in to the app's statechart_
+***** *logging_in.js*                  | _The LOGGING_IN state (not used in TodosThree, but there for illustration)_
+***** *showing_app.js*                 | _The SHOWING_APP state, the general state for responding to user actions_
+***** *destroying_completed_todos.js*  | _The DESTROYING_COMPLETED_TODOS state_
 **** *resources/*
-***** *loading.rhtml*      | _A short html file to show when the app is loading_
-***** *main_page.js*       | _The TodosThree.mainPage view_
-***** *_theme.css*         | _Contains per directory theme setup_
-***** *body.css*           | _Defines css for default page content_
-***** *header.css*         | _Defines css for the top toolbar_
-***** *new_todo.css*       | _Defines css for the new todo title text field_
-***** *todo_item.css*      | _Defines css for todo items in the main list view_
+***** *loading.rhtml*                  | _A short html file to show when the app is loading_
+***** *main_page.js*                   | _The TodosThree.mainPage view_
+***** *_theme.css*                     | _Contains per directory theme setup_
+***** *body.css*                       | _Defines css for default page content_
+***** *header.css*                     | _Defines css for the top toolbar_
+***** *new_todo.css*                   | _Defines css for the new todo title text field_
+***** *todo_item.css*                  | _Defines css for todo items in the main list view_
 **** *views/*
-***** *todo_item.js*       | _TodoItem code for a checkbox and a title_
+***** *todo_item.js*                   | _TodoItem code for a checkbox and a title_
 **** *controllers/*
-***** *todos.js*           | _TodosThree.todosController, an SC.ArrayController to hold todo items_
-***** *completed_todos.js* | _TodosThree.completedTodosController, another SC.ArrayController_
+***** *todos.js*                       | _TodosThree.todosController, an SC.ArrayController to hold todo items_
+***** *completed_todos.js*             | _TodosThree.completedTodosController, another SC.ArrayController_
 **** *models/*
-***** *todo.js*            | _TodosThree.Todo, the definition of the Todo SC.Record type for the app_
+***** *todo.js*                        | _TodosThree.Todo, the definition of the Todo SC.Record type for the app_
 **** *fixtures/* 
-***** *todo.js*            | _Fixtures data (for testing the app without hooking to a database)_
+***** *todo.js*                        | _Fixtures data (for testing the app without hooking to a database)_
 
 NOTE: SproutCore is a powerful system, challenging to master, but not so difficult to learn, provided that we take it one step at a time.
 
@@ -198,22 +198,22 @@ h5. statechart.js (app root directory)
 TodosThree.statechart = SC.Statechart.create({
  
   rootState: SC.State.design({
-    initialSubstate: "STARTING",
+    initialSubstate: "READY",
  
-    STARTING: SC.State.plugin('TodosThree.STARTING'),
+    READY: SC.State.plugin('TodosThree.READY'),
       
     LOGGING_IN: SC.State.plugin('TodosThree.LOGGING_IN'),
       
-    LOADING_DATA: SC.State.plugin('TodosThree.LOADING_DATA'),
-      
     SHOWING_APP: SC.State.plugin('TodosThree.SHOWING_APP')
+
+    DESTROYING_COMPLETED_TODOS: SC.State.plugin('TodosThree.DESTROYING_COMPLETED_TODOS'),
   })
 });
 </javascript>
 
-The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the transitions between them allow a clean and simple design. In the TodosThree app statechart, the initial state is STARTING, a not-so-imaginative name! 
+The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the transitions between them allow a clean and simple design. In the TodosThree app statechart, the initial state is READY.
 
-There are four states in the TodosThree statechart: STARTING, LOGGING_IN, LOADING_DATA, and SHOWING_APP. These are defined in individual files in the states directory.
+There are four states in the TodosThree statechart: READY, LOGGING_IN, SHOWING_APP, and DESTROYING_COMPLETED_TODOS. These are defined in individual files in the states directory.
 
 h4. The States Directory
 
@@ -225,27 +225,31 @@ $ pwd
 $ cd states
 </shell> 
 
-*sproutcore gen* created a file called ready_state.js in the states directory. We aren't going to use it for the TodosThree app, because we'll need several states.
-
-Delete ready_state.js in the apps/todos_three/states directory:
+*sproutcore gen* created a file called ready_state.js in the states directory. We are going to use it for the TodosThree app, but to make it match our file naming pattern, rename it to ready.js:
 
 <shell>
 $ pwd 
     ~/development/sproutcore/getting_started/apps/todos_three/states
-$ rm ready_state.js
+$ mv ready_state.js ready.js
 </shell> 
 
-Files to add in the apps/todos_three/states directory are:
+Files to edit or add in the apps/todos_three/states directory are:
 
-|_. starting.js |_. logging_in.js |_. loading_data.js |_. showing_app.js |
+|_. ready.js |_. logging_in.js |_. showing_app.js |_. destroying_completed_todos.js |
 
-h5. STARTING State
+h5. READY State (replace content of renamed ready.js)
 
-<javascript filename="in apps/todos_three/states/starting.js">
-TodosThree.STARTING = SC.State.design({
+<javascript filename="in apps/todos_three/states/ready.js">
+TodosThree.READY = SC.State.design({
   enterState: function() {
     if (SC.instanceOf(TodosThree.store.dataSource, SC.FixturesDataSource)) {
-      this.gotoState('LOADING_DATA');
+      TodosThree.todosController.set('content',
+        TodosThree.store.find(SC.Query.local(TodosThree.Todo, { orderBy: 'timestamp DESC' })));
+   
+      TodosThree.completedTodosController.set('content',
+        TodosThree.store.find(SC.Query.local(TodosThree.Todo, 'isCompleted = true')));
+   
+      this.gotoState('SHOWING_APP');
     } else {
       this.gotoState('LOGGING_IN');
     }
@@ -259,7 +263,11 @@ TodosThree.STARTING = SC.State.design({
 
 NOTE: You have seen different conventions for naming states. The style used here makes the state names prominent. Some people like to camel-case the state names.
 
-When the statechart is initialized in the TodosThree.main() function, program control will go to the STARTING state, specifically to its enterState() function, where there is a check for the type of dataSource set on the store. Because it is an instance of FixturesDataSource, the gotoState() call moves control directly to the LOADING_DATA state, not the LOGGING_IN state, which we won't use in the TodosThree app. 
+When the statechart is initialized in the TodosThree.main() function, program control will go to the READY state, specifically to its enterState() function, where there is a check for the type of dataSource set on the store. Because it is an instance of FixturesDataSource, there is initialization of the controllers, followed by the call to move directly to the SHOWING_APP state, not to the LOGGING_IN state, which we won't use in the TodosThree app. 
+
+Before the state transition to the SHOWING_APP state, data content of the two array controllers is set by issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the primary controller, todosController, we search for all the todos, ordering them by their timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is true. Then we call gotoState() to move to the SHOWING_APP state.
+
+INFO: These aren't one-time "searches." They are associations set between the 'content' property of a controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get part of their "automatic" and "always up-to-date" aspect.
 
 h5. LOGGING_IN State
 
@@ -283,29 +291,6 @@ TodosThree.LOGGING_IN = SC.State.design({
 
 INFO: We won't use the LOGGING_IN state in TodosThree, but have it here for illustration.
 
-h5. LOADING_DATA State
-
-<javascript filename="in apps/todos_three/states/loading_data.js">
-TodosThree.LOADING_DATA = SC.State.design({
-  enterState: function() {
-    TodosThree.todosController.set('content',
-      TodosThree.store.find(SC.Query.local(TodosThree.Todo, { orderBy: 'timestamp DESC' })));
- 
-    TodosThree.completedTodosController.set('content',
-      TodosThree.store.find(SC.Query.local(TodosThree.Todo, 'isCompleted = true')));
- 
-    this.gotoState('SHOWING_APP');
-  },
- 
-  exitState: function() {
-  }
-});
-</javascript>
-
-Data content of the two array controllers is set by issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the primary controller, todosController, we search for all the todos, ordering them by their timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is true. Then we call gotoState() to move to the SHOWING_APP state.
-
-INFO: These aren't one-time "searches." They are associations set between the 'content' property of a controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get part of their "automatic" and "always up-to-date" aspect.
-
 h5. SHOWING_APP State
 
 <javascript filename="in apps/todos_three/states/showing_app.js">
@@ -328,10 +313,6 @@ TodosThree.SHOWING_APP = SC.State.design({
       });
       view.set('value', '');
     }
-  },
-
-  clearCompletedTodos: function () {
-    TodosThree.completedTodosController.invoke('destroy');
   }
 });
 </javascript>
@@ -339,6 +320,48 @@ TodosThree.SHOWING_APP = SC.State.design({
 In the SHOWING_APP/enterState() function, the mainPage view is appended, which causes it to show in the browser. We want a blinking cursor in the new todo text field. This is accomplished by setting this field to become first responder in the events system.
 
 This state handles two actions, addTodo and clearCompletedTodos. There are references to view code (view.) that will become clear after we add the resources directory, with the mainPage view and associated files, and other view and system components.
+
+h5. DESTROYING_COMPLETED_TODOS State
+
+<javascript filename="in apps/todos_three/states/destroying_completed_todos.js">
+TodosThree.DESTROYING_COMPLETED_TODOS = SC.State.design({
+  enterState: function() {
+  },
+ 
+  clearCompletedTodos: function () {
+    TodosThree.completedTodosController.invoke('destroy');
+  },
+
+  cancelDestroyingCompletedTodos: function() {
+    this.gotoState('SHOWING_APP');
+  },
+
+  exitState: function() {
+  }
+});
+</javascript>
+
+h5. SHOWING_DESTROY_CONFIRMATION State
+
+<javascript filename="in apps/todos_three/states/showing_destroy_confirmation.js">
+TodosThree.SHOWING_DESTROY_CONFIRMATION = SC.State.design({
+  enterState: function() {
+    var panel = TodosThree.getPath('DestroyConfirmationPane');
+    if (panel) {
+      panel.append();
+    }
+  },
+ 
+  exitState: function() {
+    var panel = TodosThree.getPath('DestroyConfirmationPane');
+    if (panel) {
+      panel.remove();
+    }
+    this.gotoState('SHOWING_APP');
+  }
+});
+</javascript>
+
 
 h4. The Resources Directory
 
@@ -615,9 +638,9 @@ $ mkdir views
 $ cd views
 </shell>
 
-The views directory will contain one file: 
+The views directory will contain two files: 
 
-|_. todo_item.js |
+|_. todo_item.js |_. destroying_confirmation_pane.js |
 
 h5. todo_item.js (views directory)
 
@@ -634,6 +657,55 @@ TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in
 You have to think about where this view is used to understand it, but that comes with the territory of having individual views declared in separate files for convenience.
 
 NOTE: It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
+
+h5. destroying_confirmation_pane.js (views directory)
+
+<javascript filename="in apps/todos_three/views/destroying_confirmation_pane.js">
+TodosThree.DestroyingConfirmationPane = SC.PanelPane.create({
+  layout: { centerX: 0, top: 80, width: 380, height: 630 },
+  theme: 'popover',
+  defaultResponder: TodosThree.statechart,
+
+  contentView: SC.WorkspaceView.design({
+    layout: { left: 0, right: 0, top: 0, bottom: 0 },
+    childViews: "topToolbar contentView".w(),
+
+    topToolbar: SC.ToolbarView.design({
+      layout: { top: 0, left: 0, right: 0, height: 32 },
+      childViews: "label".w(),
+
+      label: SC.LabelView.design({
+        layout: { left: 10, centerY: 0, height: 21, width: 200 },
+        value: "Completed Todos",
+        classNames: "embossed".w()
+      })
+    }),
+
+    contentView: SC.View.design({
+      layout: { left: 0, right: 0, top: 0, bottom: 0 },
+      childViews: "confirmButton cancelButton".w(),
+
+      // info view should go here, for some substance
+      // completedTodos SC.ListView <-> completedTodosController
+
+      confirmButton: SC.ButtonView.design({
+        layout: { right: 120, bottom: 10, width: 100, height: 24 },
+        title: 'Confirm',
+        action: 'clearCompletedTodos'
+      }),
+
+      cancelButton: SC.ButtonView.design({
+        layout: { right: 10, bottom: 10, width: 100, height: 24 },
+        title: 'Cancel',
+        action: 'cancelDestroyingCompletedTodos',
+        isDefault: YES
+      })
+    })
+  })
+});
+</javascript>
+
+The DestroyingConfirmationPane view presents the todos that are to be deleted, asking for confirmation. The completedTodos list presents a scrollable list of todos to be deleted. There are no actions associated with the list items. The confirm button has the action clearCompletedTodos, which lives in the DESTROYING_COMPLETED_TODOS state, the current state when this pane is showing on the screen. The cancel button has the action cancelDestroyingCompletedTodos, defined in the same state.
 
 h4. The Models Directory
 
