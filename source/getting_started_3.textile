@@ -735,9 +735,9 @@ $ mkdir views
 $ cd views
 </shell>
 
-The views directory will contain two files: 
+The views directory will contain one file: 
 
-|_. todo_item.js |_. destroying_confirmation_pane.js |
+|_. todo_item.js | 
 
 h5. todo_item.js (views directory)
 
