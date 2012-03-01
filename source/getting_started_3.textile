@@ -196,6 +196,8 @@ h5. statechart.js (app root directory)
 
 <javascript filename="in apps/todos_three/statechart.js">
 TodosThree.statechart = SC.Statechart.create({
+
+  trace: YES,
  
   rootState: SC.State.design({
     initialSubstate: "READY",
@@ -203,11 +205,14 @@ TodosThree.statechart = SC.Statechart.create({
     READY: SC.State.plugin('TodosThree.READY'),
       
     LOGGING_IN: SC.State.plugin('TodosThree.LOGGING_IN'),
-      
-    SHOWING_APP: SC.State.plugin('TodosThree.SHOWING_APP')
 
-    DESTROYING_COMPLETED_TODOS: SC.State.plugin('TodosThree.DESTROYING_COMPLETED_TODOS'),
+    SHOWING_APP: SC.State.plugin('TodosThree.SHOWING_APP'),
+
+    SHOWING_DESTROY_CONFIRMATION: SC.State.plugin('TodosThree.SHOWING_DESTROY_CONFIRMATION'),
+
+    DESTROYING_COMPLETED_TODOS: SC.State.plugin('TodosThree.DESTROYING_COMPLETED_TODOS')
   })
+
 });
 </javascript>
 
@@ -313,6 +318,10 @@ TodosThree.SHOWING_APP = SC.State.design({
       });
       view.set('value', '');
     }
+  },
+
+  clearCompletedTodos: function() {
+    this.gotoState('SHOWING_DESTROY_CONFIRMATION', this);
   }
 });
 </javascript>
@@ -346,14 +355,14 @@ h5. SHOWING_DESTROY_CONFIRMATION State
 <javascript filename="in apps/todos_three/states/showing_destroy_confirmation.js">
 TodosThree.SHOWING_DESTROY_CONFIRMATION = SC.State.design({
   enterState: function() {
-    var panel = TodosThree.getPath('DestroyConfirmationPane');
+    var panel = TodosThree.getPath('DestroyingConfirmationPane');
     if (panel) {
       panel.append();
     }
   },
  
   exitState: function() {
-    var panel = TodosThree.getPath('DestroyConfirmationPane');
+    var panel = TodosThree.getPath('DestroyingConfirmationPane');
     if (panel) {
       panel.remove();
     }
@@ -662,31 +671,47 @@ h5. destroying_confirmation_pane.js (views directory)
 
 <javascript filename="in apps/todos_three/views/destroying_confirmation_pane.js">
 TodosThree.DestroyingConfirmationPane = SC.PanelPane.create({
-  layout: { centerX: 0, top: 80, width: 380, height: 630 },
+  layout: { centerX: 0, top: 80, width: 380, bottom: 80 },
   theme: 'popover',
   defaultResponder: TodosThree.statechart,
 
   contentView: SC.WorkspaceView.design({
     layout: { left: 0, right: 0, top: 0, bottom: 0 },
-    childViews: "topToolbar contentView".w(),
 
     topToolbar: SC.ToolbarView.design({
-      layout: { top: 0, left: 0, right: 0, height: 32 },
+      layout: { top: 0, left: 0, right: 0, height: 50 },
       childViews: "label".w(),
 
-      label: SC.LabelView.design({
-        layout: { left: 10, centerY: 0, height: 21, width: 200 },
-        value: "Completed Todos",
+      label: SC.LabelView.design(SC.AutoResize, {
+        layout: { centerX: 0, centerY: -5, height: 75 },
+        value: "Clear Completed Todos",
         classNames: "embossed".w()
       })
     }),
 
-    contentView: SC.View.design({
-      layout: { left: 0, right: 0, top: 0, bottom: 0 },
-      childViews: "confirmButton cancelButton".w(),
+    contentView: SC.ScrollView.design({
+      layout: { left: 0, top: 20, right: 0, bottom: 0 },
 
-      // info view should go here, for some substance
-      // completedTodos SC.ListView <-> completedTodosController
+      backgroundColor: 'red',
+
+      contentView: SC.ListView.design({
+        contentValueKey: 'title',
+
+        todosBinding: 'TodosThree.todosController.content',
+        todosDidChange: function() {
+          var todos = this.get('todos');
+
+          console.log('todosDidChange: ', todos);
+
+          this.set('content', todos.filterProperty('isCompleted'));
+        }.observes('todos', '*todos', '*todos.@each.isCompleted')
+      })
+    }),
+
+    bottomToolbar: SC.ToolbarView.design({
+      layout: { bottom: 0, height: 40 },
+
+      childViews: 'confirmButton cancelButton'.w(),
 
       confirmButton: SC.ButtonView.design({
         layout: { right: 120, bottom: 10, width: 100, height: 24 },
