@@ -35,6 +35,13 @@ INFO: This guide attempts to strike a matter-of-fact tone that doesn't sugar-coa
 tries not to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references
 to the numeric heading number for relevant sections of this guide page.
 
+NOTE: We recommend that you learn how to use a distributed versioning system such as git and and the related github, 
+where you can create your own free membership if you don't already have one (or use an internal company system). You
+should make a private repo for this TodosThree app if you don't have a compelling reason to share it, and if it
+isn't modified to be any different from the one here. Regardless of whether public or private, you may wish to
+make your own repo as we go along. Where you see *GIT* messages interspersed on this page, you may issue the 
+commands for your own repo if you wish.
+
 h3. Creating A TodosThree Application
 
 Here is a screen capture of the completed application: [TODO] need TodosThree screen capture image here.
@@ -151,6 +158,8 @@ Your application target is now ready to use!
 
 </shell>
 
+NOTE: *GIT*: git add apps & git commit -a -m 'Added todos_three app with _sproutcore gen statechart_app TodosThree_ command.'
+
 We will work through the app, directory by directory, file by file, to edit those files and to add other
 needed directories and files. 
 
@@ -236,6 +245,8 @@ TodosThree.statechart = SC.Statechart.create({
 });
 </javascript>
 
+NOTE: *GIT*: git commit -a -m 'Edited files in the root app directory.'
+
 The statechart is a defining characteristic of a SproutCore app. Discrete states in a statechart and the
 transitions between them allow a clean and simple design. In the TodosThree app statechart, the initial state
 is READY.
@@ -312,6 +323,8 @@ gotoState() to move to the SHOWING_APP state.
 INFO: These aren't one-time "searches." They are associations set between the 'content' property of a
 controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get
 part of their "automatic" and "always up-to-date" aspect.
+
+NOTE: *GIT*: git commit -a -m 'Renamed ready_state.js file to ready.js. Edited to add controller content sets.'
 
 h5. LOGGING_IN State
 
@@ -420,6 +433,8 @@ When we enter the SHOWING_DESTROY_CONFIRMATION state, we grab the current list o
 nicely, and then create a warning pane to make sure that the user actually wants to delete their todos. If so,
 we tell the completedTodosController to destroy, or remove, the current completed todos. Then, we go back to
 the SHOWING_APP state so that we can enter more todos.
+
+NOTE: *GIT*: git commit -a -m 'Added additional states.'
 
 h4. The Resources Directory
 
@@ -713,6 +728,8 @@ attention.
 <% end %>
 </html>
 
+NOTE: *GIT*: git commit -a -m 'Added resources files.'
+
 h4. The Views Directory
 
 *sproutcore gen* doesn't make a views directory, so we'll need to make one.
@@ -762,6 +779,8 @@ individual views declared in separate files for convenience.
 
 NOTE: It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
 
+NOTE: *GIT*: git add views & git commit -a -m 'Added views directory and todo_item file.'
+
 h4. The Models Directory
 
 *sproutcore gen* does not make a models directory, so we'll make it.
@@ -809,6 +828,8 @@ types and their defaults will suffice.
 
 NOTE: Recall discussion of good habits regarding sc_require. The use of sc_require('core'); here is not
 mandatory, but it is a good habit: TodosThree is defined in core.js.
+
+NOTE: *GIT*: git add models & git commit -a -m 'Added models directory and todo model file.'
 
 h4. The Controllers Directory
 
@@ -905,6 +926,8 @@ marked as completed, otherwise no.
 INFO: A computed property used in this way is both a setter and a getter. Once you get the hang of making
 these you realize the benefit: automatic updating and caching for efficiency.
 
+NOTE: *GIT*: git add controllers & git commit -a -m 'Added controllers directory and controller files.'
+
 h4. The Fixtures Directory
 
 *sproutcore gen* does not make a fixtures directory. We'll make it.
@@ -958,6 +981,8 @@ TodosThree.Todo.FIXTURES = [
  }
 ];
 </javascript>
+
+NOTE: *GIT*: git add fixtures & git commit -a -m 'Added fixtures directory and fixture file.'
 
 h4. Running the App
 
