@@ -190,7 +190,7 @@ TodosThree = SC.Application.create(
   NAMESPACE: 'TodosThree',
   VERSION: '0.1.0',
  
-  store: SC.Store.create().from(SC.Record.fixtures),
+  store: SC.Store.create().from(SC.Record.fixtures)
 });
 </javascript>
 
