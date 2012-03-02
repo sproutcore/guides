@@ -538,7 +538,7 @@ checked. This is a two-way binding, so it works in reverse. If the user clicks t
 areAllCompleted() will set isCompleted to true for all todos. That makes areAllCompleted() a very special type
 of function, called a computed property.
 
-INFO: Computed properties are cool.
+INFO: Computed properties, so important in SproutCore, are given a fuller description below, and in other guides pages.
 
 The footer view has a single child view, clearCompletedTodos, which is a button whose action is the
 clearCompletedTodos action in the SHOWING_APP state. The isEnabledBinding property has a one-way binding
