@@ -312,11 +312,14 @@ call happens: .stateObserves('TodosThree.todosController*content.status'). In hu
 When the didLoad function is fired, there is an explicit check to see that the status change was to become
 SC.READY_CLEAN, and if so, to move control to the SHOWING_APP state.
 
-NOTE: This is a common pattern in SproutCore apps: Use bindings whenever you can to solve most problems, but 
+INFO: This is a common pattern in SproutCore apps: Use bindings whenever you can to solve most problems, but 
 there are also cases to use an observer function to wait for some task to complete before firing. Try not to
 abuse observers, however, because in certain situations, there are performance penalties. This is especially
 true where you do not follow best practices for wiring things together, and there is inefficient, or even
 unneeded updating.
+
+NOTE: Here we are creating an observer in a state, so we use the dedicated .stateObserves() observer style,
+but in general use, the observer function, used in exactly the same way, is simply called .observes(). 
 
 h6. Initialization of the Controllers
 
