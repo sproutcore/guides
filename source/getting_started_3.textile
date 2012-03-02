@@ -277,18 +277,19 @@ TodosThree.READY = SC.State.design({
     if (SC.instanceOf(TodosThree.store.dataSource, SC.FixturesDataSource)) {
       TodosThree.todosController.set('content',
         TodosThree.store.find(SC.Query.local(TodosThree.Todo, { orderBy: 'timestamp DESC' })));
-   
       TodosThree.completedTodosController.set('content',
         TodosThree.store.find(SC.Query.local(TodosThree.Todo, 'isCompleted = true')));
-
-      TodosThree.getPath('mainPage.mainPane').append();
-   
-      this.gotoState('SHOWING_APP');
     } else {
       this.gotoState('LOGGING_IN');
     }
   },
  
+  didLoad: function () {
+    if (TodosThree.todosController.get('status') === SC.Record.READY_CLEAN) {
+      this.gotoState('SHOWING_APP');
+    }
+  }.stateObserves('TodosThree.todosController.status'),
+
   exitState: function() {
     // Nothing to worry about here.
   }
@@ -296,21 +297,35 @@ TodosThree.READY = SC.State.design({
 </javascript>
 
 NOTE: You have seen different conventions for naming states. The style used here makes the state names
-prominent. Some people like to camel-case the state names.
+prominent.
 
 When the statechart is initialized in the TodosThree.main() function, program control will go to the READY
 state, specifically to its enterState() function, where there is a check for the type of dataSource set on the
-store. Because it is an instance of FixturesDataSource, there is initialization of the controllers, appending
-of the main pane, followed by the call to move directly to the SHOWING_APP state, not to the LOGGING_IN state,
-which we won't use in the TodosThree app. 
+store. Because it is an instance of FixturesDataSource, there is initialization of the controllers, instead
+of going directly to the LOGGING_IN state, which we won't use in the TodosThree app. In a larger app, the
+data loading would probably come at some point after logging in, in a state dedicated to the task.
 
-Before the state transition to the SHOWING_APP state, data content of the two array controllers is set by
-issuing data query find calls to the store. SC.Query.local() is used because we know we don't have to find the
-data remotely in the TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record
-instance). For the primary controller, todosController, we search for all the todos, ordering them by their
-timestamp property. For the completedTodosController, we search for all the todos for which isCompleted is
-true. Then we append the main pane which causes our user interface to be displayed in the browser, and call
-gotoState() to move to the SHOWING_APP state.
+We see our first observer function in didLoad(). This function is fired when the trigger given in the chained
+call happens: .stateObserves('TodosThree.todosController*content.status'). In human language, this means:
+
+"When the status of the content changes, fire this function."
+
+When the didLoad function is fired, there is an explicit check to see that the status change was to become
+SC.READY_CLEAN, and if so, to move control to the SHOWING_APP state.
+
+NOTE: This is a common pattern in SproutCore apps: Use bindings whenever you can to solve most problems, but 
+there are also cases to use an observer function to wait for some task to complete before firing. Try not to
+abuse observers, however, because in certain situations, there are performance penalties. This is especially
+true where you do not follow best practices for wiring things together, and there is inefficient, or even
+unneeded updating.
+
+h6. Initialization of the Controllers
+
+Data content of the two array controllers is set in enterState() by issuing data query find calls to the store. 
+SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We 
+search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the primary controller, 
+todosController, we search for all the todos, ordering them by their timestamp property. For the 
+completedTodosController, we search for all the todos for which isCompleted is true.
 
 INFO: These aren't one-time "searches." They are associations set between the 'content' property of a
 controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get
@@ -345,7 +360,8 @@ h5. SHOWING_APP State
 <javascript filename="apps/todos_three/states/showing_app.js">
 TodosThree.SHOWING_APP = SC.State.design({
   enterState: function() {
-    TodosThree.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
+    TodosThree.mainPage.get('mainPane').append();
+    TodosThree.mainPage.get('field').becomeFirstResponder();
   },
 
   exitState: function() {
@@ -464,7 +480,6 @@ TodosThree.mainPage = SC.Page.design({
 
       completeAll: SC.CheckboxView.design(SC.AutoResize, {
         autoResizePadding: { width: 47 },
-        localize: YES,
         title: 'Mark all as done',
         valueBinding: 'TodosThree.completedTodosController.areAllCompleted'
       }),
@@ -472,34 +487,31 @@ TodosThree.mainPage = SC.Page.design({
       title: SC.LabelView.design({
         layout: { left: 0, right: 0, top: 0, bottom: 0 },
 
-        totalTodoBinding: SC.Binding.oneWay('TodosThree.todosController.length'),
+        totalTodosBinding: SC.Binding.oneWay('TodosThree.todosController.length'),
         completedTodosBinding: SC.Binding.oneWay('TodosThree.completedTodosController.length'),
 
         value: function () {
-          var leftTodo = this.get('totalTodo') - this.get('completedTodos');
-          return 'TodosThree (%@)'.fmt(leftTodo);
-        }.property('totalTodo', 'completedTodos').cacheable()
+          return 'TodosThree (' + (this.get('totalTodos') - this.get('completedTodos')) + ')';
+        }.property('totalTodos', 'completedTodos').cacheable()
       })
     }),
 
     newTodoField: SC.View.design({
       classNames: ['new-todo'],
       layout: { centerX: 0, width: 500, top: 36, height: 36 },
-      childViews: ['field', 'submit'],
+      childViews: ['field', 'button'],
 
       field: SC.TextFieldView.design({
-        localize: YES,
         hint: 'What needs to be done?'
       }),
 
-      submit: SC.ButtonView.design(SC.AutoResize, {
+      button: SC.ButtonView.design(SC.AutoResize, {
         controlSize: SC.HUGE_CONTROL_SIZE,
-        layout: { right: 12, height: 30, centerY: 0, zIndex: 100 },
-        localize: YES,
+        layout: { centerY: 0, height: 30, right: 12, zIndex: 100 },
         title: 'Add',
         action: 'addTodo',
-        valueBinding: '.parentView.field.value',
-        isDefaultBinding: '.parentView.field*focused'
+        valueBinding: '.page.field.value',
+        isDefaultBinding: '.page.field*focused'
       })
     }),
     
@@ -508,7 +520,11 @@ TodosThree.mainPage = SC.Page.design({
       contentView: SC.ListView.design({
         contentBinding: SC.Binding.oneWay('TodosThree.todosController'),
         rowHeight: 36,
-        exampleView: TodosThree.TodoItemView
+        exampleView: SC.CheckboxView.design({
+          classNames: ['todo-item'],
+          valueBinding: '.content.isCompleted',
+          titleBinding: SC.Binding.oneWay('.content.title')
+        })
       })
     }),
         
@@ -518,9 +534,8 @@ TodosThree.mainPage = SC.Page.design({
       childViews: ['clearCompletedTodos'],
       clearCompletedTodos: SC.ButtonView.design(SC.AutoResize, {
         controlSize: SC.HUGE_CONTROL_SIZE,
-        layout: { left: 14, height: 30, centerY: 0 },
+        layout: { centerY: 0, height: 30, right: 12, zIndex: 100 },
         isEnabledBinding: SC.Binding.oneWay('TodosThree.completedTodosController.length').bool(),
-        localize: YES,
         title: 'Clear completed todos',
         action: 'clearCompletedTodos'
       })
@@ -531,7 +546,7 @@ TodosThree.mainPage = SC.Page.design({
 </javascript>
 
 There are four parts to the TodosThree mainPage view: a header and footer, and between them are a newTodoField
-and a todosList. A user types a new todo in the newTodoField, and when they click the submit button, labeled
+and a todosList. A user types a new todo in the newTodoField, and when they click the button, labeled
 'Add', the new todo is added by means of the todosController's addTodo action. The new todo will show up in
 the todosList. How does this happen? Look at the lines that have Binding in the property names. When you write
 user interface element code, you "wire up" these connections with such binding instructions. 
@@ -545,6 +560,18 @@ checked. This is a two-way binding, so it works in reverse. If the user clicks t
 areAllCompleted() will set isCompleted to true for all todos. That makes areAllCompleted() a very special type
 of function, called a computed property.
 
+As an introduction to computed properties, we start with a basic one in the title view, an SC.LabelView. You
+see two local properties as totalTodosBinding and completedTodosBinding. The computed property is the value, 
+declared with a normal no-argument function signature, with .property('totalTodo', 'completedTodos').cacheable()
+chained onto the end. The chained part means:
+
+"Base this computed property on the totalTodos and completedTodos properties, and update it if either of them changes,
+and, also, cache the value so unnecessary updates are avoided." 
+
+Note that the special way of setting a binding, as with totalTodosBinding, results in the creation of a property 
+that is referred to as just totalTodos. You see this in the two this.get() calls where the completedTodos are 
+subtracted from the totalTodos.  
+
 INFO: Computed properties, so important in SproutCore, are given a fuller description below, and in other guides pages.
 
 The footer view has a single child view, clearCompletedTodos, which is a button whose action is the
@@ -555,11 +582,14 @@ there is nothing to clear.
 
 h6. newTodoField
 
-The newTodoField view contains a text field called field and a submit button. The submit button has two
+The newTodoField view contains a text field called field and a button. The button has two
 properties that are bound to the associated text field. The valueBinding property is bound to field.value,
-which is the text the user enters. Note the use of .parentView in the valueBinding definition. In this
-context, parentView refers to the newTodoField view, which contains the field and submit child views. The
-isDefaultBinding property works in similar fashion, but you note an asterisk in front of a reference to
+which is the text the user enters. Note the use of .page in the valueBinding definition. In this
+context, page refers to the page itself, a helpful global available. Note at the top of the file there is a
+declaration of an outlet called field, so we have a handy reference to the business end of this whole view,
+.page.field, which is the newTodoField view's field. References can be cumbersome. Outlets help. 
+
+The isDefaultBinding property also involves an interesting path. You note an asterisk in front of a reference to
 'focused', which is one of the boolean properties available for a text field. The asterisk is a convention
 that means what an asterisk often means -- if the text field has any type of focus at all, keyboard or mouse,
 then 'focused' will be true. 
@@ -571,15 +601,6 @@ h6. todosList
 
 The todosList view follows the SproutCore idiom for wrapping an SC.ListView inside an SC.ScrollView. The
 contentBinding property of the list is set to TodosThree.todosController. 
-
-The exampleView property illustrates a concept very important for SproutCore, one that you learned in a
-previous guide: views can be defined in separate javascript files and included where they are needed. exampleView 
-is set to TodosThree.TodoItemView, which necessitates the sc_require statement at the top of the file: 
-sc_require('todo_item');. TodoItemView has a checkbox and label.
-
-NOTE: The load order for javascript files will be alphabetical, unless otherwise controlled with sc_require().
-Sometimes you get lucky on the default file loading order, if you omit a sc_require() statement. Sometimes you
-don't, and you will get a dependency error.
 
 h5. todo_item.js (resources directory)
 
@@ -645,6 +666,30 @@ NOTE: CSS is an art unto itself, an important side of doing SproutCore developme
 h6. styles.css (resources directory)
 
 <css filename="apps/todos_three/resources/styles.css">
+$theme: '.ace.todos-three';
+
+body { 
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+}
+
+/* Fix for Chrome bug on accelerated panes */
+.sc-pane { 
+  -webkit-transform: none;
+}
+
+$theme.sc-text-field-view { 
+  font-size: 14px;
+  .hint {
+    font-size: 14px;
+    line-height: 30px;
+  }
+ 
+  .padding { 
+    left: 14px;
+  }
+}
+
 $theme.toolbar {
   .checkbox {
     .button {
@@ -652,41 +697,19 @@ $theme.toolbar {
       top: 50%;
       margin-top: -8px;
     }
-
+ 
     .label {
       left: 47px;
       line-height: 36px;
     }
   }
-
+ 
   .sc-label-view {
     text-align: right;
     line-height: 36px;
     font-weight: bold;
     font-size: 18px;
     padding-right: 12px;
-  }
-}
-
-body {
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizelegibility;
-}
-
-.sc-pane {
-  -webkit-transform: none;
-}
-
-$theme.new-todo {
-  background-color: #FFF;
-}
-
-$theme.sc-text-field-view {
-  background-color: transparent;
-  font-size: 14px;
-
-  .padding {
-    left: 14px;
   }
 }
 
@@ -841,26 +864,31 @@ you'll see prevalent use of the content property in most things controller.
 The completedTodosController is another array controller. It has a property called totalTodosBinding, and a
 function called areAllCompleted(). 
 
+NOTE: The sc_require statements at the top of each of these files illustrate a concept that you learned in a
+previous guide: views can be defined in separate javascript files and included where they are needed. The load 
+order for javascript files will be alphabetical, unless otherwise controlled with sc_require().  Sometimes you 
+get lucky on the default file loading order, if you omit a sc_require() statement. Sometimes you don't, and 
+you will get a dependency error.
+
 totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", we don't care about pushing
 back) to the length of the todosController array controller. We need a local reference to this length, because
 we are about to do something impressive, in part based on it.
 
 areAllCompleted() is a function, but that very special type of function, the computed property. Note the
 .property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as
-parameters, then tacks on .cacheable(). First, look at the parameters, which are references to local
-properties for this context, the array controller itself. We know we have a 'length' property -- this is a
-built-in property of an array controller. But what gives with the use of the 'totalTodos' reference -- isn't
-the property called totalTodosBinding? Ah, the answer is that anytime Binding is seen at the end of a property
+dependencies for updating, then tacks on .cacheable(). We have a 'length' property available -- this is a
+built-in property of an array controller. Quiz from something explained earlier: isn't the property called 
+totalTodosBinding not totalTodos? Recall that the answer is that anytime Binding is seen at the end of a property
 name, you have a kind of dual-property arrangement. The "actual" property is, in fact, totalTodos. In defining
 totalTodosBinding, we essentially say to get the value of totalTodos from this other source. 
 
-That covers the background on mechanics of property names and bindings. Now to address what
-.property('length', 'totalTodos').cacheable() accomplishes:
+That covers the background on mechanics of property names and bindings. As before, here is a human language 
+explanation of the chained calls on the end (.property('length', 'totalTodos').cacheable()):
 
-  "Base this computed property on the length and totalTodos properties, and update it if either of them changes,
+"Base this computed property on the length and totalTodos properties, and update it if either of them changes,
 and, also, cache the value so unnecessary updates are avoided." 
 
-There is more to explain about the working of this computed property. What are the k and v parameters, and
+There is more to learn about the working of this computed property. What are the k and v parameters, and
 what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the
 totalTodos value is being changed. This is a mandate to try to mark all todos as completed by this value. _The
 name of the computed property is *areAllCompleted*_. If a call is made to set it, then the body of the
