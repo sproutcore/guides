@@ -35,12 +35,11 @@ INFO: This guide attempts to strike a matter-of-fact tone that doesn't sugar-coa
 tries not to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references
 to the numeric heading number for relevant sections of this guide page.
 
-NOTE: We recommend that you learn how to use a distributed versioning system such as git and and the related github, 
-where you can create your own free membership if you don't already have one (or use an internal company system). You
-should make a private repo for this TodosThree app if you don't have a compelling reason to share it, and if it
-isn't modified to be any different from the one here. Regardless of whether public or private, you may wish to
-make your own repo as we go along. Where you see *GIT* messages interspersed on this page, you may issue the 
-commands for your own repo if you wish.
+NOTE: Learning how to use a distributed versioning system such as git and and the related github is valuable. 
+You can create your own free membership if you don't already have one (or use an internal company system). If
+you make your own repo to which you do commits as you follow along here, you should make it a private repo if you 
+don't have a compelling reason to share it, and if it isn't modified to be any different from the one here. 
+Where you see *GIT* messages interspersed on this page, you may issue the commands for your own repo if you wish.
 
 h3. Creating A TodosThree Application
 
