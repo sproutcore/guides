@@ -78,13 +78,9 @@ This will be the directory structure for the TodosThree app:
 **** *resources/*
 ***** *loading.rhtml*
 ***** *main_page.js*
-***** *_theme.css*
-***** *body.css*
-***** *header.css*
-***** *new_todo.css*
-***** *todo_item.css*
-**** *views/*
 ***** *todo_item.js*
+***** *_theme.css*
+***** *styles.css*
 **** *controllers/*
 ***** *todos.js*
 ***** *completed_todos.js*
@@ -113,13 +109,9 @@ Here is that directory structure again, with descriptions for each item:
 **** *resources/*
 ***** *loading.rhtml*                  | _A short html file to show when the app is loading_
 ***** *main_page.js*                   | _The TodosThree.mainPage view_
-***** *_theme.css*                     | _Contains per directory theme setup_
-***** *body.css*                       | _Defines css for default page content_
-***** *header.css*                     | _Defines css for the top toolbar_
-***** *new_todo.css*                   | _Defines css for the new todo title text field_
-***** *todo_item.css*                  | _Defines css for todo items in the main list view_
-**** *views/*
 ***** *todo_item.js*                   | _TodoItem code for a checkbox and a title_
+***** *_theme.css*                     | _Contains per directory theme setup_
+***** *styles.css*                     | _Defines css for theme styling_ 
 **** *controllers/*
 ***** *todos.js*                       | _TodosThree.todosController, an SC.ArrayController to hold todo items_
 ***** *completed_todos.js*             | _TodosThree.completedTodosController, another SC.ArrayController_
@@ -451,12 +443,12 @@ $ cd resources
 
 Files to add in the apps/todos_three/resources directory are:
 
-|_. main_page.js |_. header.css |_. body.css |_. new_todo.css |_. todo_item.css |_. _theme.css |_. loading.rhtml |
+|_. main_page.js |_. todo_item.js |_. _theme.css |_. styles.css |_. loading.rhtml |
 
 h5. main_page.js (resources directory)
 
 <javascript filename="apps/todos_three/resources/main_page.js">
-sc_require('views/todo_item');
+sc_require('todo_item');
 
 TodosThree.mainPage = SC.Page.design({
   field: SC.outlet('mainPane.newTodoField.field'),
@@ -581,14 +573,36 @@ The todosList view follows the SproutCore idiom for wrapping an SC.ListView insi
 contentBinding property of the list is set to TodosThree.todosController. 
 
 The exampleView property illustrates a concept very important for SproutCore, one that you learned in a
-previous guide: views can be defined in separate javascript files, often held in a views directory, and
-included where they are needed. exampleView is set to TodosThree.TodoItemView, which necessitates the
-sc_require statement at the top of the file: sc_require('views/todo_item');. TodoItemView has a checkbox and
-label. We'll add it when we add the views directory later.
+previous guide: views can be defined in separate javascript files and included where they are needed. exampleView 
+is set to TodosThree.TodoItemView, which necessitates the sc_require statement at the top of the file: 
+sc_require('todo_item');. TodoItemView has a checkbox and label.
 
 NOTE: The load order for javascript files will be alphabetical, unless otherwise controlled with sc_require().
 Sometimes you get lucky on the default file loading order, if you omit a sc_require() statement. Sometimes you
 don't, and you will get a dependency error.
+
+h5. todo_item.js (resources directory)
+
+<javascript filename="apps/todos_three/resources/todo_item.js">
+TodosThree.TodoItemView = SC.CheckboxView.design({
+  classNames: ['todo-item'],
+  valueBinding: '.content.isCompleted',
+  titleBinding: SC.Binding.oneWay('.content.title')
+});
+</javascript>
+
+TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an
+array of CSS class names that are to be applied to this view. valueBinding has a reference to
+.content.isCompleted. What is the context for this reference? We know that this view is defined as the
+exampleView property of the todos list. The term example here means "the view to use for each list item." List
+items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the
+TodoItemView definition refers to a single todo item in the list. .content.isCompleted refers to this property
+of a todo item. Likewise, titleBinding is bound to the title property of a list todo item.
+
+You have to think about where this view is used to understand it, but that comes with the territory of having
+individual views declared in separate files for convenience.
+
+NOTE: It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
 
 h5. _theme.css (resources directory)
 
@@ -617,10 +631,10 @@ The underscore starting the name of _theme.css is a dead giveaway that it must a
 the theming system. It defines $theme to be our Ace-derived theme, ace.todos-three. You'll see $theme used in
 individual content CSS files.
 
-h5. Content CSS files
+h5. Content CSS file
 
 You can add a single CSS file in your resources directory, or you can add many small ones. For the TodosThree
-app, we'll choose the many-small-ones approach. In these CSS files, where you see something like
+app, we'll choose the single file approach. In this CSS file, where you see something like
 $theme.sc-text-field-view, the sc- prefix indicates an override of the sc- CSS definitions in the Ace theme.
 Inspect your browser's elements listing, and you will see these references. In practice, you often need to
 dive into such an elements listing, and the fancy mouse-driven browser inspection tools, to diagnose CSS
@@ -628,11 +642,9 @@ problems, such as the case of having bad math that results in one view obscuring
 
 NOTE: CSS is an art unto itself, an important side of doing SproutCore development and building views.
 
-Names of the files indicate their applicability: header.css, body.css, new_todo.css, and todo_item.css.
+h6. styles.css (resources directory)
 
-h6. header.css (resources directory)
-
-<css filename="apps/todos_three/resources/header.css">
+<css filename="apps/todos_three/resources/styles.css">
 $theme.toolbar {
   .checkbox {
     .button {
@@ -655,11 +667,7 @@ $theme.toolbar {
     padding-right: 12px;
   }
 }
-</css>
 
-h6. body.css (resources directory)
-
-<css filename="apps/todos_three/resources/body.css">
 body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizelegibility;
@@ -668,11 +676,7 @@ body {
 .sc-pane {
   -webkit-transform: none;
 }
-</css>
 
-h6. new_todo.css (resources directory)
-
-<css filename="apps/todos_three/resources/new_todo.css">
 $theme.new-todo {
   background-color: #FFF;
 }
@@ -685,11 +689,7 @@ $theme.sc-text-field-view {
     left: 14px;
   }
 }
-</css>
 
-h6. todo_item.css (resources directory)
-
-<css filename="apps/todos_three/resources/todo_item.css">
 $theme.todo-item {
   .button {
     left: 13px;
@@ -729,57 +729,6 @@ attention.
 </html>
 
 NOTE: *GIT*: git commit -a -m 'Added resources files.'
-
-h4. The Views Directory
-
-*sproutcore gen* doesn't make a views directory, so we'll need to make one.
-
-Before adding the views directory, some navigation is needed. We are still in the resources directory, so move
-back up to the TodosThree app root directory:
-
-<shell>
-$ pwd 
-    ~/development/sproutcore/getting_started/apps/todos_three/resources/
-$ cd ..
-</shell>
-
-Make a views directory:
-
-<shell>
-$ pwd 
-    ~/development/sproutcore/getting_started/apps/todos_three/
-$ mkdir views
-$ cd views
-</shell>
-
-The views directory will contain one file: 
-
-|_. todo_item.js | 
-
-h5. todo_item.js (views directory)
-
-<javascript filename="apps/todos_three/views/todo_item.js">
-TodosThree.TodoItemView = SC.CheckboxView.design({
-  classNames: ['todo-item'],
-  valueBinding: '.content.isCompleted',
-  titleBinding: SC.Binding.oneWay('.content.title')
-});
-</javascript>
-
-TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an
-array of CSS class names that are to be applied to this view. valueBinding has a reference to
-.content.isCompleted. What is the context for this reference? We know that this view is defined as the
-exampleView property of the todos list. The term example here means "the view to use for each list item." List
-items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the
-TodoItemView definition refers to a single todo item in the list. .content.isCompleted refers to this property
-of a todo item. Likewise, titleBinding is bound to the title property of a list todo item.
-
-You have to think about where this view is used to understand it, but that comes with the territory of having
-individual views declared in separate files for convenience.
-
-NOTE: It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
-
-NOTE: *GIT*: git add views & git commit -a -m 'Added views directory and todo_item file.'
 
 h4. The Models Directory
 
