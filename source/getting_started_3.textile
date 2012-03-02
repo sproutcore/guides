@@ -318,8 +318,13 @@ abuse observers, however, because in certain situations, there are performance p
 true where you do not follow best practices for wiring things together, and there is inefficient, or even
 unneeded updating.
 
-NOTE: Here we are creating an observer in a state, so we use the dedicated .stateObserves() observer style,
+INFO: Here we are creating an observer in a state, so we use the dedicated .stateObserves() observer style,
 but in general use, the observer function, used in exactly the same way, is simply called .observes(). 
+
+INFO: There are nuances to learn about specifying paths in observer declarations, such as how to use an asterisk 
+for one of the internal dots in a path. For example, for .observes(a*b.c), the meaning would be "if a.b changes, 
+notify that a.b.c changed and update bindings." If it were .observes(a.b.c), instead, the meaning would be "if b 
+changes, then your binding won't be updated when c changes."
 
 h6. Initialization of the Controllers
 
@@ -513,7 +518,7 @@ TodosThree.mainPage = SC.Page.design({
         title: 'Add',
         action: 'addTodo',
         valueBinding: '.page.field.value',
-        isDefaultBinding: '.page.field*focused'
+        isDefaultBinding: '.page.field.focused'
       })
     }),
     
@@ -591,13 +596,12 @@ context, page refers to the page itself, a helpful global available. Note at the
 declaration of an outlet called field, so we have a handy reference to the business end of this whole view,
 .page.field, which is the newTodoField view's field. References can be cumbersome. Outlets help. 
 
-The isDefaultBinding property also involves an interesting path. You note an asterisk in front of a reference to
-'focused', which is one of the boolean properties available for a text field. The asterisk is a convention
-that means what an asterisk often means -- if the text field has any type of focus at all, keyboard or mouse,
-then 'focused' will be true. 
+The isDefaultBinding property also involves an interesting path. The reference to the focused boolean will
+make the field become inactive if focus goes elsewhere.
 
-NOTE: Property path syntax -- e.g., the . and * in .parentView.field*focused -- is something you have to look
-up repeatedly until you are comfortable. There are nuances to learn.
+NOTE: Property path syntax -- e.g., the leading . in .page.field.focused -- is something you have to look
+up repeatedly until you are comfortable. In the case of the . here, it means that the path is relative to
+here, this scope. 
  
 h6. todosList
 
