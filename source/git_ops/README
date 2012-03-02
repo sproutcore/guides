@@ -4,6 +4,7 @@ npm install coffee-script
 npm install mkdirp
 ../myapp/bin/sproutcore gen statechart_app TodosTwo
 ../myapp/bin/sproutcore gen statechart_app TodosThree
+mv apps/todo_three/states/ready_state.js apps/todo_three/states/ready.js
 cp ~/Development/sproutcore/sproutguides/source/git_ops/getting_started_populator.coffee .
 node_modules/coffee-script/bin/coffee getting_started_populator.coffee 
 ln -s ../todos/frameworks .
