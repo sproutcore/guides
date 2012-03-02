@@ -190,7 +190,10 @@ TodosThree = SC.Application.create(
   NAMESPACE: 'TodosThree',
   VERSION: '0.1.0',
  
-  store: SC.Store.create().from(SC.Record.fixtures)
+  store: SC.Store.create().from(SC.FixturesDataSource.create({
+    simulateRemoteResponse: YES,
+    latency: 250
+  }))
 });
 </javascript>
 
@@ -199,7 +202,9 @@ The code in core.js sets up TodosThree as an instance of SC.Application.
 The TodosThree namespace is TodosThree: TodosThree.mainPage, TodosThree.todosController, etc.
 
 A data store is created from SC.Record.fixtures, which is a way to simulate a real database. This is done by
-reading JSON-formatted sample data given from a fixtures javascript file, which we'll add in a later step. 
+reading JSON-formatted sample data given from a fixtures javascript file, which we'll add in a later step. The
+SC.FixturesDataSource.create() call will set a latency of 250ms, otherwise it will load too fast for our app
+to have time to operate as it would in a normal web app situation.
 
 h5. main.js (app root directory)
 
