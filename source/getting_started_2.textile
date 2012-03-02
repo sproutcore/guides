@@ -346,7 +346,7 @@ TodosTwo.statechart = SC.Statechart.create({
 Let's make our TodosTwo.ReadyState handle the _proveIt_ action that was defined on
 the mouseDown event in TodosTwo.RollingView above:
 
-<javascript filename="appps/todos_two/states/ready_state.js">
+<javascript filename="apps/todos_two/states/ready_state.js">
 TodosTwo.ReadyState = SC.State.extend({
   
   enterState: function() {

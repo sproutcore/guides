@@ -167,7 +167,7 @@ present in this document):
 
 h5. theme.js (app root directory)
 
-<javascript filename="in apps/todos_three/theme.js">
+<javascript filename="apps/todos_three/theme.js">
 TodosThree.Theme = SC.AceTheme.create({
   name: 'todos-three'
 });
@@ -183,7 +183,7 @@ and a default 'todos-three' namespace is created.
 
 h5. core.js (app root directory)
 
-<javascript filename="in apps/todos_three/core.js">
+<javascript filename="apps/todos_three/core.js">
 TodosThree = SC.Application.create(
   /** @scope TodosThree.prototype */ {
  
@@ -203,7 +203,7 @@ reading JSON-formatted sample data given from a fixtures javascript file, which 
 
 h5. main.js (app root directory)
 
-<javascript filename="in apps/todos_three/main.js">
+<javascript filename="apps/todos_three/main.js">
 TodosThree.main = function main() {
   TodosThree.statechart.initStatechart();
 };
@@ -216,7 +216,7 @@ handle the complexity.
 
 h5. statechart.js (app root directory)
 
-<javascript filename="in apps/todos_three/statechart.js">
+<javascript filename="apps/todos_three/statechart.js">
 TodosThree.statechart = SC.Statechart.create({
 
   trace: YES,
@@ -268,7 +268,7 @@ Files to edit or add in the apps/todos_three/states directory are:
 
 h5. READY State (replace content of renamed ready.js)
 
-<javascript filename="in apps/todos_three/states/ready.js">
+<javascript filename="apps/todos_three/states/ready.js">
 TodosThree.READY = SC.State.design({
   enterState: function() {
     if (SC.instanceOf(TodosThree.store.dataSource, SC.FixturesDataSource)) {
@@ -315,7 +315,7 @@ part of their "automatic" and "always up-to-date" aspect.
 
 h5. LOGGING_IN State
 
-<javascript filename="in apps/todos_three/states/logging_in.js">
+<javascript filename="apps/todos_three/states/logging_in.js">
 TodosThree.LOGGING_IN = SC.State.design({             
   initialSubstate: "SHOWING_LOGIN",
  
@@ -337,7 +337,7 @@ INFO: We won't use the LOGGING_IN state in TodosThree, but have it here for illu
 
 h5. SHOWING_APP State
 
-<javascript filename="in apps/todos_three/states/showing_app.js">
+<javascript filename="apps/todos_three/states/showing_app.js">
 TodosThree.SHOWING_APP = SC.State.design({
   enterState: function() {
     TodosThree.mainPage.getPath('mainPane.newTodoField.field').becomeFirstResponder();
@@ -372,7 +372,7 @@ other view and system components.
 
 h5. SHOWING_DESTROY_CONFIRMATION State
 
-<javascript filename="in apps/todos_three/states/showing_destroy_confirmation.js">
+<javascript filename="apps/todos_three/states/showing_destroy_confirmation.js">
 TodosThree.SHOWING_DESTROY_CONFIRMATION = SC.State.design({
   _panel: null,
 
@@ -440,7 +440,7 @@ Files to add in the apps/todos_three/resources directory are:
 
 h5. main_page.js (resources directory)
 
-<javascript filename="in apps/todos_three/resources/main_page.js">
+<javascript filename="apps/todos_three/resources/main_page.js">
 sc_require('views/todo_item');
 
 TodosThree.mainPage = SC.Page.design({
@@ -577,7 +577,7 @@ don't, and you will get a dependency error.
 
 h5. _theme.css (resources directory)
 
-<css filename="in apps/todos_three/resources/_theme.css">
+<css filename="apps/todos_three/resources/_theme.css">
 /*
   This defines the global $theme variable for use inside your CSS.
   The $theme variable holds the CSS class names for your theme.
@@ -617,7 +617,7 @@ Names of the files indicate their applicability: header.css, body.css, new_todo.
 
 h6. header.css (resources directory)
 
-<css filename="in apps/todos_three/resources/header.css">
+<css filename="apps/todos_three/resources/header.css">
 $theme.toolbar {
   .checkbox {
     .button {
@@ -644,7 +644,7 @@ $theme.toolbar {
 
 h6. body.css (resources directory)
 
-<css filename="in apps/todos_three/resources/body.css">
+<css filename="apps/todos_three/resources/body.css">
 body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizelegibility;
@@ -657,7 +657,7 @@ body {
 
 h6. new_todo.css (resources directory)
 
-<css filename="in apps/todos_three/resources/new_todo.css">
+<css filename="apps/todos_three/resources/new_todo.css">
 $theme.new-todo {
   background-color: #FFF;
 }
@@ -674,7 +674,7 @@ $theme.sc-text-field-view {
 
 h6. todo_item.css (resources directory)
 
-<css filename="in apps/todos_three/resources/todo_item.css">
+<css filename="apps/todos_three/resources/todo_item.css">
 $theme.todo-item {
   .button {
     left: 13px;
@@ -701,7 +701,7 @@ SproutCore apps can weigh in north of the welterweight class, so while the app i
 a loading indicator. For TodosThree we don't have to worry, but in larger apps, this file could need some
 attention.
 
-<html filename="in apps/todos_three/resources/loading.rhtml">
+<html filename="apps/todos_three/resources/loading.rhtml">
 <% content_for :loading do %>
 <% # Any HTML in this file will be visible on screen while your page loads
    # its application JavaScript.  SproutCore applications are optimized for 
@@ -741,7 +741,7 @@ The views directory will contain one file:
 
 h5. todo_item.js (views directory)
 
-<javascript filename="in apps/todos_three/views/todo_item.js">
+<javascript filename="apps/todos_three/views/todo_item.js">
 TodosThree.TodoItemView = SC.CheckboxView.design({
   classNames: ['todo-item'],
   valueBinding: '.content.isCompleted',
@@ -792,7 +792,7 @@ The models directory will contain one file:
 
 h5. todo.js (models directory)
 
-<javascript filename="in apps/todos_three/models/todo.js">
+<javascript filename="apps/todos_three/models/todo.js">
 sc_require('core');
 
 TodosThree.Todo = SC.Record.extend({
@@ -839,7 +839,7 @@ The controllers directory will contain two files:
 
 h5. todos.js (controllers directory)
 
-<javascript filename="in apps/todos_three/controllers/todos.js">
+<javascript filename="apps/todos_three/controllers/todos.js">
 sc_require('core');
 
 TodosThree.todosController = SC.ArrayController.create({
@@ -848,7 +848,7 @@ TodosThree.todosController = SC.ArrayController.create({
 
 h5. completed_todos.js (controllers directory)
 
-<javascript filename="in apps/todos_three/controllers/completed_todos.js">
+<javascript filename="apps/todos_three/controllers/completed_todos.js">
 sc_require('controllers/todos');
 
 TodosThree.completedTodosController = SC.ArrayController.create({
@@ -932,7 +932,7 @@ The fixtures directory will contain one file:
 
 h5. todo.js (fixtures directory)
 
-<javascript filename="in apps/todos_three/fixtures/todo.js">
+<javascript filename="apps/todos_three/fixtures/todo.js">
 sc_require('models/todo');
 
 TodosThree.Todo.FIXTURES = [
