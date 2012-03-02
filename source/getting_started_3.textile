@@ -35,12 +35,6 @@ INFO: This guide attempts to strike a matter-of-fact tone that doesn't sugar-coa
 tries not to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references
 to the numeric heading number for relevant sections of this guide page.
 
-NOTE: Learning how to use a distributed versioning system such as git and and the related github is valuable. 
-You can create your own free membership if you don't already have one (or use an internal company system). If
-you make your own repo to which you do commits as you follow along here, you should make it a private repo if you 
-don't have a compelling reason to share it, and if it isn't modified to be any different from the one here. 
-Where you see *GIT* messages interspersed on this page, you may issue the commands for your own repo if you wish.
-
 h3. Creating A TodosThree Application
 
 Here is a screen capture of the completed application: [TODO] need TodosThree screen capture image here.
@@ -150,6 +144,9 @@ Your application target is now ready to use!
 </shell>
 
 NOTE: *GIT*: git add apps & git commit -a -m 'Added todos_three app with _sproutcore gen statechart_app TodosThree_ command.'
+
+INFO: Where you see such GIT notes in this guide, you can ignore them. If you know what they mean, you may use these
+cues to commit to your own repo as you go. They are really for internal use in generating the associated repo.
 
 We will work through the app, directory by directory, file by file, to edit those files and to add other
 needed directories and files. 
