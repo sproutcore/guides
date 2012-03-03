@@ -1,6 +1,7 @@
 h2. Getting Started : Part 1
 
-Welcome to SproutCore! This guide is deigned to get you up-and-running as quickly as possible with SproutCore. Today you will:
+Welcome to SproutCore! This guide will get you up-and-running as quickly as possible with SproutCore. For this
+individual guide, you will:
 
 * Install SproutCore on your machine.
 * Use the SproutCore tools to generate a basic starting application.
@@ -11,11 +12,12 @@ endprologue.
 
 h3. Introduction
 
-This guide is designed to be as simple as possible. It will ensure that you
-have the latest version of Sproutcore installed and configured properly. If you
-run into any issues or bumps along the way, please reach out on the
-"mailing list":http://groups.google.com/group/sproutcore or find us on IRC at
-#sproutcore!
+The introductory "Getting Started" guides pages are step-by-step treatments of concepts needed to make a full 
+SproutCore application. 
+
+This first "Getting Started" guide will ensure that you have the latest version of Sproutcore installed and 
+configured properly. If you run into any issues or bumps along the way, please reach out on the
+"mailing list":http://groups.google.com/group/sproutcore or find us on IRC at #sproutcore!
 
 h3. Installation
 
@@ -26,8 +28,10 @@ There are two basic ways to install SproutCore.
 
 The installation method you choose should be based upon your current platform and your experience with Ruby.
 The installers are currently only available for Windows and Mac. Linux and other platforms should use the
-RubyGems method. Additionally, if your machine is already setup for development in Ruby, you may find it more
-convenient to forgo the package installers, and just use RubyGems so that you can always get the latest
+RubyGems method. 
+
+Additionally, if your machine is already setup for development in Ruby, you may find it more
+convenient to forgo the package installers, and use RubyGems so that you can always get the latest
 version by typing the following:
 
 <shell>
@@ -70,7 +74,7 @@ $ cd getting_started
 </shell>
 
 Now you have a getting_started project directory, ~/development/sproutcore/getting_started. We will build
-several SproutCore apps in this project space, but for now, we'll just create a basic "Hello World" application
+several SproutCore apps in this project space, but for now, we'll just create a basic "Hello World" style application
 to ensure that everything is installed and working properly.
 
 Create the app in the getting_started project directory:
@@ -111,13 +115,13 @@ h3. Explanation
 
 When you are building a web application in SproutCore, it is common to have
 a multitude of mini-applications in order to separate out the logic into
-manageable parts. For instance, Apple's iCloud application has mini-apps for
+manageable parts. For instance, Apple's iCloud application has apps for
 e-mail, contacts and finding your friends.
 
 This is why there is an *apps/* directory inside of the getting_started project directory. It
 allows you to easily separate distinct applications.
 
-Inside of the *apps/todos_one* directory, you will find the Buildfile for the TodosOne application.
+Inside the *apps/todos_one* directory, you will find the Buildfile for the TodosOne application.
 Just like the project (getting_started) has a *Buildfile*, each application or
 framework that you create should also have a *Buildfile* which specifies it's
 requirements as well as any build-options that you may want to change, such as
@@ -128,20 +132,19 @@ application is defined. This is also where you usually define any global
 constants that the application might use (which should be very few), or any
 configuration that external libraries might require.
 
-The *main.js* file is usually very basic. It just starts the application. If you
+The *main.js* file is usually very basic. It starts the application. If you
 are using the Statechart framework (which we will discuss in Part 2), *main.js*
 would simply initialize the statechart. If you open up *main.js* right now,
-you'll see that it simply appends the main view to the screen.
+you'll see that it appends the main view to the screen.
 
 The resources folder contains things like images, stylesheets and views.
 
 Inside the resources folder, the *_theme.css* file defines that directory's
-CSS theme. This allows you to define different themes for each directory. You
-can learn more about this in the theming guide (TODO link to theming guide).
+CSS theme. This allows you to define different themes for each directory.
 
 The *resources/loading.rhtml* file defines the HTML that your users see before
 SproutCore has fully loaded and handed control over to the application. For
-now, it just displays a simple loading message.
+now, it displays a simple loading message.
 
 Lastly, the *resources/main_page.js* file describes the actual user interface of the
 application. Open this file now and take a look. Depending upon how complex
@@ -163,10 +166,10 @@ $ sproutcore server
 
 NOTE: If you are attempting to run multiple copies of *sproutcore server* at the same
 time, you will probably see an error about the port already being in use. If
-so, just re-run the command and add --port 4030 so it will not use the default
-port 4020.
+so, just re-run the command and add --port 4030 so the second instance will not use 
+the default 4020 port.
 
-Load up your favorite web browser, and point it to
+Using your favorite web browser, visit
 "http://localhost:4020/todos_one":http://localhost:4020/todos_one. If all goes
 well, you should see "Welcome to Sproutcore!" in the middle of the screen.
 
@@ -180,7 +183,7 @@ your web browser. If the message updates properly, you're ready to move on to
 h3. Troubleshooting
 
 As with any unfamiliar framework, you may hit a few snags on the way. Below
-we list some of the common pitfalls that other users have discovered and
+we list some of the common pitfalls that users have discovered, with
 solutions for getting past them.
 
 * _"RuntimeError at /todos_one

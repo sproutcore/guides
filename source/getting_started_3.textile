@@ -1,12 +1,13 @@
 h2. Getting Started: Part 3
 
-In this guide, you will create a SproutCore "to-do" app called TodosThree, learning the following:
+In this guide, you will create a more full-fledged "to-dos" application. You will:
 
-* How a more substantial, best-practices app takes shape,
-* How an app is organized into views, controllers, a statechart, and models,
-* How bindings and actions coordinate views with a controller system, which includes a statechart,
-* How the controller system ties to models,
-* How SproutCore contains powerful programming constructs.
+* Generate a new statechart-based application called TodosThree.
+* Edit files created by the generation boilerplate system.
+* Add a models directory, containing the Todo model definition.
+* Add a controllers directory, containing two controllers.
+* Add a fixtures directory, containing a file with JSON-formatted sample data.
+* Celebrate powerful SproutCore programming constructs, learned along the way.
 
 endprologue.
 
@@ -157,7 +158,6 @@ There are four .js files in the TodosThree app root directory
 (~/development/sproutcore/getting_started/apps/todos_three/):
 
 |_. theme.js |_. core.js |_. main.js |_. statechart.js |
-
 
 Edit these files to assure their content matches that given in the following sections (code comments are not
 present in this document):
@@ -657,7 +657,10 @@ $theme: '.ace.todos-three';
 </css>
 
 The underscore starting the name of _theme.css is a dead giveaway that it must apply in some special way to
-the theming system. It defines $theme to be our Ace-derived theme, ace.todos-three We use $theme in CSS references.
+the theming system. It defines $theme to be our Ace-derived theme, ace.todos-three, a reference used in CSS code.
+
+NOTE: A _theme.css file is a per directory (and subdirectories) reference definition, allowing hierarchical
+control for using different themes.
 
 h5. Content CSS file
 
