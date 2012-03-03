@@ -32,9 +32,10 @@ To see TodosThree in action, click "here":http://github/sproutcore/sproutcore. [
 
 There is a screencast available on "Vimeo":http://vimeo.com. [TODO] [ATTN: geojeff, who will use ScreenFlow to make a new one]
 
-INFO: This guide attempts to strike a matter-of-fact tone that doesn't sugar-coat complexity too much, but
-tries not to overwhelm. If you need help, please ask questions in IRC or on the mailing list, with references
-to the numeric heading number for relevant sections of this guide page.
+INFO: Reminder: These "Getting Started" guides attempt to strike a matter-of-fact tone that doesn't sugar-coat
+complexity too much, but tries not to overwhelm. We are ramping up to inherently more challening concepts, however. 
+If you need help, please ask questions in IRC or on the mailing list, with references to the numeric heading 
+for relevant sections of this guide page.
 
 h3. Creating A TodosThree Application
 
@@ -159,8 +160,7 @@ There are four .js files in the TodosThree app root directory
 
 |_. theme.js |_. core.js |_. main.js |_. statechart.js |
 
-Edit these files to assure their content matches that given in the following sections (code comments are not
-present in this document):
+Edit these files to assure their content matches that given in the following sections:
 
 h5. theme.js (app root directory)
 
@@ -314,21 +314,20 @@ call happens: .stateObserves('TodosThree.todosController*content.status'). In hu
 When the didLoad function is fired, there is an explicit check to see that the status change was to become
 SC.READY_CLEAN, and if so, to move control to the SHOWING_APP state.
 
-INFO: This is a common pattern in SproutCore apps: Use bindings whenever you can to solve most problems, but 
+This is a common pattern in SproutCore apps: Use bindings whenever you can to solve most problems, but 
 there are also cases to use an observer function to wait for some task to complete before firing. Try not to
 abuse observers, however, because in certain situations, there are performance penalties. This is especially
 true where you do not follow best practices for wiring things together, and there is inefficient, or even
 unneeded updating.
 
-INFO: Here we are creating an observer in a state, so we use the dedicated .stateObserves() observer style,
+Here we are creating an observer in a state, so we use the dedicated .stateObserves() observer style,
 but in general use, the observer function, used in exactly the same way, is simply called .observes(). 
-
-INFO: There are nuances to learn about specifying paths in observer declarations, such as how to use an asterisk 
+There are nuances to learn about specifying paths in observer declarations, such as how to use an asterisk 
 for one of the internal dots in a path. For example, for .observes(a*b.c), the meaning would be "if a.b changes, 
 notify that a.b.c changed and update bindings." If it were .observes(a.b.c), instead, the meaning would be "if b 
 changes, then your binding won't be updated when c changes."
 
-h6. Initialization of the Controllers
+h6. *Initialization of the Controllers*
 
 Data content of the two array controllers is set in enterState() by issuing data query find calls to the store. 
 SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We 
@@ -336,11 +335,11 @@ search for todos, referencing the TodosThree.Todo model (an SC.Record instance).
 todosController, we search for all the todos, ordering them by their timestamp property. For the 
 completedTodosController, we search for all the todos for which isCompleted is true.
 
-INFO: These aren't one-time "searches." They are associations set between the 'content' property of a
+These aren't one-time "searches." They are associations set between the 'content' property of a
 controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get
 part of their "automatic" and "always up-to-date" aspect.
 
-NOTE: *GIT*: git commit -a -m 'Renamed ready_state.js file to ready.js. Edited to add controller content sets.'
+NOTE: *GIT*: git commit -a -m 'Renamed ready_state.js file to ready.js. Edited to add controller content setting code.'
 
 h5. LOGGING_IN State
 
@@ -560,7 +559,7 @@ and a todosList. A user types a new todo in the newTodoField, and when they clic
 the todosList. How does this happen? Look at the lines that have Binding in the property names. When you write
 user interface element code, you "wire up" these connections with such binding instructions. 
 
-h6. Toolbars in header and footer
+h6. *Toolbars in header and footer*
 
 The header view is an SC.ToolbarView with two child views: a completeAll checkbox view and a title label view.
 The valueBinding property of the checkbox is tied to an areAllCompleted() function in the
@@ -581,7 +580,7 @@ Note that the special way of setting a binding, as with totalTodosBinding, resul
 that is referred to as just totalTodos. You see this in the two this.get() calls where the completedTodos are 
 subtracted from the totalTodos.  
 
-INFO: Computed properties, so important in SproutCore, are given a fuller description below, and in other guides pages.
+NOTE: Computed properties, so important in SproutCore, are given a fuller description below, and in other guides pages.
 
 The footer view has a single child view, clearCompletedTodos, which is a button whose action is the
 clearCompletedTodos action in the SHOWING_APP state. The isEnabledBinding property has a one-way binding
@@ -589,7 +588,7 @@ clearCompletedTodos action in the SHOWING_APP state. The isEnabledBinding proper
 If its length is 0, then isEnabled is false and the button will not be active -- if there aren't any todos,
 there is nothing to clear.
 
-h6. newTodoField
+h6. *newTodoField*
 
 The newTodoField view contains a text field called field and a button. The button has two
 properties that are bound to the associated text field. The valueBinding property is bound to field.value,
@@ -605,7 +604,7 @@ NOTE: Property path syntax -- e.g., the leading . in .page.field.focused -- is s
 up repeatedly until you are comfortable. In the case of the . here, it means that the path is relative to
 here, this scope. 
  
-h6. todosList
+h6. *todosList*
 
 The todosList view follows the SproutCore idiom for wrapping an SC.ListView inside an SC.ScrollView. The
 contentBinding property of the list is set to TodosThree.todosController. 
@@ -673,7 +672,7 @@ problems, such as the case of having bad math that results in one view obscuring
 
 NOTE: CSS is an art unto itself, an important side of doing SproutCore development and building views.
 
-h6. styles.css (resources directory)
+h6. *styles.css (resources directory)*
 
 <css filename="apps/todos_three/resources/styles.css">
 $theme: '.ace.todos-three';
@@ -808,7 +807,7 @@ SC.Record.attr() helper (convenience) function, where builtin javascript types a
 specified. There is much more that could be done in these property definitions, but for TodosThree, the basic
 types and their defaults will suffice.
 
-NOTE: Recall discussion of good habits regarding sc_require. The use of sc_require('core'); here is not
+Recall discussion of good habits regarding sc_require. The use of sc_require('core'); here is not
 mandatory, but it is a good habit: TodosThree is defined in core.js.
 
 NOTE: *GIT*: git add models & git commit -a -m 'Added models directory and todo model file.'
@@ -874,18 +873,15 @@ you'll see prevalent use of the content property in most things controller.
 The completedTodosController is another array controller. It has a property called totalTodosBinding, and a
 function called areAllCompleted(). 
 
-NOTE: The sc_require statements at the top of each of these files illustrate a concept that you learned in a
-previous guide: views can be defined in separate javascript files and included where they are needed. The load 
-order for javascript files will be alphabetical, unless otherwise controlled with sc_require().  Sometimes you 
-get lucky on the default file loading order, if you omit a sc_require() statement. Sometimes you don't, and 
-you will get a dependency error.
-
 totalTodosBinding is simple enough. It is a one-way binding (we are "pulling", we don't care about pushing
 back) to the length of the todosController array controller. We need a local reference to this length, because
 we are about to do something impressive, in part based on it.
 
-areAllCompleted() is a function, but that very special type of function, the computed property. Note the
-.property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as
+h6. *The areAllCompleted() Computed Property*
+
+areAllCompleted() is a function, but that very special type of function, the computed property you have seen
+in its simpler usage as a "getter." Here we are using a computed property as both a setter and a getter. You see
+the .property() call hanging on the end of the function definition. This gives 'length' and 'totalTodos' as
 dependencies for updating, then tacks on .cacheable(). We have a 'length' property available -- this is a
 built-in property of an array controller. Quiz from something explained earlier: isn't the property called 
 totalTodosBinding not totalTodos? Recall that the answer is that anytime Binding is seen at the end of a property
@@ -900,8 +896,8 @@ and, also, cache the value so unnecessary updates are avoided."
 
 There is more to learn about the working of this computed property. What are the k and v parameters, and
 what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the
-totalTodos value is being changed. This is a mandate to try to mark all todos as completed by this value. _The
-name of the computed property is *areAllCompleted*_. If a call is made to set it, then the body of the
+totalTodos value is being changed. This is a mandate to try to mark all todos as completed by this value. The
+name of the computed property is _areAllCompleted_. If a call is made to set it, then the body of the
 function needs to update the data accordingly. If v evaluates to true, then isCompleted for each todo item
 will be set and all the checkboxes will be checked in the list. That explains what the if block does. 
 
@@ -909,9 +905,6 @@ Notice the return on the last line in areAllCompleted(). We return the result of
 of the array (the local 'length') to the length of the todos array (the local 'totalTodos', which is bound to
 an external source, the full todosController array). If these lengths are the same, then all todos have been
 marked as completed, otherwise no. 
-
-INFO: A computed property used in this way is both a setter and a getter. Once you get the hang of making
-these you realize the benefit: automatic updating and caching for efficiency.
 
 NOTE: *GIT*: git add controllers & git commit -a -m 'Added controllers directory and controller files.'
 

@@ -8,7 +8,7 @@ such as views, controllers, and statecharts.
 In Part 2, you will:
 
 * Learn about statecharts and how they can improve your application.
-* Create a new statechart-based SproutCore application.
+* Create a new statechart-based SproutCore application, TodosTwo.
 * Learn about views and how they should handle events.
 * Learn how to separate views in individual files with the use of _sc_require()_.
 * Learn how to pass events to the application's statechart.
@@ -25,22 +25,23 @@ Perhaps it was an if statement with an invalid test expression, or some piece of
 a variable that you weren't expecting to be updated. Some bugs happen because you don't understand
 how your app would react under a particular set of conditions.
 
-Statecharts help reduce uncertainty, by defining more explicitly what can, and cannot, happen
+Statecharts help reduce uncertainty, by defining more explicitly what can and cannot happen
 within your application. You think of discrete states, such as "showing login panel." You think
-of transitions between states -- for example, what should happen as the login panel is shown, what 
-could happen while it is showing, and what should happen when it is taken down.
+of transitions between states. For example, you would think about what should happen as the login 
+panel is shown, what could happen while it is showing, and what should happen when it is taken down.
 
 h3. What is a Statechart?
 
-A statechart is a simple, nested construct that helps you better organize your code into
-logical, and hierarchical states. Your applications will have many states,
+A statechart is a simple nested construct that helps you better organize your code into
+logical hierarchical states. Your applications will have many states,
 and each state may have many substates within it. Each state can respond to a certain
 set of actions, the name for events associated with a statechart.
 
-NOTE: Semantics: action === "event," for a statechart. event, technically === mouseDown, etc. It can
-help to make that specific distinction for a SproutCore app. In discussions, clarify when needed.
+NOTE: The term "event" is more generic than the term "action." We can speak of the event
+system, generally, that includes normal web events like *mouseDown* along with actions in
+the statechart. A statechart action is a type of event.
 
-Consider a statechart application with the following top-level states, substates, and actions:
+Consider a SproutCore application for mapping, with the following top-level states, substates, and actions:
 
 # LOADING
 #* _loadingFinished_
@@ -50,16 +51,17 @@ Consider a statechart application with the following top-level states, substates
 ### LOGGED_OUT
 ###* _login_
 ### LOGGED_IN
-###* _createTodo_
-###* _completeTodo_
-###* _clearTodos_
+###* _createBasemap_
+###* _zoomMapView_
+###* _showPointData_
+###* _other mapping actions..._
 
 In the list above, the states are in ALL-CAPS, the actions are in italics.
 
-INFO: Through most of the Getting Started guides, you will see states in ALL_CAPS for the sake of continuity.
+INFO: The Getting Started Todos applications use ALL_CAPS for state names, for the sake of continuity.
 However, states are standard SC objects and can follow any naming convention you want.  Many developers
 prefer CamelCase (i.e., MyApp.LoggedInState) while others prefer namespacing their states (i.e.,
-MyApp.States.LoggedIn).  Some prefer to use verb-style, vs. noun-style state names. Whatever method you 
+MyApp.States.LoggedIn).  Some prefer verb-style over noun-style state names. Whatever method you 
 choose is fine, just be consistent, so you, and other developers, can more easily follow your code.
 
 NOTE: A state is a state is a state. A substate is a state. (You can always use the term state; when you
@@ -67,35 +69,36 @@ use the term substate, the reference is relative to a parent state).
 
 h4. Decoding the Statechart
 
-In our example here, the application can be in one of the two top level states: LOADING or LOADED. If it is in 
-one, it cannot be in the other. When it is in the LOADING state, the only available action is the 
-_loadingFinished_ action. The statechart/application should not respond to any other events. Once it moves into
-the LOADED state, it can be in two additional states, substates of the LOADED state: LOGGED_OUT or LOGGED_IN. 
-Again, it can only be in one at a given time, so when the user is "logged out", after the application has 
-loaded, the only available action is the _login_ action.
+In our mapping example here, the application can be in one of the two top level states: LOADING or LOADED. If 
+it is in one of these states, it cannot be in the other. When it is in the LOADING state, the only available 
+action is the _loadingFinished_ action. The statechart/application should not respond to any other events. 
+Once control moves into the LOADED state, it can move to two additional states, substates of the LOADED 
+state: LOGGED_OUT or LOGGED_IN. Again, the program can only be in one at a given time, so when the user is 
+"logged out", after the application has loaded, the only available action is the _login_ action.
 
 However, notice that the _viewTermsOfService_ action and the _viewPrivacyPolicy_ action are both available in
-the LOADED state. This means that regardless of whether the user is in the LOGGED_OUT state or the LOGGED_IN
-state, they should be allowed to view the terms of service or the privacy policy.
+the LOADED state. This means that regardless of whether the program is in the LOGGED_OUT state or the LOGGED_IN
+state, the user should be allowed to view the terms of service or the privacy policy.
 
-Once the user has authenticated and logged in, they have three actions available: the _createTodo_,
-_completeTodo_ and _clearTodos_ actions.
+Once the user has authenticated and logged in, they have various actions available in the mapping system.
+Imagine a map user interface that appears, with buttons in a dashboard, with live clickable elements on the map, etc. 
+The example actions given above, _createBasemap_, _zoomMapView_, and _showPointData_ are just a sample of what
+would be many actions tied to user interface elements.
+
+NOTE: States are used in all parts of an application, not just to user interface parts. A large behind-the-scenes
+data import system in our mapping example could be programmed using statecharts.
 
 h4. How Statecharts Help
 
-As you can see, your application only responds to certain actions at certain times. This makes it
-much easier to verify that your app is working properly, by ensuring that events are handled exactly when they
-need to be handled, and that even if, because of a bug in the design, your user interface allows an action when 
-it shouldn't (like creating a todo when you are logged out), the application itself will maintain a consistent 
-state and continue to operate.
-
-Additionally, all states may define an _enterState()_ and an _exitState()_ function to help them prepare for
-the new state, and to clean up after themselves. Generally, these functions are where you show or hide user
-interface components, or set the content of controllers.
+An application only responds to certain actions at certain times. This makes it
+much easier to verify that an app is working properly, by ensuring that events are handled exactly when they
+need to be handled. Furthermore, if, say, a bug in the design of the user interface allows an action to happen
+when it shouldn't (like allowing some action when the user is logged out), the application itself may maintain 
+a consistent state and continue to operate. Programming with statecharts can help isolate parts of the system.
 
 h3. Creating the Statechart
 
-So let's go ahead and create a statechart-based SproutCore app!
+Create a statechart-based SproutCore app with the *sproutcore gen statechart_app* command:
 
 <shell>
 $ cd ~/development/sproutcore/getting_started
@@ -137,9 +140,9 @@ The directory structure is:
 **** *_states/_*
 ***** *_ready_state.js_*
 
-This structure looks almost identical to the standard app, except that you now see two new files,
-a _statechart.js_ file in the application root directory, and a new _states_ directory with one state file,
-_ready_state.js_:
+This structure looks almost identical to the standard app made with the *sproutcore gen app* command, except 
+that you now see two new files, a _statechart.js_ file in the application root directory, and a new 
+_states_ directory with one state file, _ready_state.js_:
 
 * _statechart.js_, and
 * _states/ready_state.js_
@@ -183,19 +186,19 @@ TodosTwo.ReadyState = SC.State.extend({
 });
 </javascript>
 
-The TodosTwo.ReadyState is the only state entered, so it just appends the main
-page's main pane. We'll talk about panes and views in just a minute. The key
-here is to see that the _exitState()_ function does the opposite of the what the
-_enterState()_ function does.
+States may define an _enterState()_ function to prepare for the new state, and an _exitState()_ function to 
+clean up after themselves. For user interface programming, these functions are where you show and hide 
+panels, as you see here, with the use of .append() to show and .remove() to hide.
+
+The TodosTwo.ReadyState is the only state in this "Hello World" app, so it only appends the main
+page's main pane. 
 
 h3. Where Views Fit In
 
-We've talked about statecharts, so you know a little bit about how they
-work. Let's talk about how statecharts can clean up your views and make
-your code super-clean.
+We've covered statecharts, so you know a little bit about how they work. Let's talk about how statecharts 
+can help organize views and make your code super-clean.
 
 The _resources/main_page.js_ file defines the main user interface of your application.
-As you build your app, you will modify this file to add different views. 
 
 Edit the file to add a second child view, labelView2:
 
@@ -225,31 +228,29 @@ TodosTwo.mainPage = SC.Page.design({
 
 INFO: Throughout the Getting Started guides we have minimized in-code comments for brevity.
 
-NOTE: You may have observed the use of the _.design()_ method instead of
-_.extend()_. Views generally use _.design()_ in order to work with the graphical
-designer that is being developed for SproutCore. TODO: Is this actually correct?
+Note the use of the _.design()_ method here. _.design()_ is often confused with _.extend()_. 
+This confusion is caused by a SproutCore "wart." _.design()_ exists so that views will work 
+with a graphical designer tool for SproutCore (like Interface Builder for Mac OS X) that has 
+been in development for a long time, but remains unfinished, with development long ago stalled. 
+A designer tool might be created in the future, but regardless, there is a logic you can follow, 
+wherein you use _.design()_ when you are *using* a view, and _.extend()_ where you 
+are *defining* it. Here we are using _.design()_, but rest assured that SC.LabelView uses 
+extend where it is defined in the SproutCore codebase. 
+
+NOTE: When you make your own views, remember to use _.extend()_ when you are making the view 
+in the first place, and _.design()_ elsewhere, where you use it.
 
 If you load up "http://localhost:4020/todos_two/":http://localhost:4020/todos_two/
 in your browser, you should see both labels now; the second one right below the first.
 
 h4. Separating Views
 
-Before we get into using views with statecharts, let's first talk about
-how to arrange your view files. Technically, you can shove all of it into
-<em>main_page.js</em>, but that will get impractical very fast. Instead you should
-separate each view into it's own file. This is easily accomplished by
-using the special _sc_require()_ function, so let's do this now.
-
-Create a new folder in your _apps/todos_two_ folder called 'views':
-
-<shell>
-$ cd ~/development/sproutcore/getting_started
-$ mkdir apps/todos_two/views
-</shell>
-
-Next, let's separate each view into it's own file inside the views directory.
-Make sure the files have the following content and are located in the views
-directory:
+Before we get into using views with statecharts, let's first arrange view files for TodosTwo. 
+Technically, you can put all view code in <em>main_page.js</em>, but that will get impractical 
+very fast. Instead you can separate each view into it's own file. This is accomplished by
+using the special _sc_require()_ functionality. Modify the mainPane of the mainPage view to
+have two sc_require() statements at the top, to declare two views as dependencies, and to change
+the childViews of the pane to use these views:
 
 <javascript filename="apps/todos_two/resources/main_page.js">
 sc_require('views/welcome');
@@ -266,6 +267,26 @@ TodosTwo.mainPage = SC.Page.design({
 
 });
 </javascript>
+
+_sc_require()_ functionality:
+
+# The file path used in _sc_require()_ is relative to the application's root directory.
+# The reference in _sc_require()_ has the filename sans the .js extension.
+# The load order for javascript files will be alphabetical, unless otherwise controlled with sc_require().  Sometimes you 
+get lucky on the default file loading order, if you omit a sc_require() statement. Sometimes you don't, and 
+you will get a dependency error.
+
+
+
+Now create the views folder for our new WelcomeView and RollingView:
+
+<shell>
+$ cd ~/development/sproutcore/getting_started
+$ mkdir apps/todos_two/views
+</shell>
+
+Next, add the views. Make sure the files have the following content and are located in the views
+directory:
 
 <javascript filename="apps/todos_two/views/welcome.js">
 TodosTwo.WelcomeView = SC.LabelView.extend({
@@ -285,23 +306,13 @@ TodosTwo.RollingView = SC.LabelView.extend({
 });
 </javascript>
 
-Above, you'll notice a few things:
-
-# Since we reference TodosTwo.WelcomeView and TodosTwo.RollingView in the
-<em>main_page.js</em> file, we must use _sc_require()_ at the top to tell
-SproutCore that it should load those files first. This ensures that all
-of the files are included in the proper order.
-# The file path used in _sc_require()_ is relative to the application's
-directory, not where the file is located.
-# The reference in _sc_require()_ has the filename sans the .js extension.
-
-If you refresh your page, everything should look exactly as it did before,
+If you refresh the page, everything should look exactly as it did before,
 but now your code is cleaner and more manageable.
 
-h4. Handling Events
+h4. Handling Events and Statechart Actions
 
-Let's turn our attention to events! Here we add an event to watch for mouseDown 
-in our TodosTwo.RollingView:
+Standard events for a web application include the ubiquitous mouseDown, and many others. Here we add 
+an event to watch for mouseDown in our TodosTwo.RollingView, associating it with a statechart action:
 
 <javascript filename="apps/todos_two/views/rolling.js">
 TodosTwo.RollingView = SC.LabelView.design({
@@ -318,16 +329,15 @@ TodosTwo.RollingView = SC.LabelView.design({
 });
 </javascript>
 
-We associated a _proveIt_ action with the mouseDown event, and must handle this action 
-in the appropriate state.
+We set a _proveIt_ action to happen on the mouseDown event, using the statechart.sendAction() function. We must 
+handle the action in the appropriate state in the statechart.
 
-The statechart has a property for the _current_ state. When the statechart recieves an 
-action, it will first ask the current state to handle it. If the current state cannot 
-handle it, the statechart will ask the current state's parent state to handle the event.
-Attempts continue in this manner until either an ancestor state is found that can handle 
-the event, or it will log a warning for the developer.  You can see this warning, as well 
-as other informational messages (such as for state transitions), by turning on tracing on 
-the statechart.
+The statechart has a property for the _current state_. When the statechart recieves an 
+action event, it will first ask the current state to handle it. If the current state cannot handle 
+it, the statechart will ask the current state's parent state to handle the event. Attempts 
+continue in this manner, bubbling up until either an ancestor state is found that can handle 
+the event, or it will log a warning for the developer.  You can see warnings, as well as other 
+informational messages (such as for state transitions), by turning on tracing on the statechart.
 
 Do that now:
 
@@ -365,6 +375,8 @@ TodosTwo.ReadyState = SC.State.extend({
 });
 </javascript>
 
+proveIt() is a function. It is an action in the ReadyState state.
+
 Save your files and refresh the page. When you click on the "Now we're rolling!"
 label, you should see an alert. If you look at the console output, you can also
 see the tracing reports, with the event being handled by the statechart, as well 
@@ -374,7 +386,7 @@ h3. Moving Forward
 
 You are now ready to move on to creating a full-scale SproutCore app!
 
-"Part 3":/getting_started_3.html will introduce you to the full Todos application,
+"Part 3":/getting_started_3.html will introduce you to a more complete Todos application,
 called TodosThree, and walk you through the process of building it from scratch. 
 You will learn about models, controllers and how they tie in with the statechart 
 and views.
