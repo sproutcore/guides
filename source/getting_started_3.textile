@@ -159,7 +159,7 @@ There are four .js files in the TodosThree app root directory
 |_. theme.js |_. core.js |_. main.js |_. statechart.js |
 
 
-Edit these files to assure their content matches that given in the following sections (comments are not
+Edit these files to assure their content matches that given in the following sections (code comments are not
 present in this document):
 
 h5. theme.js (app root directory)
@@ -457,7 +457,7 @@ h4. The Resources Directory
 
 We've covered the highest-level parts of the app defined in the statechart. Let's add the rest. 
 
-The mainPage view, CSS files, a theme file, and an html page live in a directory called resources.  Go to that
+The mainPage view, CSS file, a theme file, and an html page live in a directory called resources.  Go to that
 directory:
 
 <shell>
@@ -657,8 +657,7 @@ $theme: '.ace.todos-three';
 </css>
 
 The underscore starting the name of _theme.css is a dead giveaway that it must apply in some special way to
-the theming system. It defines $theme to be our Ace-derived theme, ace.todos-three. You'll see $theme used in
-individual content CSS files.
+the theming system. It defines $theme to be our Ace-derived theme, ace.todos-three We use $theme in CSS references.
 
 h5. Content CSS file
 
