@@ -123,6 +123,7 @@ TodosThree app (You should be in the ~/development/sproutcore/getting_started pr
 
 <shell>
 $ cd ~/development/sproutcore/getting_started
+
   sproutcore gen statechart_app TodosThree
 
  ~ Created directory at apps
@@ -929,7 +930,7 @@ TodosThree.Todo.FIXTURES = [
 
 NOTE: *GIT*: git add fixtures & git commit -a -m 'Added fixtures directory and fixture file.'
 
-h4. Running the App
+h3. Running the App
 
 With all that work done (or if you downloaded the code or cloned it from git) we can run the app, which we
 should do from the project root directory, where the project Buildfile lives:
@@ -947,6 +948,112 @@ $ sproutcore server
 Visit http://localhost:4020/ in your favorite modern browser and you should see a list of apps, including
 TodosThree. 
 
+h3. Where to Go from Here
+
+There are several guides next that treat the build tools, core concepts, several additional pages about
+views, including how to use the alternative system called templates (handlebars), models (records and
+fixtures), theming, and testing.
+
+INFO: The guides page called "Core View Concepts" is being updated to mesh better with the Getting Started
+guides.
+
+h3. Summary of the Getting Started Guides
+
+The following steps are the from Getting Started: Parts 1, 2, and 3, this guide.
+
+h5. Setting up the project
+
+cd ~/development/sproutcore
+
+*sproutcore gen project getting_started*
+
+cd ~/development/sproutcore/getting_started
+
+NOTE: git init & git add Buildfile & git add README & git commit -a -m 'First Commit. Added getting_started project with _sproutcore gen project getting_started_ command'
+
+h5. Generating TodosOne
+
+*sproutcore gen app TodosOne*
+
+NOTE: git add apps & git commit -a -m 'Added TodosOne app with _sproutcore gen app TodosOne_ command'
+
+h5. Generating TodosTwo
+
+*sproutcore gen statechart_app TodosTwo*
+
+NOTE: git add apps/todos_two & git commit -a -m 'Added TodosTwo app with _sproutcore gen statechart_app TodosTwo_ command'
+
+h5. Generating TodosThree and Doing the Steps Above
+
+*sproutcore gen statechart_app TodosThree*
+
+NOTE: git add apps/todos_three & git commit -a -m 'Added TodosThree app with _sproutcore gen statechart_app TodosThree_ command'
+
+cd ~/development/sproutcore/getting_started
+
+* *edited file*: apps/todos_three/theme.js
+* *edited file*: apps/todos_three/core.js
+* *edited file*: apps/todos_three/main.js
+* *edited file*: apps/todos_three/statechart.js
+
+NOTE: git commit -a -m 'Edited files in the root app directory.'
+
+cd ~/development/sproutcore/getting_started/apps/todos_three/states
+
+*renamed file: ready_state.js to ready.js*
+
+* *edited file*: apps/todos_three/states/ready.js
+
+NOTE: git commit -a -m 'Renamed ready_state.js file to ready.js. Edited to add controller content setting code.'
+
+* *edited file*: apps/todos_three/states/logging_in.js
+* *edited file*: apps/todos_three/states/showing_app.js
+* *edited file*: apps/todos_three/states/showing_destroy_confirmation.js
+
+NOTE: git commit -a -m 'Added additional states.'
+
+cd ~/development/sproutcore/getting_started/apps/todos_three/resources
+
+* *edited file*: apps/todos_three/resources/main_page.js
+* *edited file*: apps/todos_three/resources/todo_item.js
+* *edited file*: apps/todos_three/resources/_theme.css
+* *edited file*: apps/todos_three/resources/styles.css
+* *edited file*: apps/todos_three/resources/loading.rhtml
+
+NOTE: git commit -a -m 'Added resources files.'
+
+cd ~/development/sproutcore/getting_started/apps/todos_three
+
+* *made directory*: ~/development/sproutcore/getting_started/apps/todos_three/models*
+
+cd ~/development/sproutcore/getting_started/apps/todos_three/models
+
+* *edited file*: apps/todos_three/models/todo.js
+
+NOTE: git add models & git commit -a -m 'Added models directory and todo model file.'
+
+cd ~/development/sproutcore/getting_started/apps/todos_three
+
+* *made directory*: ~/development/sproutcore/getting_started/apps/todos_three/controllers*
+
+cd ~/development/sproutcore/getting_started/apps/todos_three/controllers
+
+* *edited file*: apps/todos_three/controllers/todos.js
+* *edited file*: apps/todos_three/controllers/completed_todos.js
+
+NOTE: git add controllers & git commit -a -m 'Added controllers directory and controller files.'
+
+cd ~/development/sproutcore/getting_started/apps/todos_three
+
+* *made directory*: ~/development/sproutcore/getting_started/apps/todos_three/fixtures*
+
+cd ~/development/sproutcore/getting_started/apps/todos_three/fixtures
+
+* *edited file*: apps/todos_three/fixtures/todo.js
+
+NOTE: git add fixtures & git commit -a -m 'Added fixtures directory and fixture file.'
+
+*All done!*
 
 * March 1, 2011: initial version by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
 * March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio and "Peter Wagenet":credits.html#pwagenet
