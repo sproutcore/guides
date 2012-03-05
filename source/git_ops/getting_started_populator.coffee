@@ -4,25 +4,23 @@ path_module  = require "path"
 mkdirp       = require "mkdirp"
 childproc    = require "child_process"
 
-#getting_started_lines = fs.readFileSync('../sproutguides/source/getting_started.textile', "utf-8").split '\n'
-#
-#try
-#  mkdirp.sync(path_module.dirname(path))
-#catch e
-#  throw e  if e.code isnt "EEXIST"
-#
-#process.chdir '~/Development/sproutcore'
-#childProc.exec "sproutcore gen project getting_started"
-#process.chdir '~/Development/sproutcore/getting_started'
-#childProc.exec "git init"
-#childProc.exec "git commit -a -m 'Added getting_started project with _sproutcore gen project getting_started_ command'"
-#childProc.exec "sproutcore gen app TodosOne"
-#childProc.exec "git commit -a -m 'Added TodosOne app with _sproutcore gen app TodosOne_ command'"
-#
-#childProc.exec "sproutcore gen statechart_app TodosTwo"
-#childProc.exec "git commit -a -m 'Added TodosTwo app with _sproutcore gen statechart_app TodosTwo_ command'"
-#
-#$ mkdir apps/todos_two/views
+class CommitTaskSet
+  constructor: (@lines=[]) ->
+
+lineIsGitNoteStart = (line) ->
+  if line.indexOf('GIT') isnt -1
+    return true
+  false
+
+lineIsShellBlockStart = (line) ->
+  if line.indexOf('<shell') isnt -1
+    return true
+  false
+
+lineIsShellBlockEnd = (line) ->
+  if line.indexOf('</shell') isnt -1
+    return true
+  false
 
 lineIsFileBlockStart = (line) ->
   if line.indexOf('<javascript') isnt -1
@@ -44,123 +42,170 @@ lineIsFileBlockEnd = (line) ->
 
 parseFileBlocks = (lines) ->
   currentPath = ''
-
-  currentFileType = ''
-
-  files = {}
-
-  currentFile = {}
-  
+  currentFileBlockType = ''
+  fileEdits = {}
+  currentFileBlock = {}
   currentVersion = 0
-
   readingFileBlock = false
+  fileBlockIndex = 0
 
-  for line in lines
+  readingShellBlock = false
+
+  orderedFileEdits = []
+  shellCommands = {}
+  gitCommands = {}
+
+  for line,i in lines
     if lineIsFileBlockStart(line)
       parts = line.split(' ')
       fileType = parts[0]
       fileType = fileType[1..fileType.length-1]
-      currentFileType = fileType
+      currentFileBlockType = fileType
       path = line[line.indexOf('filename="')+10..line.length-3]
       version = 0
-      if path of files
-        version = (v for v of files[path]['versions']).length
+      if path of fileEdits
+        version = (v for v of fileEdits[path]['versions']).length
       else
         version = 0
-      currentFile = {}
-      currentFile['path'] = path
-      currentPath = currentFile['path']
+      currentFileBlock = {}
+      currentFileBlock['path'] = path
+      currentPath = currentFileBlock['path']
       currentVersion = version
-      currentFile = {}
-      currentFile['lines'] = []
+      currentFileBlock = {}
+      currentFileBlock['lines'] = []
       readingFileBlock = true
     else if lineIsFileBlockEnd(line) and readingFileBlock
       line = line.trim()
-      if line[2..currentFileType.length+1] is currentFileType
-        currentFile['type'] ?= currentFileType
-        currentFile['version'] ?= currentVersion
-        unless currentPath of files
-          files[currentPath] = {}
-          files[currentPath]['versions'] = {}
+      if line[2..currentFileBlockType.length+1] is currentFileBlockType
+        currentFileBlock['file block index'] = fileBlockIndex
+        currentFileBlock['starting line index'] = i - currentFileBlock['line'].length
+        currentFileBlock['ending line index'] = i
+        currentFileBlock['type'] = currentFileBlockType
+        currentFileBlock['version'] = currentVersion
+        unless currentPath of fileEdits
+          fileEdits[currentPath] = {}
+          fileEdits[currentPath]['versions'] = {}
         console.log "currentPath: #{currentPath}"
         console.log "  v: #{currentVersion}"
-        files[currentPath]['versions'][currentVersion] = currentFile
+        fileEdits[currentPath]['versions'][currentVersion] = currentFileBlock
+        orderedFileEdits.push currentFileBlock
         readingFileBlock = false
     else if readingFileBlock
-      currentFile['lines'].push line
+      currentFileBlock['lines'].push line
+    else if lineIsShellBlockStart(line)
+      readingShellBlock = true
+    else if lineIsShellBlockEnd(line)
+      readingShellBlock = false
+    else if readingShellBlock
+      if line[0] is '$'
+        parts = line.split(' ')
+        if parts[1] isnt 'pwd' and parts[1] isnt 'sproutcore'
+          shellCommands[i] = line[2..line.length]
+    else if lineIsGitNoteStart(line)
+      gitCommands[i] = line[line.indexOf('git')..line.length].trim()
+  
+  [ fileEdits, shellCommands, gitCommands ]
 
-  files
+createRepo = ->
+  process.chdir '~/Development/sproutcore'
+  childProc.exec "sproutcore gen project getting_started"
+  process.chdir '~/Development/sproutcore/getting_started'
+  childProc.exec "git init"
+  childProc.exec "git add Buildfile"
+  childProc.exec "git add README"
+  childProc.exec "git commit -a -m 'First Commit. Added getting_started project with _sproutcore gen project getting_started_ command'"
 
-populateGuidesApp = (files) ->
-  for path of files
+createTodosOne = ->
+  childProc.exec "sproutcore gen app TodosOne"
+  childProc.exec "git add apps"
+  childProc.exec "git commit -a -m 'Added TodosOne app with _sproutcore gen app TodosOne_ command'"
+
+createTodosTwo = ->
+  childProc.exec "sproutcore gen statechart_app TodosTwo"
+  childProc.exec "git add apps/todos_two"
+  childProc.exec "git commit -a -m 'Added TodosTwo app with _sproutcore gen statechart_app TodosTwo_ command'"
+
+createTodosThree = ->
+  childProc.exec "sproutcore gen statechart_app TodosThree"
+  childProc.exec "git add apps/todos_three"
+  childProc.exec "git commit -a -m 'Added TodosThree app with _sproutcore gen statechart_app TodosThree_ command'"
+
+prepareRepoThroughTodosThreeCreation = ->
+  createRepo()
+  createTodosOne()
+  createTodosTwo()
+  createTodosThree()
+
+performShellCommand = (shellCommand) ->
+  parts = shellCommand.split(' ')
+  if parts[0] is 'cd'
+    process.chdir parts[1]
+  else if parts[0] is 'mv'
+    childProc.exec shellCommand
+  else if parts[0] is 'mkdir'
+    try
+      mkdirp.sync(path_module.dirname(parts[1]))
+    catch e
+      throw e  if e.code isnt "EEXIST"
+
+performGitCommand = (gitCommand) ->
+  childProc.exec gitCommand
+
+commandsInRange = (commands, minLineIndex, maxLineIndex) ->
+  inRangeCommands = {}
+  (inRangeCommands[index] = commands[lineIndex] for lineIndex of commands when lineIndex > minLineIndex and lineIndex < maxLineIndex)
+  sortedLineIndices = [index for index of inRangeCommands].sort()
+  [inRangeCommands[index] for index in sortedLineIndices]
+
+sortedCommands = (commands) ->
+  sortedLineIndices = [index for index of commands].sort()
+  [commands[index] for index in sortedLineIndices]
+
+pathAndFileVersionAtLineIndex = (lineIndex, fileEdits) ->
+  for path of fileEdits
+    for version of fileEdits[path]['versions']
+      if fileEdits[path]['versions'][version]['starting line index'] < lineIndex < fileEdits[path]['versions'][version]['ending line index']
+        return [path, version]
+
+performRepoOpsForGuide = (fileEdits, shellCommands, gitCommands) ->
+  previousEndingIndex = 0
+  sortedGitLineIndices = [index for index of gitCommands].sort()
+  for gitLineIndex in sortedGitLineIndices
+    for lineIndex in [previousEndingIndex..gitLineIndex]
+      performShellCommand(shellCommands[lineIndex]) if lineIndex of shellCommands
+      [path,version] = pathAndFileVersionAtLineIndex(lineIndex, fileEdits)
+      if path and version
+        try
+          mkdirp.sync(path_module.dirname(path))
+        catch e
+          throw e  if e.code isnt "EEXIST"
+        for version of fileEdits[path]['versions']
+          fs.writeFileSync path, fileEdits[path]['versions'][version]['lines'].join('\n')
+          console.log path, 'updated'
+    performGitCommand(gitCommands[gitLineIndex])
+
+performFileOpsForGuide = () ->
+  for path of fileEdits
     try
       mkdirp.sync(path_module.dirname(path))
     catch e
       throw e  if e.code isnt "EEXIST"
-    for version of files[path]['versions']
-      fs.writeFileSync path, files[path]['versions'][version]['lines'].join('\n')
-      #childproc.exec "git commit -a -m #{files[path]['commit message']}"
+    for version of fileEdits[path]['versions']
+      fs.writeFileSync path, fileEdits[path]['versions'][version]['lines'].join('\n')
       console.log path, 'updated'
-      #console.log "    #{files[path]['type']}"
-      #console.log "    #{files[path]['lines'].length} lines"
     
-printPaths = (files) ->
-  for path of files
-    console.log path, (version for version of files[path]['versions'])
-
-# Hard-coding the commit messages, as shown here will not be done -- git actions will
-# be read from the textile file, from notes like: 
-#
-#   NOTE: GIT: git add apps/todos_three/main.js & git commit -a -m 'Added start of main.js.'
-#
-commitMessages =
-  'apps/todos_three/theme.js'                               : 'Added theme.js',
-  'apps/todos_three/core.js'                                : 'Added core.js',
-  'apps/todos_three/main.js'                                : 'Added main.js',
-  'apps/todos_three/statechart.js'                          : 'Added statechart.js',
-  'apps/todos_three/states/ready.js'                        : 'Added states/ready.js',
-  'apps/todos_three/states/logging_in.js'                   : 'Added states/logging_in.js',
-  'apps/todos_three/states/showing_app.js'                  : 'Added states/showing_app.js',
-  'apps/todos_three/states/destroying_completed_todos.js'   : 'Added states/destroying_completed_todos.js',
-  'apps/todos_three/states/showing_destroy_confirmation.js' : 'Added states/showing_destroy_confirmation.js',
-  'apps/todos_three/resources/main_page.js'                 : 'Added resources/main_page.js',
-  'apps/todos_three/resources/_theme.css'                   : 'Added resources/_theme.css',
-  'apps/todos_three/resources/header.css'                   : 'Added resources/hearder.css',
-  'apps/todos_three/resources/body.css'                     : 'Added resources/body.css',
-  'apps/todos_three/resources/new_todo.css'                 : 'Added resources/new_todo.css',
-  'apps/todos_three/resources/todo_item.css'                : 'Added resources/todo_item.css',
-  'apps/todos_three/resources/loading.rhtml'                : 'Added loading.rhtml',
-  'apps/todos_three/views/todo_item.js'                     : 'Added views/todo_item.js',
-  'apps/todos_three/views/destroying_confirmation_pane.js'  : 'Added views/destroying_confirmation_pane.js',
-  'apps/todos_three/models/todo.js'                         : 'Added models/todo.js',
-  'apps/todos_three/controllers/todos.js'                   : 'Added controllers/todos.js',
-  'apps/todos_three/controllers/completed_todos.js'         : 'Added controllers/completed_todos.js',
-  'apps/todos_three/fixtures/todo.js'                       : 'Added fixtures/todo.js'
-
-associateCommitMessages = (files) ->
-  files[path]['commit message'] = commitMessages[path] for path of files
-
-printCommitMessages = (files) ->
-  for path of files
-    console.log files[path]['commit message']
-
 getting_started_2_lines = fs.readFileSync('../sproutguides/source/getting_started_2.textile', "utf-8").split '\n'
 getting_started_3_lines = fs.readFileSync('../sproutguides/source/getting_started_3.textile', "utf-8").split '\n'
 
-getting_started_2_files = parseFileBlocks(getting_started_2_lines)
-printPaths(getting_started_2_files)
+prepareRepoThroughTodosThreeCreation()
+
+[fileEdits,shellCommands,gitCommands] = parseFileBlocks(getting_started_2_lines)
+performRepoOpsForGuide(fileEdits, shellCommands, gitCommands)
 
 console.log '----------'
 
-getting_started_3_files = parseFileBlocks(getting_started_3_lines)
-printPaths(getting_started_3_files)
+[fileEdits,shellCommands,gitCommands] = parseFileBlocks(getting_started_3_lines)
+performRepoOpsForGuide(fileEdits, shellCommands, gitCommands)
 
-#associateCommitMessages()
-
-#printCommitMessages()
-
-populateGuidesApp(getting_started_2_files)
-
-populateGuidesApp(getting_started_3_files)
-
-
+#populateGuidesApp(getting_started_2_fileEdits)
+#populateGuidesApp(getting_started_3_fileEdits)
