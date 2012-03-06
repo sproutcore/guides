@@ -391,8 +391,7 @@ called TodosThree, and walk you through the process of building it from scratch.
 You will learn about models, controllers and how they tie in with the statechart 
 and views.
 
-So go grab a hot cup of joe, or something else to steel your resolve (Joking. You
-think?), and dive in to "Getting Started: Part 3":/getting_started_3.html.
+Dive in to "Getting Started: Part 3":/getting_started_3.html.
 
 h3. Changelog
 
