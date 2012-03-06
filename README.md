@@ -9,7 +9,7 @@ Go to [SproutCore Guides](http://guides.sproutcore.com) homepage and check it ou
 
 In order to start contributing, follow these steps:
 
-- git clone git://github.com/sproutcore/sproutguides.git
+- git clone git://github.com/sproutcore/guides.git
 
 - Normal gem install
 
@@ -24,7 +24,7 @@ Alternatively you can use the normal bundler workflow to develop the guides. Thi
 To install with bundler:
 
     $ gem install bundler
-    $ cd sproutguides
+    $ cd guides
     $ bundle install --binstubs
 
 Once you've completed these steps, you're ready to start working with
