@@ -398,5 +398,5 @@ h3. Changelog
 
 * May 5, 2011: initial version by "Piotr Sarnacki":credits.html#drogus
 * May 9, 2011: Stylistic edits by "Tom Dale":credits.html#tomdale
-* February 29, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did much work on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Jeff Pittman":credits.html#geojeff
+* March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did much work on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Jeff Pittman":credits.html#geojeff
 

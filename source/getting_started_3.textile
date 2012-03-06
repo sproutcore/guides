@@ -24,13 +24,9 @@ code (or to copy and paste it), because it will register in your mind solidly. T
 if you would add the app in this manual fashion, although you surely might prefer instead the following
 options to get the finished source code:
 
-* download a compressed file and explode it in your project's apps/ directory. [TODO] link
+* clone with 'git clone git@github.com/sproutcore/getting-started.git getting_started' from "Github":https://github.com/sproutcore/getting-started into your work area.
 
-* clone from "Github":https://github.com/sproutcore/ into your project's apps/ directory. [TODO] link
-
-To see TodosThree in action, click "here":http://github/sproutcore/sproutcore. [TODO] link to TodosThree
-
-There is a screencast available on "Vimeo":http://vimeo.com. [TODO] [ATTN: geojeff, who will use ScreenFlow to make a new one]
+To see TodosThree in action, click "here":http://sproutcore.com/getting-started/TodosThree.
 
 INFO: Reminder: These "Getting Started" guides attempt to strike a matter-of-fact tone that doesn't sugar-coat
 complexity too much, but tries not to overwhelm. We are ramping up to inherently more challening concepts, however. 
@@ -1061,5 +1057,5 @@ NOTE: git add fixtures & git commit -a -m 'Added fixtures directory and fixture 
 * April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
 * May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
 * May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
-* February 29, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did much work on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Jeff Pittman":credits.html#geojeff
+* March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did much work on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Jeff Pittman":credits.html#geojeff
 
