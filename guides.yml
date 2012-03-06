@@ -116,9 +116,17 @@ index:
     - title: SproutCore Records
       url: records
       text: "The SproutCore data framework is a full-featured ORM-like framework for working with data in SproutCore. Learn about the SproutCore data framework and how you can use it to interact with your data sources."
+    - title: Understanding the Record Lifecycle
+      url: record_lifecycle
+      text: "Records in SproutCore travel through a series of simple statuses. Understanding these statuses can help you to build better, less buggy SproutCore apps. This guide walks you through a description of the details of the lifecycle of a record."
+      construction: true
     - title: Hooking Up to a Backend
       url: connect_server
       text: "Learn how to connect your SproutCore app to your backend server."
+      construction: true
+    - title: Creating a DataSource
+      url: data_source
+      text: "This guide covers how to create a SproutCore data source, which will retrieve data from your servers and make them available to the SproutCore Records you designed in the previous guide."
       construction: true
     - title: Transactions Using Nested Stores
       url: nested_stores
@@ -127,10 +135,6 @@ index:
     - title: Using Fixtures
       url: fixtures
       text: "In order to facilitate rapid development, SproutCore provides a facility for using pre-set fixture data as your data source. This guide covers how to set up your fixtures, and how to replace them with your real server once you're ready to get going."
-    - title: Understanding the Record Lifecycle
-      url: record_lifecycle
-      text: "Records in SproutCore travel through a series of simple statuses. Understanding these statuses can help you to build better, less buggy SproutCore apps. This guide walks you through a description of the details of the lifecycle of a record."
-      construction: true
   Theming:
     - title: "Using Chance, SproutCore's CSS Framework"
       url: chance
