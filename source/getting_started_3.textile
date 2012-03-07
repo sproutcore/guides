@@ -300,7 +300,7 @@ of going directly to the LOGGING_IN state, which we won't use in the TodosThree 
 data loading would probably come at some point after logging in, in a state dedicated to the task.
 
 We see our first observer function in didLoad(). This function is fired when the trigger given in the chained
-call happens: .stateObserves('TodosThree.todosController*content.status'). In human language, this means:
+call happens: .stateObserves('TodosThree.todosController.status'). In human language, this means:
 
 _If the status of the content changes, fire this function._
 
