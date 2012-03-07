@@ -394,8 +394,7 @@ In the SHOWING_APP/enterState() function, we want a blinking cursor in the new t
 accomplished by setting this field to become first responder in the events system.
 
 This state handles two actions, addTodo and clearCompletedTodos. There are references to view code (view.)
-that will become clear after we add the resources directory, with the mainPage view and associated files, and
-other view and system components.
+which we will see in the mainPage view in the resources directory.
 
 h5. SHOWING_DESTROY_CONFIRMATION State
 
