@@ -333,9 +333,9 @@ TodosThree app. We search for todos, referencing the TodosThree.Todo model (an S
 primary controller, todosController, we search for all the todos, ordering them by their timestamp property. 
 For the completedTodosController, we search for all the todos for which isCompleted is true.
 
-These aren't one-time "searches." They are associations set between the 'content' property of a
+These aren't "one-time searches." They are associations set between the 'content' property of a
 controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get
-part of their "automatic" and "always up-to-date" aspect.
+part of their _automatic_ and _always up-to-date_ aspect.
 
 NOTE: *GIT*: git commit -a -m 'Renamed ready_state.js file to ready.js. Edited to add controller content setting code.'
 
