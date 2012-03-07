@@ -295,7 +295,7 @@ prominent.
 
 When the statechart is initialized in the TodosThree.main() function, program control will go to the READY
 state, specifically to its enterState() function, where there is a check for the type of dataSource set on the
-store. Because it is an instance of FixturesDataSource, there is initialization of the controllers, instead
+store. Because it is an instance of FixturesDataSource, there is initialization of the data controllers, instead
 of going directly to the LOGGING_IN state, which we won't use in the TodosThree app. In a larger app, the
 data loading would probably come at some point after logging in, in a state dedicated to the task.
 
@@ -322,11 +322,16 @@ changes, then your binding won't be updated when c changes."
 
 h6. *Initialization of the Controllers*
 
-Data content of the two array controllers is set in enterState() by issuing data query find calls to the store. 
-SC.Query.local() is used because we know we don't have to find the data remotely in the TodosThree app. We 
-search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the primary controller, 
-todosController, we search for all the todos, ordering them by their timestamp property. For the 
-completedTodosController, we search for all the todos for which isCompleted is true.
+Controllers are part of the communications system, often used specifically as interfaces to data models, in concert 
+with the statechart, which covers more general purpose connections. Controllers needn't contain a large amount of
+code to play a key role, and often don't. We distinguish between array and object controllers; in TodosThree, we
+only use SC.ArrayController.
+
+Data content of the two array controllers used in TodosThree is set in enterState() by issuing data query find
+calls to the store. SC.Query.local() is used because we know we don't have to find the data remotely in the 
+TodosThree app. We search for todos, referencing the TodosThree.Todo model (an SC.Record instance). For the 
+primary controller, todosController, we search for all the todos, ordering them by their timestamp property. 
+For the completedTodosController, we search for all the todos for which isCompleted is true.
 
 These aren't one-time "searches." They are associations set between the 'content' property of a
 controller and a store.find() query. This is a very powerful construct, explaining how SproutCore apps get
