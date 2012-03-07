@@ -302,7 +302,7 @@ data loading would probably come at some point after logging in, in a state dedi
 We see our first observer function in didLoad(). This function is fired when the trigger given in the chained
 call happens: .stateObserves('TodosThree.todosController*content.status'). In human language, this means:
 
-"When the status of the content changes, fire this function."
+_If the status of the content changes, fire this function._
 
 When the didLoad function is fired, there is an explicit check to see that the status change was to become
 SC.READY_CLEAN, and if so, to move control to the SHOWING_APP state.
@@ -564,8 +564,8 @@ see two local properties as totalTodosBinding and completedTodosBinding. The com
 declared with a normal no-argument function signature, with .property('totalTodo', 'completedTodos').cacheable()
 chained onto the end. The chained part means:
 
-"Base this computed property on the totalTodos and completedTodos properties, and update it if either of them changes,
-and, also, cache the value so unnecessary updates are avoided." 
+_Base this computed property on the totalTodos and completedTodos properties, and update it if either of them changes,
+and, also, cache the value so unnecessary updates are avoided._
 
 Note that the special way of setting a binding, as with totalTodosBinding, results in the creation of a property 
 that is referred to as just totalTodos. You see this in the two this.get() calls where the completedTodos are 
@@ -864,8 +864,8 @@ totalTodosBinding, we essentially say to get the value of totalTodos from this o
 That covers the background on mechanics of property names and bindings. As before, here is a human language 
 explanation of the chained calls on the end (.property('length', 'totalTodos').cacheable()):
 
-"Base this computed property on the length and totalTodos properties, and update it if either of them changes,
-and, also, cache the value so unnecessary updates are avoided." 
+_Base this computed property on the length and totalTodos properties, and update it if either of them changes,
+and, also, cache the value so unnecessary updates are avoided._
 
 There is more to learn about the working of this computed property. What are the k and v parameters, and
 what does the internal code do? k and v are key and value. On a call, if v is a defined value, then the
