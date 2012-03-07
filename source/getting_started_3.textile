@@ -44,9 +44,9 @@ where a user types in a new todo. It has a list of already added todos. Even suc
 this involves the use of intelligent SproutCore programming.
 
 We can describe these intelligent aspects, generally, as the "system of connections" or, in the manner an
-electrician would use, as the "wiring diagram." SproutCore apps have _bindings_ between various components of
-the user interface and those of underlying machinery, the normal complement of events in a web app, and
-_actions_ coordinated with _states_. 
+electrician would use, as the "wiring diagram." SproutCore apps have _bindings_ and _observers_ between various 
+components of the user interface and those of underlying machinery, the normal complement of events in a web app, 
+and _actions_ coordinated with _states_. 
 
 You see the components of the user interface in the screen capture: checkboxes, buttons, text fields, list
 views, etc. We'll be looking at the underlying machinery.
