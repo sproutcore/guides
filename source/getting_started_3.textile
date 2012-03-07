@@ -442,10 +442,10 @@ TodosThree.SHOWING_DESTROY_CONFIRMATION = SC.State.design({
 });
 </javascript>
 
-When we enter the SHOWING_DESTROY_CONFIRMATION state, we grab the current list of completed todos, format them
-nicely, and then create a warning pane to make sure that the user actually wants to delete their todos. If so,
-we tell the completedTodosController to destroy, or remove, the current completed todos. Then, we go back to
-the SHOWING_APP state so that we can enter more todos.
+When the SHOWING_DESTROY_CONFIRMATION state is entered, the current list of completed todos is grabbed and
+formatted nicely, and then a warning pane is shown to make sure that the user actually wants to 
+delete their completed todos. If so, we tell the completedTodosController to destroy the current completed 
+todos. Then, we go back to the SHOWING_APP state so that the user can enter more todos.
 
 NOTE: *GIT*: git commit -a -m 'Added additional states.'
 
