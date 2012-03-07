@@ -21,12 +21,10 @@ TodosThree app with components of a best-practices SproutCore app.
 
 You would benefit from carefully following the instructions in this guide to create directories, to type in
 code (or to copy and paste it), because it will register in your mind solidly. The presentation is written as
-if you would add the app in this manual fashion, although you surely might prefer instead the following
-options to get the finished source code:
+if you would add the app in this manual fashion, although you surely might prefer instead to get the finished 
+source code and read along as if you had done it manually:
 
-* clone with 'git clone git@github.com/sproutcore/getting-started.git getting_started' from "Github":https://github.com/sproutcore/getting-started into your work area.
-
-To see TodosThree in action, click "here":http://sproutcore.com/getting-started/TodosThree.
+You may wish to clone with *git clone git@github.com/sproutcore/getting-started.git getting_started* from "Github":https://github.com/sproutcore/getting-started into your work area.
 
 INFO: Reminder: These "Getting Started" guides attempt to strike a matter-of-fact tone that doesn't sugar-coat
 complexity too much, but tries not to overwhelm. We are ramping up to inherently more challening concepts, however. 
@@ -38,6 +36,8 @@ h3. Creating A TodosThree Application
 Here is a screen capture of the completed application:
 
 <div><img src="images/getting_started/todos_three_screen_capture.png"></div>
+
+Or view "TodosThree in action":http://sproutcore.com/getting-started/TodosThree.
 
 The TodosThree app looks simple. It has toolbars at the top and bottom. It has a text field near the top,
 where a user types in a new todo. It has a list of already added todos. Even such a simple-looking app like
