@@ -167,6 +167,9 @@ index:
       url: todos_tdd
       text: "Show implementing the TODOs project using TDD."
   Extras:
+    - title: Build Tools
+      url: build_tools
+      text: "Discover the many performance advantages and development benefits of SproutCore's build tools."
     - title: Enumerables
       url: enumerables
       text: "To simplify working with various kinds of lists, SproutCore provides a unified Enumerable interface. This guide explores which SproutCore objects are Enumerable, and how to use the Enumerable API."
