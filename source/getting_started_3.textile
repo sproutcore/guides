@@ -307,18 +307,18 @@ _If the status of the content changes, fire this function._
 When the didLoad function is fired, there is an explicit check to see that the status change was to become
 SC.READY_CLEAN, and if so, to move control to the SHOWING_APP state.
 
-This is a common pattern in SproutCore apps: Use bindings whenever you can to solve most problems, but 
-there are also cases to use an observer function to wait for some task to complete before firing. Try not to
-abuse observers, however, because in certain situations, there are performance penalties. This is especially
-true where you do not follow best practices for wiring things together, and there is inefficient, or even
-unneeded updating.
+This is a common pattern in SproutCore apps: Use bindings, described in a section below, whenever you can to 
+solve most problems, but there are also cases to use an observer function to wait for some task to complete 
+before firing. Try not to abuse observers, however, because in certain situations, there are performance 
+penalties. This is especially true where you do not follow best practices for wiring things together, and there 
+is inefficient, or even unneeded updating.
 
 Here we are creating an observer in a state, so we use the dedicated .stateObserves() observer style,
 but in general use, the observer function, used in exactly the same way, is simply called .observes(). 
 There are nuances to learn about specifying paths in observer declarations, such as how to use an asterisk 
 for one of the internal dots in a path. For example, for .observes(a*b.c), the meaning would be "if a.b changes, 
-notify that a.b.c changed and update bindings." If it were .observes(a.b.c), instead, the meaning would be "if b 
-changes, then your binding won't be updated when c changes."
+notify that a.b.c changed and update." If it were .observes(a.b.c), instead, the meaning would be "if b 
+changes, then your update won't happen when c changes."
 
 h6. *Initialization of the Controllers*
 
@@ -448,9 +448,18 @@ delete their completed todos. If so, we tell the completedTodosController to des
 todos. Then, we go back to the SHOWING_APP state so that the user can enter more todos.
 
 The SHOWING_DESTROY_CONFIRMATION state illustrates how states are just objects: you can add local variables
-to them as you would for any other, as you see in _panel and todosBinding. You learn to think about a state
-as something built unto its own for some task, fleshed out with needed properties, bindings, workhorse
-functions and the like.
+to them as you would for any other. You learn to think about a state as something built unto its own for 
+some task, fleshed out with needed properties, bindings, workhorse functions and the like.
+
+_panel is a local variable in the state, marked with a beginning underscore to signify that it is not connected 
+to anything external. 
+
+todosBinding sets up a local property as a reference to the completedTodosController, for ease of use in this 
+case: in the code for displayDescription, you see where the succinct name todos is used. When we tack Binding 
+onto the end of a property declaration, as with xBinding = something, we are creating a property called x, 
+which works via a binding (todos is x here).  Furthermore, regarding property name choice, in the narrow 
+context of this state, we know that todos refers to "completed todos". We could have been more explicit by 
+using completedTodosController and the property reference would have been completedTodos, but brevity can be good.
 
 NOTE: *GIT*: git commit -a -m 'Added additional states.'
 
@@ -556,8 +565,9 @@ TodosThree.mainPage = SC.Page.design({
 There are four parts to the TodosThree mainPage view: a header and footer, and between them are a newTodoField
 and a todosList. A user types a new todo in the newTodoField, and when they click the button, labeled
 'Add', the new todo is added by means of the todosController's addTodo action. The new todo will show up in
-the todosList. How does this happen? Look at the lines that have Binding in the property names. When you write
-user interface element code, you "wire up" these connections with such binding instructions. 
+the todosList. How does this happen? We see the use of bindings again. Look at the lines that have Binding in 
+the property names. When you write user interface element code, you "wire up" these connections with such 
+binding instructions. 
 
 h6. *Toolbars in header and footer*
 
@@ -576,7 +586,7 @@ chained onto the end. The chained part means:
 _Base this computed property on the totalTodos and completedTodos properties, and update it if either of them changes,
 and, also, cache the value so unnecessary updates are avoided._
 
-Note that the special way of setting a binding, as with totalTodosBinding, results in the creation of a property 
+Note again that the way of setting a binding, as with totalTodosBinding, results in the creation of a property 
 that is referred to as just totalTodos. You see this in the two this.get() calls where the completedTodos are 
 subtracted from the totalTodos.  
 
