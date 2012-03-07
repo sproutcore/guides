@@ -481,7 +481,7 @@ Files to edit or add in the apps/todos_three/resources directory are:
 h5. main_page.js (resources directory)
 
 <javascript filename="apps/todos_three/resources/main_page.js">
-sc_require('todo_item');
+sc_require('resources/todo_item');
 
 TodosThree.mainPage = SC.Page.design({
   field: SC.outlet('mainPane.newTodoField.field'),
