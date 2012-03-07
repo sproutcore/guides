@@ -447,6 +447,11 @@ formatted nicely, and then a warning pane is shown to make sure that the user ac
 delete their completed todos. If so, we tell the completedTodosController to destroy the current completed 
 todos. Then, we go back to the SHOWING_APP state so that the user can enter more todos.
 
+The SHOWING_DESTROY_CONFIRMATION state illustrates how states are just objects: you can add local variables
+to them as you would for any other, as you see in _panel and todosBinding. You learn to think about a state
+as something built unto its own for some task, fleshed out with needed properties, bindings, workhorse
+functions and the like.
+
 NOTE: *GIT*: git commit -a -m 'Added additional states.'
 
 h4. The Resources Directory
