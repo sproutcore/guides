@@ -465,7 +465,7 @@ directory:
 $ cd ~/development/sproutcore/getting_started/apps/todos_three/resources
 </shell> 
 
-Files to add in the apps/todos_three/resources directory are:
+Files to edit or add in the apps/todos_three/resources directory are:
 
 |_. main_page.js |_. todo_item.js |_. _theme.css |_. styles.css |_. loading.rhtml |
 
