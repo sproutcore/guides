@@ -37,7 +37,7 @@ Here is a screen capture of the completed application:
 
 <div><img src="images/getting_started/todos_three_screen_capture.png"></div>
 
-Or view "TodosThree in action":http://sproutcore.com/getting-started/TodosThree.
+Or view "TodosThree in action":http://sproutcore.com/getting-started/.
 
 The TodosThree app looks simple. It has toolbars at the top and bottom. It has a text field near the top,
 where a user types in a new todo. It has a list of already added todos. Even such a simple-looking app like
