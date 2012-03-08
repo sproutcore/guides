@@ -203,7 +203,7 @@ to have time to operate as it would in a normal web app situation.
 h5. main.js (app root directory)
 
 <javascript filename="apps/todos_three/main.js">
-TodosThree.main = function main() {
+TodosThree.main = function() {
   TodosThree.statechart.initStatechart();
 };
  
@@ -402,14 +402,14 @@ h5. SHOWING_DESTROY_CONFIRMATION State
 TodosThree.SHOWING_DESTROY_CONFIRMATION = SC.State.design({
   _panel: null,
 
-  todosBinding: 'TodosThree.completedTodosController.content',
+  completedTodos: 'TodosThree.completedTodosController.content',
 
   enterState: function() {
     var todos = this.get('todos');
     var displayDescription = "Are you sure that you wish to clear the following tasks?<br /><br />";
 
     displayDescription += "<ul>";
-    displayDescription += todos.map(function(t) { return "<li>%@</li>".fmt(t.get('title')) }).join('\n');
+    displayDescription += completedTodos.map(function(t) { return "<li>%@</li>".fmt(t.get('title')) }).join('\n');
     displayDescription += "</ul>";
 
     this._panel = SC.AlertPane.warn({
