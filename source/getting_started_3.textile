@@ -461,7 +461,7 @@ which works via a binding (todos is x here).  Furthermore, regarding property na
 context of this state, we know that todos refers to "completed todos". We could have been more explicit by 
 using completedTodosController and the property reference would have been completedTodos, but brevity can be good.
 
-NOTE: *GIT*: git commit -a -m 'Added additional states.'
+NOTE: *GIT*: git add . & git commit -a -m 'Added additional states.'
 
 h4. The Resources Directory
 
@@ -770,7 +770,7 @@ attention.
 <% end %>
 </html>
 
-NOTE: *GIT*: git commit -a -m 'Added resources files.'
+NOTE: *GIT*: git add . & git commit -a -m 'Edited/Added resources files.'
 
 h4. The Models Directory
 
@@ -811,7 +811,7 @@ types and their defaults will suffice.
 Recall discussion of good habits regarding sc_require. The use of sc_require('core'); here is not
 mandatory, but it is a good habit: TodosThree is defined in core.js.
 
-NOTE: *GIT*: git add models & git commit -a -m 'Added models directory and todo model file.'
+NOTE: *GIT*: git add . & git commit -a -m 'Added models directory and todo model file.'
 
 h4. The Controllers Directory
 
@@ -898,7 +898,7 @@ of the array (the local 'length') to the length of the todos array (the local 't
 an external source, the full todosController array). If these lengths are the same, then all todos have been
 marked as completed, otherwise no. 
 
-NOTE: *GIT*: git add controllers & git commit -a -m 'Added controllers directory and controller files.'
+NOTE: *GIT*: git add . & git commit -a -m 'Added controllers directory and controller files.'
 
 h4. The Fixtures Directory
 
@@ -945,7 +945,7 @@ TodosThree.Todo.FIXTURES = [
 ];
 </javascript>
 
-NOTE: *GIT*: git add fixtures & git commit -a -m 'Added fixtures directory and fixture file.'
+NOTE: *GIT*: git add . & git commit -a -m 'Added fixtures directory and fixture file.'
 
 h3. Running the App
 
