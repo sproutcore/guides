@@ -186,19 +186,22 @@ As with any unfamiliar framework, you may hit a few snags on the way. Below
 we list some of the common pitfalls that users have discovered, with
 solutions for getting past them.
 
-* _"RuntimeError at /todos_one
-html_builder could not find a layout file for sproutcore:lib/index.rhtml"_ -
+* <em>"Error: Handlebars is not defined Source File: ..."</em> - If you have previously
+installed SproutCore 1.6 using the installer, you may see this error. If so, please make
+sure to un-install SproutCore 1.6 first and then re-install 1.8.
+
+* <em>"RuntimeError at /todos_one html_builder could not find a layout file for ..."</em> -
 This error usually means that *sproutcore server* could not find SproutCore where it
 thought it should exist. Make sure that you've properly installed the latest
 version of SproutCore; and if you are using RubyGems, try closing and
 re-opening the terminal to ensure that paths are properly set.
 
-* _"Browser says 'No matching target'"_ - This is generally caused if you
+* <em>"Browser says 'No matching target'"</em> - This is generally caused if you
 misspelled the name of the application in the URL. Make sure that you properly
 typed it, and that you used underscores instead of spaces. For example:
 'http://localhost/todos_one'.
 
-* _"ERROR: missing } after property list ..."_ - This error is usually thrown
+* <em>"ERROR: missing } after property list ..."</em> - This error is usually thrown
 if you added a property somewhere, but forgot to put a comma at the end.
 Look at the line in the error, and then look above it to see if there is
 a comma missing.
@@ -212,4 +215,5 @@ h3. Changelog
 * May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
 * May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
 * March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did much work on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Jeff Pittman":credits.html#geojeff
+* March 12, 2012: added new error and fixed italics in the troubleshooting section by "Topher Fangio":credits.html#topherfangio
 
