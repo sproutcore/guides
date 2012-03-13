@@ -315,10 +315,10 @@ is inefficient, or even unneeded updating.
 
 Here we are creating an observer in a state, so we use the dedicated .stateObserves() observer style,
 but in general use, the observer function, used in exactly the same way, is simply called .observes(). 
-There are nuances to learn about specifying paths in observer declarations, such as how to use an asterisk 
-for one of the internal dots in a path. For example, for .observes(a*b.c), the meaning would be "if a.b changes, 
-notify that a.b.c changed and update." If it were .observes(a.b.c), instead, the meaning would be "if b 
-changes, then your update won't happen when c changes."
+There are nuances to learn about specifying paths in observer declarations, such as how to use absolute (a.b.c)
+vs. relative paths (.b.c), and how to use chained absolute (a*b.c) vs. chained relative (*b.c) paths. We will
+leave the details for other documentation, where a full coverage can be given to how each use specifies a different
+set of triggers for an observer update.
 
 h6. *Initialization of the Controllers*
 
