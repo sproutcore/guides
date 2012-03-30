@@ -64,8 +64,8 @@ prefer CamelCase (i.e., MyApp.LoggedInState) while others prefer namespacing the
 MyApp.States.LoggedIn).  Some prefer verb-style over noun-style state names. Whatever method you 
 choose is fine, just be consistent, so you, and other developers, can more easily follow your code.
 
-NOTE: A state is a state. A substate is a state. (You can always use the term state; when you
-use the term substate, the reference is relative to a parent state).
+NOTE: The term state is generic: you can use state to refer to states and substates. When you use the term substate, 
+the reference is more specific, and is relative to a parent state.
 
 h4. Decoding the Statechart
 
