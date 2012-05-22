@@ -479,7 +479,7 @@ Files to edit or add in the apps/todos_three/resources directory are:
 h5. main_page.js (resources directory)
 
 <javascript filename="apps/todos_three/resources/main_page.js">
-sc_require('resources/todo_item');
+//sc_require('resources/todo_item'); // Not used. See comments below about exampleView.
 
 TodosThree.mainPage = SC.Page.design({
   field: SC.outlet('mainPane.newTodoField.field'),
@@ -623,6 +623,18 @@ TodosThree.TodoItemView = SC.CheckboxView.design({
 });
 </javascript>
 
+This file is not used in the app, but is here for illustration of how you could pull in code from an external
+source file. If you look at resources/main_page.js, you will see that the TodosListView has exampleView set
+as "inline" code for the same checkbox view you see in this resouces/todo_item.js file. Instead of defining
+the exampleView there as an "inline" code block, the require that is commented out at the top of 
+resources/main_page.js could be used, and the exampleView would be set with the usual property definition,
+exampleView: TodosThree.TodoItemView, which would come from the required resources/todo_item.js file.
+
+Whether you declare your exampleView inline or pull it in from an external file depends on its size and 
+complexity. In TodosThree, it is small enough to declare inline. Whatever the case, we can describe what
+this code does. It helps to focus on the context of this code block within the list view, so look again
+at the resources/main_page.js file.
+
 TodoItemView is a checkbox, which has a label. You see a bit of wiring to CSS in the classNames property, an
 array of CSS class names that are to be applied to this view. valueBinding has a reference to
 .content.isCompleted. What is the context for this reference? We know that this view is defined as the
@@ -630,9 +642,6 @@ exampleView property of the todos list. The term example here means "the view to
 items for the todos list are todos, which are defined in the TodosThree.Todo model. So, .content used in the
 TodoItemView definition refers to a single todo item in the list. .content.isCompleted refers to this property
 of a todo item. Likewise, titleBinding is bound to the title property of a list todo item.
-
-You have to think about where this view is used to understand it, but that comes with the territory of having
-individual views declared in separate files for convenience.
 
 NOTE: It helps to name such views as SomethingItemView, because the Item part indicates the use in a list. 
 
