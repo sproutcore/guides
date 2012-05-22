@@ -632,7 +632,7 @@ TodosThree.TodoItemView = SC.CheckboxView.design({
 This file is not used in the app, but is here for illustration of how you could pull in code from an external
 source file. If you look at resources/main_page.js, you will see that the TodosListView has exampleView set
 as "inline" code for the same checkbox view you see in this resouces/todo_item.js file. Instead of defining
-the exampleView there as and "inline" code block, the require that is commented out at the top of 
+the exampleView there as an "inline" code block, the require that is commented out at the top of 
 resources/main_page.js could be used, and the exampleView would be set with the usual property definition,
 exampleView: TodosThree.TodoItemView, which would come from the required resources/todo_item.js file.
 
