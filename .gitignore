@@ -1,6 +1,7 @@
 .DS_Store
-.bundle
-bin
+.bundle/
+.idea/
+bin/
 output
 staging
 Gemfile.lock
