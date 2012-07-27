@@ -16,7 +16,7 @@ h3. Following Along
 You have learned in previous guides how to use *sproutcore gen* to make a project directory and to create apps
 in the project apps directory. You have learned how to run *sproutcore server* in the project directory, and
 how to view apps in a local browser at localhost:4020/. You have learned about SproutCore app concepts,
-including the use of a buildfile and of views and a statechart. We will build on that foundation to produce a
+including knowledge of views and statecharts. We will build on that foundation to produce a
 TodosThree app with components of a best-practices SproutCore app.
 
 You would benefit from carefully following the instructions in this guide to create directories, to type in
@@ -385,7 +385,7 @@ TodosThree.SHOWING_APP = SC.State.design({
   },
 
   clearCompletedTodos: function() {
-    this.gotoState('SHOWING_DESTROY_CONFIRMATION', this);
+    this.gotoState('SHOWING_DESTROY_CONFIRMATION');
   }
 });
 </javascript>
@@ -452,12 +452,10 @@ some task, fleshed out with needed properties, bindings, workhorse functions and
 _panel is a local variable in the state, marked with a beginning underscore to signify that it is not connected 
 to anything external. 
 
-todosBinding sets up a local property as a reference to the completedTodosController, for ease of use in this 
-case: in the code for displayDescription, you see where the succinct name todos is used. When we tack Binding 
+completedTodos sets up a local property as a reference to the completedTodosController, for ease of use in this 
+case: in the code for displayDescription, you see where the succinct name completedTodos is used. When we tack Binding 
 onto the end of a property declaration, as with xBinding = something, we are creating a property called x, 
-which works via a binding (todos is x here).  Furthermore, regarding property name choice, in the narrow 
-context of this state, we know that todos refers to "completed todos". We could have been more explicit by 
-using completedTodosController and the property reference would have been completedTodos, but brevity can be good.
+which works via a binding (completedTodos is x here).
 
 NOTE: *GIT*: git add . & git commit -a -m 'Added additional states.'
 
@@ -535,7 +533,12 @@ TodosThree.mainPage = SC.Page.design({
       contentView: SC.ListView.design({
         contentBinding: SC.Binding.oneWay('TodosThree.todosController'),
         rowHeight: 36,
-        exampleView: TodosThree.TodoItemView
+        // exampleView: TodosThree.TodoItemView // If pulled in from external file.
+        exampleView: SC.CheckboxView.design({
+          classNames: ['todo-item'],
+          valueBinding: '.content.isCompleted',
+          titleBinding: SC.Binding.oneWay('.content.title')
+        })
       })
     }),
         
