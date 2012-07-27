@@ -201,7 +201,7 @@ can help organize views and make your code super-clean.
 The _resources/main_page.js_ file defines the main user interface of your application.
 
 Edit the file to add a second child view, labelView2, taking care to add labelView2 to the
-childViews array of view references, which uses the 'blank delimited strings'.w() SproutCore idiom
+childViews array of view references, which uses the 'space delimited strings'.w() SproutCore idiom
 to make an array:
 
 <javascript filename="apps/todos_two/resources/main_page.js">
