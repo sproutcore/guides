@@ -454,9 +454,9 @@ This will print a list like this:
 </ul>
 </html>
 
-h4. SC.TemplateCollectionView
+h4. SC.CollectionView
 
-Sometimes you will need each item in your list to handle events. In that case, you will need more sophistication than what +{{#each}}+ can provide. You can use the +{{#collection}}+ helper to create a new <code>SC.TemplateCollectionView</code>. You can bind the instance of <code>SC.TemplateCollectionView</code> to an array, and it will create a new <code>SC.TemplateView</code> for each item.
+Sometimes you will need each item in your list to handle events. In that case, you will need more sophistication than what +{{#each}}+ can provide. You can use the +{{#collection}}+ helper to create a new <code>SC.CollectionView</code>. You can bind the instance of <code>SC.CollectionView</code> to an array, and it will create a new <code>SC.TemplateView</code> for each item.
 
 Usually, you will bind the collection to an <code>SC.ArrayController</code>, like this:
 
@@ -467,17 +467,26 @@ App.peopleController = SC.ArrayController.create({
 </javascript>
 
 <html>
-{{#collection SC.TemplateCollectionView contentBinding="App.peopleController"}}
+{{#collection SC.CollectionView contentBinding="App.peopleController"}}
   Hi, {{content}}!
 {{/collection}}
 </html>
 
+The <code>SC.CollectionView</code> mention can also be omitted. The option is available in case you want to use a subclass of <code>SC.CollectionView</code> as shown further. In general, you will want to use the following syntax:
+
+<html>
+{{#collection contentBinding="App.peopleController"}}
+  Hi, {{content}}!
+{{/collection}}
+</html>
+
+
 NOTE: The template you pass to the block helper will look up properties relative to each child view. To access the item in the array that the view should represent, refer to the +content+ property via {{content}}.
 
-Remember that under the hood, <code>SC.TemplateCollectionView</code> creates a new view for each item in the bound array. By default, each new view will be an instance of <code>SC.TemplateView</code>. You can tell the collection which type of view to create instances of by subclassing <code>SC.TemplateCollectionView</code> and supplying a custom class:
+Remember that under the hood, <code>SC.CollectionView</code> creates a new view for each item in the bound array. By default, each new view will be an instance of <code>SC.TemplateView</code>. You can tell the collection which type of view to create instances of by subclassing <code>SC.CollectionView</code> and supplying a custom class:
 
 <javascript>
-App.PeopleCollectionView = SC.TemplateCollectionView.extend({
+App.PeopleCollectionView = SC.CollectionView.extend({
   itemView: SC.TemplateView.extend({
     mouseDown: function(evt) {
       window.alert('You clicked on ' + this.get('content'));
@@ -494,7 +503,7 @@ App.PeopleCollectionView = SC.TemplateCollectionView.extend({
 
 If you run this code, you should see an alert every time you click on one of the items.
 
-The +{{#collection}}+ helper takes the same options as +{{#view}}+, as described above. For example, you can set an HTML +id+ attribute on the container of <code>SC.TemplateCollectionView</code> like this:
+The +{{#collection}}+ helper takes the same options as +{{#view}}+, as described above. For example, you can set an HTML +id+ attribute on the container of <code>SC.CollectionView</code> like this:
 
 <html>
 {{collection App.MyCollectionView id="my-collection"}}
