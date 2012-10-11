@@ -35,7 +35,7 @@ To work with relative property paths you can use the +getPath()+ and +setPath()+
 
 h3. Computed Properties
 
-Often you have properties that depend on the value of several other properties. These are known as computed properties and they are an extremely useful means to keep your code contextually correct without resorting to manual property manipulation. Computed properties are defined as functions with a call to +property()+ using a list of the dependent property names as arguments.
+Often you have properties that depend on the value of several other properties. These are known as computed properties and they are an extremely useful means to keep your code contextually correct without resorting to manual property manipulation. Computed properties are defined as functions with a call to +property()+ using a list of the dependent property names or property paths as arguments.
 
 In the next example, we will revisit an earlier version of <code>MyApp.Person</code>, to make the <code>fullName()</code> function into a computed property.
 
