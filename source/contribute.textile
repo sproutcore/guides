@@ -2,43 +2,48 @@ h2. Contribute
 
 The SproutCore documentation team welcomes any and all help from the community. If you are interested in contributing to the effort, the information below will let you know how to do so and who to contact in order to get help and guidance.
 
+Contributing to the SproutCore Guides follows a "Git":http://git-scm.com/ and "GitHub":https://github.com/ based workflow. If you know what that means, then you might be best served by skipping ahead to the Making Changes section, which deals with how the guides are organized and how you can preview your work as you're making changes.
+
+If "Git and Github based workflow" doesn't mean much to you, or if you're not a pro Git user yet, no problem; this guide will walk you through _exactly_ what you need to know. In the process, you'll learn some ideas and skills that will serve you well beyond just contributing to the SproutCore Guides.
+
 endprologue.
 
-h3. How to Contribute?
+h3. Get the Source Code
 
-First, you will need to fork the SproutCore guides repository from Github.
+To get a copy of the SproutCore Guides source that we can start making changes to, we need to do three things:
 
-Go to "https://github.com/sproutcore/guides":https://github.com/sproutcore/guides and fork it. then, check your forked copy out onto your local machine.
+# Fork of the official SproutCore Guides Project on GitHub
+# Clone the forked version onto our local machine
+# Configure our local version to fetch updates from the main Guides repository
+
+h4. Fork the SproutCore Guides Project
+
+A fork is essentially just a copy of a project, but one that is tied to _your_ GitHub account. This allows you to work and make changes without having to be concerned with getting these intermediary changes into the main repository. Once you're done with your changes, you can submit a pull request to get your finalized changes into the main repo.
+
+Forking a project on GitHub is simple: just navigate to the project ("https://github.com/sproutcore/guides":https://github.com/sproutcore/guides) and click the "Fork" button in the top right corner. You _will_ need a GitHub account, but those are free for open source development.
+
+TIP: If you'd like to learn more about this, GitHub has a wonderful "guide to forking":https://help.github.com/articles/fork-a-repo.
+
+h4. Clone the Fork onto our Local Machine
+
+Now that we've forked the main Guides project, we need to get a copy of our fork onto our local machine so we can make changes to it. To do this, we use the Git "clone":http://gitref.org/creating/#clone command:
 
 <shell>
 $ git clone git@github.com:<yourname>/guides.git
 </shell>
-Switch to your newly cloned repository.
+
+h4. Add the Main Repository as a Remote
+
+All that remains is to configure the repository on our local machine so that we can fetch changes from the main SproutCore Guides repository. To do this, we use the Git "remote":http://gitref.org/remotes/ command from within the repository:
 
 <shell>
 $ cd guides
-</shell>
-
-You will want to add the main SproutCore repository as a remote:
-
-<shell>
 $ git remote add upstream git://github.com/sproutcore/guides.git
 </shell>
 
-For each guide you write, you will want to create a new branch:
+h3. Installing Ruby Tools
 
-<shell>
-$ git fetch upstream
-$ git checkout -b <branchName> upstream/master
-</shell>
-
-TIP: The -b switch is the branch name you are creating. When the time comes to push your changes back to the remote server you will need this name. Everyone will see this name, so choose wisely.
-
-This will create a new branch for you to work on your new guide or to edit an existing guide. Next, you will need to get the +guides+ executable.
-
-h4. Installing Ruby Tools
-
-h5. Normal gem install
+h4. Normal gem install
 
 To install the guides gem, just use:
 
@@ -46,7 +51,7 @@ To install the guides gem, just use:
 $ gem install guides
 </shell>
 
-h5. Installing with bundler
+h4. Installing with bundler
 
 Alternatively you can use the normal bundler workflow to develop the guides.
 This has the benefit of making sure you are using the correct version of the guides gem for development.
@@ -66,6 +71,18 @@ TIP: This action may take a while to download and place everithing in place for 
 For the rest of this guide, when the +guides+ command is referenced, prefix it with +bin+. For instance, if you are instructed to run +guides preview+, instead run +bin/guides preview+.
 
 h3. Create Your Guide
+
+For each guide you write, you will want to create a new branch:
+
+<shell>
+$ git fetch upstream
+$ git checkout -b <branchName> upstream/master
+</shell>
+
+TIP: The -b switch is the branch name you are creating. When the time comes to push your changes back to the remote server you will need this name. Everyone will see this name, so choose wisely.
+
+This will create a new branch for you to work on your new guide or to edit an existing guide. Next, you will need to get the +guides+ executable.
+
 
 Create a new guide +<your_guide_name>.textile+ in the +source+ directory.  Use the following template:
 
