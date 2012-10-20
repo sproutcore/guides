@@ -26,7 +26,7 @@ TIP: If you'd like to learn more about this, GitHub has a wonderful "guide to fo
 
 h4. Clone the Fork onto our Local Machine
 
-Now that we've forked the main Guides project, we need to get a copy of our fork onto our local machine so we can make changes to it. To do this, we use the Git "clone":http://gitref.org/creating/#clone command:
+Now that we've forked the main Guides project, we need to get a copy of our fork onto our local machine so we can make changes to it. To do this, we use the "+git clone+":http://gitref.org/creating/#clone command:
 
 <shell>
 $ git clone git@github.com:<yourname>/guides.git
@@ -34,57 +34,89 @@ $ git clone git@github.com:<yourname>/guides.git
 
 h4. Add the Main Repository as a Remote
 
-All that remains is to configure the repository on our local machine so that we can fetch changes from the main SproutCore Guides repository. To do this, we use the Git "remote":http://gitref.org/remotes/ command from within the repository:
+All that remains is to configure the repository on our local machine so that we can fetch changes from the main SproutCore Guides repository. To do this, we use the "+git remote+":http://gitref.org/remotes/ command from within the repository:
 
 <shell>
 $ cd guides
 $ git remote add upstream git://github.com/sproutcore/guides.git
 </shell>
 
-h3. Installing Ruby Tools
+h3. Install the Guides Ruby Gem
+
+The SproutCore Guides are created in a modified version of the "Textile markup language":http://en.wikipedia.org/wiki/Textile_(markup_language). These Textile documents get compiled into the HTML + CSS finished product you see at "http://guides.sproutcore.com/":http://guides.sproutcore.com/.
+
+While you don't strictly _need_ the "Guides Ruby Gem":http://rubygems.org/gems/guides to edit these Textile documents, having it installed on your system will make it incredibly easy to preview the compiled HTML + CSS versions of the documents you are working on.
+
+TIP: You will need the "Ruby language":http://www.ruby-lang.org/ and the "Ruby Gems package manager":http://rubygems.org/ installed on your machine for this next part.
+
+There are two ways you can install the guides gem:
 
 h4. Normal gem install
 
-To install the guides gem, just use:
+The standard way to install a Ruby gem and all of it's dependencies is to use the "+gem install+":http://docs.rubygems.org/read/chapter/10#page33 comand.
 
 <shell>
 $ gem install guides
 </shell>
 
-h4. Installing with bundler
+h4. Install with Bundler
 
-Alternatively you can use the normal bundler workflow to develop the guides.
-This has the benefit of making sure you are using the correct version of the guides gem for development.
-
-To install with bundler:
+"Bundler":http://gembundler.com/ is a popular alternative to the standard Ruby gem installation. Using Bundler will ensure that we are installing the proper version of the gem we need. To do this, we use the "+bundle install+":http://gembundler.com/bundle_install.html command from within the SproutCore Guides directory:
 
 <shell>
 $ gem install bundler
 $ cd guides
-$ bundle install --binstubs
+$ bundle install
 </shell>
 
-The above commands will download the source, compile and install the +guides+ executable in the +bin+ sub-directory.
+If you don't want to install a bunch of gems on your system, instead of +bundle install+, you can use +bundle install --binstubs+. This will install the gems in the +bin+ sub-directory, so they will all be deleted when you delete your local copy of the SproutCore Guides.
 
-TIP: This action may take a while to download and place everithing in place for local usage.
+If you choose to take this route, for the rest of this guide, when the +guides+ command is referenced, prefix it with +bin+. For example, +guides preview+ would become +bin/guides preview+.
 
-For the rest of this guide, when the +guides+ command is referenced, prefix it with +bin+. For instance, if you are instructed to run +guides preview+, instead run +bin/guides preview+.
+h3. Before Making Changes
 
-h3. Create Your Guide
+Whether we are createing a new guide from scratch or merely making changes to a guide that already exists, before we start working we want to do two things: 1) make sure we have the most recent version of the source code and, 2) create a new git topic branch for our changes.
 
-For each guide you write, you will want to create a new branch:
+h4. Update the Local Source
+
+To make sure our local copy of the SproutCore Guides source code is up to date, we use the "+git pull+":http://www.kernel.org/pub/software/scm/git/docs/git-pull.html command:
+
+<shell>
+$ git pull upstream
+</shell>
+
+This will fetch any changes that have been committed to the main SproutCore Guides repository since we last ran this command, then merge those changes into our local copy of the repository. It will do this all in one fell swoop, without any input on your part.
+
+If you want to be able to see and approve the changes before they are merged into your local copy of the source, you can split this process into two steps by using the "+git fetch+":http://www.kernel.org/pub/software/scm/git/docs/git-fetch.html command followed by the "+git merge+":http://www.kernel.org/pub/software/scm/git/docs/git-merge.html command:
 
 <shell>
 $ git fetch upstream
-$ git checkout -b <branchName> upstream/master
+$ git merge upstream/master
 </shell>
 
-TIP: The -b switch is the branch name you are creating. When the time comes to push your changes back to the remote server you will need this name. Everyone will see this name, so choose wisely.
+h4. Create a Topic Branch
 
-This will create a new branch for you to work on your new guide or to edit an existing guide. Next, you will need to get the +guides+ executable.
+While we are working on the Guides, we use "Git topic branches":http://stackoverflow.com/questions/284514/what-is-a-git-topic-branch to organize our work into logical sets of changes. To illustrate this idea of "logical sets of changes", imagine two examples.
 
+In the first example, we have created a new guide and added references to this new guide in several of the other guides. In this case, we have made changes to several different files, but all of those changes are related to each other; we have made only a single logical set of changes.
 
-Create a new guide +<your_guide_name>.textile+ in the +source+ directory.  Use the following template:
+In the second example, we have created a new guide and, separately, we have made some small changes to another of the guides. In this case, we have made changes to several different files, but the changes are _not_ related to each other; we have made two separate logical sets of changes.
+
+To create a new topic branch and start working in it, we use the "+git checkout+":http://www.kernel.org/pub/software/scm/git/docs/git-checkout.html command with the +-b+ switch:
+
+<shell>
+$ git checkout -b <branchName>
+</shell>
+
+TIP: Everyone will see this branch name when you submit your changes to the main SproutCore Guides repository, so choose something that has to do with the nature of the changes you are making.
+
+h3. Create or Modify a Guide
+
+The guides are written in a modified version of the "Textile markup language":http://en.wikipedia.org/wiki/Textile_(markup_language) and reside in the +source+ directory. Textile is meant to be human friendly markup language (unlike HTML) and should be easy to pick up; looking at the existing guides should quickly get you up to speed on how to use it.
+
+h4. Creating a New Guide
+
+To start a new guide, simply create a file named +<your_guide_name>.textile+ in the +source+ directory. Use the following template as a starting point for your guide:
 
 <plain filename="source/&lt;your_guide_name&gt;.textile">
 h2. Guide Topic
@@ -101,6 +133,14 @@ h3. Topics Should Use h3
 
 Each topic should use an h3.
 </plain>
+
+h4. Modifying an Existing Guide
+
+To make changes to an existing guide, simply modify the corresponding Textile document. To determine which is the proper Textile document, simply take the filename from the URL of the guide and replace the +html+ file extension with +textile+.
+
+For example, +http://guides.sproutcore.com/core_concepts_sc_object.html+ is the URL for the "Classes and SC.Object guide":http://guides.sproutcore.com/core_concepts_sc_object.html, so the Textile document that corresponds to this guide would be +core_concepts_sc_object.textile+.
+
+h4. Previewing Your Changes
 
 To preview your guide as you write it, run the +guides preview+ command.
 
