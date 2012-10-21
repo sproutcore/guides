@@ -8,7 +8,7 @@ If "Git and Github based workflow" doesn't mean much to you, or if you're not a 
 
 endprologue.
 
-h3. Get the Source Code
+h3. Getting the Source Code
 
 To get a copy of the SproutCore Guides source that we can start making changes to, we need to do three things:
 
@@ -16,15 +16,15 @@ To get a copy of the SproutCore Guides source that we can start making changes t
 # Clone the forked version onto our local machine
 # Configure our local version to fetch updates from the main Guides repository
 
-h4. Fork the SproutCore Guides Project
+h4. Fork the Guides on GitHub
 
 A fork is essentially just a copy of a project, but one that is tied to _your_ GitHub account. This allows you to work and make changes without having to be concerned with getting these intermediary changes into the main repository. Once you're done with your changes, you can submit a pull request to get your finalized changes into the main repo.
 
-Forking a project on GitHub is simple: just navigate to the project ("https://github.com/sproutcore/guides":https://github.com/sproutcore/guides) and click the "Fork" button in the top right corner. You _will_ need a GitHub account, but those are free for open source development.
+Forking a project on GitHub is simple: just navigate to "https://github.com/sproutcore/guides":https://github.com/sproutcore/guides and click the "Fork" button in the top right corner. To do this you will need a GitHub account, but those are free for open source development.
 
 TIP: If you'd like to learn more about this, GitHub has a wonderful "guide to forking":https://help.github.com/articles/fork-a-repo.
 
-h4. Clone the Fork onto our Local Machine
+h4. Clone the Fork Locally
 
 Now that we've forked the main Guides project, we need to get a copy of our fork onto our local machine so we can make changes to it. To do this, we use the "+git clone+":http://gitref.org/creating/#clone command:
 
@@ -32,7 +32,7 @@ Now that we've forked the main Guides project, we need to get a copy of our fork
 $ git clone git@github.com:<yourname>/guides.git
 </shell>
 
-h4. Add the Main Repository as a Remote
+h4. Add the Upstream Remote
 
 All that remains is to configure the repository on our local machine so that we can fetch changes from the main SproutCore Guides repository. To do this, we use the "+git remote+":http://gitref.org/remotes/ command from within the repository:
 
@@ -47,11 +47,11 @@ The SproutCore Guides are created in a modified version of the "Textile markup l
 
 While you don't strictly _need_ the "Guides Ruby Gem":http://rubygems.org/gems/guides to edit these Textile documents, having it installed on your system will make it incredibly easy to preview the compiled HTML + CSS versions of the documents you are working on.
 
-TIP: You will need the "Ruby language":http://www.ruby-lang.org/ and the "Ruby Gems package manager":http://rubygems.org/ installed on your machine for this next part.
+TIP: You will need the "Ruby":http://www.ruby-lang.org/ language and the "Ruby Gems":http://rubygems.org/ package manager installed on your machine for this next part.
 
 There are two ways you can install the guides gem:
 
-h4. Normal gem install
+h4. Normal +gem install+
 
 The standard way to install a Ruby gem and all of it's dependencies is to use the "+gem install+":http://docs.rubygems.org/read/chapter/10#page33 comand.
 
@@ -75,11 +75,11 @@ If you choose to take this route, for the rest of this guide, when the +guides+ 
 
 h3. Before Making Changes
 
-Whether we are createing a new guide from scratch or merely making changes to a guide that already exists, before we start working we want to do two things: 1) make sure we have the most recent version of the source code and, 2) create a new git topic branch for our changes.
+Whether we are createing a new guide from scratch or merely making changes to a guide that already exists, before we start working we want to do two things: 1) make sure we have the most recent version of the source code and, 2) create a new Git topic branch for our changes.
 
 h4. Update the Local Source
 
-To make sure our local copy of the SproutCore Guides source code is up to date, we use the "+git pull+":http://www.kernel.org/pub/software/scm/git/docs/git-pull.html command:
+To update our local copy of the SproutCore Guides source code, we use the "+git pull+":http://www.kernel.org/pub/software/scm/git/docs/git-pull.html command:
 
 <shell>
 $ git pull upstream
@@ -105,16 +105,18 @@ In the second example, we have created a new guide and, separately, we have made
 To create a new topic branch and start working in it, we use the "+git checkout+":http://www.kernel.org/pub/software/scm/git/docs/git-checkout.html command with the +-b+ switch:
 
 <shell>
-$ git checkout -b <branchName>
+$ git checkout -b <branch_name>
 </shell>
 
-TIP: Everyone will see this branch name when you submit your changes to the main SproutCore Guides repository, so choose something that has to do with the nature of the changes you are making.
+TIP: Everyone will see this branch name when you submit your changes to the main SproutCore Guides repository, so choose something that describes the changes you are making.
 
 h3. Create or Modify a Guide
 
-The guides are written in a modified version of the "Textile markup language":http://en.wikipedia.org/wiki/Textile_(markup_language) and reside in the +source+ directory. Textile is meant to be human friendly markup language (unlike HTML) and should be easy to pick up; looking at the existing guides should quickly get you up to speed on how to use it.
+The SproutCore Guides follow the "Ruby on Rails Guides Conventions":https://github.com/lifo/docrails/wiki/rails-guides-conventions and are written in a modified version of the "Textile markup language":http://en.wikipedia.org/wiki/Textile_(markup_language). The guides themselves reside in the +source+ directory; CSS, JavaScript and image assets can be found in the +assets+ directory.
 
-h4. Creating a New Guide
+Textile is meant to be a human friendly markup language (unlike HTML) and should be easy to pick up. Looking at the existing guides can be useful; here's the "Textile source":http://github.com/sproutcore/guides/blob/master/source/fixtures.textile for the Fixtures guide, and here's the "compiled HTML & CSS output":http://guides.sproutcore.com/fixtures.html.
+
+h4. Create a New Guide
 
 To start a new guide, simply create a file named +<your_guide_name>.textile+ in the +source+ directory. Use the following template as a starting point for your guide:
 
@@ -134,15 +136,15 @@ h3. Topics Should Use h3
 Each topic should use an h3.
 </plain>
 
-h4. Modifying an Existing Guide
+h4. Modify an Existing Guide
 
 To make changes to an existing guide, simply modify the corresponding Textile document. To determine which is the proper Textile document, simply take the filename from the URL of the guide and replace the +html+ file extension with +textile+.
 
 For example, +http://guides.sproutcore.com/core_concepts_sc_object.html+ is the URL for the "Classes and SC.Object guide":http://guides.sproutcore.com/core_concepts_sc_object.html, so the Textile document that corresponds to this guide would be +core_concepts_sc_object.textile+.
 
-h4. Previewing Your Changes
+h4. Preview Your Changes
 
-To preview your guide as you write it, run the +guides preview+ command.
+The guides gem that "we installed above":contribute.html#install-the-guides-ruby-gem comes with a built in webserver so you can see what the guides on your local machine will look like when they're published to "guides.sproutcore.com":http://guides.sproutcore.com/. To start this webserver, run the +guides preview+ command from the guides directory:
 
 <shell>
 $ guides preview
@@ -151,11 +153,17 @@ $ guides preview
 >> Listening on 0.0.0.0:9292, CTRL+C to stop
 </shell>
 
-Go to +http://localhost:9292/<your_guide_name>.html+ in a browser. After making a change, refresh to see it update live.
+Now you can see your changes by going to +localhost:9292/<your_guide_name>.html+ in your browser. This preview will keep itself updated as you make changes to the guides; all you have to do is refresh your browser window to see your latest changes.
 
-If you do not see your changes, check the terminal window where you ran the +preview+ command for error messages.
+If you do not see your changes, check the terminal window where you ran the +guides preview+ command for error messages.
 
-h4. Updating +guides.yml+
+By default, preview will show guides that are still under construction, even though under construction guides are not displayed on "guides.sproutcore.com":http://guides.sproutcore.com/. If you would like to see only guides that *will* be deployed, use the +--production+ flag:
+
+<shell>
+guides preview --production
+</shell>
+
+h4. Update +guides.yml+
 
 You will also want to update the main +guides.yml+ in the root of the repository with your new guide. First, decide which section your guide will go under. In general, new guides will go under the +Digging Deeper+ section.
 
@@ -169,58 +177,58 @@ index:
       text: "Learn how to use the SproutCore Weebles framework to build magical and revolutionary SproutCore applications"
 </plain>
 
-Once you are done, commit your work and then push your guide to your fork:
+h3. Submit Your Changes
 
-To commit all your changes:
+Now that we are done making our changes, we need to commit those changes to our local repository, push the changes up to GitHub, and finally submit a pull request to the main SproutCore Guides repository.
+
+h4. Commit Your Changes Locally
+
+So far we've made some changes to the guides, possibly added a new guide, and these changes have been saved to disk on our local machine. Now we need to "commit these changes to our repository":http://git-scm.com/book/en/Git-Basics-Recording-Changes-to-the-Repository#Committing-Your-Changes. We do this with the "+git add+":http://www.kernel.org/pub/software/scm/git/docs/git-add.html and "+git commit+":http://www.kernel.org/pub/software/scm/git/docs/git-commit.html commands:
+
 <shell>
-$ git commit -a
+$ git add .
+$ git commit
 </shell>
 
-Pushing your changes back to the remote repository:
+h4. Push Your Changes to GitHub
+
+Now that we've committed our changes to our local repository, we need to "push these changes to the remote repository":http://git-scm.com/book/en/Git-Basics-Working-with-Remotes#Pushing-to-Your-Remotes hosted on GitHub. We do this with the "+git push+":http://www.kernel.org/pub/software/scm/git/docs/git-push.html command:
+
 <shell>
-$ git push origin <branchName>
+$ git push origin <branch_name>
 </shell>
 
-TIP:  branchName above is the name you used at the beginning of the guide in the git checkout step.  If you can't remember the name use 'git branch -a' to list the branches.
+TIP: +branch_name+ above is the name you used in the "create a topic branch":http://localhost:9292/contribute.html#create-a-topic-branch step. If you can't remember the name use 'git branch -a' to list the branches.
 
-Next, submit a pull request from your repository. Make sure to make the pull request using the branch you used for the guide.
+h4. Submit a Pull Request
 
-h3. Some Guidelines
+Now that our changes have been pushed to GitHub, we need to submit a pull request to get these changes into the main SproutCore Guides repository. A pull request is essentially a mechanism by which you say, "I think you should take this set of changes from my repository and pull them into your repository".
 
-* Guides are written in a modified Textile. For examples take a look at existing guides, or some of the "Rails Guides":https://github.com/rails/rails/tree/master/railties/guides/source for some examples.
-* For now, follow the "Rails Guides Conventions":https://github.com/lifo/docrails/wiki/rails-guides-conventions.
-* Assets are stored in the +assets+ directory.
-* Sample format: "Fixtures":http://github.com/sproutcore/guides/blob/master/source/fixtures.textile.
-* Sample output: "Fixtures":http://guides.sproutcore.com/fixtures.html.
+To create a pull request, start by visiting the GitHub page for your fork of the SproutCore Guides, which will be at +https://github.com/<yourname>/guides+. Next, click on the Pull Request button in the top right.
+
+TIP: If you get stuck, GitHub has an excellent "guide to using Pull Requests":https://help.github.com/articles/using-pull-requests.
 
 h3. What to Contribute?
 
-* We need authors, editors, proofreaders, and translators. Adding a single paragraph of quality content to a guide is a good way to get started.
-* The easiest way to start is by improving an existing guide:
+* We need authors, editors, proofreaders, and translators.
+* Improving an existing guide is the easiest way to get started.
+** Add a paragraph of high quality content
 ** Improve the structure to make it more coherent.
 ** Add missing information.
-** Correct any factual errors.
+** Correct factual errors.
 ** Fix typos or improve style.
 ** Bring it up to date with the latest release of SproutCore.
 * We're also open to suggestions for entire new guides:
-** Contact the documentation team to get your idea approved. See the Contact section below.
-
-h3. What is the process?
-
-* Follow the instructions above to fork the repository and submit a pull request.
-* If you are a regular committer we will give you direct commit access.
-
-h3. Rules
-
-* Guides are licensed under a Creative Commons Attribution-Share Alike 3.0 License.
-* If you're not sure whether a guide is actively being worked on, stop by IRC (information below) and ask.
-
-h3. Mailing List
-
-Documentation requests and questions can be posted on the "SproutCore mailing list":http://groups.google.com/group/sproutcore-dev
+** Contact the documentation team to get your idea approved. See the "Contact":http://localhost:9292/contribute.html#contact section below.
 
 h3. Contact
+
+Documentation requests and questions can be posted on the "SproutCore mailing list":http://groups.google.com/group/sproutcore-dev. If you're not sure whether a guide is actively being worked on, stop by IRC and ask.
 
 * IRC: "#sproutcore-dev":irc://irc.freenode.net/sproutcore-dev
 * Twitter: "@sproutcore":http://twitter.com/#!/sproutcore
 * Email: TBD
+
+h3. License
+
+Guides are licensed under a "Creative Commons Attribution-Share Alike 3.0 License":http://creativecommons.org/licenses/by-sa/3.0/.
