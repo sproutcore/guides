@@ -51,10 +51,10 @@ Now point a web browser to `localhost:9292`. This preview will keep itself updat
 
 ## Submitting Your Changes
 
-You can get your changes and additions included by creating a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub using the topic branch you create above.
+You can get your changes and additions included by creating a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub using the topic branch you created above.
 
 ## More Information
 
-For more information on SproutCore Guides, including a more in depth look at committing your additions and changes, see the [contributing guide](http://guides.sproutcore.com/contribute.html).
+For more information on the SproutCore Guides, including a more in depth look at committing your additions and changes, see the [contributing guide](http://guides.sproutcore.com/contribute.html).
 
 If you have any questions, the team can be reached at [@sproutcore](http://twitter.com/#!/sproutcore) on Twitter, in the [#sproutcore-dev](irc://irc.freenode.net/sproutcore-dev) IRC channel on [Freenode](http://freenode.net/), or at the [SproutCore Google Group](http://groups.google.com/group/sproutcore-dev).
