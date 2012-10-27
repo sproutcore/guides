@@ -2,11 +2,13 @@ h2. Contribute
 
 The SproutCore documentation team welcomes any and all help from the community. If you are interested in contributing to the effort, the information below will let you know how to do so and who to contact in order to get help and guidance.
 
-Contributing to the SproutCore Guides follows a "Git":http://git-scm.com/ and "GitHub":https://github.com/ based workflow. If you know what that means, then you might be best served by skipping ahead to the Making Changes section, which deals with how the guides are organized and how you can preview your work as you're making changes.
-
-If "Git and Github based workflow" doesn't mean much to you, or if you're not a pro Git user yet, no problem; this guide will walk you through _exactly_ what you need to know. In the process, you'll learn some ideas and skills that will serve you well beyond just contributing to the SproutCore Guides.
-
 endprologue.
+
+h3. Introduction
+
+Contributing to the SproutCore Guides follows a "Git":http://git-scm.com/ and "GitHub":https://github.com/ based workflow. If you know what that means, then you might be best served by skipping ahead to the "Creating or Modifying a Guide":#creating-or-modifying-a-guide section, which deals with how the guides are organized and how you can preview your work as you're making changes.
+
+If "Git and Github based workflow" doesn't mean much to you, or if you're not a pro Git user yet, no problem. This guide will walk you through _exactly_ what you need to know. In the process, you'll learn some ideas and skills that will serve you well beyond just contributing to the SproutCore Guides.
 
 h3. Getting the Source Code
 
@@ -41,15 +43,15 @@ $ cd guides
 $ git remote add upstream git://github.com/sproutcore/guides.git
 </shell>
 
-h3. Install the Guides Ruby Gem
+h3. Installing the Guides Ruby Gem
 
-The SproutCore Guides are created in a modified version of the "Textile markup language":http://en.wikipedia.org/wiki/Textile_(markup_language). These Textile documents get compiled into the HTML + CSS finished product you see at "http://guides.sproutcore.com/":http://guides.sproutcore.com/.
+The SproutCore Guides are created in a modified version of the "Textile":http://en.wikipedia.org/wiki/Textile_(markup_language) markup language. These Textile documents get compiled into the HTML + CSS finished product at "http://guides.sproutcore.com/":http://guides.sproutcore.com/.
 
-While you don't strictly _need_ the "Guides Ruby Gem":http://rubygems.org/gems/guides to edit these Textile documents, having it installed on your system will make it incredibly easy to preview the compiled HTML + CSS versions of the documents you are working on.
+While we don't strictly _need_ the "Guides Ruby Gem":http://rubygems.org/gems/guides to edit these Textile documents, having it installed on our system will make it incredibly easy to preview the compiled HTML + CSS versions of the documents we are working on.
 
-TIP: You will need the "Ruby":http://www.ruby-lang.org/ language and the "Ruby Gems":http://rubygems.org/ package manager installed on your machine for this next part.
+TIP: We will need the "Ruby":http://www.ruby-lang.org/ language and the "Ruby Gems":http://rubygems.org/ package manager installed on our machine for this next part.
 
-There are two ways you can install the guides gem:
+There are two ways we can install the guides gem:
 
 h4. Normal +gem install+
 
@@ -85,7 +87,7 @@ To update our local copy of the SproutCore Guides source code, we use the "+git 
 $ git pull upstream
 </shell>
 
-This will fetch any changes that have been committed to the main SproutCore Guides repository since we last ran this command, then merge those changes into our local copy of the repository. It will do this all in one fell swoop, without any input on your part.
+This will fetch any changes that have been committed to the main SproutCore Guides repository since we last ran this command, then merge those changes into our local copy of the repository. It will do this all in one fell swoop, without any input on our part.
 
 If you want to be able to see and approve the changes before they are merged into your local copy of the source, you can split this process into two steps by using the "+git fetch+":http://www.kernel.org/pub/software/scm/git/docs/git-fetch.html command followed by the "+git merge+":http://www.kernel.org/pub/software/scm/git/docs/git-merge.html command:
 
@@ -110,9 +112,9 @@ $ git checkout -b <branch_name>
 
 TIP: Everyone will see this branch name when you submit your changes to the main SproutCore Guides repository, so choose something that describes the changes you are making.
 
-h3. Create or Modify a Guide
+h3. Creating or Modifying a Guide
 
-The SproutCore Guides follow the "Ruby on Rails Guides Conventions":https://github.com/lifo/docrails/wiki/rails-guides-conventions and are written in a modified version of the "Textile markup language":http://en.wikipedia.org/wiki/Textile_(markup_language). The guides themselves reside in the +source+ directory; CSS, JavaScript and image assets can be found in the +assets+ directory.
+The SproutCore Guides follow the "Ruby on Rails Guides Conventions":https://github.com/lifo/docrails/wiki/rails-guides-conventions and are written in a modified version of the "Textile":http://en.wikipedia.org/wiki/Textile_(markup_language) markup language. The guides themselves reside in the +source+ directory; CSS, JavaScript and image assets can be found in the +assets+ directory.
 
 Textile is meant to be a human friendly markup language (unlike HTML) and should be easy to pick up. Looking at the existing guides can be useful; here's the "Textile source":http://github.com/sproutcore/guides/blob/master/source/fixtures.textile for the Fixtures guide, and here's the "compiled HTML & CSS output":http://guides.sproutcore.com/fixtures.html.
 
@@ -144,7 +146,7 @@ For example, +http://guides.sproutcore.com/core_concepts_sc_object.html+ is the 
 
 h4. Preview Your Changes
 
-The guides gem that "we installed above":contribute.html#install-the-guides-ruby-gem comes with a built in webserver so you can see what the guides on your local machine will look like when they're published to "guides.sproutcore.com":http://guides.sproutcore.com/. To start this webserver, run the +guides preview+ command from the guides directory:
+The guides gem that "we installed above":#install-the-guides-ruby-gem comes with a built in webserver so we can see what the guides on our local machine will look like when they're published to "guides.sproutcore.com":http://guides.sproutcore.com/. To start this webserver, we run the +guides preview+ command from the guides directory:
 
 <shell>
 $ guides preview
@@ -153,9 +155,9 @@ $ guides preview
 >> Listening on 0.0.0.0:9292, CTRL+C to stop
 </shell>
 
-Now you can see your changes by going to +localhost:9292/<your_guide_name>.html+ in your browser. This preview will keep itself updated as you make changes to the guides; all you have to do is refresh your browser window to see your latest changes.
+Now we can see our changes by going to +localhost:9292/<your_guide_name>.html+ in our browser. This preview will keep itself updated as we make changes to the guides; all we have to do is refresh our browser window to see the latest changes.
 
-If you do not see your changes, check the terminal window where you ran the +guides preview+ command for error messages.
+If you do not see the changes you made, check the terminal window where you ran the +guides preview+ command for error messages.
 
 By default, preview will show guides that are still under construction, even though under construction guides are not displayed on "guides.sproutcore.com":http://guides.sproutcore.com/. If you would like to see only guides that *will* be deployed, use the +--production+ flag:
 
@@ -165,9 +167,9 @@ guides preview --production
 
 h4. Update +guides.yml+
 
-You will also want to update the main +guides.yml+ in the root of the repository with your new guide. First, decide which section your guide will go under. In general, new guides will go under the +Digging Deeper+ section.
+We will also want to update the +guides.yml+ "YAML":http://www.yaml.org/ file in the root of the repository with our new guide. First, we need to decide which section our guide will go under. In general, new guides go under the +Digging Deeper+ section.
 
-Next, create a new entry for your guide. You will need to decide on a title and description. For the URL, enter the filename you used for your guide, without the +.textile+ ending. For example, if +<your_guide_name>+ happens to be +weebles+, then your entry will look something like this:
+Next, we create a new entry for our guide. We will need to decide on a title and description. For the URL, enter the filename you used for your guide, without the +.textile+ ending. For example, if +<your_guide_name>+ happens to be +weebles+, then your entry will look something like this:
 
 <plain filename="guides.yml">
 index:
@@ -177,7 +179,7 @@ index:
       text: "Learn how to use the SproutCore Weebles framework to build magical and revolutionary SproutCore applications"
 </plain>
 
-h3. Submit Your Changes
+h3. Submitting Your Changes
 
 Now that we are done making our changes, we need to commit those changes to our local repository, push the changes up to GitHub, and finally submit a pull request to the main SproutCore Guides repository.
 
@@ -221,13 +223,12 @@ h3. What to Contribute?
 * We're also open to suggestions for entire new guides:
 ** Contact the documentation team to get your idea approved. See the "Contact":http://localhost:9292/contribute.html#contact section below.
 
-h3. Contact
+h3. Contacting the SproutCore team
 
-Documentation requests and questions can be posted on the "SproutCore mailing list":http://groups.google.com/group/sproutcore-dev. If you're not sure whether a guide is actively being worked on, stop by IRC and ask.
+Documentation requests and questions can be posted on the "SproutCore Dev Google Group":http://groups.google.com/group/sproutcore-dev. If you're not sure whether a guide is actively being worked on, stop by IRC and ask.
 
 * IRC: "#sproutcore-dev":irc://irc.freenode.net/sproutcore-dev
 * Twitter: "@sproutcore":http://twitter.com/#!/sproutcore
-* Email: TBD
 
 h3. License
 
