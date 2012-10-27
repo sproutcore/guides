@@ -1,11 +1,9 @@
 SproutCore Guides
 =================
 
-This is the official documentation for the [SproutCore](http://www.sproutcore.com) framework.
+This is the official documentation for the [SproutCore](http://www.sproutcore.com) framework. You can see it live at the [SproutCore Guides](http://guides.sproutcore.com) homepage.
 
-Go to the [SproutCore Guides](http://guides.sproutcore.com) homepage and check it out.
-
-Want to make changes to the SproutCore documentation, here's how.
+Want to make changes to the SproutCore documentation? This document contains a brief explanation of how to do so. For a more thorough explanation, see the [Contributing Guide](http://guides.sproutcore.com/contribute.html).
 
 ## Get the Source
 
@@ -32,36 +30,35 @@ Want to make changes to the SproutCore documentation, here's how.
 
         $ gem install bundler
         $ cd guides
-        $ bundle install --binstubs
+        $ bundle install
 
-## Make Changes and Additions
+## Before Making Changes
 
-Before you make any changes, you'll want to pull in any upstream changes and create a new topic branch in git.
+Before you make any changes, you'll want to pull in any upstream changes and create a new topic branch for your changes.
 
-    $ git fetch upstream
+    $ git pull upstream/master
     $ git checkout -b <branchname>
 
-You'll do most of your work inside the source/ directory.
+## Making Changes
+
+Guides are written in a modified version of the [Textile](http://en.wikipedia.org/wiki/Textile_(markup_language)) markup language.
+
+The best way to familiarize yourself with how to use Textile is to check out the other guides, which are located in the `source` directory (where you'll be doing most of your work).
 
 ## Preview Your Changes
 
-The guides gem comes with a built in webserver so you can see what the guides on your local machine will look like when they're published to guides.sproutcore.com. To get this webserver running, do this from the guides directory:
+The guides gem comes with a built in webserver so you can see what the guides on your local machine will look like when they're published to [guides.sproutcore.com](http://guides.sproutcore.com). To get this webserver running, do this from the `guides` directory:
 
     $ guides preview
 
 Now you can preview the guides by pointing a web browser to `localhost:9292`. This preview will keep itself updated as you make changes to the guides; all you have to do is refresh your browser window to see your latest changes.
 
-By default, preview will show guides that are still under construction, even though under construction guides are not displayed on guides.sproutcore.com. If you would like to see only guides that **will** be deployed, use the `--production` option like so:
-
-    $ guides preview --production
-
 ## Submitting Changes
 
-[pull request](https://help.github.com/articles/using-pull-requests)
+You can get your changes and additions included by creating a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub.
 
 ## More Information
 
-For more information on SproutCore Guides, including committing your additions and changes, see the [contribute guide](http://guides.sproutcore.com/contribute.html).
+For more information on SproutCore Guides, including a more in depth look at committing your additions and changes, see the [contributing guide](http://guides.sproutcore.com/contribute.html).
 
-If you have any questions, the team can be reached at [@sproutcore](http://twitter.com/#!/sproutcore)
-or [#sproutcore](irc://irc.freenode.net/sproutcore)
+If you have any questions, the team can be reached at [@sproutcore](http://twitter.com/#!/sproutcore) on Twitter, in the [#sproutcore-dev](irc://irc.freenode.net/sproutcore-dev) IRC channel on [Freenode](http://freenode.net/), or at the [SproutCore Google Group](http://groups.google.com/group/sproutcore-dev).
