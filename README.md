@@ -1,11 +1,11 @@
 SproutCore Guides
 =================
 
-This is the official documentation for the [SproutCore](http://www.sproutcore.com) framework. You can see it live at the [SproutCore Guides](http://guides.sproutcore.com) homepage.
+This is the official documentation for the [SproutCore](http://www.sproutcore.com) framework. You can see it live at the [SproutCore Guides homepage](http://guides.sproutcore.com).
 
-Want to make changes to the SproutCore documentation? This document contains a brief explanation of how to do so. For a more thorough explanation, see the [Contributing Guide](http://guides.sproutcore.com/contribute.html).
+This document contains a brief overview of how to contribute changes and additioins to the SproutCore Guides. For an in-depth explanation, see the [Contributing Guide](http://guides.sproutcore.com/contribute.html).
 
-## Get the Source
+## Getting the Source Code
 
 1. [Fork](https://help.github.com/articles/fork-a-repo) the [SproutCore Guides repository](https://github.com/sproutcore/guides) on [GitHub](http://github.com).
 
@@ -18,7 +18,7 @@ Want to make changes to the SproutCore documentation? This document contains a b
         $ cd guides
         $ git remote add upstream git://github.com/sproutcore/guides.git
 
-## Install the Guides Ruby gem
+## Installing the Guides Ruby Gem
 
 - Normal gem install
 
@@ -39,23 +39,19 @@ Before you make any changes, you'll want to pull in any upstream changes and cre
     $ git pull upstream/master
     $ git checkout -b <branchname>
 
-## Making Changes
+## Creating or Modifying a Guide
 
-Guides are written in a modified version of the [Textile](http://en.wikipedia.org/wiki/Textile_(markup_language)) markup language.
+Guides reside in the `source` directory and are written in a modified version of the [Textile](http://en.wikipedia.org/wiki/Textile_(markup_language) markup language. The best way to familiarize yourself with how to use Textile is to check out the other guides.
 
-The best way to familiarize yourself with how to use Textile is to check out the other guides, which are located in the `source` directory (where you'll be doing most of your work).
-
-## Preview Your Changes
-
-The guides gem comes with a built in webserver so you can see what the guides on your local machine will look like when they're published to [guides.sproutcore.com](http://guides.sproutcore.com). To get this webserver running, do this from the `guides` directory:
+The guides gem makes it easy to see what the guides on your local machine will look like when they're published to [guides.sproutcore.com](http://guides.sproutcore.com). To preview your changes, do this from the `guides` directory:
 
     $ guides preview
 
-Now you can preview the guides by pointing a web browser to `localhost:9292`. This preview will keep itself updated as you make changes to the guides; all you have to do is refresh your browser window to see your latest changes.
+Now point a web browser to `localhost:9292`. This preview will keep itself updated as you make changes to the guides; all you have to do is refresh your browser window to see your latest changes.
 
-## Submitting Changes
+## Submitting Your Changes
 
-You can get your changes and additions included by creating a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub.
+You can get your changes and additions included by creating a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub using the topic branch you create above.
 
 ## More Information
 
