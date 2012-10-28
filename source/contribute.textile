@@ -123,19 +123,19 @@ h4. Create a New Guide
 To start a new guide, simply create a file named +<your_guide_name>.textile+ in the +source+ directory. Use the following template as a starting point for your guide:
 
 <plain filename="source/&lt;your_guide_name&gt;.textile">
-h2. Guide Topic
+  h2. Guide Topic
 
-This guide covers ... After reading this guide, you will be able to:
+  This guide covers ... After reading this guide, you will be able to:
 
-* Make a list of the things you will cover.
-* This should be a relatively high level list.
-* It should cover what the reader will know how to do once done.
+  * Make a list of the things you will cover.
+  * This should be a relatively high level list.
+  * It should cover what the reader will know how to do once done.
 
-endprologue.
+  endprologue.
 
-h3. Topics Should Use h3
+  h3. Topics Should Use h3
 
-Each topic should use an h3.
+  Each topic should use an h3.
 </plain>
 
 h4. Modify an Existing Guide
