@@ -310,6 +310,9 @@ Here are some examples configuring the SproutCore server proxy:
   proxy '/originals', :to => 'some-api.org', :redirect => false
 </ruby>
 
+NOTE: When changing proxy settings, the server may need to be restarted to
+reflect the changes.
+
 h3. Building a SproutCore Application: +sproutcore build+
 
 Finally, when your application is ready to be deployed to a real server, you will do a production build and move the files across to be hosted.  Depending on the options you set in your Buildfile, this will generate some variant of static deployable and cache-able content.
