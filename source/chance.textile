@@ -265,7 +265,7 @@ Rather than using +background-repeat+ for slices, you should use the +$repeat+ a
 
 This lets Chance know that the image repeats, which can impact how it deals with the image.
 For instance, if Chance were to sprite the image, it would create separate sprites
-for each +repeat-x, repeat-y, and repeat-both+.
+for each +repeat-x, repeat-y, and repeat+.
 
 h4. Offsetting
 
