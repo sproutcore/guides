@@ -225,9 +225,9 @@ h3. What to Contribute?
 
 h3. Contacting the SproutCore team
 
-Documentation requests and questions can be posted on the "SproutCore Dev Google Group":http://groups.google.com/group/sproutcore-dev. If you're not sure whether a guide is actively being worked on, stop by IRC and ask.
+Documentation requests and questions can be posted on the "SproutCore Google Group":http://groups.google.com/group/sproutcore. If you're not sure whether a guide is actively being worked on, stop by IRC and ask.
 
-* IRC: "#sproutcore-dev":irc://irc.freenode.net/sproutcore-dev
+* IRC: "#sproutcore":irc://irc.freenode.net/sproutcore
 * Twitter: "@sproutcore":http://twitter.com/#!/sproutcore
 
 h3. License
