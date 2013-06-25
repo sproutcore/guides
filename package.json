@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "docpad": "6.x",
+    "docpad-plugin-eco": "~2.0.2",
     "docpad-plugin-marked": "~2.1.1",
     "docpad-plugin-highlightjs": "~2.1.6"
   },
