@@ -1,8 +1,6 @@
 .DS_Store
 .bundle
-bin
-output
-staging
-Gemfile.lock
+node_modules
+out
 *.swp
 *.swo

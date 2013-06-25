@@ -1,0 +1,31 @@
+{
+    "name": "docpad-plugin-sproutdown",
+    "version": "2.0.0",
+    "description": "DocPad plugin that adds the ability to render SproutCore specific Markdown to standard Markdown.",
+    "homepage": "https://github.com/sproutcore/docpad-plugin-sproutdown",
+    "keywords": [
+        "docpad",
+        "docpad-plugin",
+        "markdown",
+        "sproutdown"
+    ],
+    "author": "Copyright Topher Fangio <fangiotophia@gmail.com> (https://github.com/topherfangio)",
+    "maintainers": [
+        "Topher Fangio <fangiotophia@gmail.com> (https://github.com/topherfangio)"
+    ],
+    "contributors": [
+        "Topher Fangio <fangiotophia@gmail.com> (https://github.com/topherfangio)"
+    ],
+    "bugs": {
+        "url": "https://github.com/sproutcore/docpad-plugin-sproutdown/issues"
+    },
+    "repository" : {
+        "type": "git",
+        "url": "https://github.com/sproutcore/docpad-plugin-sproutdown.git"
+    },
+    "engines" : {
+        "node": ">=0.8",
+        "docpad": ">=6"
+    },
+    "main": "./src/sproutdown.plugin.coffee"
+}

@@ -1,0 +1,83 @@
+---
+layout: default
+sc_category: Testing
+sc_order: 30
+sc_title: Test Page
+sc_short_description: Making Sure it Works
+sc_description: This is a sample guide designed to test:
+sc_list:
+  - Proper translation of +something+ to <tt>something</tt>
+  - Automatic heading numbering
+  - Generation of Table of Contents
+  - Code blocks with filenames
+  - Provide NOTE/INFO/WARNING shortcuts
+---
+
+### I'm the first heading!
+
+This is the first paragraph. It's nice and short.
+
+``` bash
+$ some bash code here
+ ~ Yup...I think this worked...
+```
+
+Another paragraph goes here. I could type for a fairly long time and make some really long sentences
+and keep it going until the end of all days, but I think I shall defer until a better time. That makes
+much more +sense+.
+
+`some/one/line/code/here`
+
+Here is some more paragraph text.
+
+#### I'm a subheading.
+
+I'm even more text.
+
+WARNING: Woah! Watch out for me.
+
+##### I'm a sub-subheading.
+
+And here is some more text.
+
+### I am the second heading. I'm not so great.
+
+NOTE: I'm a pretty cool note!
+
+Woot, we got more text coming right at you!
+
+#### Another subheading.
+
+With some more text.
+
+INFO: I'm just here to tell you about something.
+
+And here is some fancy code below:
+
+``` ruby
+# filename: /some/ruby/file.rb
+a = 1 + 2
+b = a / 3
+c = a * b
+
+puts a, b, c
+```
+
+##### Another sub-subheading.
+
+With even more text/code.
+
+``` javascript
+# filename: /i/am/some/javascript3.js
+{
+  here: {
+    comes: "the bride",
+    1: "more time",
+    "something else": [3, 'b', { fu: 'bar' }]
+  }
+}
+```
+
+##### Yet one more sub-subheading.
+
+With the last bit of text.
