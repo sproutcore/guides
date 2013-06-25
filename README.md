@@ -12,13 +12,15 @@ This document contains a brief overview of how to contribute changes and additio
 1. [Fork](https://help.github.com/articles/fork-a-repo) the [SproutCore Guides repository](https://github.com/sproutcore/guides) on [GitHub](http://github.com).
 
 2. Clone the fork on to your local machine.
-
-        $ git clone git://github.com/<yourname>/guides.git
+    ```bash
+    $ git clone git://github.com/<yourname>/guides.git
+    ```
 
 3. Add the main SproutCore Guides repository as a remote so you can fetch updates.
-
-        $ cd guides
-        $ git remote add upstream git://github.com/sproutcore/guides.git
+    ```bash
+    $ cd guides
+    $ git remote add upstream git://github.com/sproutcore/guides.git
+    ```
 
 ## Installing Prerequisites
 
@@ -27,12 +29,16 @@ you will first need to install Node from [http://nodejs.org/](http://nodejs.org/
 
 Next, install the docpad framework (note: you may need to use `sudo` for this):
 
-    $ npm install -g docpad
+```bash
+$ npm install -g docpad
+```
 
 Finally, change into the guides directory and install the necessary development dependencies:
 
-    $ cd ~/my/dev/directory/sproutcore/guides
-    $ npm install
+```bash
+$ cd ~/my/dev/directory/sproutcore/guides
+$ npm install
+```
 
 You should see a plethora of output similar to the following:
 
@@ -50,8 +56,10 @@ You should see a plethora of output similar to the following:
 
 Before you make any changes, you'll want to pull in any upstream changes and create a new topic branch for your changes.
 
-    $ git pull upstream/master
-    $ git checkout -b <branchname>
+```bash
+$ git pull upstream/master
+$ git checkout -b <branchname>
+```
 
 ## Creating or Modifying a Guide
 
@@ -61,9 +69,11 @@ language. The best way to familiarize yourself with how to use Markdown is to ch
 Docpad makes it easy to see what the guides on your local machine will look like when they're published to
 [guides.sproutcore.com](http://guides.sproutcore.com). To preview your changes, run the following command from the `guides` directory:
 
-    $ docpad run
+```bash
+$ docpad run
+```
 
-Now point a web browser to `localhost:9778`. This preview will keep itself updated as you make changes to the guides; all you have to do is refresh
+Now point a web browser to [localhost:9778](http://localhost:9778). This preview will keep itself updated as you make changes to the guides; all you have to do is refresh
 your browser window to see your latest changes.
 
 ## Submitting Your Changes
