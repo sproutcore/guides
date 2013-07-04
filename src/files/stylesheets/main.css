@@ -400,10 +400,8 @@ div.code_container div.filename span {
 .note tt, .note ins, .info tt, .note ins {border:none; background: none; padding: 0;}
 
 #mainCol ul li {
-  list-style:none;
-  background: url(/images/grey_bullet.gif) no-repeat left 0.5em;
-  padding-left: 1em;
-  margin-left: 0;
+  list-style: square;
+  margin-left: 25px;
 }
 
 #subCol .content {

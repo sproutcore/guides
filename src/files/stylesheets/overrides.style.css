@@ -202,6 +202,8 @@ dd img {
   margin: 0.8em 0;
   background-image: url(../images/graphics/check.png);
   background-position: 7px 1px;
+  list-style: none;
+  background-repeat: no-repeat;
 }
 
 /** Guide body styles */
