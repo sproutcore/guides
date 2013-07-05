@@ -59,6 +59,7 @@
             </a>
             <hr style="clear:both;">
             <dl class='L'>
+              <%- @document.printIndexDropdownSection(@document, 'Views') %>
             </dl>
             <dl class='R'>
               <%- @document.printIndexDropdownSection(@document, 'Testing') %>
@@ -73,11 +74,11 @@
         <div id="mainCol">
           <% if @document.sc_title && @document.sc_short_description && @document.sc_description && @document.sc_list: %>
             <div class='headerSection'>
-              <h2><%= @document.sc_title %> - <%= @document.sc_short_description %></h2>
-              <p><%= @document.sc_description %></p>
+              <h2><%- @document.sc_title %> - <%- @document.sc_short_description %></h2>
+              <p><%- @document.sc_description %></p>
               <ul>
                 <% for item in @document.sc_list: %>
-                  <li><%= item %></li>
+                  <li><%- item %></li>
                 <% end %>
               </ul>
             </div>
