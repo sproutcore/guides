@@ -92,10 +92,10 @@
           <ol class='chapters'>
             <% for index,chapter of @document.table_of_contents: %>
               <li>
-                <a href='#<%= (chapter['title'] || "").replace(/[^a-zA-Z0-9]/g, '-') %>'><p><%= chapter['title'] %></p></a>
+                <a href='#<%- (chapter['title'] || "").replace(/[^a-zA-Z0-9]/g, '-') %>'><p><%- chapter['title'] %></p></a>
                 <ul>
                   <% for subheading in chapter['subheadings']: %>
-                    <li><a href='#<%= (subheading || "").replace(/[^a-zA-Z0-9]/g, '-') %>'><p><%= subheading %></p></a></li>
+                    <li><a href='#<%- (subheading || "").replace(/[^a-zA-Z0-9]/g, '-') %>'><p><%- subheading %></p></a></li>
                   <% end %>
                 </ul>
               </li>
