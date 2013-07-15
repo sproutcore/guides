@@ -1,0 +1,18 @@
+---
+layout: credits
+sc_category: Contributing to SproutCore
+sc_order: 10
+sc_title: The People That Make It Happen
+sc_credits:
+  - name: Documentation Team
+  - authors: 
+    - id: topherfangio
+      name: Topher Fangio
+      github: topherfangio
+      image: tfangio
+  - name: Contributors
+  - authors: 
+    - id: apechimp
+      name: Mike Atkins
+      github: apechimp
+---

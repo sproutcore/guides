@@ -47,9 +47,9 @@
     <div id="feature">
       <div class="wrapper">
         <div class="feature_header">
-          <a href="/"><img src="images/graphics/guides.png"></a>
-          <h2><a href="/">SproutCore Guides</a></h2>
-          <p>These guides are designed to help you write and perfect your code.</p>
+          <a href="/"><img src="images/graphics/credits.png"></a>
+          <h2><a href="/credits.html">Credits</a></h2>
+          <p>We'd like to thank the following people for their tireless efforts.</p>
         </div>
         <div class="feature_sidebar">
           <a href="index.html" id="guidesMenu">
@@ -74,19 +74,24 @@
     <div id="container">
       <div class="wrapper">
         <div id="mainCol">
-          <% if @document.sc_title && @document.sc_description && @document.sc_list: %>
-            <div class='headerSection'>
-              <h2><%- @document.sc_title %><%- if @document.sc_short_description then ' - ' + @document.sc_short_description else '' %></h2>
-              <p><%- @document.sc_description %></p>
-              <ul>
-                <% for item in @document.sc_list: %>
-                  <li><%- item %></li>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
+          <div class='headerSection'>
+            <h2><%- @document.sc_title %></h2>
+          </div>
 
-          <%- @content %>
+          <!-- TODO: Fix Double Sections... //-->
+          <% for index, section of @document.sc_credits: %>
+            <h3 class='section'><%= section.name %></h3>
+
+            <!-- TODO: Sort Authors by Last Name //-->
+            <% for index, author of section.authors: %>
+              <% console.log("author is: ", author) %>
+              <div class='author clearfix' id='<%= author.id %>'>
+                <img alt='<%= author.name %>' class='left pic' src='/images/credits/<%= (author.image || 'unknown') %>.jpg' />
+                <h3><%= author.name %></h3>
+                <%- if author.github then "<p><i class='icon-github'></i> <a href='http://github.com/#{author.github}'>#{author.github}</a></p>" else "" %>
+              </div>
+            <% end %>
+          <% end %>
         </div>
         <!-- TODO: re-add index_items //-->
         <div id="subCol">

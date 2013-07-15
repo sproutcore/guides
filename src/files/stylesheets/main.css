@@ -364,6 +364,7 @@ div.code_container {
 
 div.code_container code {
   padding: 10px;
+  min-height: 27px;
 }
 
 div.code_container div.filename {

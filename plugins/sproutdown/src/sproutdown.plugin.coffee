@@ -27,17 +27,17 @@ module.exports = (BasePlugin) ->
         #
         # Surround anything following 'NOTE:' (and two newlines) with a "<div class='note'>...</div>" block
         #
-        opts.content = opts.content.replace(/NOTE:(.*?\n\n)/g, "\n\n<div class='note'><p>$1</p></div>\n\n")
+        opts.content = opts.content.replace(/NOTE:((.|\s)*?\n\n)/g, "\n\n<div class='note'><p>$1</p></div>\n\n")
 
         #
         # Surround anything following 'INFO:' (and two newlines) with a "<div class='info'>...</div>" block
         #
-        opts.content = opts.content.replace(/INFO:(.*?\n\n)/g, "\n\n<div class='info'><p>$1</p></div>\n\n")
+        opts.content = opts.content.replace(/INFO:((.|\s)*?\n\n)/g, "\n\n<div class='info'><p>$1</p></div>\n\n")
 
         #
         # Surround anything following 'WARNING:' (and two newlines) with a "<div class='warning'>...</div>" block
         #
-        opts.content = opts.content.replace(/WARNING:(.*?\n\n)/g, "\n\n<div class='warning'><p>$1</p></div>\n\n")
+        opts.content = opts.content.replace(/WARNING:((.|\s)*?\n\n)/g, "\n\n<div class='warning'><p>$1</p></div>\n\n")
 
         #
         # Add numbers to the headers and handle table of contents (h3/h4 only)
@@ -48,19 +48,19 @@ module.exports = (BasePlugin) ->
           heading = p2.replace(/^#*/, '')
           dasherized_heading = heading.replace(/[^a-zA-Z0-9]/g, '-')
           if match.match(/^###[^#]/) # Found an h3
-            h4_count = h5_count = 0
+            h4_count = h5_count = 1
             numbered_heading = "\n\n<h3 id='#{dasherized_heading}'>#{h3_count++} - #{heading}</h3>\n\n"
             toc.push({ title: heading, subheadings: [] })
             return numbered_heading
 
           if match.match(/^####[^#]/) # Found an h4
-            h5_count = 0
-            numbered_heading = "\n\n<h4 id='#{dasherized_heading}'>#{h3_count}.#{h4_count++} - #{heading}</h4>\n\n"
+            h5_count = 1
+            numbered_heading = "\n\n<h4 id='#{dasherized_heading}'>#{h3_count - 1}.#{h4_count++} - #{heading}</h4>\n\n"
             toc[toc.length - 1]['subheadings'].push(heading)
             return numbered_heading
 
           if match.match(/^#####[^#]/) # Found an h5
-            return "\n\n<h5 id='#{dasherized_heading}'>#{h3_count}.#{h4_count}.#{h5_count++} - #{heading}</h5>\n\n"
+            return "\n\n<h5 id='#{dasherized_heading}'>#{h3_count - 1}.#{h4_count - 1}.#{h5_count++} - #{heading}</h5>\n\n"
 
           return match
         )
@@ -81,7 +81,7 @@ module.exports = (BasePlugin) ->
       #
       opts.content = opts.content.replace(/<pre class="highlighted"><code/g, '<pre class="highlighted"><div class="code_container"><code')
       opts.content = opts.content.replace(/<\/code><\/pre>/g, "</code></div></pre>")
-      opts.content = opts.content.replace(/#\sfilename: (.*)/g, (match, p1, offset, total_string)->
+      opts.content = opts.content.replace(/#\s?filename: (.*)/g, (match, p1, offset, total_string)->
         return "<div class='filename'>" + p1 + "</div>\n"
       )
 
