@@ -93,19 +93,12 @@
         </div>
         <!-- TODO: re-add index_items //-->
         <div id="subCol">
-          <h3 class="chapter"><img src="images/graphics/chapters.png" alt="">Chapters</h3>
-          <ol class='chapters'>
-            <% for index,chapter of @document.table_of_contents: %>
-              <li>
-                <a href='#<%- (chapter['title'] || "").replace(/[^a-zA-Z0-9]/g, '-') %>'><p><%- chapter['title'] %></p></a>
-                <ul>
-                  <% for subheading in chapter['subheadings']: %>
-                    <li><a href='#<%- (subheading || "").replace(/[^a-zA-Z0-9]/g, '-') %>'><p><%- subheading %></p></a></li>
-                  <% end %>
-                </ul>
-              </li>
-            <% end %>
-          </ol>
+          <h3>Become a Contributor</h3>
+          <ul class='links'>
+            <li><a href='/style_guide.html'>Javascript Style Guide</a></li>
+            <li><a href='/commit_code.html'>Committer Guidelines</a></li>
+            <li><a href='/documentation_guidelines.html'>Documentation Guidelines</a></li>
+          </ul>
         </div>
       </div>
     </div>
