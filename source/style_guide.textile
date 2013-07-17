@@ -149,7 +149,7 @@ constructName: function(){
 }
 </javascript>
 
-Another suggestion declare all local variables at the beginning of your method. The YUI compressor recommends declaring all variables on one line i.e.,
+Another strategy that often works well is to declare all of your local variables at the beginning of your method. The YUI compressor recommends declaring all variables on one line i.e.,
 
 <javascript>
   var a, b, x, obj;
