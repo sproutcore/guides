@@ -129,14 +129,14 @@ module.exports = (BasePlugin) ->
           ret = 0
           index = 0
 
-          while ret = 0 and index < keys.length
+          while ret == 0 and index < keys.length
             valA = a[keys[index]]
             valB = b[keys[index]]
 
             if typeof valA == 'string' and typeof valB == 'string'
-              ret = valA.toUpperCase() >= valB.toUpperCase()
+              ret = if valA.toUpperCase() >= valB.toUpperCase() then 1 else -1
             else
-              ret = valA >= valB
+              ret = if valA >= valB then 1 else -1
 
             index++
           ret
