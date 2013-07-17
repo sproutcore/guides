@@ -5,14 +5,73 @@ sc_order: 10
 sc_title: The People That Make It Happen
 sc_credits:
   - name: Documentation Team
-  - authors: 
-    - id: topherfangio
-      name: Topher Fangio
+    authors: 
+    - fname: Topher
+      lname: Fangio
       github: topherfangio
-      image: tfangio
   - name: Contributors
-  - authors: 
-    - id: apechimp
-      name: Mike Atkins
+    authors: 
+    - fname: Mike
+      lname: Atkins
       github: apechimp
+    - fname: Peter
+      lname: Wagenet
+      github: wagenet
+    - fname: Yehuda
+      lname: Katz
+      github: wycats
+    - fname: Mike
+      lname: Ball
+      github: onkis
+    - fname: Peter
+      lname: Bergström
+      github: pbergstr
+    - fname: Kyle
+      lname: Carriedo
+      github: kcarriedo
+    - fname: Tom
+      lname: Dale
+      github: tomdale
+    - fname: Geoffrey
+      lname: Donaldson
+      github: geoffreyd 
+    - fname: Chad
+      lname: Eubanks
+      github: ChadEubanks
+    - fname: Jason
+      lname: Gignac
+      github: jasonpgignac
+    - fname: Vibul
+      lname: Imtarnasan
+      github: veebs
+    - fname: Alex
+      lname: Iskander
+      github: ialexi
+    - fname: Tyler
+      lname: Keating
+      github: publickeating
+    - fname: Florian
+      lname: Kugler
+      github: dkduck
+    - fname: Shawn
+      lname: Morel
+      github: strangemonad
+    - fname: Erich
+      lname: Ocean
+      github: erichocean
+    - fname: Piotr
+      lname: Sarnacki
+      github: drogus
+    - fname: Scott
+      lname: Smith
+      github: oldfartdeveloper
+    - fname: Majd
+      lname: Taby
+      github: jtaby
+    - fname: Devin
+      lname: Torres
+      github: devinus
+    - fname: Gregory
+      lname: Moeck
+      github: gmoeck
 ---

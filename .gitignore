@@ -4,3 +4,4 @@ node_modules
 out
 *.swp
 *.swo
+.avatar_cache.json

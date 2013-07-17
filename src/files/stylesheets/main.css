@@ -278,6 +278,12 @@ h6 {
   margin: 0 2em 2em 0;
 }
 
+.credits-avatar {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
 #topNav strong {color: #999; margin-right: 0.5em;}
 #topNav strong a {color: #FFF;}
 

@@ -1,3 +1,21 @@
+fs = require('fs')
+https = require('https')
+
+# Create a cache so that we don't hit the GitHub API rate limit
+avatar_cache = {}
+try
+  avatar_cache = require(__dirname + '/.avatar_cache.json')
+catch err
+  console.log(" *** Couldn't load cache file: ", err)
+
+console.log(' *** Avatar cache at start is: ', avatar_cache)
+
+# Reset the cache if it's been more than an hour since it was saved
+now = new Date()
+if now.getTime() > ['timestamp'] + 1000 * 3600
+  console.log(" *** Avatar cache is older than 1 hour; regenerating...")
+  avatar_cache = {}
+
 # Export Plugin
 module.exports = (BasePlugin) ->
   # Define Plugin
@@ -101,6 +119,66 @@ module.exports = (BasePlugin) ->
             buffer.push "<dd><a href='#{guide['url']}'>#{guide['title']}</a></dd>"
         )
         buffer.join("\n")
+
+      #
+      # Setup a helper for sorting
+      #
+      opts.templateData.document.sortBy = (array, keys) ->
+        keys = [keys] unless keys instanceof Array
+        array.sort((a,b) ->
+          ret = 0
+          index = 0
+
+          while ret = 0 and index < keys.length
+            valA = a[keys[index]]
+            valB = b[keys[index]]
+
+            if typeof valA == 'string' and typeof valB == 'string'
+              ret = valA.toUpperCase() >= valB.toUpperCase()
+            else
+              ret = valA >= valB
+
+            index++
+          ret
+        )
+
+
+      #
+      # Setup a helper for getting the users avatar
+      #
+      opts.templateData.document.avatarFor = (githubUsername) ->
+        if avatar_cache[githubUsername]
+          return avatar_cache[githubUsername]
+        else
+          console.log(' *** Requesting avatar from ', "https://api.github.com/users/#{githubUsername}")
+
+          # Set the cache to the unknown image so that we don't make a request
+          # in the middle of another request
+          avatar_cache[githubUsername] = "/images/credits/unknown.jpg"
+
+          https.request({ host: "api.github.com", path: "/users/#{githubUsername}" }, (res) ->
+            str = ''
+
+            res.on('data', (chunk)->
+              str += chunk
+            )
+
+            res.on('end', ()->
+              json = JSON.parse(str)
+              avatar_cache[githubUsername] = json['avatar_url']
+              avatar_cache['timestamp'] = (new Date()).getTime()
+
+              console.log(" *** Avatar found for " + githubUsername + ": " + json['avatar_url'])
+
+              fs.writeFile(__dirname + '/.avatar_cache.json', JSON.stringify(avatar_cache, null, 2), (err) ->
+                if (err)
+                  console.log(" ERROR: Could not save cache file: ", err)
+              )
+            )
+          ).end()
+
+          return "/images/credits/unknown.jpg"
+
 
       #
       # Generate an object for the index dropdown

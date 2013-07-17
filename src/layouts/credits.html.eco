@@ -78,17 +78,15 @@
             <h2><%- @document.sc_title %></h2>
           </div>
 
-          <!-- TODO: Fix Double Sections... //-->
           <% for index, section of @document.sc_credits: %>
             <h3 class='section'><%= section.name %></h3>
 
             <!-- TODO: Sort Authors by Last Name //-->
-            <% for index, author of section.authors: %>
-              <% console.log("author is: ", author) %>
-              <div class='author clearfix' id='<%= author.id %>'>
-                <img alt='<%= author.name %>' class='left pic' src='/images/credits/<%= (author.image || 'unknown') %>.jpg' />
-                <h3><%= author.name %></h3>
-                <%- if author.github then "<p><i class='icon-github'></i> <a href='http://github.com/#{author.github}'>#{author.github}</a></p>" else "" %>
+            <% for index, author of @document.sortBy(section.authors, ['lname', 'fname']): %>
+              <div class='author clearfix' id='<%= author.github %>'>
+                <img alt='<%= author.fname %> <%= author.lname %>' class='left pic credits-avatar' src='<%= @document.avatarFor(author.github) %>' />
+                <h3><%= author.fname %> <%= author.lname %></h3>
+                <p><i class='icon-github'></i> <a href='http://github.com/<%= author.github %>'><%= author.github %></a></p>
               </div>
             <% end %>
           <% end %>
