@@ -316,8 +316,25 @@ dd img {
   font-size: 150%;
 }
 
+#mainCol div.author {
+  float: left;
+  margin-top: 10px;
+  width: 305px;
+}
+
+#mainCol div.author h3 {
+  margin: 10px !important;
+}
+
 #mainCol div.author p {
-  margin-left: 115px;
+  margin-left: 105px;
+}
+
+#mainCol img.credits-avatar {
+  width: 80px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
 }
 
 #subCol {
