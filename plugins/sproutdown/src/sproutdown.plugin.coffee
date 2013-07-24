@@ -48,9 +48,9 @@ module.exports = (BasePlugin) ->
         opts.content = opts.content.replace(/NOTE:((.|\s)*?\n\n)/g, "\n\n<div class='note'><p>$1</p></div>\n\n")
 
         #
-        # Surround anything following 'INFO:' (and two newlines) with a "<div class='info'>...</div>" block
+        # Surround anything following 'INFO:' or 'TIP:' (and two newlines) with a "<div class='info'>...</div>" block
         #
-        opts.content = opts.content.replace(/INFO:((.|\s)*?\n\n)/g, "\n\n<div class='info'><p>$1</p></div>\n\n")
+        opts.content = opts.content.replace(/(INFO|TIP:)((.|\s)*?\n\n)/g, "\n\n<div class='info'><p>$2</p></div>\n\n")
 
         #
         # Surround anything following 'WARNING:' (and two newlines) with a "<div class='warning'>...</div>" block
