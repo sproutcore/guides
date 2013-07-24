@@ -164,7 +164,7 @@ h3. Configuring SproutCore Applications: +Buildfile+
 
 The operations of the build tools are configured via the project, framework and app Buildfiles.  If you used the previous commands, you will find a Buildfile within your root project directory and a Buildfile in each of your app directories.  As it states in the default app Buildfiles, the settings in the app Buildfile will override the project Buildfile.
 
-Therefore, a recommended setup would configure properties shared between all your apps within a project in the project's Buildfile and to configure any properties specific to an app, in the app's Buildfile.  For simplicity state, the following examples will just use a single Buildfile in most cases.
+Therefore, a recommended setup would configure properties shared between all your apps within a project in the project's Buildfile and configure any properties specific to an app in the app's Buildfile.  For simplicity's sake, the following examples will just use a single Buildfile in most cases.
 
 Before looking at each config setting in detail, there is one important statement, +mode+, that is valuable to understand.  Any configurations within a <code>mode #{name}</code> block will only apply to the named environment.  By default, <code>sproutcore build</code> uses the mode +production+ and <code>sproutcore server</code> uses the mode +debug+, but you may provide any custom mode by passing +--mode=my_mode+ to the command.
 
@@ -222,7 +222,7 @@ NOTE: If minify is <code>false</code>, <code>sc-build</code> will throw a securi
 
 h4. +:required => {Array}+
 
-This defines the frameworks in the order that the app requires them and is initially set by default to <code>:sproutcore</code>.  Since frameworks can be nested and can define their own requirements, the <code>:sproutcore</code> framework is actually just a wrapper framework that includes several of its sub-frameworks each of which have their own requirements as well.  New developers should not generally concern themselves with stripping away
+This defines the frameworks in the order that the app requires them and is initially set by default to <code>:sproutcore</code>.  Since frameworks can be nested and can define their own requirements, the <code>:sproutcore</code> framework is actually just a wrapper framework that includes several of its sub-frameworks each of which have their own requirements as well.  New developers should not generally concern themselves with stripping out sub-frameworks of the <code>:sproutcore</code> framework.
 
 Ex. The most basic Buildfile:
 <ruby filename="my_project/Buildfile">
