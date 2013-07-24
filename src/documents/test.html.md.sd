@@ -1,5 +1,6 @@
 ---
 layout: default
+sc_draft: true
 sc_category: Testing
 sc_order: 30
 sc_title: Test Page
