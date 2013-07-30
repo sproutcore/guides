@@ -1,0 +1,165 @@
+h2. Unit Testing - Adding Unit Test Files
+
+This guide covers unit test file generation and organization. After reading this guide, you will be able to:
+
+* Automatically generate a unit test file that will be placed in the correct location.
+* Manually create a unit test file from a template.
+* Manually create unit test files.
+* Arrange your unit test files.
+
+endprologue.
+
+
+h3. Creating a Directory for Your Unit Test Files
+
+When you first create your SproutCore application, directories are automatically created for you.
+
+<shell>
+$ sc-init MyApp
+ ~ Created directory at my_app
+ ~ Created file at my_app/Buildfile
+ ~ Created file at my_app/README
+ ~ Created directory at apps
+ ~ Created directory at apps/my_app
+ ~ Created directory at apps/my_app/resources
+ ~ Created file at apps/my_app/resources/main_page.js
+ ~ Created file at apps/my_app/resources/loading.rhtml
+ ~ Created file at apps/my_app/core.js
+ ~ Created file at apps/my_app/main.js
+Your new SproutCore project is ready!
+</shell>
+
+By convention, SproutCore assumes that all unit tests files are located in the +tests+ sub-directory for your application (or framework).
+
+@my_app/apps/my_app/tests@
+
+Hence, create the +tests+ directory if it is missing.
+
+Unlike like most folders, SproutCore assumes that each file in the tests
+directory that ends in +.js+ or +.rhtml+ is a unit test.  You can load each
+of these unit tests individually or as a group from the built-in test runner.
+
+NOTE: The files in the +tests+ directory are omitted from your production deployment.
+
+h3. Creating a Unit Test File
+
+SproutCore unit test cases are coded and saved into unit test files under the +tests+ directory.
+
+It is good practice to group related unit test cases into a single unit test file. For example, all test cases for a +login+ controller class should be saved in a unit test file called +login.js+.
+This is way, when a change is made to the login controller class, we can run all the unit test cases in +login.js+ to verify.
+
+In addition, it is good practice to group related unit test files into a sub-directory under the +tests+ directory. For example, unit test files for controllers should be saved in the +tests/controller+  directory. In this way, if a change is made to all controllers, we run the unit test cases in all unit test files in the +controller+ directory to verify.
+
+There are three ways to create your unit test files.
+
+h4. Automatically Creating Unit Test Files
+
+When you use the +sc-gen+ tool to add new source files to your application, it will automatically add a corresponding test file added into the +tests+ directory.  For example,
+
+<shell>
+$ sc-gen controller MyApp.LoginController
+ ~ Created directory at controllers
+ ~ Created file at controllers/login.js
+ ~ Created directory at tests
+ ~ Created directory at tests/controllers
+ ~ Created file at tests/controllers/login.js // <== The generated unit test file
+
+Your controller is now ready to use!
+</shell>
+
+Notice the creation of +tests/controllers/login.js+.
+
+Conveniently, the generated unit test file is built from a template:
+
+<javascript filename="apps/my_app/test/controllers/login.js">
+// ==================================================
+// Project:   MyApp.loginController Unit Test
+// Copyright: ©2011 My Company, Inc.
+// ==================================================
+/*globals MyApp module test ok equals same stop start */
+
+module("MyApp.loginController");
+
+// TODO: Replace with real unit test for MyApp.loginController
+test("test description", function() {
+  var expected = "test";
+  var result   = "test";
+  equals(result, expected, "test should equal test");
+});
+</javascript>
+
+h4. Generating Unit Test Files
+
+You can also use the +sc-gen+ tool to create your unit test file by itself:
+
+<shell>
+$ sc-gen test TARGET_NAME PATH/TO/TEST[.js]
+</shell>
+
+For example, if you wanted to add a unit test file named +views/login/render.js+ to your application, you would:
+
+<shell>
+$ sc-gen test MyApp views/login/render
+ ~ Created file at tests/views/login/render.js
+
+Your unit test has been generated and is now ready to be configured!
+</shell>
+
++render.js+ contains a sample unit test case to help you get started.
+
+<javascript filename="apps/my_app/tests/views/login/render.js">
+// ==================================================
+// Project:   MyApp Unit Test
+// Copyright: ©2011 My Company, Inc.
+// ==================================================
+/*globals MyApp module test ok equals same stop start */
+
+module("MyApp");
+
+// TODO: Replace with real unit test
+test("test description", function() {
+  var expected = "test";
+  var result   = "test";
+  equals(result, expected, "test should equal test");
+});
+</javascript>
+
+
+
+h4. Manually Creating Unit Test Files
+
+If you cannot or would prefer not to use the +sc-gen+ tool, you can always add a unit test manually.
+
+Just create a new +.js+ file in your +tests+ directory.  It will be automatically run by the test runner when appropriate.
+
+
+
+
+h3. How to Arrange Your Unit Tests
+
+Unit tests work best if you arrange them into files and directories based on how you might want to run them together.  Often, it is a good practice is to create a directory for each class you add to your app and one unit test file per method you want to test inside that directory.
+
+For example, the unit tests for SC.Object might look something like:
+
+<shell>
+tests/system/object/create.js
+tests/system/object/extend.js
+tests/system/object/kindOf.js
+...
+</shell>
+
+This way you can easily run all of the unit tests for a particular method, all of the unit tests for the SC.Object class itself or all of the unit tests for classes defined in the "system" directory of the target.
+
+
+
+h3. Moving On
+
+Once you've added a unit test file, now you need to write some unit test code.
+Learn more by writing your first unit test.
+
+On to "Writing Unit Test Cases »":/writing_unit_tests.html
+
+h3. Changelog
+
+* February 15, 2011: initial version by "Scott Smith":credits.html#oldfartdeveloper and "Vibul Imtarnasan":credits.html#veebs
+* March     2, 2011: added filenames, fixed link in credits, changed +<plain>+ tags to +<shell>+ tags by "Topher Fangio":credits.html#topherfangio

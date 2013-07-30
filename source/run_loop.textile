@@ -1,0 +1,64 @@
+h2. The Run Loop
+
+The guide covers SproutCore's Run Loop. By referring to this guide, you will be able to:
+
+* Understand the Run Loop
+* Know when to manually trigger a Run Loop (rare).
+* Know how to use invokeOnce(), invokeLast() and invokeNext() to adjust the execution flow of code.
+
+endprologue.
+
+h3. The Run Loop
+
+The Run Loop coordinates all the events within your application, which includes primarily flushing bindings when observers update. This helps make sure that events stay synchronized and run at the proper times. One of the main ways this will affect your application is that bindings do not propagate unless a Run Loop runs.  Also, Views will only render updates once per Run Loop, thus avoiding unnecessarily touching the DOM.  This keeps display updates extremely fast even if many properties are changing per Run Loop.
+
+SproutCore manages the Run Loop for you, automatically starting a Run Loop when it receives any browser events or user input. The only case in which you will have to manage the Run Loop from within your app is _if you have a callback from an external library that is not managed by SproutCore_. In this circumstance, you will want to trigger a new Run Loop by wrapping the code in +SC.run()+. This will create a new Run Loop for that bit of code and will make sure your application continues to update as expected.
+
+Here is an example of triggering a Run Loop when a Web Worker message event is fired.
+
+<javascript>
+worker = new Worker(path);
+
+worker.onmessage = function(event) {
+  SC.run(function() {
+    // Do something
+  });
+};
+</javascript>
+
+NOTE: See +SC.Event.addEvent()+ for a SproutCore compatible way to add the <code>message</code> event listener in the example above.
+
+h4. Using the Run Loop in Unit Tests
+
+When working with unit tests, you will also have situations where you need to force bindings and observers to update so that you can check for the correct results. In these cases, it is completely legitimate to manually invoke the Run Loop. Normally user events would trigger the Run Loop, but since your tests are automated, there are no user events taking place.
+
+You may also find that when you are working in your browser's JavaScript console that, when you set a variable, your application's interface doesn't update as you expect. This may be caused by a Run Loop not firing (since you aren't interacting directly with the application no events are being triggered). In this case you should try invoking the Run Loop manually or just move your mouse over the application to trigger a new event.
+
+WARNING: Remember, you rarely need to manage the Run Loop manually from within your application. If you aren't certain of why you are forcing a new Run Loop, then you may be doing something wrong.
+
+h3. The Run Loop Methods: invokeLast(), invokeOnce(), invokeNext()
+
+SC.RunLoop provides three methods for greater control over the execution of code within a Run Loop: <code>invokeOnce()</code>, <code>invokeLast()</code> and <code>invokeNext()</code>.  All methods take the same parameters, a <code>target</code> and a <code>method</code> and, depending on which function is used, the method is called on the target at a specific point in the Run Loop.
+
+The following describes the execution order:  functions passed to <code>invokeOnce()</code> are run at the beginning of the current Run Loop, functions passed to <code>invokeLast()</code> are run at the end of the current Run Loop and functions passed to <code>invokeNext()</code> are run at the very beginning of the _next_ Run Loop.
+
+INFO: You will likely never call these methods on SC.RunLoop itself, since there are matching convenience methods defined on SC.Object (i.e. in any subclass of SC.Object you can call <code>this.invokeLater(method)</code>).
+
+To best illustrate the different stages of the Run Loop, see the following diagram.
+
+<div><img src="images/run_loop_diagram.jpg"></div>
+
+You will notice the recursive "More changes?" stages.  These exist because each time a wave of changes is propagated, it may cause several additional observers to fire and more code to be run.  The Run Loop keeps flushing these waves of changes until everything is stable, thus demonstrating another key benefit of using Run Loops; that at the end of each Run Loop and before the next event, the application's state is guaranteed to be stabilized.
+
+Here are some typical usage scenarios for each of the Run Loop methods:
+
+* If you have a function that could be called from multiple places, but you only want it to execute once no matter how many times it was referenced, use
+<code>invokeOnce()</code>.
+* If you have a function that you want to run after all bindings have flushed and after views have updated, use <code>invokeLast()</code>.
+* If you have a function that you want to defer entirely, such as a View paint, use <code>invokeNext()</code>.
+
+Therefore, as the previous usage scenarios suggest, you will not typically find the need to use any of these methods.  The most common exception is that you may occasionally use invokeLast() to ensure that your Views have rendered before doing some operation on dependent on their rendered output, such as an animation.
+
+NOTE: If you add the same <code>target</code> and <code>method</code> pair multiple times to any of these functions, it will still only be executed once.
+
+.

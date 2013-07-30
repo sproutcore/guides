@@ -1,0 +1,404 @@
+h2. Core View Concepts
+
+The guide covers some of the core concepts of views in SproutCore. By referring to this guide, you will be able to:
+
+* Layout your views relative to their parent.
+* Make your views dynamic with bindings.
+* Change how your views render and update themselves.
+* Handle events that occur over your view like a mouse click.
+
+endprologue.
+
+h3. Introduction
+
+After you've created your first SproutCore project, you'll notice the file +main_page.js+ in your resources folder. This is the main page that your app appends to the DOM in your +main+ function. Let's start by looking at what every SproutCore project starts with as its main page:
+
+INFO: The file +main_page.js+ is included into the application's resources folder when using <code>sc-init</code> without the <code>--template</code> param.
+
+<javascript filename="apps/addressbook/resources/main_page.js">
+AddressBook.mainPage = SC.Page.design({
+  mainPane: SC.MainPane.design({
+    childViews: 'labelView'.w(),
+    labelView: SC.LabelView.design({
+      layout: { centerX: 0, centerY: 0, width: 200, height: 18 },
+      textAlign: SC.ALIGN_CENTER,
+      tagName: "h1", 
+      value: "Welcome to SproutCore!"
+    })
+  })
+});
+</javascript>
+
+To understand what all of this means, we'll have to look at and understand what this boilerplate code does. +AddressBook.mainPage+ is our main application page. Your application may end up having several "pages" or you may choose to swap content into and out of a single page. +AddressBook.mainPage+ is an +SC.Page+ which works by lazily configuring itself. The views within a page are only awakened when you +get+ the page in the +main.js+ file:
+
+<javascript filename="in apps/addressbook/main.js">
+AddressBook.getPath('mainPage.mainPane').append();
+</javascript>
+
++AddressBook.mainPage.mainPane+ is an +SC.MainPane+ which is itself an +SC.Pane+.  There will probably be many panes in your app because a pane is just like a regular view except that it doesn't need to live within a parent view. These can be anything from a palette to a popup to a menu. In this case, our pane is an +SC.MainPane+ which automatically makes itself the main pane as soon as it's appended to the doument.
+
+Our main pane is configured with only one +childView+, an +SC.LabelView+.  SproutCore uses absolute positioning to lay out its views, and this label view is no different. Giving it a width and height allows us to place the label directly in the center of the page using +centerX+ and +centerY+. These attributes specify how many pixels offset from the center we'd like the view.
+
+NOTE: The +w+ function splits a string by spaces and turns it into an array.  We could have accomplished the same thing by using +childViews:['labelView']+.
+
+h3. Laying Out Views on the Page
+
+Let's say we wanted to make an address book. This address book would have a list of all your contacts that you could scroll through and see contact details such as phone numbers and addresses. Let's start the address book by starting an +SC.WorkspaceView+ which allows us to have a toolbar on the top and bottom and a view between those two toolbars:
+
+<javascript filename="apps/addressbook/resources/main_page.js">
+AddressBook.mainPage = SC.Page.design({
+  mainPane: SC.MainPane.design({
+    childViews: 'workspaceView'.w(),
+    workspaceView: SC.WorkspaceView.design({
+      contentView: SC.View
+    })
+  })
+});
+</javascript>
+
+NOTE: The class method +design+ performs like +extend+ and may register with SproutCore's +designer+ framework, which is the basis of the interface builder, Greenhouse. You should never use +design+ outside of a page definition.
+
+We now have a nice toolbar on the top of the page, but we still don't have a list of any contacts. If we want a list on the left and details on the right, it sounds like +SC.SplitView+ is the perfect view to do that, so let's make that our +contentView+:
+
+<javascript filename="in apps/addressbook/resources/main_page.js">
+workspaceView: SC.WorkspaceView.design({
+  contentView: SC.SplitView.design({
+    dividerThickness: 1,
+    defaultThickness: 300,
+    topLeftView: SC.View,
+    bottomRightView: SC.View
+  })
+})
+</javascript>
+
+Our UI is starting to come together. We can see where we're going to have our contacts listed and where their details will be displayed. The +dividerThickness+ is just a aesthetic property since the default +defaultThickness+ will make our fixed view--in this case the +topLeftView+--300 pixels wide.
+
+NOTE: When you use values less than 1 for dimensions in SproutCore they're interpreted as percentages. E.g. +width: 0.5+ tells SproutCore that you want it to be 50% wide.
+
+We're going to need to list our contacts, so let's do that to the left, with our details view to the right. For this, we could use +SC.ListView+ which is used for generic lists of stacked information where you know each list item's height. Fortunately, SproutCore includes +SC.SourceListView+ which not only looks great out of the box, but also provides the default behaviors of a source list:
+
+<javascript filename="in apps/addressbook/resources/main_page.js">
+topLeftView: SC.SourceListView.design({
+  content: ["Elizabeth Jones", "Arnold Washington", "Pete Matthews"]
+})
+</javascript>
+
+We can then move on to the details of a contact, such as his name, phone phone number, and address. We can use +SC.LabelView+ for all three in our +bottomRightView+:
+
+<javascript filename="in apps/addressbook/resources/main_page.js">
+bottomRightView: SC.View.design({
+  childViews: 'contactDetails'.w(),
+
+  contactDetails: SC.View.design({
+    layout: { top: 50, left: 50, bottom: 50, right: 50 },
+    childViews: 'nameLabel phoneLabel addressLabel'.w(),
+
+    nameLabel: SC.LabelView.design({
+      layout: { width: 500, height: 18 },
+      value: "Contact name"
+    }),
+
+    phoneLabel: SC.LabelView.design({
+      layout: { top: 40, width: 500, height: 18 },
+      value: "Contact phone number"
+    }),
+
+    addressLabel: SC.LabelView.design({
+      layout: { top: 80, width: 500, height: 500 },
+      value: "Contact address"
+    })
+  })
+})
+</javascript>
+
+The labels are wrapped in +contactDetails+ so they can be cushioned from the edges of the parent view to see them better. +phoneLabel+ and +addressLabel+ are given a +top+ to clear each other so they don't overlap, and +addressLabel+ is given a large +height+ so a long address can wrap within the label. Right now these LabelViews are only placeholders until we hook their values to a binding.
+
+h3. Binding Views to Controllers
+
+Instead of having our source list content and our label values in our views, let's bind them to some controllers. We'll start by creating an +SC.ArrayController+ for our list of contacts:
+
+<javascript filename="apps/addressbook/controllers/contacts.js">
+AddressBook.contactsController = SC.ArrayController.create({
+  allowsMultipleSelection: NO,
+  content: [
+    SC.Object.create({
+      name: "Elizabeth Jones",
+      phone: "(555) 391-1419",
+      address: "145 Wandering Way, Austin, TX 78701",
+      website: 'http://www.elizabethjonesproductions.com'
+    }),
+    
+    SC.Object.create({
+      name: "Arnold Washington",
+      phone: "(453) 749-1585",
+      address: "378 North 16th St., Ann Arbor, MI 79883",
+      website: 'http://www.arnoldwashingtonmedia.com'
+    }),
+    
+    SC.Object.create({
+      name: "Pete Matthews",
+      phone: "(343) 856-3750",
+      address: "935 2nd St., Phoenix, AZ 87435",
+      website: 'http://www.petematthewsfurniture.com'
+    })
+  ]
+});
+</javascript>
+
+Because we are only going to be working with one object at a time, +allowsMultipleSelection: NO+ will restrict the ability to select only one item.
+
+And then an +SC.ObjectController+ that proxies individual contact objects:
+
+<javascript filename="apps/addressbook/controllers/contact.js">
+AddressBook.contactController = SC.ObjectController.create({
+  contentBinding: 'AddressBook.contactsController.selection'
+});
+</javascript>
+
+NOTE: An object controller will automatically detect if you have a single selection and will automatically set it's content to the only item in the selection set. If you are in the rare case of needing to force a single selection, you can use +SC.Binding.single('AddressBook.contactsController.selection')+.
+
+Now we can bind our source list to the +SC.ArrayController+ to get a dynamic list of contacts and individual contact selection support:
+
+<javascript filename="in apps/addressbook/resources/main_page.js">
+topLeftView: SC.SourceListView.design({
+  contentValueKey: 'name',
+  contentBinding: 'AddressBook.contactsController.arrangedObjects',
+  selectionBinding: 'AddressBook.contactsController.selection'
+})
+</javascript>
+
+With the contacts selectable, the only thing missing is dynamic label values for the contact's name, phone, and address:
+
+<javascript filename="in apps/addressbook/resources/main_page.js">
+bottomRightView: SC.View.design({
+  layout: { top: 50, left: 50, bottom: 50, right: 20 },
+  childViews: 'nameLabel phoneLabel addressLabel'.w(),
+
+  nameLabel: SC.LabelView.design({
+    layout: { width: 500, height: 18 },
+    valueBinding: SC.Binding.oneWay('AddressBook.contactController.name')
+  }),
+
+  phoneLabel: SC.LabelView.design({
+    layout: { top: 40, width: 500, height: 18 },
+    valueBinding: SC.Binding.oneWay('AddressBook.contactController.phone')
+  }),
+
+  addressLabel: SC.LabelView.design({
+    layout: { top: 80, width: 500, height: 500 },
+    valueBinding: SC.Binding.oneWay('AddressBook.contactController.address')
+  })
+})
+</javascript>
+
+NOTE: Using +SC.Binding.oneWay+ is not necessary here, but using one way bindings when you don't need changes from the view reflected back to the controller--which is the case for these label views--gives better performance.
+
+The contact information will now change automatically whenever a new contact is selected.
+
+h3. Custom View Styling and Rendering
+
+SproutCore provides three ways to customize how your view looks. You can simply give it a class name and add it to the view's +classNames+ array property to style it using CSS, override its +render+ method to use its own custom HTML, or use an +SC.RenderDelegate+ to render and update all views of the view type.
+
+h4. Using CSS to Style a View
+
+Let's make the interface a bit more visually appealing and user friendly by giving a usage hint when no contact has been selected yet. We can create a generic view and add the class name +app-usage-hint+ to the +classNames+ array, and then a label view as a child to display the hint. Our +bottomRightView+ should now look like this:
+
+<javascript filename="in apps/addressbook/resources/main_page.js">
+bottomRightView: SC.View.design({
+  childViews: 'usageHint contactDetails'.w(),
+
+  usageHint: SC.View.design({
+    classNames: 'app-usage-hint',
+    isVisibleBinding: SC.Binding.not('AddressBook.contactsController.hasSelection'),
+
+    childViews: [SC.LabelView.design({
+      layout: { width: 300, height: 22, centerX: 0, centerY: 0 },
+      tagName: 'h1',
+      textAlign: SC.ALIGN_CENTER,
+      value: "Select a contact"
+    })]
+  }),
+
+  contactDetails: SC.View.design({
+    layout: { top: 50, left: 50, bottom: 50, right: 20 },
+
+    childViews: 'nameLabel phoneLabel addressLabel'.w(),
+
+    nameLabel: SC.LabelView.design({
+      layout: { width: 500, height: 18 },
+      valueBinding: 'AddressBook.contactController.name'
+    }),
+
+    phoneLabel: SC.LabelView.design({
+      layout: { top: 40, width: 500, height: 18 },
+      valueBinding: 'AddressBook.contactController.phone'
+    }),
+
+    addressLabel: SC.LabelView.design({
+      layout: { top: 80, width: 500, height: 500 },
+      valueBinding: 'AddressBook.contactController.address'
+    })
+  })
+})
+</javascript>
+
+Right now it looks rather small, so let's add some style to it. Create a file in the +resources+ directory and name it +theme.css+:
+
+<css filename="apps/addressbook/resources/theme.css">
+.app-usage-hint {
+  background-color: #eee;
+}
+
+.app-usage-hint h1 {
+  font-family: "Helvetica Neue Light", "HelveticaNeue-Light", inherit;
+  font-size: 28px !important;
+  line-height: 20px !important;
+  color: #999;
+}
+</css>
+
+Now we have nice looking instructions for when a user first starts using the app. You can add as many class names to +classNames+ as you want for any view.
+
+h4. The render and update Methods
+
+The +render+ method is used to generate the view's HTML and is called whenever the view first renders itself. Any subsequent updates to the view can be handled by an +update+ method.
+
+NOTE: As soon as you start overriding methods such as +render+ and +update+, your views really need to be in their own files under the +views+ directory.  A good rule of thumb is that +main_page.js+ should never have anything longer than a one line function.
+
+The +update+ method is called whenever a property that is defined on the view's +displayProperties+ array is changed on the view. The +render+ method is passed a +context+ variable which is an +SC.RenderContext+. +SC.RenderContext+ is used to queue up and build HTML for a view. You build HTML by calling +context.push()+ and passing it HTML:
+
+<javascript filename="apps/addressbook/views/person.js">
+AddressBook.PersonView = SC.View.extend({
+  render: function (context) {
+    context.push("<h1>Arnold Washington is 31 years young...</h1>");
+  }
+});
+</javascript>
+
+You can also use +context.begin()+ and +context.end()+ to begin building a tag and push arguments that are "stringable" (have a +toString+ method) into it:
+
+<javascript filename="apps/addressbook/views/person.js">
+AddressBook.PersonView = SC.View.extend({
+  displayProperties: ['name', 'age'],
+  name: 'Arnold Washington',
+  age: 31,
+  render: function (context) {
+    var name = this.get('name'), age = this.get('age');
+    var context = context.begin('h1');
+    context.push(name, ' is going to be ', age+1, ' years young soon...');
+    context.end();
+  }
+});
+</javascript>
+
+The +update+ method is passed a jQuery handle of the view's layer, the DOM element that belongs to the view. You can use it and all of jQuery's API to manipulate the DOM and update your view:
+
+<javascript filename="apps/addressbook/views/person.js">
+AddressBook.PersonView = SC.View.extend({
+  displayProperties: ['name', 'age'],
+  name: 'Arnold Washington',
+  age: 31,
+  render: function (context) {
+    var name = this.get('name'), age = this.get('age');
+    var context = context.begin('h1');
+    context.push('<span class="name">', name, '</span>');
+    context.push(' is going to be ');
+    context.push('<span class="age">', age+1, '</span>');
+    context.push(' years young soon...');
+    context.end();
+  },
+  update: function (jquery) {
+    var h1 = jquery.find('h1');
+    h1.find('.name').text(this.get('name'));
+    h1.find('.age').text(this.get('age'));
+  }
+})
+</javascript>
+
+Say we wanted to make the name of the contact bigger in the details. To do this, let's create a custom view called +AddressBook.ContactNameView+ that will put the contact name in an +h1+ tag:
+
+<javascript filename="apps/addressbook/views/contact_name.js">
+AddressBook.ContactNameView = SC.View.extend({
+  displayProperties: ['value'],
+  render: function (context) {
+    context.push('<h1>', this.get('value'), '</h1>');
+  },
+  update: function (jquery) {
+    jquery.find('h1').text(this.get('value'));
+  }
+});
+</javascript>
+
+h4. Render Delegates
+
+Render delegates are an way to manage theming your apps. You can create a render delegate to manage the rendering of your views for you and add it to the theme you're using. Render delegates also have a +render+ and +update+ method, but their first argument is the +dataSource+, or the view delegating to them. Let's recreate the last scenario using an +SC.RenderDelegate+ that we're going to create in +render_delegates/contact_name.js+:
+
+<javascript filename="apps/addressbook/render_delegates/contact_name.js">
+AddressBook.MyTheme.contactNameRenderDelegate = SC.RenderDelegate.create({
+  render: function (dataSource, context) {
+    context.push('<h1>', dataSource.get('value'), '</h1>');
+  },
+  update: function (dataSource, jquery) {
+    jquery.find('h1').text(dataSource.get('value'));
+  }
+});
+</javascript>
+
+Now we have to tell our view to use our new render delegate to draw itself:
+
+<javascript filename="apps/addressbook/views/contact_name.js">
+AddressBook.ContactNameView = SC.View.extend({
+  displayProperties: ['value'],
+  renderDelegateName: 'contactNameRenderDelegate'
+});
+</javascript>
+
+TIP: For a more detailed overview of theming see "Theming Your App":theming_app.html
+
+h3. View Events
+
+Events bubble up to parent views in a SproutCore view hierarchy. +SC.View+ extends +SC.Responder+, inheriting the ability to react to DOM events such as +mouseDown+ and +mouseEntered+. Let's highlight the contact name when it's being hovered over and take the user to the contact's website if it's clicked:
+
+<javascript filename="apps/addressbook/views/contact_name_view.js">
+AddressBook.ContactNameView = SC.View.extend({
+  displayProperties: ['value'],
+  renderDelegateName: 'contactNameRenderDelegate',
+  mouseEntered: function () {
+    var jquery = this.$();
+    jquery.css('cursor', 'pointer');
+    jquery.css('color', '#356aa0');
+    return YES;
+  },
+  mouseExited: function () {
+    var jquery = this.$();
+    jquery.css('cursor', 'normal');
+    jquery.css('color', '#000');
+    return YES;
+  },
+  mouseDown: function (evt) {
+    AddressBook.openWebsite();
+    return YES;
+  }
+});
+</javascript>
+
+And in +core.js+:
+
+<javascript filename="in apps/addressbook/core.js">
+openWebsite: function () {
+  var website = AddressBook.contactController.get('website');
+  window.open(website);
+}
+</javascript>
+
+You should return +YES+ when you've handled the event, otherwise it would propagate to all of it's parent views.
+
+WARNING: Actions such as these would usually be handled by a statechart and are handled here for the purposes of demonstration.
+
+h3. Changelog
+
+* January 12, 2011: initial version by "Devin Torres":credits.html#dtorres
+* March 2, 2011: added filenames and small code example changes by "Topher Fangio":credits.html#topherfangio
+* March 2, 2011: some corrections to section on render delegates by "Peter Wagenet":credits.html#pwagenet
+* March 4, 2011: corrected the title and added a few more filenames by "Devin Torres":credits.html#dtorres
+* February 22, 2012: sample code changes and a few edits by "Jeff Pittman":credits.html#geojeff

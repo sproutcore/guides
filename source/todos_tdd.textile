@@ -1,0 +1,367 @@
+h2. SproutCore - Development Using TDD
+
+This guide covers building the common TODOS example project using test-driven development (TDD) techniques.  After reading this guide, you will be able to:
+
+* Start a new SproutCore project using TDD.
+* Build code starting from the view and working backwards to controller and model.
+* ? Do integration tests by knowing how to simulate fundamental SproutCore internals using run loops judiciously.
+
+endprologue.
+
+<construction>
+h3. Prerequisites
+
+_TODO: establish learning preparation and what already needs to be installed._
+</construction>
+
+h3. Getting Started
+
+Let's start with a new project; call it +todos+.  In a console:
+
+<shell>
+sc-init todos
+cd todos
+sc-server
+</shell>
+
+Browse to "localhost:4020/todos":localhost:4020/todos and you should see the "Welcome to SproutCore!" window.
+
+Let's also "sanity-check" that our test framework is working AND let's anticipate that we're going to write integration tests:
+
+# Create folder +tests+ under +apps/todos+.
+# Create folder +integration+ under +app/todos/tests+.
+# Add the following test, +sanity_check.js+, under +apps/todos/tests+:
+
+<javascript filename="apps/todos/tests/sanity_check.js">
+module('Sanity Check');
+test('This should pass', function() {
+    ok(true);
+});
+</javascript>
+
+Now, browse to "http://localhost:4020/todos/en/current/tests.html":http://localhost:4020/todos/en/current/tests.html and you should see the following:
+
+<div style='text-align: center;'>
+!/images/testing/screenshot_1st_test.png!
+</div>
+
+If you have this, we're all set up and you can proceed; otherwise debug first.
+
+h3. Test a View
+
+Let's write a test to see the page display an existing task (which doesn't, of course, exist yet):
+
+<javascript filename="apps/todos/tests/integration/view_task.js">
+var task;
+module("Given an existing task", {
+  setup: function() {
+    SC.RunLoop.begin();
+    Todos.main();
+    task = Todos.store.createRecord(Todos.Task, {
+      'description': 'Some Task',
+      'isDone': false
+    });
+    SC.RunLoop.end();
+  },
+
+  teardown: function() {
+    SC.RunLoop.begin();
+    Todos.getPath('mainPage.mainPane').remove();
+    Todos.store.reset();
+    SC.RunLoop.end();
+  }
+});
+
+test("When looking at the list of tasks", function() {
+  var todosList = Todos.getPath('mainPage.mainPane.middleView.contentView').get('content');
+  equals(todosList.indexOf(task) != -1, true, "Then I should see the task in the list");
+});
+</javascript>
+
+Store the above javascript into +apps/todos/tests/integration/view_task.js+.
+
+Here's what the above test does:
+
+Within the setup, I'm starting the actual application within the page, and creating the existing record which I want to display. Within the teardown, there are two steps that I've found are necessary to "stop" the application. The first is to remove the pane, and the second is to clear the database.
+
+To begin with here, in order to check that the item is on the page, I'm merely testing that it is within the content of the listView which is going to display the item. I could check here the display is showing the description of the item, and that the checkbox is not checked, but that's a bit more details than I care about at this point.
+
+Rerun the tests and you will see 2 failures:
+
+WARNING: 1) Setup exception on integration/view_task.js Given an existing task module: When looking at the list of tasks: TypeError: Cannot read property 'prototype' of undefined
+<br />
+<br />
+2) Died on test #2: TypeError: Cannot call method 'get' of undefined
+
+h4. Fix the First Failure
+
+The first failure is telling me that +Todos.Task+ doesn't exist, so I have to create it:
+
+<javascript filename="apps/todos/models/task.js">
+Todos.Task = SC.Record.extend({
+  isDone: SC.Record.attr(Boolean),
+  description: SC.Record.attr(String)
+}) ;
+</javascript>
+
+I rerun my tests, and see that the first failure is now passing, leaving me only with the second:
+
+WARNING: 1. Died on test #2: TypeError: Cannot call method 'get' of undefined
+
+This failing test tells me the path for the requested view does not exist, so I have to modify apps/todos/resources/main_page.js to include it:
+
+<javascript filename="apps/todos/resources/main_page.js">
+Todos.mainPage = SC.Page.design({
+  mainPane: SC.MainPane.design({
+    childViews: 'middleView'.w(),
+
+    middleView: SC.ScrollView.design({
+      childViews: 'contentView'.w(),
+
+      contentView: SC.ListView.design({
+
+      })
+    })
+  })
+});
+</javascript>
+
+This changes the failure to the following:
+
+WARNING: Died on Test #1: TypeError: Result of expression 'todosList'[null] is not an object
+
+This is telling me that the content of the ListView is null. So what I need to do is bind the contentView to a controller for the tasks, so I do that by modifying the main_page again:
+
+<javascript filename="apps/todos/resources/main_page.js">
+Todos.mainPage = SC.Page.design({
+  mainPane: SC.MainPane.design({
+    childViews: 'middleView'.w(),
+
+    middleView: SC.ScrollView.design({
+      childViews: 'contentView'.w(),
+
+      contentView: SC.ListView.design({
+        contentBinding: 'Todos.tasksController.arrangedObjects' //ADDED THIS
+      })
+    })
+  })
+});
+</javascript>
+
+Now the error is:
+
+WARNING: Died on test #1: TypeError: Cannot call method 'indexOf' of null
+
+Hmm. +todosList+ is null.  There isn't any content, so the binding isn't working.  Examining +main_page.js+ reveals that no controller has been set up yet, so create it in +apps/todos/controllers/tasks.js+:
+
+<javascript filename="apps/todos/controllers/tasks.js">
+Todos.tasksController = SC.ArrayController.create({
+}) ;
+</javascript>
+
+Rerunning the test yields the error:
+
+WARNING: Then I should see the task in the list, expected: true result: false
+
+So now my test is telling me that the item is not found in the view. This is because the controller has not had its content set to use +Todos.task+.
+
+h3. Failure is Actually Success! Time to Refactor!
+
+Finally, instead of ERROR, we've achieved FAILURE.  Our test assertion failed.  This is expected because we haven't provided the controller with a list of task items.  So, in a sense, we have success, in the sense that now might be a good time to refactor.  After refactoring, we should continue to get the same error as above.
+
+So what should we refactor?
+
+The first really brittle piece of the code that I noticed is where I was using getPath to reach into the view and find elements. By using a long string like 'mainPage.mainPane.middleView.contentView' I'm coupling a good number of my tests to the current structure of my views. In order to fix this, and to give the element a description that is closer to our domain, we can refactor this dependency to use SC.outlet:
+
+<javascript>
+//Replace instances which look like:
+Todos.getPath('mainPage.mainPane.middleView.contentView')
+//With something that looks like this:
+Todos.mainPage.todosList();
+
+//And add the following to main_page.js
+Todos.mainPage = SC.Page.design({
+  todosList: SC.outlet('mainPane.middleView.contentView'),
+  // ...
+})
+</javascript>
+
+What SC.outlet does is generate a computed property that will look up the passed property path the first time you try to get the value. This fixes the anti-pattern by defining the tight coupling in only one place.
+
+Here's the new code:
+
+<javascript filename="apps/todos/resources/main_page.js">
+Todos.mainPage = SC.Page.design({
+  mainPane: SC.MainPane.design({
+    childViews: 'middleView'.w(),
+
+    middleView: SC.ScrollView.design({
+      childViews: 'contentView'.w(),
+
+      contentView: SC.ListView.design({
+        contentBinding: 'Todos.tasksController.arrangedObjects' //ADDED THIS
+      })
+    })
+  }),
+  todosList: SC.outlet('mainPane.middleView.contentView')
+});
+</javascript>
+
+<javascript filename="apps/todos/tests/integration/view_tasks.js">
+var task;
+module("Given an existing task", {
+  setup: function() {
+    SC.RunLoop.begin();
+    Todos.main();
+    task = Todos.store.createRecord(Todos.Task, {
+      'description': 'Some Task',
+      'isDone': false
+    });
+    SC.RunLoop.end();
+  },
+
+  teardown: function() {
+    SC.RunLoop.begin();
+    Todos.getPath('mainPage.mainPane').remove();
+    Todos.store.reset();
+    SC.RunLoop.end();
+  }
+});
+
+test("When looking at the list of tasks", function() {
+  var todosList = Todos.mainPage.todosList().get('content');
+  equals(todosList.indexOf(task) != -1, true, "Then I should see the task in the list");
+});
+</javascript>
+
+Rerunning the tests yields the same FAILURE, so we achieved our refactoring.
+
+h3. Add a Unit Test
+
+The test fails because the controller has not had it's content to be set to use Todos.task. In order to ensure that controller has not had it's content to be set to use Todos.task, I write the following unit test:
+
+<javascript filename="apps/todos/tests/main_test.js">
+var mockedFindFunction, findMockObject;
+
+module("Todos.main", {
+  setup: function() {
+    mockedFindFunction = Todos.store.find;
+    findMockObject = CoreTest.stub('Todos.store.find', function() { return YES; });
+    Todos.store.find = findMockObject;
+  },
+
+  teardown: function() {
+    Todos.store.find = mockedFindFunction;
+  }
+});
+
+test("setup finding tasks", function() {
+  Todos.main();
+  equals(findMockObject.callCount, 1, "Should delegate to the store to find the tasks");
+  Todos.getPath('mainPage.mainPane').remove();
+});
+</javascript>
+
+WARNING: Should delegate to the store to find the tasks, expected: 1 result: 0
+
+In order to make this pass, within the setup I delegate to the store to find the proper object:
+
+<javascript filename="apps/todos/main.js">
+Todos.main = function main() {
+  Todos.getPath('mainPage.mainPane').append() ;
+  var tasks = Todos.store.find(Todos.Task); //ADDED THIS
+} ;
+
+function main() { Todos.main(); }
+</javascript>
+
+That makes the unit test that we wrote pass, but the integration test is still failing, so we need to delegate to the controller to set it's content. Here's the unit test to specify that:
+
+<construction>
+_TODO: Enter filename below_
+</construction>
+
+<javascript>
+var mockedSetFunction, mockedFindFunction, setMockObject, findMockObject;
+module("Todos.main", {
+  setup: function() {
+    mockedSetFunction = Todos.tasksController.set; //ADDED THIS
+    setMockObject = CoreTest.stub('Todos.tasksController.set', function() { return YES; }); //ADDED THIS
+    Todos.tasksController.set = setMockObject; //ADDED THIS
+
+    mockedFindFunction = Todos.store.find;
+    findMockObject = CoreTest.stub('Todos.store.find', function() { return YES; });
+    Todos.store.find = findMockObject;
+    Todos.main();
+  },
+
+  teardown: function() {
+    Todos.getPath('mainPage.mainPane').remove();
+    Todos.tasksController.set = mockedSetFunction;//ADDED THIS
+    Todos.store.find = mockedFindFunction;
+  }
+});
+
+test("setup finding tasks", function() {
+  equals(findMockObject.callCount, 1, "Should delegate to the store to find the tasks");
+});
+
+test("setup tasksController content", function() {
+  equals(setMockObject.callCount, 1, "Should delegate to the tasksController to setup content"); //ADDED THIS
+});
+</javascript>
+
+And to make this pass, I need to implement that delegation (+app/todos/main.js+):
+
+<javascript filename="apps/todos/main.js">
+Todos.main = function main() {
+  Todos.getPath('mainPage.mainPane').append() ;
+  var tasks = Todos.store.find(Todos.Task);
+  Todos.tasksController.set('content', tasks); //ADDED THIS
+};
+
+function main() { Todos.main(); }
+</javascript>
+
+And that makes all of our existing tests (both unit and integration) pass.
+
+h3. Reflection on mocking problems.
+
+To be honest, I'm not entirely happy with the mocking that I just did, because I wasn't able to validate what was contained within the messages that were going between the objects. The mock really should be able to do something like wasCalledWith, and give it a parameter. That's what I would generally do in something like Jasmine, but I haven't worked out how to integrate a solid mocking or spying framework with SproutCore yet.
+
+Also, I really should have written the delegation to the controller first, but since I knew I couldn't validate what it was called with it would have missed testing that the main function delegated to the store to find the tasks, so I broke the true BDD cycle there. But, I guess it works for now.
+
+h3. One last thing before moving on
+
+At this point, the view - although it is fully functional - is still quite ugly. Since this is purly aesthetic, I like to wait to style until all my tests are passing. I change main_page.js to be the following:
+
+<javascript filename="apps/todos/resources/main_page.js">
+Todos.mainPage = SC.Page.design({
+  mainPane: SC.MainPane.design({
+    childViews: 'middleView'.w(),
+
+    middleView: SC.ScrollView.design({
+      hasHorizontalScroller: NO, //ADDED THIS
+      layout: { top: 36, bottom: 32, left: 0, right: 0 }, //ADDED THIS
+      backgroundColor: 'white', //ADDED THIS
+      childViews: 'contentView'.w(),
+
+      contentView: SC.ListView.design({
+        contentBinding: 'Todos.tasksController.arrangedObjects',
+        contentValueKey: 'description', //ADDED THIS
+        contentCheckboxKey: 'isDone' //ADDED THIS
+      })
+    }),
+  })
+});
+</javascript>
+
+Generally, since I tend to think of the binding to the description and the value as functionality, I think I would want an integration test which checks both of those values. However for the sake of brevity, I'll leave out those tests.
+
+h3. Changelog
+
+
+* January 10, 2010: initial "blog post":http://gmoeck.github.com/2010/01/10/bdd-in-sproutcore-part-1.html by "Greg Moeck":credits.html#gmoeck
+* February 15, 2011: initial guides adaptation by "Scott Smith":credits.html#ssmith and "Vibul Imtarnasan":credits.html#veebs
+* March     2, 2011: added filenames and added error wrappers by "Topher Fangio":credits.html#topherfangio
+* February 17, 2012: added attribution for Greg Moeck in the changelog by "Topher Fangio":credits.html#topherfangio

@@ -1,0 +1,337 @@
+h2. Understanding the Record Lifecycle
+
+This guide describes the lifecycle of Record objects in SproutCore. By referring to this guide you will be able to:
+
+* Understand the statuses and substatuses that a record can be in at any given time
+* Understand how a record progresses from creation to modification to destruction in a SproutCore database
+
+endprologue.
+
+h3. The Lifecycle of a SproutCore Record
+
+SproutCore can manage much of the work of reading from, writing to, creating and destroying the records in your application. It does this by applying a set of statuses onto records, and using these to track the status of individual records as they travel through the application. You can access the status of a given record, at any time using the +status+ function. Internally, this status is stored as an integer - normally then, you will test to find out what status you are in by using the & operator for statuses, and the === operator for substatuses.
+
+NOTE: In the examples in this section, we assume that you are using an application called MyApp, with a model called MyModel that inherits from SC.Record and has a single string attribute: 'name'. There is a data store stored inside Myapp.store. Changes are not set to auto-commit.
+
+<javascript>
+  record = MyApp.MyModel.find(MyApp.store, 1);
+  // Assuming this record already exists in the store...
+  record.status; // Meaningless numeric response
+  record.status & SC.Record.READY; // Will return a 'truthy' value, because the record is in a ready status
+  record.status & SC.Record.DESTROYED; // Will return a 'non-truthy' value, because the record is not in a destroyed status
+  record.status === SC.Record.READY_CLEAN; // Will return true, because it is in the READY_CLEAN substatus
+  record.status === SC.Record.READY_DIRTY; // Will return false, because while the record is READY, it is not in the READY_DIRTY substatus
+  
+  record.name = "A different name"; // The record has now been altered, and should be marked as 'dirty' until it is saved to the server
+  record.status & SC.Record.READY; // Will still return true, since the record is still in a ready status
+  record.status === SC.Record.READY_CLEAN; // Will return now return false - the record is no longer the READY_CLEAN substatus...
+  record.status === SC.Record.READY_DIRTY; // ... because it's now dirty, so this statement is now true
+</javascript>
+  
+The status (like all the record attributes) is not stored in the SC.Record object directly, but rather in its entry in the data store. This means if you have two instances of the same record, they will always have the same status. 
+
+<javascript>
+  record = MyApp.MyModel.find(MyApp.store, 1);
+  the_same_record = MyApp.MyModel.find(MyApp.store, 1);
+  
+  record.status === SC.Record.READY_CLEAN; // true
+  the_same_record.status === SC.Record.READY_CLEAN; // also true
+  record.name = "A completely different name from previous";
+  record.status === SC.Record.READY_CLEAN; // false
+  the_same_record.status === SC.Record.READY_CLEAN; // also false
+  record.status === SC.Record.READY_DIRTY; // true
+  the_same_record.status === SC.Record.READY_DIRTY; // also true
+</javascript>
+
+NOTE: You will not necessarily see the behaviour above if you are using the fixtures store. This is because the fixtures store commits changes immediately - there is no remote store, so records are never 'dirty'. For more details see the guide on 'Using Fixtures'. 
+
+h3. An Overview of the Statuses
+
+There are three major record statuses in SproutCore:
+* +SC.Record.READY+
+* +SC.Record.BUSY+
+* +SC.Record.DESTROYED+
+
+There are, additionally, two other statuses for special conditions a record might find itself in:
+* +SC.Record.EMPTY+
+* +SC.Record.ERROR+
+
+When your application creates a new record or first tries to download an existing one from the server, the record will first enter the +SC.Record.EMPTY+ status, as it's various attributes and connection to the data store are initialized. This status is transitory, however, and the record should transition out more or less instantly. 
+
+When the record is initialized and exists in a stable, waiting condition in the local data store, it will be in the +SC.Record.READY+ status. This is the normal "resting" status of a record. 
+
+From this status, changes could be made to the record - while these changes are being committed back to the server (or for other reasons) the record would be in the +SC.Record.BUSY+ status.
+
+Finally, if the record is deleted, it would enter the +SC.Record.DESTROYED+ status. At any point, if an error occurred or the record was left in an unstable status, it may enter the +SC.Record.ERROR+ status. Let's go into each of these statuses - and any attached sub-statuses - in more detail.
+
+h3. SC.Record.EMPTY status
+
+The +SC.Record.EMPTY+ status is a special, transitory status that a record is in before it has been fully initialized. +SC.Record.EMPTY+ is something of a non-status - it is, essentially, the status a record is in before it has been initialized with a status. As a result, you should never see a record in this status unless you are really digging into the low-level mechanics of how SC.Record initializes records. 
+
+The +SC.Record.EMPTY+ status can only be entered when the new object is created - it can never be reentered again.
+
+A record in the +SC.Record.EMPTY+ status can exit into any of the other four major statuses, depending on how the record was created. Most commonly, however, a record will take one of two paths forward:
+
+* The application is creating a new record that is not in the datastore already. In this case, the record will be transitioned into the +SC.Record.READY+ status (more specifically, the +SC.Record.READY_NEW+ substatus).
+* The application is retrieving an existing record from the remote data source. In this case, the record will begin the record retrieval process, and enter the +SC.Record.BUSY+ status (more specifically, the +SC.Record.BUSY_LOADING+)
+
+NOTE: Keep in mind - status is stored not in the record object, but in the datastore. So, creating a new SC.Record object may not necessarily involve putting the record through +SC.Empty+ at all. SC.Empty is the status a record is in when it is first created in the data store - when you create a brand new record, or look up a record from the remote data source for the first time. In both of these cases, it is highly unlikely that you'll even see the +SC.Empty+ status. If this is confusing, please see the sample record biographies, later in this document.
+
+h3. SC.Record.READY status
+
+The +SC.Record.READY+ status is the 'normal' status for a record to exist in. If a record is in ready status, this implies three things:
+
+* The record is fully initialized
+* The record is in an internally consistent status
+* The record is available to be read from and written to
+
+!images/records/ready_substates.png!
+
+The +SC.Record.READY+ status has three sub-statuses, which denote the condition that the record is in in relation to the remote database.
+
+h4. SC.Record.READY_NEW
+
+A record in this status was created in memory but has not yet been committed back to the server.  If you commit changes on your store, this record will be sent to the data source automatically.  Likewise if you destroy this record it will simply be removed from memory without notifying the server. The data source also cannot modify records while they are in this status since the remote data source doesn't even know that the record exists, presumably. A record enters +SC.Record.READY_NEW+, normally, from +SC.Record.EMPTY+, because a new record has been created from scratch. A record in +SC.Record.READY_NEW+, then, will either eventually be destroyed, transitioning to +SC.Record.DESTROYED_CLEAN+, or it will be committed, transitioning it to +SC.Record.BUSY_CREATING+.
+
+h4. SC.Record.READY_CLEAN
+
+This is the status of a record that has been retrieved by the store, and for which there are no pending changes to be committed back to the remote data source. If you commit changes on your store, this record will NOT be included - because there are no changes to commit back to the store. Likewise, if your data source receives a notification from the server that this record has changed, it can modify this record without any kind of error since no changes would be lost. Records should normally, then, only enter the +SC.Record.READY_CLEAN+ status from +SC.Record.BUSY+ - after having been retrieved from or updated against the server. Clean records frequently transition into many different statuses:
+* If the application triggers a destroy action, it enters the +SC.Record.DESTROYED_DIRTY+ status (where its destruction can then be synced to the server, as described later in this document)
+* If the application writes new data to the object, it will move to the +SC.Record.READY_DIRTY+ status, where it will await syncing to the server
+* If an application requests a refresh of the application against the remote data source, it will enter the +SC.Record.BUSY_REFRESH_CLEAN+ status
+
+h4. SC.Record.READY_DIRTY
+
+This is the status of a record that exists on the server but has since been modified in your SproutCore application. It has pending changes that will be sent to the server when you commit changes in your store. If your remote data source tries to modify this record, it will throw an error since local changes would be lost - the changes from the server could overwrite the changes that have been made on the local application. The only exception to this would be if a refresh is called, manually, by the application. In this case, the record will enter the +SC.Record.REFRESH_DIRTY+ status, where it overwrite the attributes in the record with whatever the remote data source returns. A record enters the +SC.Record.READY_DIRTY+, thus, only from +SC.Record.READY_CLEAN+, because a change is made to the clean record. It should normally only exit this status in two ways:
+
+* The data source initiates a sync of the record to the remote data source - this will transition the record into the +SC.Record.BUSY_COMMITTING+ status.
+* The application chooses to delete the record before it ever commits the changes. The record would then be moved to +SC.Record.DESTROYED_DIRTY+.
+
+WARNING: A record in +SC.Record.REFRESH_DIRTY+ is analogous to an unsaved file: the user has made changes, but you haven't saved them yet. It's important to make sure that you take care of these records before an application closes, and/or make sure that the user is aware of the difference between a record they've changed that hasn't been saved, and a record they've changed that HAS been saved
+
+h3. SC.Record.BUSY Status
+
+The +SC.Record.BUSY+ status is a catch-all status for times when a record should be inaccessible to other processes, usually because it is being synchronized with a remote data source. A record in the +SC.Record.BUSY+ status has the following properties:
+
+* It is in the midst of a blocking process - when the process completes (successfully or unsuccessfully), it is responsible for moving the record into a non-busy status
+* It cannot have new data written to it.
+* It cannot be updated from the remote data source. Changes can be made by the application (upstream changes), but downstream changes from the remote server will raise an error
+* It can still be read from
+
+WARNING: When writing your application, forgetting the +SC.Record.BUSY+ is a pretty common error. If you write functions that try to change record objects, it is important to ensure these objects are not busy. This is usually accomplished by testing for the status of a record before writing, by closely controlling when and how server communication occurs, or both.
+
+!images/records/busy_substates.png!
+
++SC.Record.BUSY+ has six substatuses.
+
+h4. SC.Record.BUSY_LOADING
+
+When you first get a record from the store, it will usually be in the BUSY_LOADING status.  This means that the record did not exist in the store and the remote data source has not yet returned any data to the data store. All properties will be empty at this point. Normally, this means the status is entered from the +SC.Record.EMPTY+ status. Once data is retrieved from the server for this record, it will transition to +SC.Record.READY_CLEAN+.
+
+h4. SC.Record.BUSY_CREATING
+
+When a brand new, unsaved record (i.e., one in +SC.Record.READY_NEW+) is committed to the server for the first time, it is placed in this status, to indicate that it is in the process of being remotely created, for the first time. This means, of course, that this status is entered only from the +SC.Record.READY_NEW+ status. Once the server responds to indicate a successful save, it will transition into +SC.Record.READY_CLEAN+. If the creation fails, the record will return to SC.Record.READY_NEW.
+
+h4. SC.Record.BUSY_COMMITTING
+
+When an existing record's changes are being committed to the store, it enters this status. The status is transitioned into from the +SC.Record.READY_DIRTY+ status (since there are changes that need to be committed). If the commit succeeds, it is transitioned in the +SC.Record.READY_CLEAN+ status. If it fails, it will transition back into +SC.Record.READY_DIRTY+.
+
+h4. SC.Record.BUSY_REFRESH_DIRTY
+
+A record in this status has local changes but you asked the data source to reload the data from the server anyway (that is, it was in the +SC.Record.READY_DIRTY+ status, but you ordered a manual refresh). If the server update completes successfully, it will replace any local changes with a fresh copy from the server, and transition the record into the +SC.Record.READY_CLEAN+ status. If the refresh fails, the record will return to the +SC.Record.READY_DIRTY+ status and its data will be left intact.
+
+h4. SC.Record.BUSY_REFRESH_CLEAN
+
+A record in this status has no local changes but you asked it to reload the data from the server in case there have been any changes remotely (that is, it was in +SC.Record.READY_CLEAN+, but you requested a manual refresh of the record).  When the server finishes, success or failure, this record will return to the +SC.Record.READY_CLEAN+ status. If the request succeeds, it should overwrite the data in the record with any changes from the remote data source.
+
+h4. SC.Record.BUSY_DESTROYING
+
+A record in this status was destroyed in the store and now is being destroyed on the server as well.  Once the destroy has completed, the record will become +SC.Record.DESTROYED_CLEAN+. If the destroy fails, it will become +SC.Record.DESTROYED_DIRTY+ again.
+
+h3. SC.Record.DESTROYED Status
+
+This status is the opposite of +SC.Record.READY_NEW+: your application has ordered that the record be destroyed, and it's marked as such in the local data store. Because this change is asynchronous - the record is not, normally, REMOVED from the data store, it's just marked as destroyed. These records have the following properties:
+
+* The record has been marked for destruction, or has been destroyed. It should not be treated as viable data
+
+!images/records/destroyed_substates.png!
+
++SC.Record.DESTROYED+ has two substatuses, which denote whether or not the destruction has been pushed back to the remote data source.
+
+h4. SC.Record.DESTROYED_CLEAN
+
+A record in this status has been destroyed both in the store and on the server. There are two ways for a record two enter this status:
+
+* The record was in +SC.Record.READY_NEW, and was destroyed. Because this means it was never written to the server in the first place, the record is clean, and has reached a final status.
+* The record was in the process of destruction (that is, it was in +SC.Record.BUSY_DESTROYING+), and the server returned a response implying that the destruction was completed successfully. The record has reached a final status
+
+Because a clean, destroyed record has been removed from the remote data source, it is normally most appropriate to treat it as being in a final status. Normally, you'll not transition it into any other status.
+
+h4. SC.Record.DESTROYED_DIRTY
+
+A record in this status was destroyed in the store by the application, but the action of destruction has not been yet synchronized to the server. A record in this status should be static, and cannot accept changes from the server unless the server also puts it into a destroyed status.  A record enters this status because it was in an +SC.Record.READY_CLEAN+ or +SC.Record.READY_DIRTY+ status, and was marked for deletion by your application. Committing the record to the +SC_BUSY_DESTROYING+ status for final destruction on the remote data source is the only way to escape this status. 
+
+h3. SC.Record.ERROR Status
+
+A record in this status has, for some reason, entered an unstable status. Any status can, theoretically, transition into the +SC.Record.ERROR+ status, if an illegal function is called, or if the record enters a data status that's ambiguous. In general, once a record ends up in this status, it should be considered suspect and destroyed - the application should regenerate or re-retrieve this data manually.
+
+h3. Biography of a Record
+
+Some of these life-paths are easier to follow by examining them through the lifecycle of an actual record. In these examples, we'll presume that we have an application called +BabyNames+, that we are building to contain a dictionary of baby names, corresponding to a short passage describing their origin and meaning. As such, there is a model in our application, +BabyNames.Entry+ that inherits from +SC.Record+. It has two string attributes, a +name+ and a +meaning+. Our application has a data store, +BabyNames.store+ that connects to an external data source.
+
+h4. Creating a Record
+
+Our crack research team has been reading and came across an intriguing new baby name to add to our database, and thus are creating a new +BabyNames.Entry+ record, like so:
+
+<javascript>
+  var astrolabe = BabyNames.store.createRecord{
+    BabyNames.Entry, {
+      name: "Astrolabe"
+    }
+  }
+</javascript>
+
+Initially, upon creation of this record, there will be an instant in which the record is in the +SC.Record.EMPTY+ status, but we will never see this change, because immediately the createRecord process will set an explicit status for the record. The record that gets returned will be ready for us to work with:
+
+<javascript>
+  astrolabe.status & SC.Record.EMPTY; // this is false, by the time the record is returned
+  astrolabe.status & SC.Record.READY; // returns a 'truthy' value
+  astrolabe.status === SC.Record.READY_NEW; // returns true - we have a new, unsaved record
+</javascript>
+
+NOTE: For the purposes of this discussion, we're not going to explore the work of assigning an id to the record. For a discussion of this process, see the guide on Using Records and the Data Store
+
+This record, currently, exists only in our local data store. If our research team closed their browser, this entry would be lost, forever.
+
+Because this is a new record, there's no worries about clean versus dirty status. So, when we set attributes on the record, there is no status change:
+
+<javascript>
+  astrolabe.status === SC.Record.READY_NEW; // returns true
+  astrolabe.meaning = "A scientific instrument used anciently in astronomy."
+  astrolabe.status === SC.Record.READY_NEW; // still returns true
+</javascript>
+
+Now, our researcher is happy with the record. As such, she commits all the pending changes to the server.
+
+<javascript>
+  BabyNames.store.commitRecords();
+</javascript>
+
+At this point, a complex series of events happens. First, the store searches through the records it holds, and extracts every record that is awaiting a commit (any record, in other words, that is in +SC.Record.READY_NEW+, +SC.Record.READY_DIRTY+, or +SC.Record.DESTROYED_DIRTY+). Our record certainly fits these criteria, so it is committed to the server to update. Now, presuming that our remote data source is a bit, slow, it may a take a while for this commit to complete. If this is true, we can now see our record in a different status:
+
+<javascript>
+  astrolabe.status & SC.Record.READY; // False: Our record is now in a different status...
+  astrolabe.status & SC.Record.BUSY; // True: ...busy, as it tries to work with the server
+  astrolabe.status === SC.Record.BUSY_CREATING; // True: Specifically, it is trying to create this record
+</javascript>
+
+After a moment, though, our server accepts our new record creation, and we've completed the process of creating this record.
+
+<javascript>
+  astrolabe.status & SC.Record.READY; // True
+  astrolabe.status === SC.Record.READY_CLEAN; // Our record is saved to the server
+</javascript>
+
+NOTE: So, what happens if the record does NOT save? In large part, this depends on how we write the code for our data store. It is often a good idea, for instance, to have our data store watch for, say, validation errors, and handle these by simply canceling the create and, perhaps, setting a validation errors field on the record. Then, the record would go back into +SC.Record.READY_NEW+. The point is, deciding how these responses will be handled is up to us when we write the code to communicate with the remote data source. For more information on programming a data source, see the guide on "Connecting with a DataSource"
+
+h4. Modifying a record
+
+Our crack researchers get a call from the company president: they've had a complaint from a customer that they don't believe Astrolabe is a real name. The researchers decide that perhaps they should put in some more information on the name, to reassure people that the name has, truly, been used in the past. First, of course, they'll need to look up the record in the data source. (For the purposes of this document, rather than getting into the fine art of writing queries, we will assume that the +id+ of the Astrolabe record is +12345+)
+
+<javascript>
+  var astrolabe = BabyNames.Entry.find(BabyNames.store, 12345);
+</javascript>
+
+Now, in the background, the application will look in it's data store and check: do I have a record here that has id 12345? If we had, for instance, not closed our browser between the creation example above and now (presuming we wrote our data source correctly), then we should already have this record pulled into our data source, somewhere. At this point, the record will just be returned immediately. No status needs to be set on it at all, because the status, you'll remember is stored in the data source, not in the record object, so it will just have the status we last left it with - in this case, +SC.Record.READY_CLEAN+. Setting up an SC.Record instance is, essentially, nothing more than setting up a pointer to an entry in the data store.
+
+But, what if we HAD closed the application, and this record had not been used in our application since we reopened it? In this case, the record for Astrolabe exists on the remote server, but not in our local data store. The data store will look up the ID 12345, and find nothing, and then proceed to check the remote data source instead, requesting the record from there. Presume, again, that our remote server is a tad slow. In this case, now when we look at the record, what will be it's status?
+
+<javascript>
+  astrolabe.status & SC.Record.READY; // false - this record is not ready for us to use, yet
+  astrolabe.status & SC.Record.BUSY; // true - the record is busy because it's waiting for a server response
+  astrolabe.status === SC.Record.BUSY_LOADING; // true - the record is busy loading the record from the server
+</javascript>
+
+Eventually, the server responds, and hands us the record we're looking for. At this point, the data store will write this data into it's internal storage, and you have a valid, clean record to use:
+
+<javascript>
+  astrolabe.status & SC.Record.READY; // true - it's ready for you to work with, now!
+  astrolabe.status & SC.Record.READY_CLEAN; // true - since we just retrieved it from the server, it's clean, and needs no updates
+</javascript>
+
+NOTE: Again, the behavior surrounding a failure - like, if we were searching for a record that doesn't exist on the remote data source - is up to us. We may choose, for instance, to move the record into the SC.Record.ERROR status - since we are treating it like an existing record, but it does not, in fact, exist, it's in an inconsistent status, right? We'd code this into our data source.
+
+At this point, the researcher sits back and thinks, trying to remember where she DID hear the name 'Astrolabe'. This takes her about 15 minutes, before she remembers, so she figures, maybe she ought to just check and make sure no one has altered this record elsewhere, in the meantime, so she refreshes it from the server
+
+<javascript>
+  BabyNames.store.find(BabyNames.Entry, 12345);
+  astrolabe.status & SC.Record.READY; // False: Now we're busy talking to the server again...
+  astrolabe.status === SC.Record.BUSY_REFRESH_CLEAN; // True: looks like the server is still busy letting us know the changes
+  // wait a few minutes
+  astrolabe.status & SC.Record.READY; // TRUE: Good, refresh is complete!
+  astrolabe.status === SC.Record.READY_CLEAN; // TRUE: And, our record is clean and ready
+</javascript>
+
+Now, it's time to make our changes:
+
+<javascript>
+  astrolabe.meaning = "A scientific instrument used anciently in astronomy. Used by famous medieval lovers Abelard and Heloise, as the name for their illegitimate son. Not a very popular name, since."
+</javascript>
+
+Again, though, this record has not been saved. If we close the browser, now, we'll lose our hard work.
+
+<javascript>
+  astrolabe.status & SC.Record.READY; // True: Yes, the record is still ready for work
+  astrolabe.status === SC.Record.READY_CLEAN; // False: But it has not been synced to the server!
+  astrolabe.status === SC.Record.READY_DIRTY; // True: The record exists on the server, but we've made changes that haven't been saved yet!
+</javascript>
+
+So, we'd better save our changes, now.
+
+<javascript>
+  BabyNames.store.commitRecords();
+</javascript>
+
+Since our record is in the +SC.Record.READY_DIRTY+ status, it should be included in the refreshes, so it will start pushing these changes to the server.
+
+<javascript>
+  astrolabe.status & SC.Record.READY; //False - not ready, busy talking to the server
+  astrolabe.status & SC.Record.BUSY; //True
+  astrolabe.status === SC.Record.BUSY_COMMITTING; // Since we're updating an existing record, we are in the SC.Record.BUSY_COMMITING status, this time
+  // Now we wait a minute for the process to finish...
+  astrolabe.status & SC.Record.READY; // True, so communication with the server completed...
+  astrolabe.status === SC.Record.READY_CLEAN; // Also true, so communication was successful!
+</javascript>
+
+So, now our record has been updated.
+
+NOTE: Frequently, you'll want to check on the status of your record's update. This guide follow this pattern very frequently - testing against SC.Record.READY will tell you whether the record is done communicating, first. But this, of course, doesn't necessarily mean communication SUCCEEDED, just that it COMPLETED. The second step is to test if the status equal SC.Record.READY_CLEAN. Additionally, in your application, it may be a good idea to also test for SC.Record.ERROR, to see if the communication was aborted in an unstable status. 
+
+h4. Deleting a Record
+
+As crazy as this may seem, apparently there isn't a lot of popular interest in the name 'Astrolabe' these days. The CEO has a chat with the research team about this, and asks them to remove the record since it's just cluttering up the database and making customers roll their eyes. This process is pretty simple. The find should follow the exact same process as in the update task. The only difference is the actual process of deletion.
+
+<javascript>
+  astrolabe.status & SC.Record.READY; //True: So, it's available to be worked with
+  astrolabe.status == SC.Record.READY_CLEAN; //True: There's no changes hanging around on the record. Let's go ahead and delete it.
+  astrolabe.destroy();
+</javascript>
+
+Now, the destroy status does not make any change, immediately on the server, it essentially just marks the record for deletion. So, if we closed the application now, then the record would still be in the database, next time we reopened it.
+
+<javascript>
+  astrolabe.status & SC.Record.DESTROYED; //True, this record is destroyed in our local data store...
+  astrolabe.status === SC.Record.DESTROYED_CLEAN; //False: ...but we haven't synced this deletion to the remote server yet!
+  astrolabe.status === SC.Record.DESTROYED_DIRTY; // True: record is marked to be deleted when we sync with our server
+</javascript>
+
+So, the next time we sync to the server, we'll go through a process more or less parallel to record creation.
+
+<javascript>
+  BabyNames.store.commitRecords(); //So, since our record is in dirty, it should be included in the commits
+  astrolabe.status & SC.Record.BUSY; // True - looks like we're in the process of talking to the server
+  astrolabe.status === SC.Record.BUSY_DESTROYING; // True - we're busy destroying the record remotely
+  // So, lets wait and let the server finish
+  astrolabe.status & SC.Record.DESTROYED; // True - looks like we finished trying to delete the record.
+  astrolabe.status === SC.Record.DESTROYED_CLEAN; // True - and it looks like the deletion succeeded!
+</javascript>
