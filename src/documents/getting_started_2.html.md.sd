@@ -1,19 +1,20 @@
-## Getting Started: Part 2
-
-
-In Part 1, we walked through the basic elements of a SproutCore app. In Part 2
-we introduce some of the guiding concepts behind a SproutCore application
-such as views, controllers, and statecharts.
+---
+layout: default
+sc_category: Start Here
+sc_order: 30
+sc_title: Getting Started: Part 2
+sc_description: In Part 1, we walked through the basic elements of a SproutCore app. In Part 2 we introduce some of the guiding concepts behind a SproutCore application such as views, controllers, and statecharts.
 
 In Part 2, you will:
 
-* Learn about statecharts and how they can improve your application.
-* Create a new statechart-based SproutCore application, TodosTwo.
-* Learn about views and how they should handle events.
-* Learn how to separate views in individual files with the use of _sc_require()_.
-* Learn how to pass events to the application's statechart.
+sc_list:
+  - Learn about statecharts and how they can improve your application.
+  - Create a new statechart-based SproutCore application, TodosTwo.
+  - Learn about views and how they should handle events.
+  - Learn how to separate views in individual files with the use of _sc_require()_.
+  - Learn how to pass events to the application's statechart.
+---
 
-endprologue.
 
 ### Why Statecharts?
 
@@ -38,23 +39,23 @@ and each state may have many substates within it. Each state can respond to a ce
 set of actions, the name for events associated with a statechart.
 
 NOTE: The term "event" is more generic than the term "action." We can speak of the event
-system, generally, that includes normal web events like *mouseDown* along with actions in
+system, generally, that includes normal web events like **mouseDown** along with actions in
 the statechart. A statechart action is a type of event.
 
 Consider a SproutCore application for mapping, with the following top-level states, substates, and actions:
 
-# LOADING
-#* _loadingFinished_
-# LOADED
-##* _viewTermsOfService_
-##* _viewPrivacyPolicy_
-### LOGGED_OUT
-###* _login_
-### LOGGED_IN
-###* _createBasemap_
-###* _zoomMapView_
-###* _showPointData_
-###* _other mapping actions..._
+1. LOADING
+  * _loadingFinished_
+2. LOADED
+  * _viewTermsOfService_
+  * _viewPrivacyPolicy_
+  * LOGGED_OUT
+    * _login_
+  * LOGGED_IN
+    * _createBasemap_
+    * _zoomMapView_
+    * _showPointData_
+    * _other mapping actions..._
 
 In the list above, the states are in ALL-CAPS, the actions are in italics.
 
@@ -98,7 +99,7 @@ a consistent state and continue to operate. Programming with statecharts can hel
 
 ### Creating the Statechart
 
-Create a statechart-based SproutCore app with the *sproutcore gen statechart_app* command:
+Create a statechart-based SproutCore app with the **sproutcore gen statechart_app** command:
 
 ```shell
 $ cd ~/development/sproutcore/getting_started
@@ -121,26 +122,26 @@ $ sproutcore gen statechart_app TodosTwo
 
 The directory structure is:
 
-* *getting_started/*
-** *Buildfile*
-** *README.md*
-** *apps/*
-*** *todos_one/*
-**** *...*
-*** *todos_two/*
-**** *Buildfile*
-**** *core.js*
-**** *main.js*
-**** *_statechart.js_*
-**** *theme.js*
-**** *resources/*
-***** *_theme.css*
-***** *loading.rhtml*
-***** *main_page.js*
-**** *_states/_*
-***** *_ready_state.js_*
+* **getting_started/**
+  * **Buildfile**
+  * **README.md**
+  * **apps/**
+    * **todos_one/**
+      * **...**
+    * **todos_two/**
+      * **Buildfile**
+      * **core.js**
+      * **main.js**
+      * **_statechart.js_**
+      * **theme.js**
+      * **resources/**
+        * **_theme.css**
+        * **loading.rhtml**
+        * **main_page.js**
+      * **_states/_**
+        * **_ready_state.js_**
 
-This structure looks almost identical to the standard app made with the *sproutcore gen app* command, except 
+This structure looks almost identical to the standard app made with the **sproutcore gen app** command, except 
 that you now see two new files, a _statechart.js_ file in the application root directory, and a new 
 _states_ directory with one state file, _ready_state.js_:
 
@@ -150,7 +151,8 @@ _states_ directory with one state file, _ready_state.js_:
 The _statechart.js_ file describes your statechart and the initial state that should be entered when the
 statechart is first initialized. Open it, and you should see the following:
 
-<javascript filename="apps/todos_two/statechart.js">
+```javascript
+# filename=apps/todos_two/statechart.js
 TodosTwo.statechart = SC.Statechart.create({
 
   initialState: 'readyState',
@@ -159,7 +161,7 @@ TodosTwo.statechart = SC.Statechart.create({
   // someOtherState: SC.State.plugin('TodosTwo.SomeOtherState')
 
 });
-</javascript>
+```
 
 NOTE: This example uses CamelCase state names.
 
@@ -172,7 +174,8 @@ states directory.
 
 Open _states/ready_state.js_ and take a look:
 
-<javascript filename="apps/todos_two/states/ready_state.js">
+```javascript
+# filename=apps/todos_two/states/ready_state.js
 TodosTwo.ReadyState = SC.State.extend({ 
 
   enterState: function() {
@@ -184,7 +187,7 @@ TodosTwo.ReadyState = SC.State.extend({
   }
 
 });
-</javascript>
+```
 
 States may define an _enterState()_ function to prepare for the new state, and an _exitState()_ function to 
 clean up after themselves. For user interface programming, these functions are where you show and hide 
@@ -204,7 +207,8 @@ Edit the file to add a second child view, labelView2, taking care to add labelVi
 childViews array of view references, which uses the 'space delimited strings'.w() SproutCore idiom
 to make an array:
 
-<javascript filename="apps/todos_two/resources/main_page.js">
+```javascript
+# filename=apps/todos_two/resources/main_page.js
 TodosTwo.mainPage = SC.Page.design({
   
   mainPane: SC.MainPane.design({
@@ -226,24 +230,23 @@ TodosTwo.mainPage = SC.Page.design({
   })
 
 });
-</javascript>
+```
 
-INFO: Throughout the Getting Started guides we have minimized in-code comments for brevity.
+INFO Throughout the Getting Started guides we have minimized in-code comments for brevity.
 
 Note the use of the _.design()_ method here. _.design()_ is often confused with _.extend()_. 
 This confusion is caused by a SproutCore "wart." _.design()_ exists so that views will work 
 with a graphical designer tool for SproutCore (like Interface Builder for Mac OS X) that has 
 been in development for a long time, but remains unfinished, with development long ago stalled. 
 A designer tool might be created in the future, but regardless, there is a logic you can follow, 
-wherein you use _.design()_ when you are *using* a view, and _.extend()_ where you 
-are *defining* it. Here we are using _.design()_, but rest assured that SC.LabelView uses 
+wherein you use _.design()_ when you are **using** a view, and _.extend()_ where you 
+are **defining** it. Here we are using _.design()_, but rest assured that SC.LabelView uses 
 extend where it is defined in the SproutCore codebase. 
 
 NOTE: When you make your own views, remember to use _.extend()_ when you are making the view 
 in the first place, and _.design()_ elsewhere, where you use it.
 
-If you load up "http://localhost:4020/todos_two/":http://localhost:4020/todos_two/
-in your browser, you should see both labels now; the second one right below the first.
+If you load up http://localhost:4020/todos_two/ in your browser, you should see both labels now; the second one right below the first.
 
 #### Separating Views
 
@@ -254,7 +257,8 @@ using the special _sc_require()_ functionality. Modify the mainPane of the mainP
 have two sc_require() statements at the top, to declare two views as dependencies, and to change
 the childViews of the pane to use these views:
 
-<javascript filename="apps/todos_two/resources/main_page.js">
+```javascript
+# filename=apps/todos_two/resources/main_page.js
 sc_require('views/welcome');
 sc_require('views/rolling');
 
@@ -268,13 +272,13 @@ TodosTwo.mainPage = SC.Page.design({
   })
 
 });
-</javascript>
+```
 
 _sc_require()_ functionality:
 
-# The file path used in _sc_require()_ is relative to the application's root directory.
-# The reference in _sc_require()_ has the filename sans the .js extension.
-# The load order for javascript files will be alphabetical, unless otherwise controlled with sc_require().  Sometimes you 
+1. The file path used in _sc_require()_ is relative to the application's root directory.
+2. The reference in _sc_require()_ has the filename sans the .js extension.
+3. The load order for javascript files will be alphabetical, unless otherwise controlled with sc_require().  Sometimes you 
 get lucky on the default file loading order, if you omit a sc_require() statement. Sometimes you don't, and 
 you will get a dependency error.
 
@@ -290,23 +294,25 @@ $ mkdir apps/todos_two/views
 Next, add the views. Make sure the files have the following content and are located in the views
 directory:
 
-<javascript filename="apps/todos_two/views/welcome.js">
+```javascript
+# filename=apps/todos_two/views/welcome.js
 TodosTwo.WelcomeView = SC.LabelView.extend({
   layout: { centerX: 0, centerY: 0, width: 200, height: 18 },
   textAlign: SC.ALIGN_CENTER,
   tagName: "h1", 
   value: "Welcome to SproutCore!"
 });
-</javascript>
+```
 
-<javascript filename="apps/todos_two/views/rolling.js">
+```javascript
+# filename=apps/todos_two/views/rolling.js
 TodosTwo.RollingView = SC.LabelView.extend({
   layout: { centerX: 0, centerY: 15, width: 200, height: 18 },
   textAlign: SC.ALIGN_CENTER,
   tagName: "h1", 
   value: "Now we're rolling!"
 });
-</javascript>
+```
 
 If you refresh the page, everything should look exactly as it did before,
 but now your code is cleaner and more manageable.
@@ -316,7 +322,8 @@ but now your code is cleaner and more manageable.
 Standard events for a web application include the ubiquitous mouseDown, and many others. Here we add 
 an event to watch for mouseDown in our TodosTwo.RollingView, associating it with a statechart action:
 
-<javascript filename="apps/todos_two/views/rolling.js">
+```javascript
+# filename=apps/todos_two/views/rolling.js
 TodosTwo.RollingView = SC.LabelView.design({
   layout: { centerX: 0, centerY: 15, width: 200, height: 18 },
   textAlign: SC.ALIGN_CENTER,
@@ -329,7 +336,7 @@ TodosTwo.RollingView = SC.LabelView.design({
     TodosTwo.statechart.sendAction('proveIt', someParam);
   }
 });
-</javascript>
+```
 
 We set a _proveIt_ action to happen on the mouseDown event, using the statechart.sendAction() function. We must 
 handle the action in the appropriate state in the statechart.
@@ -343,7 +350,8 @@ informational messages (such as for state transitions), by turning on tracing on
 
 Do that now:
 
-<javascript filename="apps/todos_two/statechart.js">
+```javascript
+# filename=apps/todos_two/statechart.js
 TodosTwo.statechart = SC.Statechart.create({
     
   trace: YES,   // <-- Add this line
@@ -353,12 +361,13 @@ TodosTwo.statechart = SC.Statechart.create({
   readyState: SC.State.plugin('TodosTwo.ReadyState')
   
 });
-</javascript>
+```
 
 Let's make our TodosTwo.ReadyState handle the _proveIt_ action that was defined on
 the mouseDown event in TodosTwo.RollingView above:
 
-<javascript filename="apps/todos_two/states/ready_state.js">
+```javascript
+# filename=apps/todos_two/states/ready_state.js
 TodosTwo.ReadyState = SC.State.extend({
   
   enterState: function() {
@@ -375,7 +384,7 @@ TodosTwo.ReadyState = SC.State.extend({
   }
 
 });
-</javascript>
+```
 
 proveIt() is a function. It is an action in the ReadyState state.
 
@@ -388,12 +397,12 @@ as the initialization and the transition to the readyState.
 
 You are now ready to move on to creating a full-scale SproutCore app!
 
-"Part 3":/getting_started_3.html will introduce you to a more complete Todos application,
+[Part 3](/getting_started_3.html) will introduce you to a more complete Todos application,
 called TodosThree, and walk you through the process of building it from scratch. 
 You will learn about models, controllers and how they tie in with the statechart 
 and views.
 
-Dive in to "Getting Started: Part 3":/getting_started_3.html.
+Dive in to [Getting Started: Part 3](/getting_started_3.html).
 
 ### Changelog
 
