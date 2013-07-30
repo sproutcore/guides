@@ -37,7 +37,7 @@ Additionally, if your machine is already setup for development in Ruby, you may 
 convenient to forgo the package installers, and use RubyGems so that you can always get the latest
 version by typing the following:
 
-```shell
+```bash
 gem update sproutcore
 ```
 
@@ -52,7 +52,7 @@ When you are first learning any new language or framework, it is generally a goo
 directory to store all of your code. So, in some area of your hard drive where you develop software, make a
 sproutcore directory.
 
-```shell
+```bash
 $ mkdir -p ~/development/sproutcore
 ```
 
@@ -63,7 +63,7 @@ command.
 This directory can serve as a place for all things SproutCore. Change directory to ~/development/sproutcore, then
 create a SproutCore project:
 
-```shell
+```bash
 $ cd ~/development/sproutcore
 $ sproutcore gen project getting_started
 
@@ -82,7 +82,7 @@ to ensure that everything is installed and working properly.
 
 Create the app in the getting_started project directory:
 
-```shell
+```bash
 $ sproutcore gen app TodosOne
    ~ Created directory at apps
    ~ Created directory at apps/todos_one
@@ -164,7 +164,7 @@ layout of the files. Let's see what it looks like in the browser!
 
 Inside the project directory type the following command:
 
-```shell
+```bash
 $ sproutcore server
 ```
 
@@ -212,12 +212,17 @@ a comma missing.
 
 ### Changelog
 
-* March 1, 2011: initial version by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
-* March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio and "Peter Wagenet":credits.html#pwagenet
-* March 22, 2011: cleaned up demo based on new features by "Yehuda Katz":credits.html#wycats
-* April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
-* May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
-* May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
-* March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did much work on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Jeff Pittman":credits.html#geojeff
-* March 12, 2012: added new error and fixed italics in the troubleshooting section by "Topher Fangio":credits.html#topherfangio
-
+* March 1, 2011: initial version by [Tom Dale](credits.html#tomdale and [Yehuda Katz](credits.html#wycats)
+* March 2, 2011: fixed formmating and added paths to filenames by [Topher Fangio](credits.html#topherfangio)
+  and [Peter Wagenet](credits.html#pwagenet)
+* March 22, 2011: cleaned up demo based on new features by [Yehuda Katz](credits.html#wycats)
+* April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration
+  by [Yehuda Katz](credits.html#wycats) and [Tom Dale](credits.html#tomdale)
+* May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section
+  by [Tyler Keating](credits.html#publickeating)
+* May 9, 2011: update for recent changes in SproutCore 1.6 by [Tom Dale](credits.html#tomdale) and [Yehuda Katz](credits.html#wycats)
+* March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did
+  much work on this task: [Tim Evans](credits.html#tce), [Topher Fangio](credits.html#topherfangio) and [Jeff Pittman](credits.html#geojeff)
+* March 12, 2012: added new error and fixed italics in the troubleshooting section by [Topher Fangio](credits.html#topherfangio)
+* July 30, 2013: converted to Markdown format for DocPad guides by [Eric Theise](credits.html#erictheise) 
+* July 30, 2013: fix issues with formatting and updated Changelog by [Topher Fangio](credits.html#topherfangio)

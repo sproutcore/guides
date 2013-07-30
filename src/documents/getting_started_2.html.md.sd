@@ -101,7 +101,7 @@ a consistent state and continue to operate. Programming with statecharts can hel
 
 Create a statechart-based SproutCore app with the **sproutcore gen statechart_app** command:
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started
 $ sproutcore gen statechart_app TodosTwo
    ~ Created directory at apps/todos_two
@@ -286,7 +286,7 @@ you will get a dependency error.
 
 Now create the views folder for our new WelcomeView and RollingView:
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started
 $ mkdir apps/todos_two/views
 ```
@@ -406,7 +406,10 @@ Dive in to [Getting Started: Part 3](/getting_started_3.html).
 
 ### Changelog
 
-* May 5, 2011: initial version by "Piotr Sarnacki":credits.html#drogus
-* May 9, 2011: Stylistic edits by "Tom Dale":credits.html#tomdale
-* March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did much work on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Jeff Pittman":credits.html#geojeff
-
+* May 5, 2011: initial version by [Piotr Sarnacki](credits.html#drogus)
+* May 9, 2011: Stylistic edits by [Tom Dale](credits.html#tomdale)
+* March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who
+  did much work on this task: [Tim Evans](credits.html#tce), [Topher Fangio](credits.html#topherfangio),
+  [Jeff Pittman](credits.html#geojeff)
+* July 30, 2013: converted to Markdown format for DocPad guides by [Eric Theise](credits.html#erictheise) 
+* July 30, 2013: fix issues with formatting and updated Changelog by [Topher Fangio](credits.html#topherfangio)

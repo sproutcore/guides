@@ -7,13 +7,14 @@
     "npm": "1.2"
   },
   "dependencies": {
-    "docpad": "6.x",
+    "docpad": "~6.46.5",
     "docpad-plugin-eco": "~2.0.2",
     "docpad-plugin-marked": "~2.1.1",
-    "docpad-plugin-highlightjs": "~2.1.6"
+    "docpad-plugin-highlightjs": "~2.1.7"
   },
   "main": "node_modules/docpad/bin/docpad-server",
   "scripts": {
     "start": "node_modules/docpad/bin/docpad-server"
-  }
+  },
+  "devDependencies": {}
 }

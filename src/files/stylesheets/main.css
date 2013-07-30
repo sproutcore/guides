@@ -262,9 +262,9 @@ h5 {
 h6 {
   font-size: 1em;
   line-height: 1.5em;
-  margin: 1em 0 .5em;
-  font-weight: normal;
-  }
+  margin: 1em 0 .5em !important;
+  font-weight: bold !important;
+}
 
 .section {
   padding-bottom: 0.25em;

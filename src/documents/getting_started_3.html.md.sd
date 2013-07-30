@@ -124,7 +124,7 @@ take it one step at a time.
 We can use the **sproutcore gen** command again, to create part of the directory structure shown above for our
 TodosThree app (You should be in the ~/development/sproutcore/getting_started project directory):
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started
 
   sproutcore gen statechart_app TodosThree
@@ -160,7 +160,7 @@ needed directories and files.
 There are four .js files in the TodosThree app root directory
 (~/development/sproutcore/getting_started/apps/todos_three/):
 
-|_. theme.js |_. core.js |_. main.js |_. statechart.js |
+| theme.js | core.js |. main.js | statechart.js |
 
 Edit these files to assure their content matches that given in the following sections:
 
@@ -257,20 +257,20 @@ SHOWING_DESTROY_CONFIRMATION. These are defined in individual files in the state
 
 Code for individual states is held in the states directory. Change to that directory:
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started/apps/todos_three/states
 ``` 
 
 *sproutcore gen* created a file called ready_state.js in the states directory. We are going to use it for the
 TodosThree app, but to make it match our file naming pattern, rename it to ready.js:
 
-```shell
+```bash
 $ mv ready_state.js ready.js
 ``` 
 
 Files to edit or add in the apps/todos_three/states directory are:
 
-|_. ready.js |_. logging_in.js |_. showing_app.js |_. showing_destroy_confirmation.js |
+| ready.js | logging_in.js | showing_app.js | showing_destroy_confirmation.js |
 
 ##### READY State (replace content of renamed ready.js)
 
@@ -479,13 +479,13 @@ We've covered the highest-level parts of the app defined in the statechart. Let'
 The mainPage view, CSS file, a theme file, and an html page live in a directory called resources.  Go to that
 directory:
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started/apps/todos_three/resources
 ``` 
 
 Files to edit or add in the apps/todos_three/resources directory are:
 
-|_. main_page.js |_. todo_item.js |_. _theme.css |_. styles.css |_. loading.rhtml |
+| main_page.js | todo_item.js | _theme.css | styles.css | loading.rhtml |
 
 ##### main_page.js (resources directory)
 
@@ -802,7 +802,7 @@ NOTE: **GIT**: git add . & git commit -a -m 'Edited/Added resources files.'
 
 Move to the app root directory, make a models directory, and go there:
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started/apps/todos_three
 $ mkdir ~/development/sproutcore/getting_started/apps/todos_three/models
 $ cd ~/development/sproutcore/getting_started/apps/todos_three/models
@@ -813,7 +813,7 @@ processing functionality.
 
 The models directory will contain one file:
 
-|_. todo.js |
+| todo.js |
 
 ##### todo.js (models directory)
 
@@ -844,7 +844,7 @@ NOTE: **GIT**: git add . & git commit -a -m 'Added models directory and todo mod
 
 Move to the TodosThree app root directory, make a controllers directory, and go there:
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started/apps/todos_three
 $ mkdir ~/development/sproutcore/getting_started/apps/todos_three/controllers
 $ cd ~/development/sproutcore/getting_started/apps/todos_three/controllers
@@ -854,7 +854,7 @@ Controllers mediate communications. We'll need a couple in the TodosThree app.
 
 The controllers directory will contain two files: 
 
-|_. todos.js |_. completed_todos.js |
+| todos.js | completed_todos.js |
 
 ##### todos.js (controllers directory)
 
@@ -933,7 +933,7 @@ NOTE: **GIT**: git add . & git commit -a -m 'Added controllers directory and con
 
 Move to the TodosThree app root directory, make a fixtures directory, and go there:
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started/apps/todos_three
 $ mkdir ~/development/sproutcore/getting_started/apps/todos_three/fixtures
 $ cd ~/development/sproutcore/getting_started/apps/todos_three/fixtures
@@ -941,7 +941,7 @@ $ cd ~/development/sproutcore/getting_started/apps/todos_three/fixtures
 
 The fixtures directory will contain one file: 
 
-|_. todo.js |
+| todo.js |
 
 ##### todo.js (fixtures directory)
 
@@ -980,13 +980,13 @@ NOTE: **GIT**: git add . & git commit -a -m 'Added fixtures directory and fixtur
 With all that work done (or if you downloaded the code or cloned it from git) we can run the app, which we
 should do from the project root directory, where the project Buildfile lives:
 
-```shell
+```bash
 $ cd ~/development/sproutcore/getting_started
 ```
 
 And run it!
 
-```shell
+```bash
 $ sproutcore server
 ```
 
@@ -1098,13 +1098,18 @@ cd ~/development/sproutcore/getting_started/apps/todos_three/fixtures
 
 NOTE: git add fixtures & git commit -a -m 'Added fixtures directory and fixture file.'
 
-**All done!**
+### Changelog
 
-* March 1, 2011: initial version by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
-* March 2, 2011: fixed formmating and added paths to filenames by "Topher Fangio":credits.html#topherfangio and "Peter Wagenet":credits.html#pwagenet
-* March 22, 2011: cleaned up demo based on new features by "Yehuda Katz":credits.html#wycats
-* April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars integration by "Yehuda Katz":credits.html#wycats and "Tom Dale":credits.html#tomdale
-* May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers, plus new mobile section by "Tyler Keating":credits.html#publickeating
-* May 9, 2011: update for recent changes in SproutCore 1.6 by "Tom Dale":credits.html#tomdale and "Yehuda Katz":credits.html#wycats
-* March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did much work on this task: "Tim Evans":credits.html#tce, "Topher Fangio":credits.html#topherfangio, "Jeff Pittman":credits.html#geojeff
-
+* March 1, 2011: initial version by [Tom Dale](credits.html#tomdale) and [Yehuda Katz](credits.html#wycats)
+* March 2, 2011: fixed formmating and added paths to filenames by [Topher Fangio](credits.html#topherfangio)
+  and [Peter Wagenet](credits.html#pwagenet)
+* March 22, 2011: cleaned up demo based on new features by [Yehuda Katz](credits.html#wycats)
+* April 11, 2011: consistently use view classes and extend, update to reflect better Handlebars
+  integration by [Yehuda Katz](credits.html#wycats) and [Tom Dale](credits.html#tomdale)
+* May 6, 2011: clarifications, minor inconsistency fixes, updated CSS for older browsers,
+  plus new mobile section by [Tyler Keating](credits.html#publickeating)
+* May 9, 2011: update for recent changes in SproutCore 1.6 by [Tom Dale](credits.html#tomdale) and [Yehuda Katz](credits.html#wycats)
+* March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did
+  much work on this task: [Tim Evans](credits.html#tce), [Topher Fangio](credits.html#topherfangio), [Jeff Pittman](credits.html#geojeff)
+* July 30, 2013: converted to Markdown format for DocPad guides by [Eric Theise](credits.html#erictheise) 
+* July 30, 2013: fix issues with formatting and updated Changelog by [Topher Fangio](credits.html#topherfangio)

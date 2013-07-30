@@ -45,22 +45,29 @@ module.exports = (BasePlugin) ->
         #
         # Surround anything following 'NOTE:' (and two newlines) with a "<div class='note'>...</div>" block
         #
-        opts.content = opts.content.replace(/NOTE:((.|\s)*?\n\n)/g, "\n\n<div class='note'><p>$1</p></div>\n\n")
+        opts.content = opts.content.replace(/NOTE:?((.|\s)*?\n\n)/g, "\n\n<div class='note'><p>$1</p></div>\n\n")
 
         #
         # Surround anything following 'INFO:' or 'TIP:' (and two newlines) with a "<div class='info'>...</div>" block
         #
-        opts.content = opts.content.replace(/(INFO|TIP:)((.|\s)*?\n\n)/g, "\n\n<div class='info'><p>$2</p></div>\n\n")
+        opts.content = opts.content.replace(/(INFO|TIP):?((.|\s)*?\n\n)/g, "\n\n<div class='info'><p>$2</p></div>\n\n")
 
         #
         # Surround anything following 'WARNING:' (and two newlines) with a "<div class='warning'>...</div>" block
         #
-        opts.content = opts.content.replace(/WARNING:((.|\s)*?\n\n)/g, "\n\n<div class='warning'><p>$1</p></div>\n\n")
+        opts.content = opts.content.replace(/WARNING:?((.|\s)*?\n\n)/g, "\n\n<div class='warning'><p>$1</p></div>\n\n")
+
+        #
+        # Add super-basic support for Markdown tables
+        #
+        opts.content = opts.content.replace(/\n\|/g, "\n\n<table><tr><th>")
+        opts.content = opts.content.replace(/\|\n/g, "</th></tr></table>\n\n")
+        opts.content = opts.content.replace(/[ ]?\|[ ]?/g, "</th><th>")
 
         #
         # Add numbers to the headers and handle table of contents (h3/h4 only)
         #
-        h3_count = h4_count = h5_count = 1
+        h3_count = h4_count = h5_count = h6_count = 1
         toc = []
         opts.content = opts.content.replace(/(###)+?(.*?\n)/g, (match, p1, p2, offset, total_string) ->
           heading = p2.replace(/^#*/, '')
@@ -78,7 +85,12 @@ module.exports = (BasePlugin) ->
             return numbered_heading
 
           if match.match(/^#####[^#]/) # Found an h5
+            h6_count = 1
             return "\n\n<h5 id='#{dasherized_heading}'>#{h3_count - 1}.#{h4_count - 1}.#{h5_count++} - #{heading}</h5>\n\n"
+
+          if match.match(/^######[^#]/) # Found an h6
+            return "\n\n<h6 id='#{dasherized_heading}'>#{h3_count - 1}.#{h4_count - 1}.#{h5_count - 1}.#{h6_count++} - #{heading}</h6>\n\n"
+
 
           return match
         )
@@ -99,8 +111,8 @@ module.exports = (BasePlugin) ->
       #
       opts.content = opts.content.replace(/<pre class="highlighted"><code/g, '<pre class="highlighted"><div class="code_container"><code')
       opts.content = opts.content.replace(/<\/code><\/pre>/g, "</code></div></pre>")
-      opts.content = opts.content.replace(/#\s?filename: (.*)/g, (match, p1, offset, total_string)->
-        return "<div class='filename'>" + p1 + "</div>\n"
+      opts.content = opts.content.replace(/#\s?filename[:=] ?(.*)/g, (match, p1, offset, total_string)->
+        return "<span class='comment'><div class='filename'>" + p1 + "</div></span>\n"
       )
 
       opts.content = opts.content.replace(/<div class='code_container'><div class='code_container'>/g, "<div class='code_container'>")
