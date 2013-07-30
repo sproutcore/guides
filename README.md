@@ -33,10 +33,11 @@ Next, install the docpad framework (note: you may need to use `sudo` for this):
 $ npm install -g docpad
 ```
 
-Finally, change into the guides directory and install the necessary development dependencies:
+Finally, change into the guides directory, checkout the docpad-guides branch, and install the necessary development dependencies:
 
 ```bash
 $ cd ~/my/dev/directory/sproutcore/guides
+$ git checkout docpad-guides
 $ npm install
 ```
 
