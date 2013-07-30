@@ -1,14 +1,17 @@
-## Getting Started : Part 1
+---
+layout: default
+sc_category: Start Here
+sc_order: 30
+sc_title: Getting Started: Part 1
+sc_description: Welcome to SproutCore! This guide will get you up-and-running as quickly as possible with SproutCore. For this individual guide, you will:
 
-Welcome to SproutCore! This guide will get you up-and-running as quickly as possible with SproutCore. For this
-individual guide, you will:
+sc_list:
+  - Install SproutCore on your machine.
+  - Use the SproutCore tools to generate a basic starting application.
+  - Run the SproutCore development server to test your application.
+  - Modify the application to ensure that changes are visible.
+---
 
-* Install SproutCore on your machine.
-* Use the SproutCore tools to generate a basic starting application.
-* Run the SproutCore development server to test your application.
-* Modify the application to ensure that changes are visible.
-
-endprologue.
 
 ### Introduction
 
@@ -17,7 +20,7 @@ SproutCore application.
 
 This first "Getting Started" guide will ensure that you have the latest version of Sproutcore installed and 
 configured properly. If you run into any issues or bumps along the way, please reach out on the
-"mailing list":http://groups.google.com/group/sproutcore or find us on IRC at #sproutcore!
+[mailing list](http://groups.google.com/group/sproutcore) or find us on IRC at #sproutcore!
 
 ### Installation
 
@@ -38,7 +41,7 @@ version by typing the following:
 gem update sproutcore
 ```
 
-So, before you move on, please visit the "Installation Page":http://sproutcore.com/install/ and either
+So, before you move on, please visit the [Installation Page](http://sproutcore.com/install/) and either
 download the appropriate package, or follow the guide for your platform.
 
 Great! Now that SproutCore is installed, we can move forward and get our first app up-and-running!
@@ -97,19 +100,20 @@ $ sproutcore gen app TodosOne
 
 Your directory structure should now look like the following:
 
-* *getting_started/*
-** *Buildfile*
-** *README.md*
-** *apps/*
-*** *todos_one/*
-**** *Buildfile*
-**** *core.js*
-**** *main.js*
-**** *theme.js*
-**** *resources/*
-***** *_theme.css*
-***** *loading.rhtml*
-***** *main_page.js*
+
+ * ** getting_started/**
+   * ** Buildfile**
+   * ** README.md**
+   * ** apps/**
+     * ** todos_one/**
+       * ** Buildfile**
+       * ** core.js**
+       * ** main.js**
+       * ** theme.js**
+       * ** resources/**
+         * ** _theme.css**
+         * ** loading.rhtml**
+         * ** main_page.js**
 
 ### Explanation
 
@@ -118,35 +122,35 @@ a multitude of mini-applications in order to separate out the logic into
 manageable parts. For instance, Apple's iCloud application has apps for
 e-mail, contacts and finding your friends.
 
-This is why there is an *apps/* directory inside of the getting_started project directory. It
+This is why there is an **apps/** directory inside of the getting_started project directory. It
 allows you to easily separate distinct applications.
 
-Inside the *apps/todos_one* directory, you will find the Buildfile for the TodosOne application.
-Just like the project (getting_started) has a *Buildfile*, each application or
-framework that you create should also have a *Buildfile* which specifies it's
+Inside the **apps/todos_one** directory, you will find the Buildfile for the TodosOne application.
+Just like the project (getting_started) has a **Buildfile**, each application or
+framework that you create should also have a **Buildfile** which specifies it's
 requirements as well as any build-options that you may want to change, such as
 whether or not to minify and compact the code.
 
-The *core.js* file is the first file that gets loaded, and is where the actual
+The **core.js** file is the first file that gets loaded, and is where the actual
 application is defined. This is also where you usually define any global
 constants that the application might use (which should be very few), or any
 configuration that external libraries might require.
 
-The *main.js* file is usually very basic. It starts the application. If you
-are using the Statechart framework (which we will discuss in Part 2), *main.js*
-would simply initialize the statechart. If you open up *main.js* right now,
+The **main.js** file is usually very basic. It starts the application. If you
+are using the Statechart framework (which we will discuss in Part 2), **main.js**
+would simply initialize the statechart. If you open up **main.js** right now,
 you'll see that it appends the main view to the screen.
 
 The resources folder contains things like images, stylesheets and views.
 
-Inside the resources folder, the *_theme.css* file defines that directory's
+Inside the resources folder, the **_theme.css** file defines that directory's
 CSS theme. This allows you to define different themes for each directory.
 
-The *resources/loading.rhtml* file defines the HTML that your users see before
+The **resources/loading.rhtml** file defines the HTML that your users see before
 SproutCore has fully loaded and handed control over to the application. For
 now, it displays a simple loading message.
 
-Lastly, the *resources/main_page.js* file describes the actual user interface of the
+Lastly, the **resources/main_page.js** file describes the actual user interface of the
 application. Open this file now and take a look. Depending upon how complex
 the app becomes, you may decide to have just the mainPage and mainPane, or
 you may decide you want to break it out a bit more by having a loadingPane,
@@ -164,13 +168,13 @@ Inside the project directory type the following command:
 $ sproutcore server
 ```
 
-NOTE: If you are attempting to run multiple copies of *sproutcore server* at the same
+NOTE: If you are attempting to run multiple copies of **sproutcore server** at the same
 time, you will probably see an error about the port already being in use. If
 so, just re-run the command and add --port 4030 so the second instance will not use 
 the default 4020 port.
 
 Using your favorite web browser, visit
-"http://localhost:4020/todos_one":http://localhost:4020/todos_one. If all goes
+http://localhost:4020/todos_one. If all goes
 well, you should see "Welcome to Sproutcore!" in the middle of the screen.
 
 ### Making Changes
@@ -178,7 +182,7 @@ well, you should see "Welcome to Sproutcore!" in the middle of the screen.
 Open up resources/main_page.js and change the "Welcome to SproutCore!"
 line to say "SproutCore is Awesome!". Save the file and refresh the page in
 your web browser. If the message updates properly, you're ready to move on to
-"Getting Started: Part Two":/getting_started_2.html of the tutorial.
+[Getting Started: Part 2](/getting_started_2.html) of the tutorial.
 
 ### Troubleshooting
 
@@ -186,22 +190,22 @@ As with any unfamiliar framework, you may hit a few snags on the way. Below
 we list some of the common pitfalls that users have discovered, with
 solutions for getting past them.
 
-* <em>"Error: Handlebars is not defined Source File: ..."</em> - If you have previously
+* *"Error: Handlebars is not defined Source File: ..."* - If you have previously
 installed SproutCore 1.6 using the installer, you may see this error. If so, please make
 sure to un-install SproutCore 1.6 first and then re-install 1.8.
 
-* <em>"RuntimeError at /todos_one html_builder could not find a layout file for ..."</em> -
-This error usually means that *sproutcore server* could not find SproutCore where it
+* *"RuntimeError at /todos_one html_builder could not find a layout file for ..."* -
+This error usually means that **sproutcore server** could not find SproutCore where it
 thought it should exist. Make sure that you've properly installed the latest
 version of SproutCore; and if you are using RubyGems, try closing and
 re-opening the terminal to ensure that paths are properly set.
 
-* <em>"Browser says 'No matching target'"</em> - This is generally caused if you
+* *"Browser says 'No matching target'"* - This is generally caused if you
 misspelled the name of the application in the URL. Make sure that you properly
 typed it, and that you used underscores instead of spaces. For example:
-'http://localhost/todos_one'.
+http://localhost/todos_one.
 
-* <em>"ERROR: missing } after property list ..."</em> - This error is usually thrown
+* *"ERROR: missing } after property list ..."* - This error is usually thrown
 if you added a property somewhere, but forgot to put a comma at the end.
 Look at the line in the error, and then look above it to see if there is
 a comma missing.
