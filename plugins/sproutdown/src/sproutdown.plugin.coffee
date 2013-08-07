@@ -65,11 +65,34 @@ module.exports = (BasePlugin) ->
         opts.content = opts.content.replace(/[ ]?\|[ ]?/g, "</th><th>")
 
         #
+        # Find the code ranges
+        #
+        code_ranges = []
+        current_index = 0
+        last_index = null
+        
+        while opts.content.indexOf('```', current_index) != -1
+          current_index = opts.content.indexOf('```', current_index)
+
+          if last_index != null
+            code_ranges.push([last_index, current_index])
+            last_index = null
+          else
+            last_index = current_index
+
+          current_index++
+
+        #
         # Add numbers to the headers and handle table of contents (h3/h4 only)
         #
         h3_count = h4_count = h5_count = h6_count = 1
         toc = []
         opts.content = opts.content.replace(/(###)+?(.*?\n)/g, (match, p1, p2, offset, total_string) ->
+          # Skip things inside code block
+          for range in code_ranges
+            if offset > range[0] and offset < range[1]
+              return match
+
           heading = p2.replace(/^#*/, '')
           dasherized_heading = heading.replace(/[^a-zA-Z0-9]/g, '-')
           if match.match(/^###[^#]/) # Found an h3
