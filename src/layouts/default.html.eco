@@ -74,17 +74,23 @@
     <div id="container">
       <div class="wrapper">
         <div id="mainCol">
-          <% if @document.sc_title && @document.sc_description && @document.sc_list: %>
-            <div class='headerSection'>
+          <div class='headerSection'>
+            <% if @document.sc_title: %>
               <h2><%- @document.sc_title %><%- if @document.sc_short_description then ' - ' + @document.sc_short_description else '' %></h2>
+            <% end %>
+
+            <% if @document.sc_description: %>
               <p><%- @document.sc_description %></p>
+            <% end %>
+
+            <% if @document.sc_list: %>
               <ul>
                 <% for item in @document.sc_list: %>
                   <li><%- item %></li>
                 <% end %>
               </ul>
-            </div>
-          <% end %>
+            <% end %>
+          </div>
 
           <%- @content %>
         </div>
