@@ -1,0 +1,283 @@
+---
+layout: default
+sc_category: Contributing to SproutCore
+sc_order: 30
+sc_title: Contribute
+sc_short_description: Adding New Guides
+sc_description: The SproutCore documentation team welcomes any and all help from the community. If you are interested in contributing to the effort, the information below will let you know how to do so and who to contact in order to get help and guidance.
+---
+
+### Introduction
+
+Contributing to the SproutCore Guides follows a [Git](http://git-scm.com/) and [GitHub](https://github.com/) based workflow. If you know what that
+means, then you might be best served by skipping ahead to the [Creating or Modifying a Guide](#creating-or-modifying-a-guide) section, which deals
+with how the guides are organized and how you can preview your work as you're making changes.
+
+If "Git and Github based workflow" doesn't mean much to you, or if you're not a pro Git user yet, no problem. This guide will walk you through
+_exactly_ what you need to know. In the process, you'll learn some ideas and skills that will serve you well beyond just contributing to the
+SproutCore Guides.
+
+### Getting the Source Code
+
+To get a copy of the SproutCore Guides source that we can start making changes to, we need to do three things:
+
+1. Fork of the official SproutCore Guides Project on GitHub
+1. Clone the forked version onto our local machine
+1. Configure our local version to fetch updates from the main Guides repository
+
+#### Fork the Guides on GitHub
+
+A fork is essentially just a copy of a project, but one that is tied to _your_ GitHub account. This allows you to work and make changes without having
+to be concerned with getting these intermediary changes into the main repository. Once you're done with your changes, you can submit a pull request to
+get your finalized changes into the main repo.
+
+Forking a project on GitHub is simple: just navigate to [https://github.com/sproutcore/guides](https://github.com/sproutcore/guides) and click the
+"Fork" button in the top right corner. To do this you will need a GitHub account, but those are free for open source development.
+
+TIP: If you'd like to learn more about this, GitHub has a wonderful [guide to forking](https://help.github.com/articles/fork-a-repo).
+
+#### Clone the Fork Locally
+
+Now that we've forked the main Guides project, we need to get a copy of our fork onto our local machine so we can make changes to it. To do this, we
+use the [+git clone+](http://gitref.org/creating/#clone) command:
+
+```bash
+$ git clone git@github.com:<yourname>/guides.git
+```
+
+#### Add the Upstream Remote
+
+All that remains is to configure the repository on our local machine so that we can fetch changes from the main SproutCore Guides repository. To do
+this, we use the [+git remote+](http://gitref.org/remotes/) command from within the repository:
+
+```bash
+$ cd guides
+$ git remote add upstream git://github.com/sproutcore/guides.git
+```
+
+### Installing DocPad
+
+The SproutCore Guides are created in a modified version of the [Markdown](http://daringfireball.net/projects/markdown/) markup language. These
+Markdown documents get compiled into the HTML + CSS finished product at [http://guides.sproutcore.com/](http://guides.sproutcore.com/).
+
+While we don't strictly _need_ [DocPad](http://docpad.org/) to edit these Markdown documents, having it installed on our system will make it
+incredibly easy to preview the compiled HTML + CSS versions of the documents we are working on.
+
+TIP: We will need [Node](http://www.nodejs.org/) and the node package manager (provided with Node) installed on our machine for this next part.
+
+Once you have Node installed, simply run the following to install DocPad.
+
+```bash
+$ npm install -g docpad
+```
+
+TIP: You may need to use `sudo` for the command above if you get complaints about not having permission to particular directories.
+
+### Before Making Changes
+
+Whether we are createing a new guide from scratch or merely making changes to a guide that already exists, before we start working we want to do two
+things: 1) make sure we have the most recent version of the source code and, 2) create a new Git topic branch for our changes.
+
+#### Update the Local Source
+
+To update our local copy of the SproutCore Guides source code, we use the [+git pull+](http://www.kernel.org/pub/software/scm/git/docs/git-pull.html)
+command:
+
+```bash
+$ git pull upstream
+```
+
+This will fetch any changes that have been committed to the main SproutCore Guides repository since we last ran this command, then merge those changes
+into our local copy of the repository. It will do this all in one fell swoop, without any input on our part.
+
+If you want to be able to see and approve the changes before they are merged into your local copy of the source, you can split this process into two
+steps by using the [+git fetch+](http://www.kernel.org/pub/software/scm/git/docs/git-fetch.html) command followed by the
+[+git merge+](http://www.kernel.org/pub/software/scm/git/docs/git-merge.html) command:
+
+```bash
+$ git fetch upstream
+$ git merge upstream/master
+```
+
+#### Create a Topic Branch
+
+While we are working on the Guides, we use [Git topic branches](http://stackoverflow.com/questions/284514/what-is-a-git-topic-branch) to organize our
+work into logical sets of changes. To illustrate this idea of "logical sets of changes", imagine two examples.
+
+In the first example, we have created a new guide and added references to this new guide in several of the other guides. In this case, we have made
+changes to several different files, but all of those changes are related to each other; we have made only a single logical set of changes.
+
+In the second example, we have created a new guide and, separately, we have made some small changes to another of the guides. In this case, we have
+made changes to several different files, but the changes are _not_ related to each other; we have made two separate logical sets of changes.
+
+To create a new topic branch and start working in it, we use the [+git checkout+](http://www.kernel.org/pub/software/scm/git/docs/git-checkout.html)
+command with the +-b+ switch:
+
+```bash
+$ git checkout -b <branch_name>
+```
+
+TIP: Everyone will see this branch name when you submit your changes to the main SproutCore Guides repository, so choose something that describes the
+changes you are making.
+
+### Creating or Modifying a Guide
+
+The guides themselves reside in the +src/documents+ directory; CSS, JavaScript and image assets can be found in the +src/files+ directory.
+
+Markdown is meant to be a human friendly markup language (unlike HTML) and should be easy to pick up. Looking at the existing guides can be useful;
+here's the [Markdown source](http://github.com/sproutcore/guides/blob/master/src/documents/fixtures.html.md.sd) for the Fixtures guide, and here's the
+[compiled HTML & CSS output](http://guides.sproutcore.com/fixtures.html).
+
+#### Create a New Guide
+
+To start a new guide, simply create a file named +&lt;your_guide_name&gt;.html.md.sd+ in the +src/documents+ directory. Use the following template as
+a starting point for your guide:
+
+TIP: The +.html.md.sd+ extension means process this file first as a +.sd+ (our sproutdown plugin), then as +.md+ (markdown) and finally output it
+as +.html+.
+
+```markdown
+# filename=src/documents/<your_guide_name>.html.md.sd
+---
+layout: default
+sc_category: Choose an Existing Category
+sc_title: My Awesome Title
+sc_short_description:
+sc_description: This guide covers ... After reading this guide, you will be able to:
+sc_list:
+  - Make a list of the things you will cover.
+  - This should be a relatively high level list.
+  - It should cover what the reader will know how to do once done.
+---
+
+### Making Topics
+
+Each topic should begin with ### which represents an <h3> tag.
+
+#### Making Sub-topics
+
+Subtopics begin with #### which represents an <h4> tag.
+
+##### Making Sub-sub-topics
+
+Yes, you can even have sub-sub-topics with ##### which represents an <h5>
+
+The topics above will have heading numbers automatically added to them and are also
+used to automatically build the table of contents that you see on the right.
+```
+
+#### Modify an Existing Guide
+
+To make changes to an existing guide, simply modify the corresponding Markdown document. To determine which is the proper Markdown document, simply take
+the filename from the URL of the guide and replace the +html+ file extension with +.html.md.sd+.
+
+For example, http://guides.sproutcore.com/core_concepts_sc_object.html is the URL for the 
+[Classes and SC.Object guide](http://guides.sproutcore.com/core_concepts_sc_object.html), so the Markdown document that corresponds to this guide
+would be +core_concepts_sc_object.html.md.sd+.
+
+#### Preview Your Changes
+
+DocPad, that [we installed above](#-Installing-DocPad-), comes with a built in webserver so we can see what the guides on our local
+machine will look like when they're published to [guides.sproutcore.com](http://guides.sproutcore.com/). To start this webserver, we run +docpad run+
+from the guides directory:
+
+```bash
+$ docpad run
+info: Welcome to DocPad v6.47.0
+info: Contribute: http://docpad.org/docs/contribute
+info: Plugins: eco, highlightjs, marked, sproutdown
+info: Environment: development
+info: DocPad listening to http://localhost:9778/ on directory /Users/topher/Documents/Development/sproutcore/newguides/out
+info: Generating...
+info: Generated 92/92 files in 3.714 seconds
+info: Watching setup starting...
+info: Watching setup
+info: The action completed successfully
+```
+
+NOTE: You may see some additional output about the avatar cache or a notice about upgrading DocPad. Those can safely be ignored.
+
+Now we can see our changes by going to +localhost:9778/&lt;your_guide_name&gt;.html+ in our browser. This preview will keep itself updated as we make
+changes to the guides; all we have to do is refresh our browser window to see the latest changes.
+
+If you do not see the changes you made, check the terminal window where you ran the +docpad run+ command for error messages.
+
+By default, preview will show guides that are still under construction, even though under construction guides are not displayed on
+[guides.sproutcore.com](http://guides.sproutcore.com/). If you would like to see only guides that *will* be deployed, use the +--env+ flag:
+
+```bash
+$ docpad run --env production
+```
+
+### Submitting Your Changes
+
+Now that we are done making our changes, we need to commit those changes to our local repository, push the changes up to GitHub, and finally submit a
+pull request to the main SproutCore Guides repository.
+
+#### Commit Your Changes Locally
+
+So far we've made some changes to the guides, possibly added a new guide, and these changes have been saved to disk on our local machine. Now we need
+to [commit these changes to our repository](http://git-scm.com/book/en/Git-Basics-Recording-Changes-to-the-Repository#Committing-Your-Changes). We do
+this with the [+git add+](http://www.kernel.org/pub/software/scm/git/docs/git-add.html) and
+[+git commit+](http://www.kernel.org/pub/software/scm/git/docs/git-commit.html) commands:
+
+```bash
+$ git add .
+$ git commit
+```
+
+#### Push Your Changes to GitHub
+
+Now that we've committed our changes to our local repository, we need to [push these changes to the remote
+repository](http://git-scm.com/book/en/Git-Basics-Working-with-Remotes#Pushing-to-Your-Remotes) hosted on GitHub. We do this with the
+[+git push+](http://www.kernel.org/pub/software/scm/git/docs/git-push.html) command:
+
+```bash
+$ git push origin <branch_name>
+```
+
+TIP: +branch_name+ above is the name you used in the [create a topic branch](#-Create-a-Topic-Branch-) step. If you
+can't remember the name use 'git branch -a' to list the branches.
+
+#### Submit a Pull Request
+
+Now that our changes have been pushed to GitHub, we need to submit a pull request to get these changes into the main SproutCore Guides repository. A
+pull request is essentially a mechanism by which you say, "I think you should take this set of changes from my repository and pull them into your
+repository".
+
+To create a pull request, start by visiting the GitHub page for your fork of the SproutCore Guides, which will be at
++https://github.com/<yourname>/guides+. Next, click on the Pull Request button in the top right.
+
+TIP: If you get stuck, GitHub has an excellent [guide to using Pull Requests](https://help.github.com/articles/using-pull-requests).
+
+### What to Contribute?
+
+We need authors, editors, proofreaders, and translators.
+
+Improving an existing guide is the easiest way to get started.
+
+* Add a paragraph of high quality content
+* Improve the structure to make it more coherent.
+* Add missing information.
+* Correct factual errors.
+* Fix typos or improve style.
+* Bring it up to date with the latest release of SproutCore.
+
+**We're also open to suggestions for entire new guides!** Contact the documentation team to get your idea approved. See the
+[Contact](#-Contacting-the-SproutCore-team-) section below.
+
+### Contacting the SproutCore team
+
+Documentation requests and questions can be posted on the [SproutCore Google Group](http://groups.google.com/group/sproutcore). If you're not sure
+whether a guide is actively being worked on, stop by IRC and ask.
+
+* IRC: [#sproutcore](http://sproutcore.com/community/#tab=irc)
+* Twitter: [@sproutcore](http://twitter.com/#!/sproutcore)
+
+### License
+
+Guides are licensed under a [Creative Commons Attribution-Share Alike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
+
+### Changelog
+
+* August 7, 2013: converted to Markdown format for DocPad guides by [Topher Fangio](credits.html#topherfangio)
