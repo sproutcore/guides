@@ -142,8 +142,26 @@ module.exports = (BasePlugin) ->
       opts.content = opts.content.replace(/<\/code><\/div><\/div><\/pre>/g, "</code></div></pre>")
 
       #
-      # Setup a helper for generating the index dropdown
+      # Setup helpers for generating the index dropdown
       #
+      opts.templateData.document.printIndexDropdowns = (document)->
+        buffer = "<dl class='L'>"
+        buffer += document.printIndexDropdownSection(document, 'Start Here')
+        buffer += document.printIndexDropdownSection(document, 'Views')
+        buffer += document.printIndexDropdownSection(document, 'Models')
+        buffer += document.printIndexDropdownSection(document, 'Theming')
+        buffer += document.printIndexDropdownSection(document, 'Testing')
+        buffer += "</dl>"
+
+        buffer += "<dl class='R'>"
+        buffer += document.printIndexDropdownSection(document, 'Best Practices')
+        buffer += document.printIndexDropdownSection(document, 'Extras')
+        buffer += document.printIndexDropdownSection(document, 'Contributing to SproutCore')
+        buffer += document.printIndexDropdownSection(document, 'Thanks')
+        buffer += "</dl>"
+
+        buffer
+
       opts.templateData.document.printIndexDropdownSection = (document, section)->
         buffer = ["<dt>#{section}</dt>"]
         sorted = document.index_dropdown.sort((a,b) ->

@@ -59,13 +59,10 @@
             <a href="index.html" class="guidesMenu">
               Guides Index <span class="guidesArrow">&#9662;</span>
             </a>
+
             <hr style="clear:both;">
-            <dl class='L'>
-              <%- @document.printIndexDropdownSection(@document, 'Views') %>
-            </dl>
-            <dl class='R'>
-              <%- @document.printIndexDropdownSection(@document, 'Testing') %>
-            </dl>
+
+            <%- @document.printIndexDropdowns(@document) %>
           </div>
         </div>
       </div>

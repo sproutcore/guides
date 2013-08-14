@@ -1,7 +1,7 @@
 ---
 layout: default
 sc_category: Start Here
-sc_order: 30
+sc_order: 20
 sc_title: Getting Started: Part 2
 sc_description: In Part 1, we walked through the basic elements of a SproutCore app. In Part 2 we introduce some of the guiding concepts behind a SproutCore application such as views, controllers, and statecharts.
 

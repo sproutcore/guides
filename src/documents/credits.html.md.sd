@@ -1,8 +1,9 @@
 ---
 layout: credits
-sc_category: Contributing to SproutCore
+sc_category: Thanks
 sc_order: 10
-sc_title: The People That Make It Happen
+sc_title: Credits
+sc_short_description: The People That Make It Happen
 sc_credits:
   - name: Documentation Team
     authors: 

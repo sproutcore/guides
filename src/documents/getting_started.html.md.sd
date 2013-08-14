@@ -1,7 +1,7 @@
 ---
 layout: default
 sc_category: Start Here
-sc_order: 30
+sc_order: 10
 sc_title: Getting Started: Part 1
 sc_description: Welcome to SproutCore! This guide will get you up-and-running as quickly as possible with SproutCore. For this individual guide, you will:
 
