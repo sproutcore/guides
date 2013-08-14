@@ -1,7 +1,7 @@
 ---
 layout: default
 sc_draft: true
-sc_category: Views
+sc_category: Testing
 sc_order: 10
 sc_title: Testing Guidelines
 sc_description: This guide covers using test-driven development (TDD) techniques to develop SproutCore applications.  After reading this guide, you will be able to:
