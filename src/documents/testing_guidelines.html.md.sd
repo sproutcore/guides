@@ -1,0 +1,32 @@
+---
+layout: default
+sc_draft: true
+sc_category: Views
+sc_order: 10
+sc_title: Testing Guidelines
+sc_description: This guide covers using test-driven development (TDD) techniques to develop SproutCore applications.  After reading this guide, you will be able to:
+sc_list:
+  - Write tests for methods to be implemented and use them to help you implement them.
+  - Write tests to verify that your observers fire when you expect them to.
+  - Write tests that verify your bindings fire when you expect them to and how to incorporate +SC.RunLoop+ so that they will function.
+  - _TODO_: more
+---
+
+WARNING: This guide is under construction.
+
+### Test-drive SproutCore Method Implementation
+
+### Test-drive Observer Implementation
+
+### Test-drive Bindings Implementation
+
+### Next
+
+Let's reinvent the *todos* project using TDD techniques.
+
+On to [SproutCore Development Using TDD »](/todos_tdd.html)
+
+### Changelog
+
+* February 15, 2011: initial placeholder by [Scott Smith](credits.html#ssmith) and [Vibul Imtarnasan](credits.html#veebs)
+* August 14, 2013: converted to Markdown format for DocPad guides by [Topher Fangio](credits.html#topherfangio)
