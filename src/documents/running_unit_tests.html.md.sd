@@ -13,47 +13,58 @@ sc_list:
 
 ### How Unit Test Cases Are Loaded and Executed
 
-When you run a unit test, SproutCore retrieves and runs the source unit test JavaScript and renders the results as an HTML page.
+When you run a unit test, SproutCore retrieves and runs the source unit test
+JavaScript and renders the results as an HTML page.
 
 SproutCore does this in the following sequence:
 
 1. Load the application including its dependencies.
 1. Load the unit tests.
-1. Instead of calling the main application's +main()+ function, runs all or some of the unit tests.
-1. Like most javascript test frameworks, SproutCore renders the results in a nicely-formatted HTML page.
+1. Instead of calling the main application's +main()+ function, runs all or
+   some of the unit tests.
+1. Like most javascript test frameworks, SproutCore renders the results in a
+   nicely-formatted HTML page.
 
-The advantage is that your unit tests are run in an environment that is very close to the actual combination of code and resources that will be
-available to your application when it runs.
+The advantage is that your unit tests are run in an environment that is very
+close to the actual combination of code and resources that will be available to
+your application when it runs.
 
-It also means that if you write code that runs on page load BEFORE the +main()+ method is called, it could be executed even in test mode.  Make sure
-that any code you write to run at early page startup can deal with being loaded in test mode as well.
+It also means that if you write code that runs on page load BEFORE the +main()+
+method is called, it could be executed even in test mode.  Make sure that any
+code you write to run at early page startup can deal with being loaded in test
+mode as well.
 
 
 ### Using the SproutCore Test Runner
 
-WARNING: The new Abbot tools do not yet support the test runner.  Until they do, you should follow the
+WARNING: The new Abbot tools do not yet support the test runner.  Until they
+do, you should follow the
 [Running Selected Unit Tests](running_unit_tests.html#running-selected-unit-tests) section below.
 
 #### Starting the Test Runner
 
-The easiest way to run unit tests is to simply visit the built-in unit test runner by starting your browser and navigating to
-http://localhost:4020, then selecting +tests+ from the application list as shown.
+The easiest way to run unit tests is to simply visit the built-in unit test
+runner by starting your browser and navigating to http://localhost:4020, then
+selecting +tests+ from the application list as shown.
 
 <img src='images/testing/unit_test_2.png' width='610px' alt='Test Runner' />
 
-Your unit tests for your application(s) will be listed under +APPS+.  The unit tests for SproutCore itself are listed under +SPROUTCORE+.
+Your unit tests for your application(s) will be listed under +APPS+.  The unit
+tests for SproutCore itself are listed under +SPROUTCORE+.
 
 For quicker access to this page, bookmark http://localhost:4020/sproutcore/tests.
 
 #### Selecting and Running Tests
 
-Suppose your application is named "my_app". To see a list of your unit tests, in the left hand column under +APPS+, double-click "my_app":
+Suppose your application is named "my_app". To see a list of your unit tests,
+in the left hand column under +APPS+, double-click "my_app":
 
 <img src='images/testing/unit_test_3.png' width='610px' alt='Test Runner Unit Test Files' />
 
 Run all the unit test cases within a file by clicking on it.
 
-NOTE: The "+Using Continuous Integration+" checkbox and the "+Run Tests+" button are under construction.
+NOTE: The "+Using Continuous Integration+" checkbox and the "+Run Tests+"
+button are under construction.
 
 When the test run is complete, the results are displayed as follows:
 
@@ -62,17 +73,20 @@ When the test run is complete, the results are displayed as follows:
 
 ### Running Selected Unit Tests 
 
-Sometimes you may want to run unit tests manually outside of the test runner. For example, perhaps you have a continuous integration environment and
-would like to use Selenium to evaluate the results of running your unit tests.
+Sometimes you may want to run unit tests manually outside of the test runner.
+For example, perhaps you have a continuous integration environment and would
+like to use Selenium to evaluate the results of running your unit tests.
 
 All unit tests for an application can be found at an easily computed URL.
 
-The computed URLs can run all tests on all applications or a subset of them as detailed below.
+The computed URLs can run all tests on all applications or a subset of them as
+detailed below.
 
 
 #### Running an Individual Unit Test File
 
-Any unit test file can be run from a browser using a URL in the following format:
+Any unit test file can be run from a browser using a URL in the following
+format:
 
     http://localhost:4020/APP_NAME/LANGUAGE/current/tests/PATH/TO/TEST.html@
 
@@ -80,7 +94,8 @@ where:
 
   * +APP_NAME+ is your application name.
   * +LANGUAGE+ is the language you want to run tests for. (Usually 'en')
-  * +PATH/TO/TEST+ is the subpath from the +PROJECT_FOLDER/apps/APP_NAME/tests+ folder.  It should include the body of the javascript file name but
+  * +PATH/TO/TEST+ is the subpath from the +PROJECT_FOLDER/apps/APP_NAME/tests+
+    folder.  It should include the body of the javascript file name but
   * not the +.js+ extension.
 
 As an example, suppose you have a unit test file located at:
@@ -93,37 +108,47 @@ To run this test, browse:
 
 #### Running All Unit Tests in a Directory
 
-If you would like to run all of the unit tests in a directory, you can use the same method described as above, but instead name the directory with
-an .html extension.  For example, to run all of the unit tests in the +tests/unit+ directory, you could visit:
+If you would like to run all of the unit tests in a directory, you can use the
+same method described as above, but instead name the directory with an .html
+extension.  For example, to run all of the unit tests in the +tests/unit+
+directory, you could visit:
 
     http://localhost:4020/my_app/en/current/tests/unit.html
 
-Note that the HTML file loaded at this URL will contain all of your unit tests files concatenated together in a single HTML page.  If your tests are
-not properly isolated, they may interfere with one another when loaded this way, though this is rare.
+Note that the HTML file loaded at this URL will contain all of your unit tests
+files concatenated together in a single HTML page.  If your tests are not
+properly isolated, they may interfere with one another when loaded this way,
+though this is rare.
 
 #### Running All Unit Tests in an Application
 
-If you would like to run all of the unit tests in your application, you can do that too.  Instead of naming a directory, just visit a URL with the
-format described above but ending in tests.html.  For example, to load all of the unit tests at once for your contact application you could visit:
+If you would like to run all of the unit tests in your application, you can do
+that too.  Instead of naming a directory, just visit a URL with the format
+described above but ending in tests.html.  For example, to load all of the unit
+tests at once for your contact application you could visit:
 
     http://localhost:4020/my_app/en/current/tests.html
 
-Note that, like the combined directory tests above, this global test file will contain all of your unit test files concatenated together in a single
-HTML page.  If your tests are not properly isolated, they may interfere with one another, causing the unit tests to pass when loaded individually
-but fail when they are loaded together.  This situation is rare, but you should be careful to write your test files so that they will not clobber
-one another at load time.
+Note that, like the combined directory tests above, this global test file will
+contain all of your unit test files concatenated together in a single HTML
+page.  If your tests are not properly isolated, they may interfere with one
+another, causing the unit tests to pass when loaded individually but fail when
+they are loaded together.  This situation is rare, but you should be careful to
+write your test files so that they will not clobber one another at load time.
 
 #### Loading Tests from Nested Targets
 
-If you use nested targets, you can load tests from them as well.  Just name your nested target like you name it in a config file.  For example, the
-sproutcore framework contains a nested framework called "runtime".  You could load all of the unit tests for the sproutcore/runtime framework by
-visiting:
+If you use nested targets, you can load tests from them as well.  Just name
+your nested target like you name it in a config file.  For example, the
+sproutcore framework contains a nested framework called "runtime".  You could
+load all of the unit tests for the sproutcore/runtime framework by visiting:
 
     http://localhost:4020/sproutcore/runtime/en/current/tests.html
 
 ### Moving On
 
-This concludes the main programming guide for working with Unit Tests in SproutCore applications.  You're now ready to change the world with awesome
+This concludes the main programming guide for working with Unit Tests in
+SproutCore applications.  You're now ready to change the world with awesome
 unit tests!
 
 On to the [SproutCore Testing Guidelines »](/testing_guidelines.html)
