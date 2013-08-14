@@ -1,0 +1,623 @@
+---
+layout: default
+sc_draft: true
+sc_category: Models
+sc_order: 60
+sc_title: Data Source
+sc_short_description: Connecting with a Data Soure
+sc_description: This guide covers how to write a DataSource using the API's in SproutCore 1.0&ndash;1.10. After reading this guide, you will be able to:
+sc_list:
+  - Understand what a DataSource is, and where it fits into the SproutCore Data Stream
+  - Create your own DataSource and link it to your App
+---
+
+NOTE: If you are looking for other methods of talking to the server,
+[look here](connect_server.html).
+
+WARNING: This is a Draft Copy, and although the information in here is correct,
+it may be incomplete in places.
+
+### What is a DataSource?
+
+A DataSource is the layer that sits between your SproutCore application's
+[store](records.html#models-records-and-the-store) and your backend. To start
+out, your app will probably be setup to use [fixtures](fixtures.html). This
+will populate your app with data without having to hit your server in
+development.  When you are ready to interact with your backend, you can create
+your own DataSource that will send and receive data to and from your backend.
+
+NOTE: A DataSource is different from the Store. The Store is the in memory
+storage for your records, while the DataSource is the communication layer
+linking the store to your backend.
+
+TODO: A diagram will be nice, showing the layers of a SproutCore application,
+with the datasource highlighted to show where it fits in.
+
+### When should I make my own DataSource?
+
+If you want to be able to persist the data that your users enter, over
+sessions, then you'll want to save it, either to a server or to local storage.
+The beauty of SproutCore's data layers is that you can write your app and
+seamlessly move from one data source to another and nothing but your DataSource
+will need to be changed.
+
+### A look at the API
+
+Here we will look at an example API from the server.  Creating the server side
+code is a "digging deeper topic".  For now you can have a look at the numerous
+examples in the
+[todo app tutorial](http://wiki.sproutcore.com/w/page/12413020/Todos%2006-Building%20the%20Backend).
+
+
+For the purpose of this guide, we are going to assume that we have a server
+that will provide us with a basic
+[RESTful API](http://en.wikipedia.org/wiki/Representational_State_Transfer#RESTful_web_services).
+If we wanted to get a list of all ToDo items, we would send a GET request to:
+
+```bash
+GET: /todos/
+```
+
+Which will return a [JSON](http://en.wikipedia.org/wiki/Json) array like:
+
+```javascript
+[
+  {
+    "id": 1,
+    "title": "Learn to use SproutCore",
+    "done": false
+  },
+  {
+    "id": 2,
+    "title": "Something",
+    "done": false
+  }
+]
+```
+
+To create a new ToDo item, we can POST to this URL with JSON in the body.
+
+```bash
+POST: /todos/
+{
+  "title": "Profit!",
+  "done": false
+}
+```
+
+The server will return the new ID for us.
+
+```javascript
+{
+  "id": 3
+}
+```
+
+If we specify an ID in the url:
+
+```bash
+GET: /todos/3
+```
+
+You'll see just one object returned:
+
+```javascript
+{
+  "id": 3,
+  "title": "Profit!",
+  "done": false
+}
+```
+
+The API also allows us to send a PUT to update an existing ToDo item and DELETE
+to remove it.
+
+A PUT or DELETE response will not have a body, we will know that everything is
+ok if HTTP status is 200
+
+With this basic understanding of how the server works, we can get started
+writing our DataSource.
+
+### Setup
+
+#### Creating a DataSource
+
+To generate a DataSource, use the command:
+
+```bash
+sc-gen data-source MyApp.RESTDataSource
+```
+
+NOTE: Anywhere you see MyApp, replace this with the name of the application
+that you're building.
+
+This will make a file in +apps/my_app/data_sources/rest.js+. This file will be
+stubbed with the default functions that will get called by the store.
+
+#### Linking to the Store
+
+The next step is linking the new DataSource to the store. By default, the store
+will be using [Fixtures](fixtures.html). In +core.js+ you'll see:
+
+```javascript
+  store: SC.Store.create().from(SC.Record.fixtures)
+```
+
+Replace this with the newly created DataSource:
+
+```javascript
+  store: SC.Store.create().from('MyApp.RESTDataSource')
+```
+
+This will tell the store to use the new DataSource when trying to find data.
+
+NOTE: As you can see we are replacing a JavaScript Object: +SC.Record.fixtures+
+with a string +'MyApp.RESTDataSource'+. This is because our DataSource won't
+have been initialised. The first time the store tries to access the DataSource
+it will convert the string to an object and save it for future reference. See
+[Core Concepts](core_concepts.html#property-paths) for more information.
+
+### Writing The DataSource
+
+#### Our First Fetch
+
+The first thing that your app will likely do is to fetch a bunch of data. This
+is usually done via a [query](records.html#using-queries). The query for
+finding all ToDo's will look like:
+
+```javascript
+  MyApp.QUERY_ALL_TODOS = SC.Query.local(MyApp.Todo)
+```
+
+NOTE: Our DataSource will be written assuming that
+[local queries](records.html#local-vs-remote-queries) are being used. Local
+queries are what you will be using most of the time. Remote queries will be
+covered in a separate guide.
+
+When you call +App.store.find(MyApp.QUERY_ALL_TODOS)+, the store will return a
+[RecordArray](http://docs.sproutcore.com/symbols/SC.RecordArray.html)
+containing matching records (or an empty recordArray, if nothing matches). This
+RecordArray is linked to the query so that it will automatically update any
+time the query conditions match a new record. After it has returned, the store
+will call 'fetch' on its attached DataSource. 
+
+This is when we get to take action. The generated DataSource will already
+contain the following code:
+
+```javascript
+  fetch: function(store, query) {
+
+    // TODO: Add handlers to fetch data for specific queries.  
+    // call store.dataSourceDidFetchQuery(query) when done.
+
+    return NO ; // return YES if you handled the query
+  },
+```
+
+Currently, this DataSource will not do anything except return NO. This tells
+the store that we are not going to handle this query.
+
+We are also given a hint of what we need to do next. When the server responds,
+we will call +store.dataSourceDidFetchQuery(query)+ to let the store know that
+this query has been updated.
+
+Now we want to fetch all the Todo's
+
+```javascript
+fetch: function(store, query) {
+  SC.Request.getUrl('/todos/').json()
+    .notify(this, 'fetchDidComplete', store, query)
+    .send()
+
+  return YES;
+},
+
+fetchDidComplete: function(response, store, query) {
+  if(SC.ok(response)) {
+    var recordType = query.get('recordType'),
+        records = response.get('body');
+    
+    store.loadRecords(recordType, records);
+    store.dataSourceDidFetchQuery(query);
+    
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidErrorQuery(query, response);
+  }
+}
+```
+
+Our +Fetch+ function is pretty simple. For now, we are constructing
+a +Request+ to send to the server.
+
+[SC.Request](http://docs.sproutcore.com/symbols/SC.Request.html) is
+SproutCore's simple wrapper around an Ajax call.
+
+NOTE: You are not restricted to using an SC.Request inside of a DataSource, but
+it is advised that you don't go making calls to your server from just anywhere
+in your app.
+
+[.getUrl](http://docs.sproutcore.com/symbols/SC.Request.html#.getUrl) tells our
+request that we want to use the GET method to contact the given url. You can
+also use the following:
+
+  * [putUrl](http://docs.sproutcore.com/symbols/SC.Request.html#.putUrl)
+  * [postUrl](http://docs.sproutcore.com/symbols/SC.Request.html#.postUrl)
+  * [deleteUrl](http://docs.sproutcore.com/symbols/SC.Request.html#.deleteUrl)
+
+[.json](http://docs.sproutcore.com/symbols/SC.Request.html#json) lets the
+request know that we are expecting the server to send back JSON, so it will
+automatically parse it for us. Without this, the return value would be a
+string. We could also have called +.xml()+ if your server talks XML.
+
+[.notify](http://docs.sproutcore.com/symbols/SC.Request.html#notify) sets the
+callback method. By default SC.Requests are asynchronous, so the app can keep
+running while waiting for the server. The parameters used here are:
+
+  1. +this+ {Object} The target object that the action will run on
+  1. +'fetchDidComplete'+ {String} The name of the function that is located on
+    `target` that will get called
+  1. +store, query+ {Any Objects} All following parameters will get passed into
+    the call back
+
+[.send](http://docs.sproutcore.com/symbols/SC.Request.html#send) will now
+actually send the built up request and return immediately (as we have kept the
+default async behaviour), without waiting for the server. 
+
+NOTE: +.send()+ also takes a +String+ parameter for the +POST+ and +PUT+
+methods to send as the body of the request.
+
+When the server responds to the request, our callback method +fetchDidComplete+
+will get called. The first parameter is the SC.Response related to the Request
+we just sent. Any following parameters are the ones we passed
+into +.notify()+: +store+ and +query+.
+
+First thing we do when the response comes back is check to see if there was an
+error or not.
+
+[SC.ok](http://docs.sproutcore.com/symbols/SC.html#.ok) will do this for us.
+
+If all is good, we can now load the records into the store. First we need to
+get the RecordType that is stored in the query so we can inform the store. For
+us, it will be +MyApp.Todo+.
+
+Next, we get our records with +response.get('body')+.  This is where the JSON
+string is converted into JS objects for us. If we did not call +.json()+ on
+the +Request+, it would return a string.
+
+This works because our server responds with an array at the top level of the
+JSON. If your server returned something like:
+
+```javascript
+{
+  length: 1,
+  records: [
+    {
+      "id": 1,
+      "title": "Learn to use SproutCore",
+      "done": false
+    }
+  ]
+}
+```
+
+Then we would use this instead:
+
+```javascript
+var body = response.get('body')
+    records = body.records;
+```
+
+NOTE: Note how we didn't use +.get('records')+, this is because the JSON is
+converted into plain JS, not +SC.Object+'s.
+
+Now we call
+[loadRecords](http://docs.sproutcore.com/symbols/SC.Store.html#loadRecords) on
+the store to actually put our data into the store. The first parameter is the
+Record Type of the objects you are going to load. The second is an array of
+plain JS object hashes containing your records data.
+
+WARNING: You need to make sure that your data hashes have their
+[primary key](records.html#record-ids) properties, in this case '+id+'.
+
+NOTE: This is the usual way of calling +loadRecords+, but it can be called with
+a few different signatures. This allows for quite complex behaviour, such as
+loading multiple record types at once. These will be covered by other guides.
+
+Finally, we call
+[.dataSourceDidFetchQuery](http://docs.sproutcore.com/symbols/SC.Store.html#dataSourceDidFetchQuery)
+to let the store know that we have finished loading records, and it is now time
+to update the passed in query. The query that we passed in is the one that was
+given to us by +fetch+.  It was passed in through to the callback.
+
+If the server returned an error, such as +404+ Not Found, or the +500+ series
+of server errors, then we'll let the store know with
+[.dataSourceDidErrorQuery](http://docs.sproutcore.com/symbols/SC.Store.html#dataSourceDidErrorQuery).
+This sets the query into an error state, for which you can later check and deal
+with.
+
+#### Gaining Flexibility
+
+This design is simple, but as you can see, not very flexible, it only allows
+for one url. That won't get us very far. But given that all of our records are
+going to have a very similar URL, it should be simple to dynamically generate
+this URL.
+
+We can have each of our models know what their URL will be:
+
+```javascript
+MyApp.Todo = SC.Record.extend(
+/** @scope MyApp.Todo.prototype */ {
+
+  // TODO: Add your own code here.
+
+}) ;
+
+MyApp.Todo.mixin({
+  resourcePath: 'todo',
+  pluralResourcePath: 'todos'
+}) ;
+```
+
+We use a mixin here to set these as class properties. it allows us to get the
+path without an instance. For example: +MyApp.Todo.resourcePath+.
+
+This will allow our DataSource to find the path needed. We'll change the fetch
+method to:
+
+```javascript
+fetch: function(store, query) {
+  SC.Request.getUrl('/%@/'.fmt(query.recordType.pluralResourcePath))
+    .notify(this, 'fetchDidComplete', store, query)
+    .json().send()
+
+  return YES;
+},
+```
+
+The fetch method will now use a dynamic URL for each record type.  
+
+NOTE: The [fmt](http://docs.sproutcore.com/symbols/String.html#String#fmt)
+function outputs a formatted string.
+
+#### Change of Mind
+
+Fetching records is fun but it will only get us so far. Eventually we are going
+to want to make some changes to these records.
+
+Each time our store wants to commit changes to the server, the +updateRecord+
+method will be called for each of the changed records.
+
+```javascript
+updateRecord: function(store, storeKey) {
+  var recordType = store.recordTypeFor(storeKey),
+      id = store.idFor(storeKey),
+      data = store.readDataHash(storeKey);
+  
+  SC.Request.putUrl("/%@/%@".fmt(recordType.resourcePath, id))
+    .notify(this, 'updateRecordDidComplete', store, storeKey, id)
+    .json().send(data);
+  
+  return YES;
+},
+
+updateRecordDidComplete: function(response, store, storeKey, id) {
+  if(SC.ok(response) && response.get('status') === 200) {
+    // Tell the store that we have successfully updated
+    store.dataSourceDidComplete(storeKey);
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidError(storeKey, response);
+  }
+}
+```
+
+Our API uses the PUT method for making changes, so we use +putUrl()+, the
+string that we are making for the url, will end up looking something
+like: +/todo/1+
+
+This code should look familiar with only a few differences. This time we don't
+have a query, but instead just a reference to a single record, via
+it's +storeKey+. With this, we get the +recordType+, +id+ and the +data+ (the
+actual properties of our record).
+
+NOTE: In this instance we call +send()+ with an object. This is possible,
+because we also called +json()+. Without this, +send()+ would need to be called
+with a string.
+
+Our API will return empty response with status 200 from our PUT command.
+
+So we test for it:
+
+```javascript
+response.get('status') === 200
+```
+
+If all is good, then we call +dataSourceDidComplete+ to tell the store we are
+done.
+
+##### Server Processing
+
+If your server needs to process the data, it might need to send back different
+data than what you send up. Your server might send back something like:
+
+```javascript
+{
+  "record": {
+    "id": 3,
+    "title": "Profit!",
+    "done": false,
+    "updatedAt": "2011-02-20 11:36Z"
+  }
+}
+```
+
+You'll then need to update your callback to tell the store about it:
+
+```javascript
+store.dataSourceDidComplete(storeKey, response.get('body').record);
+```
+
+This will update the properties on your record with any changes that the server
+makes.
+
+#### Going for Creation
+
+Creating records is much like updating them, but when you first create a record
+in the store, it does not have an +id+. So when the server responds, with
+the +id+:
+
+```javascript
+{
+  "id": 3
+}
+```
+
+We tell the store about it:
+
+```javascript
+createRecord: function(store, storeKey) {
+  var recordType = store.recordTypeFor(storeKey),
+      data = store.readDataHash(storeKey);
+  
+  SC.Request.postUrl("/%@".fmt(recordType.pluralResourcePath))
+    .notify(this, 'createRecordDidComplete', store, storeKey)
+    .json().send(data);
+  
+  return YES;
+},
+
+createRecordDidComplete: function(response, store, storeKey) {
+  var body = response.get('body');
+  if(SC.ok(response) && response.get('status') === 200) {
+    // Tell the store that we have successfully updated
+    store.dataSourceDidComplete(storeKey, null, body.id);
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidError(storeKey, response);
+  }
+}
+```
+
+##### Server Processing
+
+The same deal with server side processing applies here as with updates.
+
+#### Feeling Destructive
+
+Things should start feeling pretty familiar now, you can probably guess what's
+going to come next.
+
+```javascript
+destroyRecord: function(store, storeKey) {
+  var recordType = store.recordTypeFor(storeKey),
+      id = store.idFor(storeKey);
+  
+  SC.Request.deleteUrl("/%@/%@".fmt(recordType.resourcePath, id))
+    .notify(this, 'destroyRecordDidComplete', store, storeKey)
+    .json().send();
+  
+  return YES;
+},
+
+destroyRecordDidComplete: function(response, store, storeKey) {
+  var body = response.get('body');
+  if(SC.ok(response) && response.get('status') === 200) {
+    // Tell the store that we have successfully updated
+    store.dataSourceDidDestroy(storeKey);
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidError(storeKey, response);
+  }
+}
+```
+
+You should have noticed the 2 differences,
+
+  1. We're using +deleteUrl+
+  1. We're calling +dataSourceDidDestroy+ in the callback.
+
+#### Ahh, Refreshing
+
+One that that is not always used, but some apps find helpful, is being able to
+refresh a record, to get the latest from the server.
+
+This is similar to a query, but for only a single record.
+
+```javascript
+retrieveRecord: function(store, storeKey) {
+  var recordType = store.recordTypeFor(storeKey),
+      id = store.idFor(storeKey),
+      data = store.readDataHash(storeKey);
+  
+  SC.Request.getUrl("/%@/%@".fmt(recordType.resourcePath, id))
+    .notify(this, 'retrieveRecordDidComplete', store, storeKey, id)
+    .json().send(data);
+  
+  return YES;
+},
+
+retrieveRecordDidComplete: function(response, store, storeKey, id) {
+  if(SC.ok(response) && response.get('status') === 200) {
+    // Tell the store that we have successfully updated
+    store.dataSourceDidComplete(storeKey, response.get('body').record);
+  } else {
+    // Tell the store that your server returned an error
+    store.dataSourceDidError(storeKey, response);
+  }
+}
+```
+
+This time, we'll always be passing the datahash into +dataSourceDidComplete+,
+to make sure that the local record is the same as the server copy.
+
+### Things to Note
+
+TODO: Some important things to note will go here.
+
+#### A Records PrimaryKey
+
+By default, SproutCore sets the primaryKey property of records to 'guid'. A
+common convention of many server side APIs is to use just 'id'.  To make your
+records work with this, you can override the default in your Model files.
+
+```javascript
+App.Todo = SC.Record.extend({
+  primaryKey:'id'
+})
+```
+
+You may set this to anything that you want, if your server uses, for
+example, +TID+ for your todo's id, you must set +primaryKey:'TID'+. Like normal
+JS properties, this is case sensitive.
+
+#### Prepare for a Change
+
+The dataSource as we have it now is handy, but as people have been using it, we
+have discovered that there are many improvements that can be made. As a
+courtesy we are just letting you know that a future (yet undecided) version of
+SproutCore is going to have a vastly updated DataSource layer.
+
+Don't hold back developing your awesome app now. Just know, and be excited,
+that there are great improvements coming.
+
+### Advanced topics
+
+#### Managing Many Records with a Bulk API
+
+#### Datasource for sparseArray
+
+#### Cascading Datasource
+
+#### Fetching a Query with Multiple Data Types
+
+#### Datasource for Remote Query
+
+### Changelog
+
+* March 2, 2011: initial version by [Geoffrey Donaldson](credits.html#geoffreyd)
+* March 2, 2011: minor fixes by [Peter Wagenet](credits.html#pwagenet)
+* March 22, 2011: minor fixes/formatting by [Topher Fangio](credits.html#topherfangio)
+* April 18, 2011: corrections and fixes by [Piotr Sarnacki](credits.html#drogus)
+* August 14, 2013: converted to Markdown format for DocPad guides by
+  [Topher Fangio](credits.html#topherfangio)
