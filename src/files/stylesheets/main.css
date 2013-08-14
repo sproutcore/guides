@@ -403,6 +403,7 @@ div.code_container div.filename span {
 #mainCol ul li {
   list-style: square;
   margin-left: 25px;
+  margin-bottom: 5px;
 }
 
 #subCol .content {
