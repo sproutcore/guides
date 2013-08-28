@@ -78,4 +78,7 @@ sc_credits:
     - fname: Eric
       lname: Theise
       github: erictheise
+    - fname: deeDude
+      lname:
+      github: deeDude
 ---
