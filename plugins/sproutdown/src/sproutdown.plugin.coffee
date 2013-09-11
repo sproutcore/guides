@@ -45,24 +45,30 @@ module.exports = (BasePlugin) ->
         #
         # Surround anything following 'NOTE:' (and two newlines) with a "<div class='note'>...</div>" block
         #
-        opts.content = opts.content.replace(/NOTE:?((.|\s)*?\n\n)/g, "\n\n<div class='note'><p>$1</p></div>\n\n")
+        opts.content = opts.content.replace(/NOTE(:| )((.|\s)*?\n\n)/g, "\n\n<div class='note'><p>$2</p></div>\n\n")
 
         #
         # Surround anything following 'INFO:' or 'TIP:' (and two newlines) with a "<div class='info'>...</div>" block
         #
-        opts.content = opts.content.replace(/(INFO|TIP):?((.|\s)*?\n\n)/g, "\n\n<div class='info'><p>$2</p></div>\n\n")
+        opts.content = opts.content.replace(/(INFO|TIP)(:| )((.|\s)*?\n\n)/g, "\n\n<div class='info'><p>$3</p></div>\n\n")
 
         #
         # Surround anything following 'WARNING:' (and two newlines) with a "<div class='warning'>...</div>" block
         #
-        opts.content = opts.content.replace(/WARNING:?((.|\s)*?\n\n)/g, "\n\n<div class='warning'><p>$1</p></div>\n\n")
+        opts.content = opts.content.replace(/WARNING(:| )((.|\s)*?\n\n)/g, "\n\n<div class='warning'><p>$2</p></div>\n\n")
 
         #
         # Add super-basic support for Markdown tables
         #
-        opts.content = opts.content.replace(/\n\|/g, "\n\n<table><tr><th>")
-        opts.content = opts.content.replace(/\|\n/g, "</th></tr></table>\n\n")
-        opts.content = opts.content.replace(/[ ]?\|[ ]?/g, "</th><th>")
+        opts.content = opts.content.replace(/\n\|/g, "\n\n<table><tr><td>")
+        opts.content = opts.content.replace(/\|\n/g, "</td></tr></table>\n\n")
+        opts.content = opts.content.replace(/[ ]?\|[ ]?/g, "</td><td>")
+
+        # Merge any tables connected only by white-space
+        opts.content = opts.content.replace(/<\/table>\s*<table>/g, "\n")
+
+        # Check for table headers
+        opts.content = opts.content.replace(/<td>_\.(.*?)<\/td>/g, "<th>$1</th>")
 
         #
         # Find the code ranges
