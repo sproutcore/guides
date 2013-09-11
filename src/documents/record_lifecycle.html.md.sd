@@ -1,15 +1,14 @@
 ---
 layout: default
+sc_draft: true
 sc_category: Models
 sc_order: 30
 sc_title: Understanding the Record Lifecycle
 sc_description: This guide describes the lifecycle of Record objects in SproutCore. By referring to this guide you will be able to:
-
 sc_list:
   - Understand the statuses and substatuses that a record can be in at any given time.
   - Understand how a record progresses from creation to modification to destruction in a SproutCore database.
 ---
-
 
 ### The Lifecycle of a SproutCore Record
 
@@ -97,7 +96,8 @@ status. At any point, if an error occurred or the record was left in an
 unstable status, it may enter the +SC.Record.ERROR+ status. Let's go into each
 of these statuses - and any attached sub-statuses - in more detail.
 
-### SC.Record.EMPTY status
+
+### SC.Record.EMPTY Status
 
 The +SC.Record.EMPTY+ status is a special, transitory status that a record is
 in before it has been fully initialized. +SC.Record.EMPTY+ is something of a
@@ -129,7 +129,7 @@ both of these cases, it is highly unlikely that you'll even see the +SC.Empty+
 status. If this is confusing, please see the sample record biographies, later
 in this document.
 
-### SC.Record.READY status
+### SC.Record.READY Status
 
 The +SC.Record.READY+ status is the 'normal' status for a record to exist in.
 If a record is in ready status, this implies three things:
@@ -573,3 +573,9 @@ less parallel to record creation.
   astrolabe.status & SC.Record.DESTROYED; // True - looks like we finished trying to delete the record.
   astrolabe.status === SC.Record.DESTROYED_CLEAN; // True - and it looks like the deletion succeeded!
 ```
+
+### Changelog
+
+* March 30, 2011: Fixed some spelling and clarity issues by [Jason Gignac](credits.html#jasonpgignac)
+* September 3, 2013: converted to Markdown format for DocPad guides by [deeDude](credits.html#deeDude)
+* September 11, 2013: added Changelog section by [Topher Fangio](credits.html#topherfangio)

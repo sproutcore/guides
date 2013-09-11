@@ -81,4 +81,7 @@ sc_credits:
     - fname: deeDude
       lname:
       github: deeDude
+    - fname: Jason
+      lname: Gignac
+      github: jasonpgignac
 ---
