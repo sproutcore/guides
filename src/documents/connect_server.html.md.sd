@@ -1,11 +1,11 @@
 ---
 layout: default
+sc_draft: true
 sc_category: Extras
 sc_order: 30
 sc_title: Connecting to a Server
 sc_description: There are a number of options for connecting your SproutCore application to a server. Here we give an overview of the options that you have.
 ---
-
 
 WARNING: This is a Draft Copy, and although the information in here is
 correct, it may be incomplete in places.
@@ -22,7 +22,7 @@ SproutCore (though it is "on" by default).
 
 If you come from a jQuery (or other JS framework), you're probably used to
 making your own AJAX calls and handling the response yourself. Toolkits like
-[BackBone](http://documentcloud.github.com/backbone/) work like this. If you
+[BackBone](http://backbonejs.org/) work like this. If you
 have a small app, and feel more comfortable with this approach:
 
 Follow along with the [Using a server without the store](no_store.html) Guide.
@@ -51,8 +51,8 @@ any).
 If you are coming to SproutCore with a server side app that you already have
 running, the fastest way of getting going is to contact your server and update
 the store to match based on the response. For example, if you want to update a
-record in the store, you would ask the server to update the record and then
-when the update is successful, you would update the store locally.
+record in the store, you would ask the server to update the record and when the
+update is successful, you would update the store locally.
 
 This is possible because SproutCore's datastore framework allows for nested
 stores. With a nested store, edits are "buffered" in the nested store. You
@@ -78,11 +78,11 @@ experience. See the next section if this is a concern.
 
 #### When you are building a new SproutCore app from scratch, without an existing server
 
-The final approach puts a SproutCore data store in 100% control.
+The final approach puts a SproutCore datastore in 100% control.
 
 This method of connecting to the server is to use SproutCore's default method
 of a DataSource. The Store is designed to interact with the DataSource,
-letting it know when things have changed. When using a dataSource you can
+letting it know when things have changed. When using a data source you can
 treat your Store like a local copy of your server. You can ask for records,
 save records or create records directly in the store, and your dataSource will
 then take care of propogating these changes to your server.
@@ -98,3 +98,5 @@ Have a look at the [Connecting With a DataSource](data_source.html) Guide.
 
 * March 2, 2011: initial version by [Geoffrey Donaldson](credits.html#geoffreyd) and [Erich Ocean](credits.html#erichocean)
 * March 22, 2011: minor spelling corrections by [Topher Fangio](credits.html#topherfangio)
+* September 4, 2013: converted to Markdown format for DocPad guides by [deeDude](credits.html#deeDude)
+* September 11, 2013: minor spelling/link corrections and update of Changelog by [Topher Fangio](credits.html#topherfangio)
