@@ -1,0 +1,813 @@
+---
+layout: default
+sc_category: Models
+sc_order: 10
+sc_title: SproutCore Records
+sc_description: This guide covers the basics of SproutCore's model layer. By referring to this guide, you will be able to:
+sc_list:
+  - Understand the anatomy of records.
+  - Define your application specific models and relations between them.
+  - Create and manage records.
+  - Understand how the store manages your data.
+  - Query the store for data.
+---
+
+### Models, Records and the Store
+
+In SproutCore the model layer is the lowest application layer and holds all
+your data as well as the business logic of your application. The controller
+layer calls into the model layer to modify data and retrieves data from the
+model layer. Generally, controllers use bindings to perform these functions. 
+
+The model layer is also responsible for talking to your server, fetching and
+committing data when necessary. The server communication aspect of the model
+layer is not covered in this guide, but in the guide about using data sources.
+
+Models are a blueprint for your data, defining the data schema of your
+application. This data schema is generally similar to the data schema of your
+back-end application. 
+
+In SproutCore, models are defined by subclassing +SC.Record+. When you actually
+want to create a data record from one of your blueprints, you use +SC.Store+ to
+create an instance of a +SC.Record+ class. Your application's store manages the
+lifecycle and the data of your records in a central place. When you retrieve or
+update a property from a record, the record actually uses the store to access
+the underlying data hash.
+
+All the classes of SproutCore's model layer are located in the *datastore*
+folder inside the main sproutcore folder. Have a look at the source code there
+if you want to have more in-depth information. The code has plenty of inline
+documentation and can be a valuable resource to gain deeper insights in how the
+store works.
+
+### Anatomy of Records
+
+A SproutCore record consists of four main components:
+
+* Store key
+* ID
+* Status
+* Data hash
+
+Each record has a unique _store key_ which is assigned when the record is
+created. The store key is a unique record identifier in the whole store and is
+used internally to relate IDs, statuses and data hashes to each other in an
+unambiguous way. The store key is the only one of the four components which is
+actually a property of +SC.Record+. The other three components are stored
+centrally in the store and mapped to the individual records using the store
+key.
+
+<div style='text-align: center'> ![Record Anatomy](images/records/record_anatomy.png) </div>
+
+All records of a given type have a unique _ID_, as usual in relational database
+systems. In fact the IDs of SproutCore records usually are the same as the
+primary keys of your data in the backend. Therefore, unlike the store key, the
+ID is not automatically created. Instead, it is your responsibility to assign a
+unique ID when creating or loading records.
+
+The _status_ of a record represents its current state with respect to the
+corresponding record on the server. The store uses the status property to
+determine which operations can be performed on the record, for instance, if a
+record can be edited safely and which records need to be committed back to the
+server. 
+
+Last but not least, the actual _data_ of a record is stored in a plain
+[JSON](http://www.json.org) data hash. When you get or set a property on a
+record, the value of this property is read from or written to the data hash. 
+
+#### Primary Record States
+
+There are five primary record status codes in SproutCore:
+
+* +SC.Record.EMPTY+
+* +SC.Record.READY+
+* +SC.Record.BUSY+
+* +SC.Record.DESTROYED+
+* +SC.Record.ERROR+
+
+The names of these states are pretty self explanatory: +EMPTY+ indicates a
+non-existent record. +READY+ indicates that the record can be safely edited.
++BUSY+ indicates that the record is currently locked for write operations,
+mostly because of an ongoing communication with the server. Finally +DESTROYED+
+is the state of destroyed records and +ERROR+ indicates that something went
+wrong while processing this record.
+
+The three main states +READY+, +BUSY+ and +DESTROYED+ have several sub-states.
+You will learn more about these sub-states below when you actually start
+working with records. You can also refer to the complete overview of record
+states in the last section of this guide.
+
+### Defining Your Models
+
+Defining a model in SproutCore is as easy as subclassing +SC.Record+:
+
+```javascript
+# filename: apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+
+});
+```
+
+You just have created your custom +App.Contact+ model class. However, this
+empty model is only of limited use, so let's add some record attributes.
+
+```javascript
+# filename: apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  firstName: SC.Record.attr(String),
+  lastName: SC.Record.attr(String),
+  age: SC.Record.attr(Number)
+});
+```
+
+WARNING: Property names defined on +SC.Record+ itself are reserved names,
+meaning they cannot be used for custom record attributes. Please refer to the
+[documentation of SC.Record](http://docs.sproutcore.com/symbols/SC.Record.html)
+for a list of all reserved names.
+
+We have used the +SC.Record.attr+ helper to add the +firstName+, +lastName+
+and +age+ attributes with the type of each attribute as first argument. The
+optional second argument of +SC.Record.attr+ is an option hash. E.g. we can add
+some default values to our attributes:
+
+```javascript
+# filename: apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  firstName: SC.Record.attr(String, { defaultValue: 'Unspecified' }),
+  lastName: SC.Record.attr(String, { defaultValue: 'Unspecified' }),
+  age: SC.Record.attr(Number, { defaultValue: 0 })
+});
+```
+
+Whenever you specify a +defaultValue+ option on an attribute, it will return
+this default value if that attribute is  +null+ or +undefined+ for a given
+instance.
+
+NOTE: The +defaultValue+ will not be written to the underlying data hash and
+therefore not committed back to the server. 
+
+If the name of the model's attribute property differs from the name you want to
+use in the data hash, you can specify a custom key for each attribute which
+will be used to access the data hash:
+
+```javascript
+# filename: apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  firstName: SC.Record.attr(String, { key: 'first_name' }),
+  lastName: SC.Record.attr(String, { key: 'last_name' }),
+  age: SC.Record.attr(Number)
+});
+```
+
+#### Attribute Types
+
+All basic JavaScript data types can be used as attribute types: 
+
+* String
+* Number
+* Boolean
+* Array
+* Object
+
+Additionally SproutCore comes with a predefined attribute helper for date and
+time values. 
+
+```javascript
+# filename: in apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  dateOfBirth: SC.Record.attr(SC.DateTime, { format: 'YY-mm-dd' })
+});
+```
+
+For a reference of how to specify your custom date format check the documentation of
+[SC.DateTime#toFormattedString](http://docs.sproutcore.com/symbols/SC.DateTime.html#toFormattedString).
+
+#### Record Ids
+
+In SproutCore you don't define the primary key property of your models
+explicitly like you defined your custom attributes above. The records' primary
+keys are managed by the store, so every record inherently has an ID property.
+However, you can specify the identifier of this ID property. This is where it
+can become a bit confusing at first... but let's clear it up step by step.
+
+First of all, by default SproutCore uses the identifier "guid" for the primary
+key. You can change this identifier by defining a +primaryKey+ property in your
+model:
+
+```javascript
+# filename: in apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  primaryKey: 'uid'
+});
+```
+
+NOTE: If you want to use your custom ID identifier in all your models, you can
+make your life a bit easier and your code more maintainable by defining a
+custom record base class, where you define the +primaryKey+ property. Then you
+can subclass this custom base class to create your models.
+
+However, this primary key identifier is only used to identify the ID property
+in the underlying data hash, but not to get or set the ID on a record. For
+example if you create a record and pass a hash with initial values, then
+SproutCore will now look for a property called "uid" in the hash when you don't
+explicitly specify an ID. If you want to get or set the ID of a record though,
+you always use +id+ independent of the +primaryKey+'s value:
+
+```javascript
+myRecord.get('id'); // note: NOT 'uid'
+myRecord.set('id', 1);
+```
+
+WARNING: You should never change the ID of an existing record using +set()+
+like above unless you know what you are doing.
+
+It is a best practice to never include the ID in the data hash, because then
+you end up with two IDs: the ID property in the data hash and the ID managed by
+the store. If you receive a JSON data hash from the server (where the ID is
+necessarily included) then you should extract and delete the ID from this hash
+before using it to load the record into the store.
+
+#### Relations
+
+Often models don't exist completely independently of each other but are related
+to other models. For example one or more addresses could belong to
+the +Contact+ model we created above. So let's define the +Address+ model first:
+
+```javascript
+# filename: apps/app/models/address.js
+App.Address = SC.Record.extend({
+  street: SC.Record.attr(String),
+  number: SC.Record.attr(Number)
+});
+```
+
+##### One-to-One Relations
+
+If we only need one address to be associated with each contact, then we can use
+the +toOne+ relation helper:
+
+```javascript
+# filename: in apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  address: SC.Record.toOne(
+    'App.Address', 
+    { isMaster: YES, inverse: 'contact' }
+  )
+});
+```
+
+```javascript
+# filename: in apps/app/models/address.js
+App.Address = SC.Record.extend({
+  contact: SC.Record.toOne(
+    'App.Contact', 
+    { isMaster: NO }
+  )
+});
+```
+
+Notice the +isMaster+ and +inverse+ options used with the +toOne+ helper.
+The +isMaster: YES+ option on the +address+ attribute ensures that the +Contact+
+record actually gets marked as changed when you assign a different +Address+
+record to it. You should always set the +isMaster+ option to +YES+ on one side
+of the relation and to +NO+ on the other to control which record is committed
+back to the server when you alter the relation. 
+
+The +inverse+ option specifies the property name of the inverse relation on the
+associated model and should be set on the side of the relation where +isMaster+
+is set to +YES+.
+
+In the underlying data hash a +toOne+ relation is simply represented as the ID
+of the associated record.
+
+NOTE: It is not mandatory to define both directions of the relation if you
+don't need it.
+
+##### One-to-Many Relations
+
+If we want to associate multiple addresses with a certain contact, then we have
+to use the +toMany+ relation helper:
+
+```javascript
+# filename: in apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  address: SC.Record.toMany(
+    'App.Address', 
+    { isMaster: YES, inverse: 'contact' }
+  )
+});
+```
+
+```javascript
+# filename: in apps/app/models/address.js
+App.Address = SC.Record.extend({
+  contact: SC.Record.toOne(
+    'App.Contact', 
+    { isMaster: NO }
+  )
+});
+```
+
+The only thing that changed compared to the one-to-one example above is
+the +toMany+ keyword in the +Contact+ model. The +isMaster+ and +inverse+ options
+apply to +toMany+ relations in the same way as they do to +toOne+ relations.
+
+In the underlying data hash a +toMany+ relation is represented as an array of
+IDs of the the associated records.
+
+NOTE: It is not mandatory to define both directions of the relation if you
+don't need it.
+
+##### Many-to-Many Relations
+
+If we not only want to relate multiple addresses to one contact, but also
+relate one address to multiple contacts, we have to use +toMany+ on both sides
+of the relation. SproutCore's +toMany+ helper manages many-to-many relations
+without a join table, which you would use in a relational database:
+
+```javascript
+# filename: in apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  address: SC.Record.toMany(
+    'App.Address', 
+    { isMaster: YES, inverse: 'contact' }
+  )
+});
+```
+
+```javascript
+# filename: in apps/app/models/address.js
+App.Address = SC.Record.extend({
+  contact: SC.Record.toMany(
+    'App.Contact', 
+    { isMaster: NO }
+  )
+});
+```
+
+Again the only thing that changed compared to the one-to-many example from
+above is the use of the +toMany+ helper in the +Address+ model.
+
+Since a many-to-many relation effectively is constructed by using +toMany+ on
+both sides, it is represented in the underlying data hashes of both sides of
+the relation as an array of record IDs.
+
+NOTE: It is not mandatory to define both directions of the relation if you
+don't need it.
+
+#### Other Properties on Model Classes
+
+Any property defined on a model class not using +SC.Record.attr+ is a transient
+property. This means that its value is not passed through to the data hash of
+the record and therefore is neither committed back to the server nor loaded
+from incoming JSON data.
+
+```javascript
+# filename: in apps/app/models/contact.js
+App.Contact = SC.Record.extend({
+  // transient property 
+  isContact: YES, 
+
+  // transient computed property
+  fullName: function() {
+    return this.get('firstName') + ' ' + this.get('lastName');
+  }.property('firstName', 'lastName').cacheable()
+});
+```
+
+NOTE: If you use the +set+ method on an undefined property, SproutCore by
+default will pass the value through to the underlying data hash. You can turn
+this behavior off by setting +ignoreUnknownProperties: YES+ in your model
+classes.
+
+### Using Your Models
+
+Now that we have defined our +Contact+ and +Address+ models it's time to
+actually create some records. All records are managed by the store, so we have
+to make sure first that we have an instance of +SC.Store+ available. Usually
+the store is instantiated somewhere in your application's <code>core.js</code>
+file:
+
+```javascript
+# filename: in apps/app/core.js
+App = SC.Application.create({
+  store: SC.Store.create().from(SC.Record.fixtures)
+});
+```
+
+In this example, we create the store with fixtures as data source. You can read
+more about [fixtures](fixtures.html) and other data sources in the respective
+guides.
+
+#### Creating Records
+
+You can create records of a previously defined record type like this:
+
+```javascript
+contact = App.store.createRecord(App.Contact, {});
+```
+
+The first argument of the store's +createRecord+ method is the record type. The
+second argument is a hash with optional initial values. Furthermore you can
+specify the record ID as third argument:
+
+```javascript
+contact = App.store.createRecord(
+  App.Contact, 
+  { firstName: 'Florian', lastName: 'Kugler' },
+  99
+);
+```
+
+Usually you will not specify an ID like this, because either you get the record
+ID from the server, or you want to use some kind of temporary ID on new records
+until they get committed to the server, which then can return a persistent ID.
+So let's use a temporary ID:
+
+```javascript
+contact = App.store.createRecord(
+  App.Contact, 
+  { firstName: 'Florian', lastName: 'Kugler' },
+  - Math.random(Math.floor(Math.random() * 99999999))
+);
+```
+
+NOTE: IDs are not limited to numbers, but can also be strings.
+
+When you create a record its status will be +READY_NEW+, indicating that the
+record is editable and does not exist on the server yet.
+
+##### Creating Associated Records
+
+When creating associated records, you first have to create the records and
+afterwards establish the connection between the records.
+
+```javascript
+contact = App.store.createRecord(App.Contact, {/*...*/}, 1);
+address = App.store.createRecord(App.Address, {/*...*/}, 1);
+
+// for a toOne relation
+contact.set('address', address); 
+
+// for a toMany relation
+contact.get('address').pushObject(address); 
+```
+
+In this case we're adding the +Address+ record to the +Contact+ record,
+because +Contact+ is defined as master in this relation and has the inverse property
+set. It is important to add the non-master record to the master record in order
+to set up the connection between these records properly.
+
+#### Updating Records
+
+Updating record attributes is as easy as calling the +set+ method:
+
+```javascript
+contact.set('firstName', 'Jack');
+```
+
+In order to be able to update record attributes the record has to be in
+a +READY+ state. If you update an attribute of a newly created record, the status
+will still be +READY_NEW+. If you update an attribute of a record that was
+previously loaded from the server or committed to the server, then the status
+will transition from +READY_CLEAN+ to +READY_DIRTY+.
+
+NOTE: Dirty states always indicate that the record needs to be committed back
+to the server.
+
+#### Destroying Records
+
+To delete a certain record, just call the +destroy+ method on it:
+
+```javascript
+contact.destroy();
+```
+
+Just as when updating a record, the record has to be in a +READY+ state to be
+able to be destroyed. If you destroy a newly created record (which was not yet
+committed to the server) the status will transition from +READY_NEW+
+to +DESTROYED_CLEAN+, indicating that there is no need to tell the server about
+the destroy, since it never knew about this record in the first place. If you
+destroy a record loaded from the server, then the state will transition
+from +READY_CLEAN+  (or +READY_DIRTY+ if you changed it before)
+to +DESTROYED_DIRTY+, indicating that the server needs to be notified about this
+destroy action.
+
+#### Getting Information about Records
+
+You can get the ID, the store key and the status of a record by calling the
+ +get+ method on the respective properties:
+
+```javascript
+id = contact.get('id');
+storeKey = contact.get('storeKey');
+status = contact.get('status');
+```
+
+To test if the record is currently in a certain state, use JavaScript's binary
+operators:
+
+```javascript
+status = contact.get('status');
+
+// checks if the record is in any READY state
+if (status & SC.Record.READY) { 
+
+}
+
+// checks if the record is in the READY_NEW state
+if (status === SC.Record.READY_NEW) { 
+
+}
+```
+
+NOTE: For a complete list of record state constants see the
+[documentation of the SC.Record class](http://docs.sproutcore.com/symbols/SC.Record.html).
+
+### Finding Records in the Store
+
+Because the store manages all records in memory, you can query it for records
+of a certain type, records with a certain ID or more complex search criteria.
+
+#### Finding a Specific Record by ID
+
+If you know the type and the ID of the record you want to retrieve, you can
+just hand these two parameters to the store's +find+ method:
+
+```javascript
+contact = App.store.find(App.Contact, 1);
+```
+
+This statement returns the record of type +App.Contact+ with the ID 1. If the
+record does not exist, then the return value will be +null+. 
+
+WARNING: When +find+ is called with a record type and an ID as arguments, it
+only looks for records of exactly this type. It will not return records which
+type is a subclass of the specified record type.
+
+#### Finding All Records of a Certain Type
+
+To find all records of one record type, just pass that type to the +find+
+method:
+
+```javascript
+contacts = App.store.find(App.Contact);
+```
+
+If you want to find all records of several record types, pass an array of
+record types to the +find+ method:
+
+```javascript
+contactsAndAddresses = App.store.find(
+  [App.Contact, App.Address]
+);
+```
+
+You can also find all records of a certain type and all its subclasses:
+
+```javascript
+allRecords = App.store.find(SC.Record);
+```
+
+The above statement returns all records in your application, because we are
+asking for all records of type +SC.Record+, which is SproutCore's base model
+class.
+
+Internally +find+ converts the specified record types to a query. +find+ is
+just a convenient method to save some characters of typing required to create
+the query yourself. Read on in the next section how to do this and to learn
+more about the return type of +find+.
+
+#### Using Queries
+
+SproutCore features a SQL-like query language to facilitate more complex
+queries to the store. To demonstrate, let us first translate the +find+ calls
+of the previous section to using queries, as +find+ does internally. 
+
+To build a query which looks for all records of a certain type, you just
+call +SC.Query.local+ with this record type as argument and pass this query
+to +find+:
+
+```javascript
+query = SC.Query.local(App.Contact);
+contacts = App.store.find(query);
+```
+
+As you can see, the method from the previous section of directly passing the
+record type to the +find+ method just saves you the call of +SC.Query.local+.
+Querying for multiple record types or all records follows the same pattern:
+
+```javascript
+query = SC.Query.local([App.Contact, App.Address]);
+contactsAndAddresses = App.store.find(query);
+
+query = SC.Query.local(SC.Record);
+allRecords = App.store.find(query);
+```
+
+Whenever you call +SC.Store+'s +find+ method with a query (or using one of the
+convenient ways from the previous section) it returns a +SC.RecordArray+. As
+the name indicates, +SC.RecordArray+ implements +SC.Array+ and therefore you
+can use it like a normal read-only array. For example:
+
+```javascript
+contacts.firstObject(); // returns first result
+contacts.objectAt(3); // returns fourth result
+contacts.lastObject(); // returns last result
+```
+
+Please refer to the [documentation of SC.Array](http://docs.sproutcore.com/symbols/SC.Array.html)
+to learn more about the array access methods.
+
+NOTE: If the query was not yet fetched from the server, the store automatically
+forwards it to the data source to load the data from the server.
+
+NOTE: Objects in an +SC.RecordArray+ are automatically updated by the store
+when you add or remove records to or from the store which match the
+corresponding query.
+
+##### Conditions
+
+You can limit the results of a query to match certain conditions:
+
+```javascript
+query = SC.Query.local(App.Contacts, { 
+  conditions: 'firstName = "Florian"' 
+});
+
+results = App.store.find(query);
+```
+
+The above query returns all records of type +App.Contacts+ and subclasses of
+this type where the +firstName+ attribute matches the value "Florian". You can
+combine several conditions using the logical operators +AND+, +OR+ and +NOT+ as
+well as parentheses +(+ and +)+ for grouping:
+
+```javascript
+query = SC.Query.local(App.Contacts, { 
+  conditions: 'firstName = "Florian" AND lastName = "Kugler"' 
+});
+
+query = SC.Query.local(App.Contacts, { 
+  conditions: '(firstName = "Florian" AND lastName = "Kugler") OR age > 30' 
+});
+```
+
+However, you will not want to hard-code the query conditions, but to make use
+of variables containing the desired values. For this you can use query
+parameters.
+
+SproutCore handles two different types of query parameters: sequential and
+named parameters. Let's rephrase the above query using sequential parameters:
+
+```javascript
+query = SC.Query.local(App.Contacts, { 
+  conditions: '(firstName = %@ AND lastName = %@) OR age > %@',
+  parameters: ['Florian', 'Kugler', 30]
+});
+```
+
+The elements of the +parameters+ array will be inserted sequentially at the
+positions of the +%@+ placeholders. Now lets do the same with named parameters:
+
+```javascript
+query = SC.Query.local(App.Contacts, { 
+  conditions: '(firstName = {first} AND lastName = {last}) ' + 'OR age > {age}',
+  parameters: { 
+    first: 'Florian', 
+    last: 'Kugler', 
+    age: 30
+  }
+});
+```
+
+Which of these methods you use is mainly a matter of personal preference and
+the complexity of your query.
+
+The arguments inside the query conditions can be of the following types:
+
+* Attribute names of the record type queried for.
+* +null+ and +undefined+.
+* +true+ and +false+.
+* Integer and floating point numbers.
+* Strings (single or double quoted).
+
+Furthermore you can use the following comparison operators:
+
+* +=+, +!=+, +<+, +<=+, +>=+.
+* +BEGINS_WITH+ (checks if a string starts with another one).
+* +ENDS_WITH+ (checks if a string ends with another one).
+* +CONTAINS+ (checks if a string contains another one, or if an object is in an array).
+* +MATCHES+ (checks if a string is matched by a regexp, you will have to use a parameter to insert the regexp).
+* +ANY+ (checks if the thing on its left is contained in the array on its right, you will have to use a parameter to insert the array).
+* +TYPE_IS+ (unary operator expecting a string containing the name of a model class on its right side, only records of this type will match).
+
+##### Sorting
+
+To obtain ordered query results you can simply add the +orderBy+ option to your query:
+
+```javascript
+query = SC.Query.local(App.Contacts, { 
+  conditions: 'age > 30',
+  orderBy: 'lastName, firstName ASC'
+});
+```
+
+In this case the results are sorted in an ascending order, first by last name
+and second by first name. If you omit the +ASC+ keyword, the results are by
+default sorted in an ascending order. To sort them in descending order, put the
+keyword +DESC+ after the name of the property.
+
+NOTE: If you need a custom sorting order, you can register your own comparison
+operator for a specific model attribute using +SC.Query.registerComparison+.
+Please refer to the
+[documentation](http://docs.sproutcore.com/symbols/SC.Query.html#.registerComparison)
+for further details.
+
+##### Scoped Queries
+
+All the queries you used until now will cause the store to match all records in
+memory with the query's conditions. You can also build one query on top of
+another to construct more efficient query trees:
+
+```javascript
+query1 = SC.Query.local(App.Contacts, { 
+  conditions: 'age > 30',
+});
+
+aboveThirty = App.store.find(query1);
+
+query2 = SC.Query.local(App.Contacts, {
+  conditions: 'lastName BEGINS_WITH "K"'
+})
+
+results = aboveThirty.find(query2);
+```
+
+The second query is based on the first one by calling +find+ on
+the +RecordArray+ of the first query instead of +App.store+. The second query
+matches the results of the first query against its own conditions. In this case
+it would return all +Contact+ records where +age+ is greater than 30 and the
+last name starts with the letter "K".
+
+NOTE: Scope queries can be thought as chained queries using the AND logical
+operator.
+
+##### Local vs. Remote Queries
+
+You will have noticed the keyword +local+ in the +SC.Query.local+ call we used
+until now to create the queries. Actually the keyword +local+ is somewhat
+confusing, because local queries do not act exclusively on the in-memory store
+but also call the data source to fetch records from the server. The main
+characteristic of local queries is that the store automatically updates their
+results whenever the contents of the local in-memory store change.
+
+Remote queries (build with +SC.Query.remote+), on the other hand, return
+a +SC.RecordArray+ which is not updated automatically. "Remote" doesn't mean
+necessarily that the results have to be fetched from a remote server. They
+could also be loaded from a local browser storage. It's admittedly a bad choice
+of names.
+
+WARNING: You should use local queries in almost all cases unless you know what
+you're doing.
+
+#### Extending SproutCore's Query Language
+
+If SproutCore's built-in query operators are not sufficient for your use case,
+you can easily extend the query language. For example, by default there are no
+bit-wise operators, so let's implement a +BITAND+ operator which evaluates
+to +true+ if the bit-wise and of the two arguments is unequal to zero:
+
+```javascript
+SC.Query.registerQueryExtension('BITAND', {
+  reservedWord: true,
+  leftType: 'PRIMITIVE',
+  rightType: 'PRIMITIVE',
+  evalType: 'BOOLEAN',
+
+  evaluate: function (r,w) {
+    var left = this.leftSide.evaluate(r,w);
+    var right = this.rightSide.evaluate(r,w);
+    return (left & right) !== 0;
+  }
+});
+```
+
+We call +SC.Query.registerQueryExtension+ to register the new operator with the
+name +BITAND+ as first argument. The key components of the hash passed as
+second argument are +evalType+ and +evaluate+. +evalType+ is either +BOOLEAN+
+(if you return a boolean value in +evaluate+) or +PRIMITIVE+ (if you return
+e.g. a number or a string). The actual operation is implemented in
+the +evaluate+ function after the operands are retrieved
+by +this.leftSide.evaluate(r,w)+ and +this.rightSide.evaluate(r,w)+. 
+
+NOTE: Look at the
+[source of SC.Query](https://github.com/sproutcore/sproutcore/blob/master/frameworks/datastore/system/query.js)
+for more examples of how to implement query operators.
+
+### Changelog
+
+* February 6, 2011: initial version by [Florian Kugler](credits.html#fkugler)
+* March    2, 2011: added filenames and small fixes by [Topher Fangio](credits.html#topherfangio)
+* March 2, 2011: minor corrections by [Florian Kugler](credits.html#fkugler)
+* October 23, 2013: converted to Markdown format for DocPad guides by [Topher Fangio](credits.html#topherfangio)
