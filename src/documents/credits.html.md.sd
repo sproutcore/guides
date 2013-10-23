@@ -81,4 +81,7 @@ sc_credits:
     - fname: deeDude
       lname:
       github: deeDude
+    - fname: William
+      lname: Estoque
+      github: westoque
 ---
