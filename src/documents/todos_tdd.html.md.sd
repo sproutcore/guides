@@ -3,7 +3,7 @@ layout: default
 sc_draft: true
 sc_category: Testing
 sc_order: 50
-sc_title: Development Using TDD
+sc_title: SproutCore Development Using TDD
 sc_description: This guide covers building the common TODOS example project using test-driven development (TDD) techniques.  After reading this guide, you will be able to:
 sc_list:
   - Start a new SproutCore project using TDD.
