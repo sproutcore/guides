@@ -1,8 +1,8 @@
 ---
 layout: default
 sc_category: Testing
-sc_order: 40
-sc_title: Unit Testing
+sc_order: 30
+sc_title: Writing Unit Tests
 sc_short_description: Writing Unit Test Cases
 sc_description: After reading this guide, you will be able to:
 sc_list:

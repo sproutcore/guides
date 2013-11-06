@@ -1,8 +1,8 @@
 ---
 layout: default
 sc_category: Testing
-sc_order: 30
-sc_title: Unit Testing 1
+sc_order: 10
+sc_title: Unit Testing
 sc_short_description: About Unit Testing
 sc_description: This guide covers the SproutCore unit test API and some ideas on how to use it. After reading this guide, you will:
 sc_list:

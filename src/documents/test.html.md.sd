@@ -1,8 +1,8 @@
 ---
 layout: default
 sc_draft: true
-sc_category: Testing
-sc_order: 30
+sc_category: Invisible
+sc_order: 10
 sc_title: Test Page
 sc_short_description: Making Sure it Works
 sc_description: This is a sample guide designed to test:

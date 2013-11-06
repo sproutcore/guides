@@ -2,7 +2,7 @@
 layout: default
 sc_category: Contributing to SproutCore
 sc_order: 30
-sc_title: SproutCore Documentation Guidelines
+sc_title: Documentation Guidelines
 sc_description: This guide will walk you through writing documentation for your SproutCore classes in a format that is friendly to jsdoc-toolkit, the library used for generating documentation from code.
 ---
 

@@ -1,9 +1,8 @@
 ---
 layout: default
 sc_category: Contributing to SproutCore
-sc_order: 30
-sc_title: Contribute
-sc_short_description: Adding New Guides
+sc_order: 40
+sc_title: Contributing Guides
 sc_description: The SproutCore documentation team welcomes any and all help from the community. If you are interested in contributing to the effort, the information below will let you know how to do so and who to contact in order to get help and guidance.
 ---
 

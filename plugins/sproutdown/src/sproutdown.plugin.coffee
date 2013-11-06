@@ -156,11 +156,10 @@ module.exports = (BasePlugin) ->
         buffer += document.printIndexDropdownSection(document, 'Views')
         buffer += document.printIndexDropdownSection(document, 'Models')
         buffer += document.printIndexDropdownSection(document, 'Theming')
-        buffer += document.printIndexDropdownSection(document, 'Testing')
         buffer += "</dl>"
 
         buffer += "<dl class='R'>"
-        buffer += document.printIndexDropdownSection(document, 'Best Practices')
+        buffer += document.printIndexDropdownSection(document, 'Testing')
         buffer += document.printIndexDropdownSection(document, 'Extras')
         buffer += document.printIndexDropdownSection(document, 'Contributing to SproutCore')
         buffer += document.printIndexDropdownSection(document, 'Thanks')

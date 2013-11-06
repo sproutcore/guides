@@ -1,8 +1,8 @@
 ---
 layout: default
-sc_category: Best Practices
+sc_category: Contributing to SproutCore
 sc_order: 10
-sc_title: Javascript Style Guide
+sc_title: Javascript Guidelines
 sc_description: Coding and naming convention style guidelines make your code clearer, easier to read and, they can also actually improve performance.<br /><br />Although you can use any convention that makes sense for you, the guidelines described here are based on years of experience from SproutCore developers in writing understandable and maintainable code.<br /><br />The SproutCore coding and naming convention style guidelines are based on the Cocoa style guide from <a href='http://cocoadevcentral.com/'>CocoaDevCentral</a>.
 sc_list:
 ---

@@ -1,6 +1,5 @@
 ---
 layout: default
-sc_draft: true
 sc_category: Testing
 sc_order: 50
 sc_title: SproutCore Development Using TDD

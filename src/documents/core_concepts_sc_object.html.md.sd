@@ -1,7 +1,7 @@
 ---
 layout: default
 sc_category: Start Here
-sc_order: 30
+sc_order: 40
 sc_title: Classes and SC.Object
 sc_description: The guide covers some of the core concepts of object-oriented programming with the SproutCore framework. By referring to this guide, you will be able to:
 sc_list:
