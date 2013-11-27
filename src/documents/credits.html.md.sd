@@ -84,4 +84,7 @@ sc_credits:
     - fname: William
       lname: Estoque
       github: westoque
+    - fname: Jeff
+      lname: Pittman
+      github: geojeff
 ---

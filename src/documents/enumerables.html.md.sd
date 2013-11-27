@@ -271,7 +271,5 @@ people.someProperty('isHappy', true)  // true
 ### Changelog
 
 * May 3, 2011: initial version by [Yehuda Katz](credits.html#wycats)
-* August 14, 2013: converted to Markdown format for DocPad guides by
-  [Topher Fangio](credits.html#topherfangio)
-* August 14, 2013: minor formatting and example updates by
-  [Topher Fangio](credits.html#topherfangio)
+* August 14, 2013: converted to Markdown format for DocPad guides by [Topher Fangio](credits.html#topherfangio)
+* August 14, 2013: minor formatting and example updates by [Topher Fangio](credits.html#topherfangio)

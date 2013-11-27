@@ -578,9 +578,9 @@ method as well.
 
 ### Changelog
 
-* January 12, 2011: initial partial version by [Peter Wagenet](credits.html#pwagenet)
-* January 19, 2011: further updates by [Peter Wagenet](credits.html#pwagenet)
-* January 24, 2011: added section on "Bindings and Chained Property Paths" by [Peter Wagenet](credits.html#pwagenet)
+* January 12, 2011: initial partial version by [Peter Wagenet](credits.html#wagenet)
+* January 19, 2011: further updates by [Peter Wagenet](credits.html#wagenet)
+* January 24, 2011: added section on "Bindings and Chained Property Paths" by [Peter Wagenet](credits.html#wagenet)
 * March 2, 2011: fixed paragraph formmatting by [Topher Fangio](credits.html#topherfangio)
 * March 2, 2011: fixed grammar, clarified phrasing, added examples to the Observer section by [Jason Gignac](credits.html#jasonpgignac)
 * April 13, 2011: "Binding Transforms" and "Manually Creating and Disconnecting Bindings" sections copied from wiki and edited by [Vibul Imtarnasan](credits.html#veebs)
