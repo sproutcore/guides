@@ -1,5 +1,6 @@
 .DS_Store
 .bundle
+.docpad.db
 node_modules
 out
 *.swp
