@@ -91,6 +91,20 @@ your browser window to see your latest changes.
 You can get your changes and additions included by creating a [pull request](https://help.github.com/articles/using-pull-requests) on GitHub using the
 topic branch you created above.
 
+## Deploying a Release
+
+In order to deploy a release, you'll need to have the
+[sproutcore-guides.github.com](https://github.com/sproutcore-guides/sproutcore-guides.github.com) repository checked out
+into a local directory. All you need to do is use DocPad to generate the guides, copy that to the checked out live repo
+and then commit and push. It should looks something like this:
+
+    docpad generate -e production
+    rsync -av out/ ../sproutcore-guides.github.com
+    cd ../sproutcore-guides.github.com
+    git status
+    git commit -am "New release of guides..."
+    git push
+
 ## More Information
 
 For more information on the SproutCore Guides, including a more in depth look at committing your additions and changes, see the [contributing
