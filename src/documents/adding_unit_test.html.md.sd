@@ -3,7 +3,6 @@ layout: default
 sc_category: Testing
 sc_order: 20
 sc_title: Adding a Unit Test
-sc_short_description: Adding Unit Test Files
 sc_description: This guide covers unit test file generation and organization. After reading this guide, you will be able to:
 sc_list:
   - Automatically generate a unit test file that will be placed in the correct location.

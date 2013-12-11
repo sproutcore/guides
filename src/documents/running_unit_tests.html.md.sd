@@ -3,7 +3,6 @@ layout: default
 sc_category: Testing
 sc_order: 40
 sc_title: Running Unit Tests
-sc_short_description: Running Unit Tests
 sc_description: After reading this guide, you will be able to:
 sc_list:
   - Understand how unit test files are loaded and executed

@@ -3,7 +3,6 @@ layout: default
 sc_category: Theming
 sc_order: 20
 sc_title: Theming Your App
-sc_short_description: Theming Your App
 sc_description: This guide covers restyling SproutCore's built-in controls in your app. You'll learn to:
 sc_list:
   - Give your app its own theme.

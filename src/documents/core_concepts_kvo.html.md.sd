@@ -3,7 +3,6 @@ layout: default
 sc_category: Start Here
 sc_order: 50
 sc_title: Computed Properties, Observers and Bindings
-sc_short_description: Computed Properties, Observers and Bindings
 sc_description: The guide covers some of the core concepts of properties, bindings and key-value observing in SproutCore. By referring to this guide, you will be able to:
 sc_list:
   - Be familiar with Computed Properties, Observers and Bindings.
