@@ -214,7 +214,7 @@ module.exports = (BasePlugin) ->
           # in the middle of another request
           avatar_cache[githubUsername] = "/images/credits/unknown.jpg"
 
-          https.request({ host: "api.github.com", path: "/users/#{githubUsername}" }, (res) ->
+          https.request({ host: "api.github.com", path: "/users/#{githubUsername}", headers: { 'user-agent': 'sproutcore' } }, (res) ->
             str = ''
 
             res.on('data', (chunk)->
@@ -223,6 +223,9 @@ module.exports = (BasePlugin) ->
 
             res.on('end', ()->
               json = JSON.parse(str)
+
+              if (!json)
+                console.log(" *** ERROR: Could not parse JSON: ", str)
               avatar_cache[githubUsername] = json['avatar_url']
               avatar_cache['timestamp'] = (new Date()).getTime()
 
@@ -230,7 +233,7 @@ module.exports = (BasePlugin) ->
 
               fs.writeFile(__dirname + '/.avatar_cache.json', JSON.stringify(avatar_cache, null, 2), (err) ->
                 if (err)
-                  console.log(" ERROR: Could not save cache file: ", err)
+                  console.log(" *** ERROR: Could not save cache file: ", err)
               )
             )
           ).end()
