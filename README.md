@@ -62,6 +62,15 @@ $ git pull upstream/master
 $ git checkout -b <branchname>
 ```
 
+## Create the Avatar Cache
+
+Our sproutdown plugin will attempt to cache the avatars so that we do not hit GitHub more than necessary. Run the following
+command to initialize the file.
+
+```bash
+echo '{}' > plugins/sproutdown/src/.avatar_cache.json
+```
+
 ## Creating or Modifying a Guide
 
 Guides reside in the `src` directory and are written in a modified version of the [Markdown](http://daringfireball.net/projects/markdown/) markup
