@@ -7,3 +7,4 @@ out
 *.swo
 .avatar_cache.json
 /.idea
+.docpad.db

@@ -26,7 +26,7 @@ will populate your app with data without having to hit your server in
 development.  When you are ready to interact with your backend, you can create
 your own DataSource that will send and receive data to and from your backend.
 
-NOTE: A DataSource is different from the Store. The Store is the in memory
+NOTE: A DataSource is different from the Store. The Store is the in-memory
 storage for your records, while the DataSource is the communication layer
 linking the store to your backend.
 
@@ -113,7 +113,7 @@ The API also allows us to send a PUT to update an existing ToDo item and DELETE
 to remove it.
 
 A PUT or DELETE response will not have a body, we will know that everything is
-ok if HTTP status is 200
+ok if the HTTP status code is 200 (ok).
 
 With this basic understanding of how the server works, we can get started
 writing our DataSource.
@@ -174,7 +174,7 @@ NOTE: Our DataSource will be written assuming that
 queries are what you will be using most of the time. Remote queries will be
 covered in a separate guide.
 
-When you call +App.store.find(MyApp.QUERY_ALL_TODOS)+, the store will return a
+When you call +MyApp.store.find(MyApp.QUERY_ALL_TODOS)+, the store will return a
 [RecordArray](http://docs.sproutcore.com/symbols/SC.RecordArray.html)
 containing matching records (or an empty recordArray, if nothing matches). This
 RecordArray is linked to the query so that it will automatically update any
@@ -248,7 +248,7 @@ also use the following:
 [.json](http://docs.sproutcore.com/symbols/SC.Request.html#json) lets the
 request know that we are expecting the server to send back JSON, so it will
 automatically parse it for us. Without this, the return value would be a
-string. We could also have called +.xml()+ if your server talks XML.
+string. We could also have called +.xml()+ if your server speaks XML.
 
 [.notify](http://docs.sproutcore.com/symbols/SC.Request.html#notify) sets the
 callback method. By default SC.Requests are asynchronous, so the app can keep
@@ -309,7 +309,7 @@ var body = response.get('body')
 ```
 
 NOTE: Note how we didn't use +.get('records')+, this is because the JSON is
-converted into plain JS, not +SC.Object+'s.
+converted into plain Javascript objects, not +SC.Object+'s.
 
 Now we call
 [loadRecords](http://docs.sproutcore.com/symbols/SC.Store.html#loadRecords) on
@@ -328,7 +328,7 @@ Finally, we call
 [.dataSourceDidFetchQuery](http://docs.sproutcore.com/symbols/SC.Store.html#dataSourceDidFetchQuery)
 to let the store know that we have finished loading records, and it is now time
 to update the passed in query. The query that we passed in is the one that was
-given to us by +fetch+.  It was passed in through to the callback.
+given to us by +fetch+; it was passed as a parameter in the callback.
 
 If the server returned an error, such as +404+ Not Found, or the +500+ series
 of server errors, then we'll let the store know with
@@ -379,6 +379,26 @@ The fetch method will now use a dynamic URL for each record type.
 
 NOTE: The [fmt](http://docs.sproutcore.com/symbols/String.html#String#fmt)
 function outputs a formatted string.
+
+Alternatively, you could dynamically generate the path using built-in methods
+such as [decamalize](http://docs.sproutcore.com/#doc=String&method=decamelize&src=false)
+and [pluralize](http://docs.sproutcore.com/#doc=SC.String&method=.pluralize&src=false)
+as in the code below:
+
+```javascript
+fetch: function(store, query) {
+  var path = query.recordType.decamalize().pluralize();
+
+  SC.Request.getUrl('/%@/'.fmt(path))
+    .notify(this, 'fetchDidComplete', store, query)
+    .json().send()
+
+  return YES;
+},
+```
+
+However, this may not work for more complex scenarios, so specifically defining
+the resource path on the model is a much more robust approach.
 
 #### Change of Mind
 
@@ -575,7 +595,7 @@ to make sure that the local record is the same as the server copy.
 
 TODO: Some important things to note will go here.
 
-#### A Records PrimaryKey
+#### A Record's PrimaryKey
 
 By default, SproutCore sets the primaryKey property of records to 'guid'. A
 common convention of many server side APIs is to use just 'id'.  To make your
@@ -620,3 +640,4 @@ that there are great improvements coming.
 * March 22, 2011: minor fixes/formatting by [Topher Fangio](credits.html#topherfangio)
 * April 18, 2011: corrections and fixes by [Piotr Sarnacki](credits.html#drogus)
 * August 14, 2013: converted to Markdown format for DocPad guides by [Topher Fangio](credits.html#topherfangio)
+* January 31, 2014: minor updates/additions by [Topher Fangio](credits.html#topherfangio)
