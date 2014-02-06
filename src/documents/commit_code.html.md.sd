@@ -31,7 +31,7 @@ var JSLINT_PREFS = {
     browser    : true,  // if the standard browser globals should be predefined
     cap        : false, // if upper case HTML should be allowed
     debug      : true,  // if debugger statements should be allowed
-    eqeqeq     : true, // if === should be required
+    eqeqeq     : true,  // if === should be required
     evil       : false, // if eval should be allowed
     forin      : true,  // if for in statements must filter
     fragment   : false, // if HTML fragments should be allowed
@@ -49,7 +49,7 @@ var JSLINT_PREFS = {
     white      : false, // if strict whitespace rules apply
     widget     : false, // if the Yahoo Widgets globals should be predefined
     indent: 2,
-    predef: ['SC', 'require', 'sc_super', 'YES', 'NO', 'static_url', 'sc_static', 'sc_resource', 'sc_require', 'module', 'test', 'equals', 'same', 'ok', 'CoreTest', 'SproutCore', '$', 'jQuery', 'start', 'stop', 'expect', 'htmlbody']
+    predef: ["SC", "require", "sc_super", "YES", "NO", "static_url", "sc_static", "sc_resource", "sc_require", "module", "test", "equals", "same", "ok", "CoreTest", "SproutCore", "$", "jQuery", "start", "stop", "expect", "htmlbody"]
 };
 ```
 
@@ -164,3 +164,4 @@ Avoid things that are known to be slow:
   * March 3, 2011: minor adjustments by [Peter Wagenet](credits.html#wagenet)
   * March 3, 2011: minor grammatical/formatting changes by [Topher Fangio](credits.html#topherfangio)
   * July 24, 2013: migration to DocPad by [Topher Fangio](credits.html#topherfangio)
+  * February 5, 2014: fix formatting issue dealing with dollar signs followed by a single quote by [Topher Fangio](credits.html#topherfangio)
