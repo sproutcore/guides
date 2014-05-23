@@ -98,8 +98,7 @@ In order to deploy a release, you'll need to have the
 into a local directory. All you need to do is use DocPad to generate the guides, copy that to the checked out live repo
 and then commit and push. It should looks something like this:
 
-    docpad generate -e production
-    rsync -av out/ ../sproutcore-guides.github.com
+    ./generate_production.sh
     cd ../sproutcore-guides.github.com
     git status
     git commit -am "New release of guides..."
