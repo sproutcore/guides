@@ -11,7 +11,7 @@ sc_list:
   - Learn about statecharts and how they can improve your application.
   - Create a new statechart-based SproutCore application, TodosTwo.
   - Learn about views and how they should handle events.
-  - Learn how to separate views in individual files with the use of _sc_require()_.
+  - Learn how to separate views in individual files with the use of <em>sc_require()</em>.
   - Learn how to pass events to the application's statechart.
 ---
 
