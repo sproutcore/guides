@@ -33,11 +33,10 @@ Next, install the docpad framework (note: you may need to use `sudo` for this):
 $ npm install -g docpad
 ```
 
-Finally, change into the guides directory, checkout the docpad-guides branch, and install the necessary development dependencies:
+Finally, change into the guides directory and install the necessary development dependencies:
 
 ```bash
 $ cd ~/my/dev/directory/sproutcore/guides
-$ git checkout docpad-guides
 $ npm install
 ```
 
@@ -58,7 +57,8 @@ You should see a plethora of output similar to the following:
 Before you make any changes, you'll want to pull in any upstream changes and create a new topic branch for your changes.
 
 ```bash
-$ git pull upstream/master
+$ git checkout master
+$ git pull
 $ git checkout -b <branchname>
 ```
 
