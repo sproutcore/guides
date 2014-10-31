@@ -8,3 +8,4 @@ out
 .avatar_cache.json
 /.idea
 .docpad.db
+*.log
