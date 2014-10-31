@@ -471,7 +471,7 @@ As another example, if you only need a one way binding that is of a boolean
 type, you could code:
 
 ```javascript
-isVisibleBinding: SC.Binding.from('MyApp.userController.isBusy").oneWay().bool()
+isVisibleBinding: SC.Binding.from('MyApp.userController.isBusy').oneWay().bool()
 ```
 
 In addition to using the built-in transforms listed above, you can also add
