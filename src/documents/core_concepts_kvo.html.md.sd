@@ -464,7 +464,7 @@ just the type of binding you want.  For example, if you have an object that
 expects single values only, no errors and no empty values, you could code:
  
 ```javascript
-userBinding: SC.Binding.from('MyApp.userController.name'.single().noError().notEmpty()
+userBinding: SC.Binding.from('MyApp.userController.name').single().noError().notEmpty()
 ```
 
 As another example, if you only need a one way binding that is of a boolean
@@ -520,7 +520,7 @@ SC.Binding.upperCaseString = function() {
 
 ...
 
-userBinding: SC.Binding.from('MyApp.userController.name'.upperCaseString())
+userBinding: SC.Binding.from('MyApp.userController.name').upperCaseString()
 
 ```
 
