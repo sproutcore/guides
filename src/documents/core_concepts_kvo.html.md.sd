@@ -564,7 +564,7 @@ var binding = myView.bind('isVisible', SC.Binding.from('MyApp.mainController.tit
 // is the same as
  
 myView = SC.View.create({
-  isVisibleBinding: SC.Binding.form('MyApp.mainController.title').bool()
+  isVisibleBinding: SC.Binding.from('MyApp.mainController.title').bool()
 });
 var binding = myView.get('isVisibleBinding');
  
