@@ -25,9 +25,9 @@ param.
 ```javascript
 # filename: apps/addressbook/resources/main_page.js
 AddressBook.mainPage = SC.Page.design({
-  mainPane: SC.MainPane.exend({
+  mainPane: SC.MainPane.extend({
     childViews: 'labelView'.w(),
-    labelView: SC.LabelView.exend({
+    labelView: SC.LabelView.extend({
       layout: { centerX: 0, centerY: 0, width: 200, height: 18 },
       textAlign: SC.ALIGN_CENTER,
       tagName: "h1", 
@@ -98,10 +98,11 @@ that our +contentView+:
 # filename: apps/addressbook/resources/main_page.js
 workspaceView: SC.WorkspaceView.extend({
   contentView: SC.SplitView.extend({
+    childViews: ['leftView','rightView'],
     dividerThickness: 1,
     defaultThickness: 300,
-    topLeftView: SC.View,
-    bottomRightView: SC.View
+    leftView: SC.View,
+    rightView: SC.View
   })
 })
 ```
@@ -110,7 +111,7 @@ Our UI is starting to come together. We can see where we're going to have our
 contacts listed and where their details will be displayed. The
  +dividerThickness+ is just a aesthetic property since the default
  +defaultThickness+ will make our fixed view--in this case the
- +topLeftView+--300 pixels wide.
+ +leftView+--300 pixels wide.
 
 NOTE: When you use values less than 1 for dimensions in SproutCore they're
 interpreted as percentages. E.g. +width: 0.5+ tells SproutCore that you want it
@@ -125,18 +126,18 @@ list:
 
 ```javascript
 # filename: apps/addressbook/resources/main_page.js
-topLeftView: SC.SourceListView.extend({
+leftView: SC.SourceListView.extend(SC.SplitChild, {
   content: ["Elizabeth Jones", "Arnold Washington", "Pete Matthews"]
 })
 ```
 
 We can then move on to the details of a contact, such as his name, phone phone
 number, and address. We can use +SC.LabelView+ for all three in our
- +bottomRightView+:
+ +rightView+:
 
 ```javascript
 # filename: apps/addressbook/resources/main_page.js
-bottomRightView: SC.View.extend({
+rightView: SC.View.extend(SC.SplitChild, {
   childViews: 'contactDetails'.w(),
 
   contactDetails: SC.View.extend({
@@ -226,7 +227,7 @@ list of contacts and individual contact selection support:
 
 ```javascript
 # filename: apps/addressbook/resources/main_page.js
-topLeftView: SC.SourceListView.extend({
+leftView: SC.SourceListView.extend(SC.SplitChild, {
   contentValueKey: 'name',
   contentBinding: 'AddressBook.contactsController.arrangedObjects',
   selectionBinding: 'AddressBook.contactsController.selection'
@@ -238,7 +239,7 @@ for the contact's name, phone, and address:
 
 ```javascript
 # filename: apps/addressbook/resources/main_page.js
-bottomRightView: SC.View.extend({
+rightView: SC.View.extend(SC.SplitChild, {
   layout: { top: 50, left: 50, bottom: 50, right: 20 },
   childViews: 'nameLabel phoneLabel addressLabel'.w(),
 
@@ -278,12 +279,12 @@ use an +SC.RenderDelegate+ to render and update all views of the view type.
 Let's make the interface a bit more visually appealing and user friendly by
 giving a usage hint when no contact has been selected yet. We can create a
 generic view and add the class name +app-usage-hint+ to the +classNames+ array,
-and then a label view as a child to display the hint. Our +bottomRightView+
+and then a label view as a child to display the hint. Our +rightView+
 should now look like this:
 
 ```javascript
 # filename: apps/addressbook/resources/main_page.js
-bottomRightView: SC.View.extend({
+rightView: SC.View.extend(SC.SplitChild, {
   childViews: 'usageHint contactDetails'.w(),
 
   usageHint: SC.View.extend({
