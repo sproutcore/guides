@@ -129,7 +129,7 @@ module.exports = (BasePlugin) ->
       #
       # Wrap code blocks in a code container for styling
       #
-      opts.content = opts.content.replace(/<pre class="highlighted"><code/g, '<pre class="highlighted"><div class="code_container"><code')
+      opts.content = opts.content.replace(/<pre class="highlight"><code/g, '<pre class="highlighted"><div class="code_container"><code')
       opts.content = opts.content.replace(/<\/code><\/pre>/g, "</code></div></pre>")
       opts.content = opts.content.replace(/#(.*)filename[:=] ?(.*)/g, (match, p1, p2, offset, total_string)->
         return "<span class='comment'><div class='filename'>" + p2 + "</div></span>"
