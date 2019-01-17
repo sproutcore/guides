@@ -15,34 +15,19 @@ sc_list:
 
 ### Introduction
 
-The introductory "Getting Started" guides pages are step-by-step treatments of concepts needed to make a full 
-SproutCore application. 
+The introductory "Getting Started" guides pages are step-by-step treatments of concepts needed to make a full
+SproutCore application.
 
-This first "Getting Started" guide will ensure that you have the latest version of Sproutcore installed and 
+This first "Getting Started" guide will ensure that you have the latest version of Sproutcore installed and
 configured properly. If you run into any issues or bumps along the way, please reach out on the
-[mailing list](http://groups.google.com/group/sproutcore) or find us on IRC at #sproutcore!
+[mailing list](http://groups.google.com/group/sproutcore), find us on IRC at #sproutcore or leave a message on [Gitter](https://gitter.im/sproutcore/sproutcore)!
 
 ### Installation
 
-There are two basic ways to install SproutCore.
+To install the SproutCore development environment you need to have [NodeJS](http://nodejs.org/) and NPM installed.
+The latest version of NodeJS currently supported by this environment is 9.x.
 
-* The Package Installers
-* Using RubyGems
-
-The installation method you choose should be based upon your current platform and your experience with Ruby.
-The installers are currently only available for Windows and Mac. Linux and other platforms should use the
-RubyGems method. 
-
-Additionally, if your machine is already setup for development in Ruby, you may find it more
-convenient to forgo the package installers, and use RubyGems so that you can always get the latest
-version by typing the following:
-
-```bash
-gem update sproutcore
-```
-
-So, before you move on, please visit the [Installation Page](http://sproutcore.com/install/) and either
-download the appropriate package, or follow the guide for your platform.
+Please visit the [Installation Page](http://sproutcore.com/install/) and follow the guide for your platform.
 
 Great! Now that SproutCore is installed, we can move forward and get our first app up-and-running!
 
@@ -60,19 +45,13 @@ NOTE: The dollar sign ($) in the code above and below represents the command lin
 be typed when executing the commands. Lines without a prompt generally show you the output of the previous
 command.
 
-This directory can serve as a place for all things SproutCore. Change directory to ~/development/sproutcore, then
+This directory can serve as a place for all things SproutCore. Change directory to `~/development/sproutcore`, then
 create a SproutCore project:
 
 ```bash
 $ cd ~/development/sproutcore
-$ sproutcore gen project getting_started
-
-   ~ Created directory at getting_started
-   ~ Created file at getting_started/Buildfile
-   ~ Created file at getting_started/README
-
-   Your project is now ready to use!
-
+$ sproutcore init getting_started
+  Your project has been successfully created!
 $ cd getting_started
 ```
 
@@ -84,36 +63,31 @@ Create the app in the getting_started project directory:
 
 ```bash
 $ sproutcore gen app TodosOne
-   ~ Created directory at apps
-   ~ Created directory at apps/todos_one
-   ~ Created file at apps/todos_one/Buildfile
-   ~ Created file at apps/todos_one/core.js
-   ~ Created file at apps/todos_one/main.js
-   ~ Created directory at apps/todos_one/resources
-   ~ Created file at apps/todos_one/resources/_theme.css
-   ~ Created file at apps/todos_one/resources/loading.rhtml
-   ~ Created file at apps/todos_one/resources/main_page.js
-   ~ Created file at apps/todos_one/theme.js
-
-  Your application target is now ready to use!
+  App TodosOne generated
 ```
 
 Your directory structure should now look like the following:
 
 
- * ** getting_started/**
-   * ** Buildfile**
-   * ** README.md**
-   * ** apps/**
-     * ** todos_one/**
-       * ** Buildfile**
-       * ** core.js**
-       * ** main.js**
-       * ** theme.js**
-       * ** resources/**
-         * ** _theme.css**
-         * ** loading.rhtml**
-         * ** main_page.js**
+  * **getting_started/**
+    * **sc_config**
+    * **apps/**
+      * **TodosOne/**
+        * **sc_config**
+        * **core.js**
+        * **main.js**
+        * **theme.js**
+        * **statechart.js**
+        * **controllers/**
+        * **fixtures/**
+        * **views/**
+        * **states/**
+          * **ready_state.js**
+        * **resources/**
+          * **_theme.css**
+          * **loading.ejs**
+          * **main_page.js**
+          * **main_page.css**
 
 ### Explanation
 
@@ -125,9 +99,9 @@ e-mail, contacts and finding your friends.
 This is why there is an **apps/** directory inside of the getting_started project directory. It
 allows you to easily separate distinct applications.
 
-Inside the **apps/todos_one** directory, you will find the Buildfile for the TodosOne application.
-Just like the project (getting_started) has a **Buildfile**, each application or
-framework that you create should also have a **Buildfile** which specifies it's
+Inside the **apps/TodosOne** directory, you will find the sc_config for the TodosOne application.
+Just like the project (getting_started) has a **sc_config**, each application or
+framework that you create should also have a **sc_config** which specifies it's
 requirements as well as any build-options that you may want to change, such as
 whether or not to minify and compact the code.
 
@@ -136,17 +110,16 @@ application is defined. This is also where you usually define any global
 constants that the application might use (which should be very few), or any
 configuration that external libraries might require.
 
-The **main.js** file is usually very basic. It starts the application. If you
-are using the Statechart framework (which we will discuss in Part 2), **main.js**
-would simply initialize the statechart. If you open up **main.js** right now,
-you'll see that it appends the main view to the screen.
+The **main.js** file is usually very basic. It starts the application. The default
+assumes you are using the Statechart framework (which we will discuss in Part 2).
+**main.js** simply initializes the statechart, which you will see if you open up **main.js** right now.
 
 The resources folder contains things like images, stylesheets and views.
 
 Inside the resources folder, the **_theme.css** file defines that directory's
 CSS theme. This allows you to define different themes for each directory.
 
-The **resources/loading.rhtml** file defines the HTML that your users see before
+The **resources/loading.ejs** file defines the HTML that your users see before
 SproutCore has fully loaded and handed control over to the application. For
 now, it displays a simple loading message.
 
@@ -157,6 +130,15 @@ you may decide you want to break it out a bit more by having a loadingPane,
 loggedInPane, loggedOutPane, etc. Most applications have at least a few
 panes, and possibly a few pages.
 
+### Installing the SproutCore framework
+
+```bash
+$ sproutcore install sproutcore frameworks
+```
+
+This installs the SproutCore framework inside the frameworks folder of your
+project.
+
 ### Viewing Your Application
 
 So, we have our SproutCore TodosOne application built, and we understand the basic
@@ -165,16 +147,16 @@ layout of the files. Let's see what it looks like in the browser!
 Inside the project directory type the following command:
 
 ```bash
-$ sproutcore server
+$ sproutcore serve
 ```
 
-NOTE: If you are attempting to run multiple copies of **sproutcore server** at the same
+NOTE: If you are attempting to run multiple copies of **sproutcore serve** at the same
 time, you will probably see an error about the port already being in use. If
-so, just re-run the command and add --port 4030 so the second instance will not use 
+so, just re-run the command and add --port 4030 so the second instance will not use
 the default 4020 port.
 
 Using your favorite web browser, visit
-http://localhost:4020/todos_one. If all goes
+http://localhost:4020/TodosOne. If all goes
 well, you should see "Welcome to Sproutcore!" in the middle of the screen.
 
 ### Making Changes
@@ -190,20 +172,10 @@ As with any unfamiliar framework, you may hit a few snags on the way. Below
 we list some of the common pitfalls that users have discovered, with
 solutions for getting past them.
 
-* *"Error: Handlebars is not defined Source File: ..."* - If you have previously
-installed SproutCore 1.6 using the installer, you may see this error. If so, please make
-sure to un-install SproutCore 1.6 first and then re-install 1.8.
-
-* *"RuntimeError at /todos_one html_builder could not find a layout file for ..."* -
-This error usually means that **sproutcore server** could not find SproutCore where it
-thought it should exist. Make sure that you've properly installed the latest
-version of SproutCore; and if you are using RubyGems, try closing and
-re-opening the terminal to ensure that paths are properly set.
-
 * *"Browser says 'No matching target'"* - This is generally caused if you
 misspelled the name of the application in the URL. Make sure that you properly
 typed it, and that you used underscores instead of spaces. For example:
-http://localhost/todos_one.
+http://localhost/TodosOne.
 
 * *"ERROR: missing } after property list ..."* - This error is usually thrown
 if you added a property somewhere, but forgot to put a comma at the end.
@@ -224,5 +196,6 @@ a comma missing.
 * March 6, 2012: rewrite for SproutCore 1.8 by the 1.8 release sprint team, including the following who did
   much work on this task: [Tim Evans](credits.html#tce), [Topher Fangio](credits.html#topherfangio) and [Jeff Pittman](credits.html#geojeff)
 * March 12, 2012: added new error and fixed italics in the troubleshooting section by [Topher Fangio](credits.html#topherfangio)
-* July 30, 2013: converted to Markdown format for DocPad guides by [Eric Theise](credits.html#erictheise) 
+* July 30, 2013: converted to Markdown format for DocPad guides by [Eric Theise](credits.html#erictheise)
 * July 30, 2013: fix issues with formatting and updated Changelog by [Topher Fangio](credits.html#topherfangio)
+* January 17, 2019: Change to NPM build tools.
