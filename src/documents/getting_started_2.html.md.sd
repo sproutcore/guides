@@ -347,7 +347,7 @@ as the initialization and the transition to the readyState.
 You are now ready to move on to creating a full-scale SproutCore app!
 
 [Part 3](/getting_started_3.html) will introduce you to a more complete Todos application,
-called TodosTwo, and walk you through the process of building it from scratch.
+called TodosThree, and walk you through the process of building it from scratch.
 You will learn about models, controllers and how they tie in with the statechart
 and views.
 
@@ -362,4 +362,4 @@ Dive in to [Getting Started: Part 3](/getting_started_3.html).
   [Jeff Pittman](credits.html#geojeff)
 * July 30, 2013: converted to Markdown format for DocPad guides by [Eric Theise](credits.html#erictheise)
 * July 30, 2013: fix issues with formatting and updated Changelog by [Topher Fangio](credits.html#topherfangio)
-* Jan 17, 2019: Update the guide as the default application already uses the state chart.
+* Jan 17, 2019: Updated the guide as the default application already uses the state chart by [Maurits Lamers](credits.html#mauritslamers)

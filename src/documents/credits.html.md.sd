@@ -6,12 +6,12 @@ sc_title: Credits
 sc_short_description: The People That Make It Happen
 sc_credits:
   - name: Documentation Team
-    authors: 
+    authors:
     - fname: Topher
       lname: Fangio
       github: topherfangio
   - name: Contributors
-    authors: 
+    authors:
     - fname: Mike
       lname: Atkins
       github: apechimp
@@ -35,7 +35,7 @@ sc_credits:
       github: tomdale
     - fname: Geoffrey
       lname: Donaldson
-      github: geoffreyd 
+      github: geoffreyd
     - fname: Chad
       lname: Eubanks
       github: ChadEubanks
@@ -87,4 +87,7 @@ sc_credits:
     - fname: Jeff
       lname: Pittman
       github: geojeff
+    - fname: Maurits
+      lname: Lamers
+      github: mauritslamers
 ---

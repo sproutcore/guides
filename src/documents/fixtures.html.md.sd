@@ -47,9 +47,6 @@ App.MyModel.FIXTURES = [
 SproutCore looks for fixtures assigned specifically to a model (i.e. +App.MyModel.FIXTURES+ on the above example). By convention, fixtures are defined
 in the +app/fixtures+ folder of your application (i.e. +app/fixtures/my_model.js+). By default fixtures are not included in production builds.
 
-NOTE: If you use +sc-gen+ to create your models then you may have noticed that some placeholder fixtures already exist. You will still need to modify
-these fixtures to suit your needs. Read on to learn how.
-
 ### Writing Your Own Fixtures
 
 Writing fixtures is relatively straightforward. Each item representing a record gets its own hash in the format of +propertyName: value+. If your
@@ -206,3 +203,4 @@ And that's it! Your fixtures should now be available to your data store!
 * March    2, 2011: added filenames and fixed code formatting by [Topher Fangio](credits.html#topherfangio)
 * July    17, 2011: minor changes by [William Estoque](credits.html#westoque)
 * October 23, 2013: converted to Markdown format for DocPad guides by [Topher Fangio](credits.html#topherfangio)
+* January 17, 2019: removed reference to sc-gen by [Maurits Lamers](credits.html#mauritslamers)
