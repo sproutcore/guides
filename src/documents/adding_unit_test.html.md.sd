@@ -11,6 +11,9 @@ sc_list:
   - Arrange your unit test files.
 ---
 
+NOTE: The way of interacting with the build tools has changed. Most of the generators are not included, which
+means that these files and folders need to be created by hand. Check out the Getting Started guides for
+which generators can be used. This guide will be updated as soon as possible to reflect these changes.
 
 ### Creating a Directory for Your Unit Test Files
 

@@ -12,10 +12,9 @@
   },
   "dependencies": {
     "docpad": "~6",
-    "docpad-plugin-eco": "~2.0.2",
-    "docpad-plugin-marked": "~2.1.1",
-    "docpad-plugin-highlightjs": "~2.1.8",
-    "docpad-plugin-growl": "~2.0.0"
+    "docpad-plugin-eco": "~2.3.0",
+    "docpad-plugin-marked": "~2.5.0",
+    "docpad-plugin-highlightjs": "~2.6.0"
   },
   "main": "node_modules/docpad/bin/docpad-server",
   "scripts": {

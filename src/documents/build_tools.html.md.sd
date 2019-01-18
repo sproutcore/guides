@@ -3,7 +3,7 @@ layout: default
 sc_category: Extras
 sc_order: 10
 sc_title: SproutCore's Build Tools
-sc_short_description: 
+sc_short_description:
 sc_description: After reading this guide, you will be able to:
 sc_list:
   - Create a new SproutCore project skeletons using <tt>sproutcore init</tt>.
@@ -15,21 +15,19 @@ sc_list:
 
 ### Introduction
 
-One of the least understood and, because of this, occasionally maligned
-components of SproutCore are the accompanying build tools.  Let's be clear,
-build tools are absolutely necessary for even the smallest project and to
-attempt to write an application without them from the start, simply means being
-forced to cobble together less effective processes later on.
+Many JavaScript frameworks use some kind of development environment,
+such as grunt, gulp, webpack or rollup. The reason for this is that it quickly
+becomes too difficult and time consuming to manage multiple source files and
+assets; there are several important optimizations required for deploying
+top-of-class web experiences that are best left to automated scripts.
 
-The reason for this is it quickly becomes too difficult and time consuming to
-manage multiple source files and assets; there are several important
-optimizations required for deploying top-of-class web experiences that are best
-left to automated scripts.
+SproutCore provides its own development environment, called build tools,
+or BT for short.
 
-For example, SproutCore's build tools do the following and more:
+BT provides the following and more:
 
 * Automatically scans your source code and builds a manifest of how your code
-  should be built into a final project.  This ensures that your JavaScript and
+  should be built into a final project. This ensures that your JavaScript and
   CSS always load in the proper order.
 * Run stylesheets through the [Compass CSS Authoring
   Framework](http://compass-style.org/) for simple and clean CSS.
@@ -43,8 +41,6 @@ For example, SproutCore's build tools do the following and more:
   single CSS file and minifies the contents of each.  This makes your deployed
   app load much faster since multiple smaller requests are slower for the
   clients.
-* Automatically slices and sprites your images; a typically very time-consuming
-  and error prone task.
 
 For a list of the available commands, type +sproutcore+ on the command line
 after installing the SproutCore gem:
@@ -52,187 +48,115 @@ after installing the SproutCore gem:
 ```bash
 $ sproutcore
 
-SproutCore 1.9.2 Usage
-======================
+  Usage: sproutcore [options] [command]
 
-Tasks:
-  sproutcore build [TARGET..]                                                                   # Builds one or more targets
-  sproutcore build-number TARGET                                                                # Computes a build number for the target
-  sproutcore docs [TARGET..]                                                                    # Generates JSDoc's for specified targets.
-  sproutcore gen generator Namespace[.ClassName] [--target=TARGET_NAME] [--filename=FILE_NAME]  # Generates SproutCore components
-  sproutcore help                                                                               # How to use the sproutcore command
-  sproutcore help [TASK]                                                                        # Describe available tasks or one specific task
-  sproutcore init PROJECT [APP]                                                                 # Generates a SproutCore project with an initial appl...
-  sproutcore manifest [TARGET..]                                                                # Generates a manifest for the specified targets
-  sproutcore server                                                                             # Starts the development server
-  sproutcore version                                                                            # Show the SproutCore version number
+  Options:
 
-Options:
-      [--project=PROJECT]
-      [--mode=MODE]
-      [--logfile=LOGFILE]
-  -b, [--build=BUILD]
-      [--build-targets=BUILD-TARGETS]  # Targets to build (excluding their dependencies)
-      [--dont-minify]                  # Disables minification for the build.
-  -v, [--verbose]
-  -V, [--very-verbose]
-      [--help]
+    -V, --version       output the version number
+    -h, --help          output usage information
+
+  Commands:
+
+    install [git-repo]  Install a repository, such as a framework
+    serve               Start the development server
+    build [app1]        Start the building process of one or more apps
+    gen <name>          Generate project structure or parts of it
+    init <name> [path]  Generate new project structure and app with the same name and an optional path
+    help [cmd]          display help for [cmd]
 ```
 
 ### Generating a New SproutCore Project: +sproutcore init+
 
 To create a new basic SproutCore project simply use +sproutcore init+ or its
 short form equivalent, +sc-init+, and supply a project name and optional
-initial app name.  If you don't supply the AppName parameter, an app with the
-same name as the project will be created.  For example, to create a project
-"MediaTools" with the default app "VideoEditor" use the following:
+path where to create it. If you don't supply the path parameter, the project
+will be created in a directory of the same name in the current directory.
+By default an application of the same name will be created in the projects
+app folder. Any additional app can be created using the `gen` command:
 
 ```bash
-$ sproutcore init MediaTools VideoEditor
- ~ Created directory at media_tools
- ~ Created file at media_tools/Buildfile
- ~ Created file at media_tools/README
- ~ Created directory at apps
- ~ Created directory at apps/video_editor
- ~ Created file at apps/video_editor/Buildfile
- ~ Created file at apps/video_editor/core.js
- ~ Created file at apps/video_editor/main.js
- ~ Created directory at apps/video_editor/resources
- ~ Created file at apps/video_editor/resources/_theme.css
- ~ Created file at apps/video_editor/resources/loading.rhtml
- ~ Created file at apps/video_editor/resources/main_page.js
- ~ Created file at apps/video_editor/theme.js
-Your new SproutCore project is ready!
-
-To get started, you can find your initial application in the "apps" directory.
+$ sproutcore init MediaTools
+  Your project has been successfully created!
+$ cd MediaTools
+$ sproutcore gen VideoEditor
 ```
-
-To create a project "Calculator" with an app of the same name, simply use:
-
-```
-$ sproutcore init Calculator
-~ Created directory at calculator
-~ Created file at calculator/Buildfile
-...
-```
-
-To create a project "BusyBee" with an app of the same name with a base
-statechart, simply use:
-
-```bash
-$ sproutcore init BusyBee --statechart
-~ Created directory at busy_bee
-~ Created file at busy_bee/Buildfile
-...
-```
-
-NOTE: Passing a camelcase app name to +sproutcore init+, such as
-`VideoEditor` &mdash; notice the uppercase 'E' &mdash; creates a
-namespace `VideoEditor` and the directories are named using
-underscores (i.e. *+apps/video_editor+*).
 
 ### Generating Additional SproutCore Files: +sproutcore gen+
 
 The command `sproutcore init` creates a few default files for you
 that form a typical starting point for a new project, but you will soon need
-other files and this is where the command +sproutcore gen+ or +sc-gen+, for
-short, can come in.  The following are the most commonly used commands with a
-brief description of each.
+other files and this is where the command +sproutcore gen+ can come in.
 
-#### +sc-gen project ProjectName+
-
-Creates an empty SproutCore project.  You may use this instead of
-`sproutcore init`, if you don't want a default app to be created.
-
-#### +sc-gen app AppName+
+#### +sproutcore gen app AppName+
 
 When called from within a project, adds an app to the project with the
 namespace `AppName`.
 
-#### +sc-gen statechart_app AppName+
-
-When called from within a project, adds an app with a basic SC.Statechart
-setup.
-
-NOTE: Similar to generating basic statechart files with `sproutcore init
---statechart` you can achieve the same result with `sproutcore gen
-app --statechart`.
-
-#### +sc-gen model AppName.ModelName+
-
-Adds a SC.Record subclass, 'AppName.ModelName', in the file
-`model_name_model.js` along with stub fixture and unit test files.
-
-#### +sc-gen controller AppName.ControllerName+
-
-Adds a SC.ObjectController subclass instance, 'AppName.controllerName', in the
-file `controller_name_controller.js` and a stub unit test file.
-
-#### +sc-gen view AppName.ViewName+
-
-Adds a SC.View subclass, 'AppName.ViewName', in the file
-`view_name_view.js` and a stub unit test file.
-
-#### +sc-gen data-source AppName.DataSourceName+
-
-Adds a SC.DataSource subclass, 'AppName.DataSourceName', in the file
-`data_source_name.js`.
-
-#### +sc-gen language AppName.Language+
-
-Adds a language file for 'Language', in the file `language.lproj`.
-Here are some examples:
-
-```bash
-$ sc-gen language MediaTools French
- ~ Created directory at french.lproj
- ~ Created file at french.lproj/strings.js
-
-$ sc-gen language MediaTools en-ca
- ~ Created directory at en_ca.lproj
- ~ Created file at en_ca.lproj/strings.js
-
-$ sc-gen language MediaTools Latin
- ~ Created directory at Latin.lproj
- ~ Created file at Latin.lproj/strings.js
-```
-
-NOTE: Generally the provided 'Language' will result in the same named
-directory, 'Language.lproj', but as can be seen by the French example above,
-the build tools have a bit of an odd behavior of recognizing English, French,
-German, Italian, Spanish and Japanese as parameters and making the directory
-name the lowercase version.
-
-#### +sc-gen framework FrameworkName+
-
-Creates a framework with namespace `FrameworkName` in the project's
-`frameworks` directory.  Read further to learn about including
-frameworks in your SproutCore apps.
-
-### Configuring SproutCore Applications: +Buildfile+
+### Configuring SproutCore Applications: +sc_config+
 
 The operations of the build tools are configured via the project, framework and
-app Buildfiles.  If you used the previous commands, you will find a Buildfile
-within your root project directory and a Buildfile in each of your app
-directories.  As it states in the default app Buildfiles, the settings in the
-app Buildfile will override the project Buildfile.
+app sc_config files.  If you used the previous commands, you will find a sc_config
+within your root project directory and a sc_config in each of your app
+directories.
 
-Therefore, a recommended setup would configure properties shared between all
-your apps within a project in the project's Buildfile and to configure any
-properties specific to an app, in the app's Buildfile.  For simplicity state,
-the following examples will just use a single Buildfile in most cases.
+Before we look at the contents of the configuration files, it is important to realize
+that the BT essentially functions in two modes: a 'debug' mode and a 'build' mode.
+The debug mode is the mode where the BT is used to provide a dev server. The
+build mode is the mode when you use the BT to generate HTML, CSS and JS files on disk.
 
-Before looking at each config setting in detail, there is one important
-statement, +mode+, that is valuable to understand.  Any configurations within a
-`mode #{name}` block will only apply to the named environment.  By
-default, `sproutcore build` uses the mode +production+ and
-`sproutcore server` uses the mode +debug+, but you may provide any
-custom mode by passing +--mode=my_mode+ to the command.
+We start by looking at the sc_config file in the application directory root. The default file
+generated by the BT looks like this:
 
-The following list describes the most common Buildfile `config`
-properties.
+```javascript
+var TodosOne = BT.AppBuilder.create({
+  name: 'TodosOne',
+  path: dirname(),
+  title: 'TodosOne',
+  frameworks: [],
+  languages: ['en'],
+});
+```
 
-#### +:build_number => {String}+
+The following list describes the most common properties.
+
+#### +name: 'TodosOne'+
+
+The name of the project as it should be recognized by the BT. Any files created
+during the build phase will carry this name, as well as the base url in the
+dev server.
+
+#### +path: dirname()+
+
+By default `dirname()` will fill in the current path of the sc_config file. There
+can be reasons to have the BT load a different path for this app.
+
+#### +title: 'TodosOne'+
+
+The title you want the app to have in the generated HTML.
+
+#### +frameworks: []+
+
+The list of frameworks your app depends on. A default set of SproutCore frameworks will be
+included by default. The BT will look for the frameworks in the projects frameworks folder.
+Using the name of the framework folder is usually sufficient. In case you want to be
+selective, and only use selected frameworks from a frameworks bundle (such as SproutCore),
+use `:` to seperate the framework names. To use the experimental select views framework for
+example, you would include `'sproutcore:experimental:select_ext'` in the frameworks list.
+
+#### +languages: []+
+
+List of languages this app will support.
+
+#### +language: {String}+
+
+Which language the BT will use when serving the app through the dev server.
+
+
+#### +theme: {String}+
+
+The theme your application will use. The default is ``sproutcore:aki'`.
+
+#### +buildNumber: ''+
 
 By default, the build project assets will get cache friendly paths containing a
 unique build number.  This is necessary to ensure that the files are properly
@@ -241,161 +165,46 @@ cached, but you can specify a custom build number with this setting.
 WARNING: Using a fixed build_number will cause cached assets to not be
 invalidated.  Use this setting with caution.
 
-#### +:combine_javascript => {Boolean}+
+#### +combineScripts: {Boolean}+
 
-By default, the built project combines all the JavaScript files into a single
-file.  Setting `:combine_javascript` to `false` will
-prevent this from happening, which may be useful for debugging purposes.
+Whether the BT should combine the scripts in a single file. By default, this
+setting is false in debug mode, and true in build mode. Setting `combineScripts`
+to `false` will prevent the combining in build mode, which may be useful for debugging purposes.
 
-#### +:combine_stylesheets => {Boolean}+
+#### +combineStylesheets: {Boolean}+
 
-By default, the built project combines all the CSS files into a single file.
-Setting `:combine_stylesheets` to `false` will prevent
-this from happening, which may be useful for debugging purposes.
+By default, the BT in build mode combines all the CSS files into a single file.
+Setting `combineStylesheets` to `false` will prevent this from happening,
+which may be useful for debugging purposes.
 
-#### +:javascript_libs => {Array}+
+#### +minifyScripts: {Boolean}+
 
-An array of JavaScript file URLs that will be inserted as the src attributes of
-`<script>` tags in the `<head>` element.
+By default, the BT in build mode will minify all scripts.
+Setting `minifyScripts` to `false` will prevent this from happening,
+which may be useful for debugging purposes.
 
-Ex. Including the Google Maps API:
+#### +minifyStylesheets: {Boolean}+
 
-```ruby
-# filename: my_project/apps/my_app/Buildfile
-config :my_app, :javascript_libs => [
-  'https://maps.googleapis.com/maps/api/js?v=3&sensor=false'
-]
-```
+By default, the BT in build mode will minify all stylesheets.
+Setting `minifyStylesheets` to `false` will prevent this from happening,
+which may be useful for debugging purposes.
 
-#### +:layout => {String}+
+#### +contentForPageStyles: {String}+
 
-By default, SproutCore apps use the index.html template in the SproutCore
-framework at `lib/index.rhtml`.  You may copy the default
-index.rhtml file into your app and specify the path in your Buildfile.
+Insert here any HTML which should be inserted together with the styles.
 
-WARNING: Failing to update your copy of index.rhtml when SproutCore is updated,
-may cause conflicts with the build tools.  Therefore it is recommended to use
-the config parameters to modify the generated index.html, rather than modifying
-the template directly.
+#### +contentForPageJavaScript: {String}+
 
-#### +:load_debug => {Boolean}+
+Use this to include script tags to third party scripts not to be included
+in the HTML, CSS and JS files generated by the BT.
 
-By default, directories named `debug` are not included in the built
-project.  Set `:load_debug` to `true` to have them
-included.
-
-#### +:load_fixtures => {Boolean}+
-
-By default, fixtures are excluded in the built project.  Set
-`:load_fixtures` to `true` to have them included.
-
-#### +:load_protocols => {Boolean}+
-
-By default, files in directories named `protocols` are excluded in
-the built project.  Set `:load_protocols` to `true` to
-have them included.
-
-#### +:minify => {Boolean}+
-
-By default, the HTML, JavaScript and CSS is minified when built.  Set this to
-`false` to prevent minification, which may be useful for debugging.
-You can also be more specific by using either +:minify_javascript+,
-+:minify_css+ or +:minify_html+.
-
-NOTE: If minify is `false`, `sc-build` will throw a
-security exception unless `--allow-commented-js` is set, because all
-comments will be visible in the built product.
-
-#### +:required => {Array}+
-
-This defines the frameworks in the order that the app requires them and is
-initially set by default to `:sproutcore`.  Since frameworks can be
-nested and can define their own requirements, the `:sproutcore`
-framework is actually just a wrapper framework that includes several of its
-sub-frameworks each of which have their own requirements as well.  New
-developers should not generally concern themselves with stripping away
-
-Ex. The most basic Buildfile:
-
-```ruby
-# filename: my_project/Buildfile
-config :all, :required => :sproutcore
-```
-
-Ex. Including a framework, DataHelpers, from the project's frameworks directory for all apps within the project:
-
-```ruby
-# filename: my_project/Buildfile
-config :all, :required => [:sproutcore, :data_helpers]
-```
-
-Ex. Including different frameworks for different apps:
-
-```ruby
-# filename: my_project/Buildfile
-config :all, :required => [:sproutcore]
-
-config :my_app, :required => [:client_views]
-
-config :my_admin_app, :required => [:admin_tools]
-```
-
-Ex. Including different frameworks for different apps using app specific Buildfiles:
-
-```ruby
-# filename: my_project/Buildfile
-config :all, :required => [:sproutcore]
-```
-
-```ruby
-# filename: my_project/apps/my_app/Buildfile
-config :my_app, :required => [:client_views]
-```
-
-```ruby
-# filename: my_project/apps/my_admin_app/Buildfile
-config :my_admin_app, :required => [:admin_tools]
-```
-
-INFO: For advanced manipulation of the included SproutCore frameworks, refer to
-the SproutCore
-[Buildfile](https://github.com/sproutcore/sproutcore/blob/master/Buildfile).
-
-#### +:theme => {String}+
-
-The framework or theme that contains the app's theme.  See the guide on
-[Theming Your App](/theming_app.html) for more information.
-
-#### +:theme-name => {String}+
-
-A class name to set on the `<body>` element.  If not specified, the
-body will have a class `sc-theme`.
-
-#### +:title => {String}+
-
-The value of the HTML `<title>` element.
-
-Ex. Separate titles for different apps:
-
-```ruby
-# filename: my_project/Buildfile
-config :all, :required => [:sproutcore]
-
-config :my_app, :title => 'My App'
-
-config :my_admin_app, :title => 'My App (Administration)'
-```
-
-INFO: For advanced Buildfile configuration, refer to the build tool's
-[Buildfile](https://github.com/sproutcore/abbot/blob/master/lib/Buildfile).
-
-### Developing with SproutCore: +sproutcore server+
+### Developing with SproutCore: +sproutcore serve+
 
 So that you can view and test your code in action immediately, the build tools
 also provide a local server and proxy.  As was mentioned in [Getting
 Started](/getting_started.html), you run the server by changing to your
-project's directory and running either +sproutcore server+ or +sc-server+ for
-short.  The server will monitor your files for changes and re-build them when
+project's directory and running +sproutcore serve+.
+The server will monitor your files for changes and re-build them when
 they do change.  To keep the process fast and to allow you to debug your code
 while developing, the individual files aren't packed or minified in debug mode.
 When your server is running, you can access your apps at
@@ -412,37 +221,51 @@ will use the SproutCore server to proxy the request across.
 
 Here are some examples configuring the SproutCore server proxy:
 
-```ruby
-# filename: my_project/Buildfile
-# Proxy all requests for '/news' to 'http://news.com/news'.
-proxy "/news", :to => "news-server.com"
+```javascript
+// filename: my_project/sc_config
+BT.serverConfig = {
+  proxies: [
+    // Proxy all requests for '/news' to 'http://news.com/news'.
+    {
+      prefix: '/news',   // set a prefix here for the development server
+      host: 'news.com', // to which host should the request be forwarded
+      port: 80, // on which port is the host listening?
+      logRequests: false, // show the requests in the terminal?
+      proxyPrefix: '/news' // replace the prefix set above with this
+    },
+    // Proxy all requests for '/session' to 'https://session-server.net/session'.
+    {
+      prefix: '/session',   // set a prefix here for the development server
+      host: 'session-server.net', // to which host should the request be forwarded
+      port: 443, // on which port is the host listening?
+      logRequests: false, // show the requests in the terminal?
+      proxyPrefix: '/session' // replace the prefix set above with this
+      secure: true,
+    },
+      // Proxy all requests not matching anything in the BT to 'https://session-server.net/session'.
+    {
+      prefix: '/',   // set a prefix here for the development server
+      host: 'session-server.net', // to which host should the request be forwarded
+      port: 443, // on which port is the host listening?
+      logRequests: false, // show the requests in the terminal?
+      proxyPrefix: '/session' // replace the prefix set above with this
+      secure: true,
+    },
+  ]
 
-# Proxy all requests for '/session' to 'https://session-server.net/session'.
-proxy "/session", :to => "session-server.com", :secure => true
+}
 
-# Proxy all requests for '/users' to 'https://our-app.com/people'.
-#   ex. /users/23 => https://our-app.com/people/23
-proxy "/users", :to => "our-app.com", :secure => true, :url => "/people"
 
-# Proxy to a local server with a longer timeout to support long-polling requests.
-#   ex. /socket.io => http://localhost:3443/socket.io
-proxy '/socket.io', :to => 'localhost:3443', :timeout => 25
-
-# An alternate configuration of the above.
-proxy '/socket.io', :to => 'localhost:3443', :connect_timeout => 5, :inactivity_timeout => 30
-
-# Disallow redirects
-proxy '/originals', :to => 'some-api.org', :redirect => false
 ```
 
-NOTE: When changing proxy settings, the server may need to be restarted to
+NOTE: When changing proxy settings, the dev server needs to be restarted to
 reflect the changes.
 
 ### Building a SproutCore Application: +sproutcore build+
 
 Finally, when your application is ready to be deployed to a real server, you
 will do a production build and move the files across to be hosted.  Depending
-on the options you set in your Buildfile, this will generate some variant of
+on the options you set in your sc_config file, this will generate some variant of
 static deployable and cache-able content.
 
 Ex. Building all apps and required frameworks within a project.
@@ -457,60 +280,107 @@ Ex. Building a specific app within a project, including it's required frameworks
 $ sproutcore build my_app
 ```
 
-The following are some options that you may want to pass to +sproutcore build+
-or +sc-build+.
+We take one last look at the sc_config file in your project directory.
+You will notice the familiar `sc_require()` call in the top of the file.
+The BT will not include any app in your project unless you specifically indicate
+you want to include it. If you want to temporarily remove an app from the project,
+simply comment out the sc_require line from the projects sc_config file.
 
-#### +--allow-commented-js+
+Here are some useful settings:
 
-You must set this if you have set `minify: false` in your Buildfile
-and you do want to build an un-minified product which includes all your
-comments.
+#### +port: {Number}+
 
-#### +--build+
-
-Specify the build number manually to use. This results in paths that won't
-cache properly, but may be useful for testing or embedding a SproutCore app.
-
-```bash
-$ sproutcore build my_app --build=test_build
-```
-
-#### +--buildroot+
-
-Specify the path to the built product.
+Set this to the port you want to run the dev server on. The default value is 4020.
+You can temporarily override this setting on the command line:
 
 ```bash
-$ sproutcore build my_app --buildroot=../builds
+sproutcore serve -p 4021
 ```
 
-#### +--languages+
+#### +localOnly: {Boolean}+
 
-Specify which languages to build.  By default, the build tool will build all
-languages in the project.
+By default, the dev server will only be available on your computers special
+localhost domain, and therefore hidden for the rest of the network you might be in.
+If you want to be able to test your application from a different computer, set
+the localOnly value to false and restart the dev server. This will make the
+dev server listen on the defined port on all network interfaces.
 
-```bash
-$ sproutcore build my_app --languages=en,en-ca,zh
+WARNING: Do not use this feature to host a sproutcore application for production
+purposes! Any normal web server hosting a built SproutCore application will
+outperform the dev server by miles and will be much more secure.
+
+```javascript
+sc_require('apps/TodosOne/sc_config')
+
+/*
+Please don't remove the following server configuration, as the build tools use it to
+determine the root of your project.
+ */
+
+BT.serverConfig = {
+
+  /**
+    The port on which the development server should run
+
+    @property
+    @type Number
+    @default 4020
+  */
+  port: 4020,
+
+  /**
+    Set it to false to allow access from the network.
+
+    @property
+    @type Boolean
+    @default true
+  */
+  localOnly: true,
+
+  /**
+    A JSON file to use to store build numbers.
+    You must define this property to enable build number support.
+
+    Example:
+
+        buildNumberPath: 'build_number.json',
+
+    @property
+    @type String
+    @default null
+  */
+  buildNumberPath: null,
+
+  /**
+    Define this property if you need one or more proxies.
+    If you do a request from your app (file or XHR) which doesn't match anything the BT provide,
+    the request will be run past the proxies in the order you define them here.
+    You can use the prefix to filter which requests will be forwarded to where.
+    In the proxied request the prefix you define will be replaced by the proxyPrefix.
+    The example shows how to set up a catch-all proxy, in this case to CouchDB.
+    You can set as many proxies as you want, as long as they don't share a prefix.
+
+    Example:
+
+        proxies: [
+          {
+            prefix: '/',   // set a prefix here for the development server
+            host: 'localhost', // to which host should the request be forwarded
+            port: 5984, // on which port is the host listening?
+            logRequests: false, // show the requests in the terminal?
+            proxyPrefix: '/' // replace the prefix set above with this
+          }
+        ]
+
+    @property
+    @type Array
+    @default null
+  */
+  proxies: null
+
+}
+
 ```
-
-#### +--dont-minify+
-
-Disables minification for the build without throwing a Security exception as
-setting +minify: false+ within the Buildfile would do.
-
-WARNING: Be sure to remove any +debugger+ statements from your code, as they
-will cause the build to fail.
-
-#### +--stageroot+
-
-Specify the path to the staging products.
-
-```bash
-$ sproutcore build my_app --stageroot=../tmp/staging
-```
-
-#### +--verbose+ or +-v+
-
-Verbose output.
 
 ### Changelog
 
@@ -518,3 +388,4 @@ Verbose output.
 * February 28, 2012: added some documentation on sc-server & sc-build by [Tyler Keating](credits.html#publickeating)
 * December 17, 2012: added note about changing proxy settings by [Mike Atkins](credits.html#apechimp)
 * July 14, 2013: converted to Markdown format for DocPad guides by [Topher Fangio](credits.html#topherfangio)
+* January 17, 2019: Updated to document the NodeJS based BT by [Maurits Lamers](credits.html#mauritslamers)
